@@ -1,0 +1,2 @@
+exchange_trade_id,config_file_path,strategy,market,symbol,base_asset,quote_asset,timestamp,order_id,trade_type,order_type,price,amount,leverage,trade_fee,position,age
+6266f6042e113d6ca7ced8ab,fearfear.yml,pure_market_making,kucoin,FEAR-USDT,FEAR,USDT,1650914820000,SFRUT1806230fff3f3788ddfbf8fc6c5ee36b053,SELL,LIMIT_MAKER,0.3899,50,1,"{'fee_type': 'AddedToCost', 'percent': '0.002', 'percent_token': None, 'flat_fees': []}",NIL,00:00:00
