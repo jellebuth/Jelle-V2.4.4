@@ -519,7 +519,7 @@ cdef class CrossExchangeMarketMakingStrategy(StrategyBase):
                 self.logger().info(f"Taker enough quote balance {taker_available_balance_quote / mid_price_taker_buy_price} to buy {order_size_base}, will place a taker buy order")
                 return "buy_taker"
 
-            else:
+            else: #the maker nor the taker has enough balance, but both do
                 if (taker_available_balance_quote/mid_price_taker_buy_price) + (maker_available_balance_quote / mid_price_maker_buy_price)  > order_size_base:
                     return "buy_maker_taker"
                     self.logger().info(f"Enough quote balane on both exchanges only Taker: {(taker_available_balance_quote/mid_price_taker_buy_price)}, Maker: {maker_available_balance_quote / mid_price_maker_buy_price}, Total: {taker_available_balance_quote/mid_price_taker_buy_price + (maker_available_balance_quote / mid_price_maker_buy_price)}, to buy {order_size_base}, will place maker and taker buy")
@@ -527,33 +527,16 @@ cdef class CrossExchangeMarketMakingStrategy(StrategyBase):
                     self.logger().info(f"Not enough quote balance to buy Order size: {order_size_base}. Maker Quote balance: {maker_available_balance_quote}, Taker Quote balance:{taker_available_balance_quote} Order size in quote: {maker_order_size_in_quote}")
                 return False
 
-        else:
-          if (maker_available_balance_quote / mid_price_maker_buy_price) > order_size_base :  # check if availabale balance is enough
+        else: #if we do not want to use the maker as the fixing balance
+          if (taker_available_balance_quote/mid_price_taker_buy_price) > order_size_base:  # check if availabale balance is enough
+              self.logger().info(f"Taker enough quote balance {taker_available_balance_quote / mid_price_taker_buy_price} to buy {order_size_base}, will place a taker buy order")
+              return "buy_taker"
+
+          elif (maker_available_balance_quote / mid_price_maker_buy_price) > order_size_base :  # check if availabale balance is enough
               self.logger().info(f"Maker enough quote balance {maker_available_balance_quote / mid_price_maker_buy_price} to buy {order_size_base}, will place a maker buy order")
               return "buy_maker"  # not enough balance to buy
 
-          elif self._balance_fix_maker:
-            if (taker_available_balance_quote/mid_price_taker_buy_price) > order_size_base:  # check if availabale balance is enough
-                self.logger().info(f"Taker enough quote balance {taker_available_balance_quote / mid_price_taker_buy_price} to buy {order_size_base}, will place a taker buy order")
-                return "buy_taker"
-
-            else:
-                if (taker_available_balance_quote/mid_price_taker_buy_price) + (maker_available_balance_quote / mid_price_maker_buy_price)  > order_size_base:
-                    return "buy_maker_taker"
-                    self.logger().info(f"Enough quote balane on both exchanges only Taker: {(taker_available_balance_quote/mid_price_taker_buy_price)}, Maker: {maker_available_balance_quote / mid_price_maker_buy_price}, Total: {taker_available_balance_quote/mid_price_taker_buy_price + (maker_available_balance_quote / mid_price_maker_buy_price)}, to buy {order_size_base}, will place maker and taker buy")
-                else:
-                    self.logger().info(f"Not enough quote balance to buy Order size: {order_size_base}. Maker Quote balance: {maker_available_balance_quote}, Taker Quote balance:{taker_available_balance_quote} Order size in quote: {maker_order_size_in_quote}")
-                return False
-
-
           else:
-            if (taker_available_balance_quote/mid_price_taker_buy_price) > order_size_base:  # check if availabale balance is enough
-                self.logger().info(f"Taker enough quote balance {taker_available_balance_quote / mid_price_taker_buy_price} to buy {order_size_base}, will place a taker buy order")
-                return "buy_taker"
-            elif (maker_available_balance_quote / mid_price_maker_buy_price) > order_size_base :  # check if availabale balance is enough
-                self.logger().info(f"Maker enough quote balance {maker_available_balance_quote / mid_price_maker_buy_price} to buy {order_size_base}, will place a maker buy order")
-                return "buy_maker"  # not enough balance to buy
-            else:
                 if (taker_available_balance_quote/mid_price_taker_buy_price) + (maker_available_balance_quote / mid_price_maker_buy_price)  > order_size_base:
                     return "buy_maker_taker"
                     self.logger().info(f"Enough quote balane on both exchanges only Taker: {(taker_available_balance_quote/mid_price_taker_buy_price)}, Maker: {maker_available_balance_quote / mid_price_maker_buy_price}, Total: {taker_available_balance_quote/mid_price_taker_buy_price + (maker_available_balance_quote / mid_price_maker_buy_price)}, to buy {order_size_base}, will place maker and taker buy")
@@ -561,8 +544,25 @@ cdef class CrossExchangeMarketMakingStrategy(StrategyBase):
                     self.logger().info(f"Not enough quote balance to buy Order size: {order_size_base}. Maker Quote balance: {maker_available_balance_quote}, Taker Quote balance:{taker_available_balance_quote} Order size in quote: {maker_order_size_in_quote}")
                 return False
 
-      else:
+      else: # if is sell
+        if self._balance_fix_maker:
           # check balance to chech weather you can sell the asset
+          if maker_available_balance_base > order_size_base:
+            self.logger().info(f"Maker enough base balance {maker_available_balance_base}, to sell {order_size_base}, will place a Maker sell order")
+            return "sell_maker"
+          elif taker_available_balance_base > order_size_base:
+              self.logger().info(f"Taker enough base balance {taker_available_balance_base} to sell {order_size_base}, will place a taker sell order")
+              return "sell_taker"
+
+          else:  # not enough balance to place it on one available exchange
+              if (maker_available_balance_base + taker_available_balance_base) > order_size_base:
+                  return "sell_maker_taker"
+                  self.logger().info(f"Enough base balane on both exchanges only, Maker: {maker_available_balance_base}, Taker:{taker_available_balance_base}, Total: {(maker_available_balance_base + taker_available_balance_base)}, to sell {order_size_base}, will place taker and maker sell")
+              else:
+                  self.logger().info(f"Not enough base balance to sell. order size: {order_size_base}")
+                  return False
+        else:
+
           if taker_available_balance_base > order_size_base:
               self.logger().info(f"Taker enough base balance {taker_available_balance_base} to sell {order_size_base}, will place a taker sell order")
               return "sell_taker"
@@ -968,15 +968,14 @@ cdef class CrossExchangeMarketMakingStrategy(StrategyBase):
                 )
             else:
                 limit_order_record = self._sb_order_tracker.c_get_limit_order(market_pair.taker, order_id)
-                price_lor = limit_order_record.price
                 taker_top = taker_market.c_get_price(taker_trading_pair, True)
                 self.log_with_clock(
                     logging.INFO,
                     f"({market_pair.taker.trading_pair}) Taker buy order {order_id} for "
-                    f"({order_completed_event.base_asset_amount} {order_completed_event.base_asset} @ {price_lor} {limit_order_record.quote_currency} has been completely filled."
+                    f"({order_completed_event.base_asset_amount} {order_completed_event.base_asset} @ {limit_order_record.price} {limit_order_record.quote_currency} has been completely filled."
                 )
                 self.notify_hb_app_with_timestamp(
-                    f"Taker buy order {order_completed_event.base_asset_amount} {order_completed_event.base_asset} @ {price_lor} RA:{limit_order_record.price * self.market_conversion_rate()}, TT:{taker_top}, TTA: {(Decimal(taker_top) * Decimal(quote_rate))}"
+                    f"Taker buy order {order_completed_event.base_asset_amount} {order_completed_event.base_asset} @ {limit_order_record.price} RA:{limit_order_record.price * self.market_conversion_rate()}"
                 )
 
     cdef c_did_complete_sell_order(self, object order_completed_event):
@@ -1009,15 +1008,14 @@ cdef class CrossExchangeMarketMakingStrategy(StrategyBase):
                 )
             else:
                 limit_order_record = self._sb_order_tracker.c_get_limit_order(market_pair.taker, order_id)
-                price_lor = limit_order_record.price
                 taker_top = taker_market.c_get_price(taker_trading_pair, False)
                 self.log_with_clock(
                     logging.INFO,
                     f"({market_pair.taker.trading_pair}) Taker sell order {order_id} for "
-                    f"({order_completed_event.base_asset_amount} {order_completed_event.base_asset} @ {price_lor} {limit_order_record.quote_currency} has been completely filled."
+                    f"({order_completed_event.base_asset_amount} {order_completed_event.base_asset} @ {limit_order_record.price} {limit_order_record.quote_currency} has been completely filled."
                 )
                 self.notify_hb_app_with_timestamp(
-                    f"Taker sell order {order_completed_event.base_asset_amount} {order_completed_event.base_asset} @ {price_lor} RA:{limit_order_record.price * self.market_conversion_rate()}, TT:{taker_top}, TTA: {(Decimal(taker_top) * Decimal(quote_rate))}"
+                    f"Taker sell order {order_completed_event.base_asset_amount} {order_completed_event.base_asset} @ {limit_order_record.price} RA:{limit_order_record.price * self.market_conversion_rate()}"
                 )
 
     cdef bint c_check_if_price_has_drifted(self, object market_pair, LimitOrder active_order):
@@ -1128,14 +1126,18 @@ cdef class CrossExchangeMarketMakingStrategy(StrategyBase):
               #the price for quote volume does not work with a BTC or  ETH denominated taker market
               if not self._triangular_switch and self._triangular_arbitrage:
                 order_id = self.c_place_order(market_pair, False, market_pair.taker, False, Decimal(quantized_hedge_amount), Decimal(((self.c_calculate_effective_hedging_price(market_pair, True, quantized_hedge_amount) / (Decimal("1") + self._slippage_buffer_fix)) / quote_rate)))
+                try:
+                  order_price = (self.c_calculate_effective_hedging_price(market_pair, True, quantized_hedge_amount) / (Decimal("1") + self._slippage_buffer_fix))
+                except ZeroDivisionError:
+                    order_price = 0
                 self.notify_hb_app_with_timestamp(
-                    f"M. Sell Min P.{round((((((order_price / base_rate) - avg_fill_price) / avg_fill_price) * 100)+self._slippage_buffer_fix),3)}, Max P. {round(((((taker_top * quote_rate) - avg_fill_price) / (taker_top * quote_rate)) * 100),3)}, MP: {avg_fill_price}, Slippage_buffer: {self._slippage_buffer_fix}"
+                    f"M. Buy  Min P.{round(((((order_price / quote_rate) - avg_fill_price) / avg_fill_price) * 100),3)}, Max P. {round(((((taker_top * quote_rate) - avg_fill_price) / avg_fill_price) * 100),3)}, MP: {PerformanceMetrics.smart_round(avg_fill_price)} OP {PerformanceMetrics.smart_round(order_price * quote_rate)} AF {PerformanceMetrics.smart_round(avg_fill_price)}"
                 )
 
               if not self._triangular_arbitrage:
                 order_id = self.c_place_order(market_pair, False, market_pair.taker, False, quantized_hedge_amount, order_price)
                 self.notify_hb_app_with_timestamp(
-                    f"Min profitability maker buy trade: {round(((((order_price / base_rate * quote_rate) - avg_fill_price) / avg_fill_price) * 100),3)}, Max. P. {round(((((taker_top / base_rate * quote_rate) - avg_fill_price) / avg_fill_price) * 100),3)}"
+                f"M. Buy Min P. {round(((((order_price / base_rate * quote_rate) - avg_fill_price) / avg_fill_price) * 100),3)}, Max. P. {round(((((taker_top / base_rate * quote_rate) - avg_fill_price) / avg_fill_price) * 100),3)} OP: {PerformanceMetrics.smart_round((order_price / base_rate * quote_rate))} AF: {PerformanceMetrics.smart_round(avg_fill_price)} TT: {PerformanceMetrics.smart_round((taker_top / base_rate * quote_rate))}"
                 )
 
                 #add the third leg of a triangular arbitrage order in this case you need to buy back the asset
@@ -1191,20 +1193,29 @@ cdef class CrossExchangeMarketMakingStrategy(StrategyBase):
 
             order_price *= Decimal("1") + self._slippage_buffer
             order_price = taker_market.quantize_order_price(taker_trading_pair, order_price)
-            self.log_with_clock(logging.INFO, f"Slippage buffer adjusted order_price: {order_price} hedge order quantity {quantized_hedge_amount},  & order_size qunatized hedge amount {quantized_hedge_amount}, quantized amount before converting{taker_market.c_quantize_order_amount(taker_trading_pair, Decimal(hedged_order_quantity))}")
+            self.log_with_clock(logging.INFO, f"Slippage buffer adjusted order_price: {order_price} hedge order quantity {quantized_hedge_amount},  & order_size quantized hedge amount {quantized_hedge_amount}, quantized amount before converting{taker_market.c_quantize_order_amount(taker_trading_pair, Decimal(hedged_order_quantity))}")
 
             if quantized_hedge_amount > s_decimal_zero:
               #the price for quote volume does not work with a BTC or  ETH denominated taker market
               if not self._triangular_switch and self._triangular_arbitrage:
                 order_id = self.c_place_order(market_pair, True, market_pair.taker, False, Decimal(quantized_hedge_amount), ((self.c_calculate_effective_hedging_price(market_pair, False, quantized_hedge_amount) * (Decimal("1") + self._slippage_buffer_fix)) / quote_rate))
+                try:
+                  order_price = ((self.c_calculate_effective_hedging_price(market_pair, False, quantized_hedge_amount) * (Decimal("1") + self._slippage_buffer_fix)) / quote_rate)
+                except ZeroDivisionError:
+                    order_price = 0
+
                 self.notify_hb_app_with_timestamp(
-                    f"M. Sell Min P.{round((((avg_fill_price - ((self.c_calculate_effective_hedging_price(market_pair, False, quantized_hedge_amount) * (Decimal(1) + self._slippage_buffer_fix)))) / avg_fill_price * 100)+self._slippage_buffer_fix),3)}, Max P. {round((avg_fill_price - (taker_top * quote_rate) / (taker_top * quote_rate)) * Decimal(100),3)},, MP: {avg_fill_price}, MPA: {(avg_fill_price / self.market_conversion_rate())} slipage buffer {self._slippage_buffer_fix}"
+                    f"M. Sell Min P.{round((((avg_fill_price - (order_price * quote_rate)) / (order_price * quote_rate)) * 100),3)}, Max P. {round((((avg_fill_price - (taker_top * quote_rate)) / (order_price * quote_rate)) * 100),3)}, OP {PerformanceMetrics.smart_round(order_price * quote_rate)} AF {PerformanceMetrics.smart_round(avg_fill_price)} tt{PerformanceMetrics.smart_round(taker_top)}"
                 )
+
+
+
+
               if not self._triangular_arbitrage:
                 order_id = self.c_place_order(market_pair, True, market_pair.taker, False, quantized_hedge_amount, order_price)
                 taker_top_ask = taker_market.c_get_price(taker_trading_pair, True)
                 self.notify_hb_app_with_timestamp(
-                    f"Min profitability maker sell trade:{round((((avg_fill_price - (order_price / base_rate * quote_rate)) / (order_price / base_rate * quote_rate)) * 100),3)} Max P. {round(((((taker_top_ask / base_rate * quote_rate) - avg_fill_price) / avg_fill_price) * 100),3)}"
+                    f"M. Sell Min P. {round((((avg_fill_price - (order_price / base_rate * quote_rate)) / (order_price / base_rate * quote_rate)) * 100),3)} Max P. {round((((avg_fill_price - (taker_top_ask / base_rate * quote_rate)) / avg_fill_price) * 100),3)} OP: {PerformanceMetrics.smart_round((order_price / base_rate * quote_rate))} AF: {PerformanceMetrics.smart_round(avg_fill_price)} TT: {PerformanceMetrics.smart_round((taker_top / base_rate * quote_rate))}"
                 )
 
 

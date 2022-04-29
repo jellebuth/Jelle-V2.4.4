@@ -480,7 +480,7 @@ pure_market_making_config_map = {
               type_str="decimal",
               validator=lambda v: validate_decimal(v),
               prompt_on_new=True,
-              default=0),
+              default=0.003),
 
     "micro_price_effect":
     ConfigVar(key="micro_price_effect",
@@ -488,7 +488,7 @@ pure_market_making_config_map = {
               type_str="decimal",
               validator=lambda v: validate_decimal(v),
               prompt_on_new=True,
-              default=0),
+              default=0.9),
 
 
     "max_deviation":

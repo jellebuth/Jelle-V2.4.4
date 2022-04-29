@@ -767,6 +767,25 @@ cdef class PureMarketMakingStrategy(StrategyBase):
                                           f"making may be dangerous when markets or networks are unstable.")
 
             proposal = None
+            if self.c_check_imbalance():
+              # 1. Create base order proposals
+              proposal = self.c_create_base_proposal()
+              # 2. Apply functions that limit numbers of buys and sells proposal
+              self.c_apply_order_levels_modifiers(proposal)
+              # 3. Apply functions that modify orders price
+              self.c_apply_order_price_modifiers(proposal)
+              # 4. Apply functions that modify orders size
+              self.c_apply_order_size_modifiers(proposal)
+              # 5. Apply budget constraint, i.e. can't buy/sell more than what you have.
+              self.c_apply_budget_constraint(proposal)
+
+              if not self._take_if_crossed:
+                  self.c_filter_out_takers(proposal)
+              #if there is an imbalance do create orders but only the fixing orders
+              if self.c_to_create_orders(proposal):
+                    self.c_execute_orders_proposal(proposal)
+
+
             if self._create_timestamp <= self._current_timestamp:
                 # 1. Create base order proposals
                 proposal = self.c_create_base_proposal()
@@ -778,17 +797,21 @@ cdef class PureMarketMakingStrategy(StrategyBase):
                 self.c_apply_order_size_modifiers(proposal)
                 # 5. Apply budget constraint, i.e. can't buy/sell more than what you have.
                 self.c_apply_budget_constraint(proposal)
+                # 6.only cnacel normal orders below specific min order spread level
+                self.c_cancel_orders_below_min_spread()
 
                 if not self._take_if_crossed:
                     self.c_filter_out_takers(proposal)
+                #only create normal orders whenever the timer is over
+                if self.c_to_create_orders(proposal):
+                      self.c_execute_orders_proposal(proposal)
 
             self._hanging_orders_tracker.process_tick()
 
             self.c_cancel_active_orders_on_max_age_limit()
             self.c_cancel_active_orders(proposal)
-            self.c_cancel_orders_below_min_spread()
-            if self.c_to_create_orders(proposal):
-                self.c_execute_orders_proposal(proposal)
+
+
         finally:
             self._last_timestamp = timestamp
 
@@ -822,12 +845,12 @@ cdef class PureMarketMakingStrategy(StrategyBase):
       if (abs(base_balance - float(self._target_base_balance)) > self._max_deviation) and self._keep_target_balance:
         deviation = (base_balance - self._target_base_balance)
 
-        return(False)
+        return False
 
       else:
         deviation = (base_balance - self._target_base_balance)
 
-        return(True)
+        return True
 
     cdef object c_create_base_proposal(self):
           cdef:
@@ -1354,8 +1377,7 @@ cdef class PureMarketMakingStrategy(StrategyBase):
     cdef bint c_to_create_orders(self, object proposal):
         non_hanging_orders_non_cancelled = [o for o in self.active_non_hanging_orders if not
                                             self._hanging_orders_tracker.is_potential_hanging_order(o)]
-        return (self._create_timestamp < self._current_timestamp
-                and (not self._should_wait_order_cancel_confirmation or
+        return ((not self._should_wait_order_cancel_confirmation or
                      len(self._sb_order_tracker.in_flight_cancels) == 0)
                 and proposal is not None
                 and len(non_hanging_orders_non_cancelled) == 0)
