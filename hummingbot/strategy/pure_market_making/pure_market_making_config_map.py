@@ -168,7 +168,7 @@ pure_market_making_config_map = {
                   prompt="How long do you want to cancel and replace bids and asks "
                          "with the same price (in seconds)? >>> ",
                   type_str="float",
-                  default=Decimal("1800"),
+                  default=Decimal("15"),
                   validator=lambda v: validate_decimal(v, 0, inclusive=False)),
     "order_refresh_tolerance_pct":
         ConfigVar(key="order_refresh_tolerance_pct",
@@ -201,27 +201,27 @@ pure_market_making_config_map = {
         ConfigVar(key="moving_price_band_enabled",
                   prompt="Would you like to enable moving price floor and ceiling? (Yes/No) >>> ",
                   type_str="bool",
-                  default=False,
+                  default=True,
                   validator=validate_bool),
     "price_ceiling_pct":
         ConfigVar(key="price_ceiling_pct",
                   prompt="Enter a percentage to the current price that sets the price ceiling. Above this price, only sell orders will be placed >>> ",
                   type_str="decimal",
-                  default=Decimal("1"),
+                  default=Decimal("1.25"),
                   required_if=lambda: pure_market_making_config_map.get("moving_price_band_enabled").value,
                   validator=validate_decimal),
     "price_floor_pct":
         ConfigVar(key="price_floor_pct",
                   prompt="Enter a percentage to the current price that sets the price floor. Below this price, only buy orders will be placed >>> ",
                   type_str="decimal",
-                  default=Decimal("-1"),
+                  default=Decimal("-1.25"),
                   required_if=lambda: pure_market_making_config_map.get("moving_price_band_enabled").value,
                   validator=validate_decimal),
     "price_band_refresh_time":
         ConfigVar(key="price_band_refresh_time",
                   prompt="After this amount of time (in seconds), the price bands are reset based on the current price >>> ",
                   type_str="float",
-                  default=86400,
+                  default=120,
                   required_if=lambda: pure_market_making_config_map.get("moving_price_band_enabled").value,
                   validator=validate_decimal),
     "ping_pong_enabled":
@@ -307,7 +307,7 @@ pure_market_making_config_map = {
         ConfigVar(key="order_optimization_enabled",
                   prompt="Do you want to enable best bid ask jumping? (Yes/No) >>> ",
                   type_str="bool",
-                  default=False,
+                  default=True,
                   validator=validate_bool),
     "ask_order_optimization_depth":
         ConfigVar(key="ask_order_optimization_depth",
@@ -345,7 +345,7 @@ pure_market_making_config_map = {
         ConfigVar(key="micro_price_price_source",
                   prompt="For Micro_price calculation, do you want to use the external price source >>> ",
                   type_str="bool",
-                  default="False"),
+                  default=False),
 
     "price_type":
         ConfigVar(key="price_type",
@@ -471,7 +471,7 @@ pure_market_making_config_map = {
     ConfigVar(key="use_micro_price",
               prompt="do you want to use the micro-price instead of the other price sources >>> ",
               type_str="bool",
-              default=False,
+              default=True,
               prompt_on_new=True),
 
     "micro_price_percentage_depth":
@@ -490,7 +490,6 @@ pure_market_making_config_map = {
               prompt_on_new=True,
               default=0.9),
 
-
     "max_deviation":
     ConfigVar(key="max_deviation",
               prompt="what is the max deviation for the target base balance >>> ",
@@ -499,6 +498,13 @@ pure_market_making_config_map = {
               prompt_on_new=True,
               default=0),
 
+    "filled_order_delay_target_balance":
+    ConfigVar(key="filled_order_delay_target_balance",
+              prompt="what is the amount of seconds you want to wait before placing the fixing order >>> ",
+              type_str="float",
+              validator=lambda v: validate_decimal(v),
+              prompt_on_new=True,
+              default=30),
 
     "ask_order_level_amounts":
         ConfigVar(key="ask_order_level_amounts",

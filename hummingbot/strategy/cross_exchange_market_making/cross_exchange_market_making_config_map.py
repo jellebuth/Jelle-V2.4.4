@@ -243,7 +243,6 @@ cross_exchange_market_making_config_map = {
                   ),
 
 
-
     "balance_fix_maker":
         ConfigVar(key="balance_fix_maker",
                   prompt="place maker orders as restoring order >>> ",

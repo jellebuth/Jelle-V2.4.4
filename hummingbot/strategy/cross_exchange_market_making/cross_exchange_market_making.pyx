@@ -297,6 +297,7 @@ cdef class CrossExchangeMarketMakingStrategy(StrategyBase):
             LimitOrder typed_limit_order
 
         # Go through the currently open limit orders, and group them by market pair.
+        # add if statement that shows the maker limit orders when maker fix order is not tru, show self.active_limit_orders_all when it is activ
         for _, limit_order in self.active_limit_orders_all:
             typed_limit_order = limit_order
             market_pair = self._market_pair_tracker.c_get_market_pair_from_order_id(typed_limit_order.client_order_id)
@@ -1131,7 +1132,7 @@ cdef class CrossExchangeMarketMakingStrategy(StrategyBase):
                 except ZeroDivisionError:
                     order_price = 0
                 self.notify_hb_app_with_timestamp(
-                    f"M. Buy  Min P.{round(((((order_price / quote_rate) - avg_fill_price) / avg_fill_price) * 100),3)}, Max P. {round(((((taker_top * quote_rate) - avg_fill_price) / avg_fill_price) * 100),3)}, MP: {PerformanceMetrics.smart_round(avg_fill_price)} OP {PerformanceMetrics.smart_round(order_price * quote_rate)} AF {PerformanceMetrics.smart_round(avg_fill_price)}"
+                    f"M. Buy  Min P.{round(((((order_price * quote_rate) - avg_fill_price) / avg_fill_price) * 100),3)}, Max P. {round(((((taker_top * quote_rate) - avg_fill_price) / avg_fill_price) * 100),3)}, OP {PerformanceMetrics.smart_round(order_price * quote_rate)} AF {PerformanceMetrics.smart_round(avg_fill_price)}"
                 )
 
               if not self._triangular_arbitrage:
@@ -1205,7 +1206,7 @@ cdef class CrossExchangeMarketMakingStrategy(StrategyBase):
                     order_price = 0
 
                 self.notify_hb_app_with_timestamp(
-                    f"M. Sell Min P.{round((((avg_fill_price - (order_price * quote_rate)) / (order_price * quote_rate)) * 100),3)}, Max P. {round((((avg_fill_price - (taker_top * quote_rate)) / (order_price * quote_rate)) * 100),3)}, OP {PerformanceMetrics.smart_round(order_price * quote_rate)} AF {PerformanceMetrics.smart_round(avg_fill_price)} tt{PerformanceMetrics.smart_round(taker_top)}"
+                    f"M. Sell Min P.{round((((avg_fill_price - (order_price * quote_rate)) / (order_price * quote_rate)) * 100),3)}, Max P. {round((((avg_fill_price - (taker_top * quote_rate)) / (order_price * quote_rate)) * 100),3)}, OP {PerformanceMetrics.smart_round(order_price * quote_rate)} AF {PerformanceMetrics.smart_round(avg_fill_price)} TT {PerformanceMetrics.smart_round(taker_top)}"
                 )
 
 

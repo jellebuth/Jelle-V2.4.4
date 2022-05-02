@@ -94,6 +94,7 @@ cdef class PureMarketMakingStrategy(StrategyBase):
                     keep_target_balance : bool = False,
                     target_base_balance: float = 0,
                     max_deviation : Decimal = Decimal(0),
+                    filled_order_delay_target_balance : float = 30,
                     moving_price_band: Optional[MovingPriceBand] = None
                     ):
         if order_override is None:
@@ -162,6 +163,9 @@ cdef class PureMarketMakingStrategy(StrategyBase):
         self._micro_price_percentage_depth = micro_price_percentage_depth
         self._micro_price_price_source = micro_price_price_source
         self._target_balance_spread_reducer = target_balance_spread_reducer
+        self._filled_order_delay_target_balance = filled_order_delay_target_balance
+        self._balance_fixer_timestamp = 0
+
         self.c_add_markets([market_info.market])
 
     def all_markets_ready(self):
@@ -767,7 +771,7 @@ cdef class PureMarketMakingStrategy(StrategyBase):
                                           f"making may be dangerous when markets or networks are unstable.")
 
             proposal = None
-            if self.c_check_imbalance():
+            if not self.c_check_imbalance() and self._balance_fixer_timestamp <= self._current_timestamp:
               # 1. Create base order proposals
               proposal = self.c_create_base_proposal()
               # 2. Apply functions that limit numbers of buys and sells proposal
@@ -786,7 +790,7 @@ cdef class PureMarketMakingStrategy(StrategyBase):
                     self.c_execute_orders_proposal(proposal)
 
 
-            if self._create_timestamp <= self._current_timestamp:
+            if self._create_timestamp <= self._current_timestamp and self.c_check_imbalance():
                 # 1. Create base order proposals
                 proposal = self.c_create_base_proposal()
                 # 2. Apply functions that limit numbers of buys and sells proposal
@@ -843,12 +847,10 @@ cdef class PureMarketMakingStrategy(StrategyBase):
       base_balance = float(market.get_balance(self._market_info.base_asset))
 
       if (abs(base_balance - float(self._target_base_balance)) > self._max_deviation) and self._keep_target_balance:
-        deviation = (base_balance - self._target_base_balance)
 
         return False
 
       else:
-        deviation = (base_balance - self._target_base_balance)
 
         return True
 
@@ -1247,6 +1249,7 @@ cdef class PureMarketMakingStrategy(StrategyBase):
         # delay order creation by filled_order_dalay (in seconds)
         self._create_timestamp = self._current_timestamp + self._filled_order_delay
         self._cancel_timestamp = min(self._cancel_timestamp, self._create_timestamp)
+        self._balance_fixer_timestamp = self._filled_order_delay_target_balance + self._current_timestamp
 
         self._filled_buys_balance += 1
         self._last_own_trade_price = limit_order_record.price
@@ -1287,6 +1290,7 @@ cdef class PureMarketMakingStrategy(StrategyBase):
         # delay order creation by filled_order_dalay (in seconds)
         self._create_timestamp = self._current_timestamp + self._filled_order_delay
         self._cancel_timestamp = min(self._cancel_timestamp, self._create_timestamp)
+        self._balance_fixer_timestamp = self._filled_order_delay_target_balance + self._current_timestamp
 
         self._filled_sells_balance += 1
         self._last_own_trade_price = limit_order_record.price
