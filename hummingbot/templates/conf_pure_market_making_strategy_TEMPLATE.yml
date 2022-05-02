@@ -152,6 +152,7 @@ target_base_balance: null
 micro_price_percentage_depth: null
 micro_price_effect: null
 micro_price_price_source: null
+filled_order_delay_target_balance: null
 # If the strategy should wait to receive cancellations confirmation before creating new orders during refresh time
 should_wait_order_cancel_confirmation: True
 
