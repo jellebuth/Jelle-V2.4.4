@@ -84,6 +84,8 @@ cdef class AvellanedaMarketMakingStrategy(StrategyBase):
                     trading_intensity_price_levels: Tuple[float] = tuple(np.geomspace(1, 2, 10) - 1),
                     should_wait_order_cancel_confirmation = True,
                     is_debug: bool = False,
+                    normal_target_calculation : bool = True,
+                    target_base_balance : Decimal = 0,
                     ):
         self._sb_order_tracker = OrderTracker()
         self._market_info = market_info
@@ -134,6 +136,8 @@ cdef class AvellanedaMarketMakingStrategy(StrategyBase):
         self._optimal_bid = s_decimal_zero
         self._should_wait_order_cancel_confirmation = should_wait_order_cancel_confirmation
         self._debug_csv_path = debug_csv_path
+        self._normal_target_calculation = normal_target_calculation
+        self._target_base_balance = target_base_balance
         self._is_debug = is_debug
         try:
             if self._is_debug:
@@ -761,18 +765,24 @@ cdef class AvellanedaMarketMakingStrategy(StrategyBase):
             object inventory_value
             object target_inventory_value
 
-        price = self.get_price()
-        base_asset_amount = market.get_balance(base_asset)
-        quote_asset_amount = market.get_balance(quote_asset)
-        # Base asset value in quote asset prices
-        base_value = base_asset_amount * price
-        # Total inventory value in quote asset prices
-        inventory_value = base_value + quote_asset_amount
-        # Target base asset value in quote asset prices
-        target_inventory_value = inventory_value * self._inventory_target_base_pct
-        # Target base asset amount
-        target_inventory_amount = target_inventory_value / price
-        return market.c_quantize_order_amount(trading_pair, Decimal(str(target_inventory_amount)))
+        if self._normal_target_calculation:
+          price = self.get_price()
+          base_asset_amount = market.get_balance(base_asset)
+          quote_asset_amount = market.get_balance(quote_asset)
+          # Base asset value in quote asset prices
+          base_value = base_asset_amount * price
+          # Total inventory value in quote asset prices
+          inventory_value = base_value + quote_asset_amount
+          # Target base asset value in quote asset prices
+          target_inventory_value = inventory_value * self._inventory_target_base_pct
+          # Target base asset amount
+          target_inventory_amount = target_inventory_value / price
+          return market.c_quantize_order_amount(trading_pair, Decimal(str(target_inventory_amount)))
+
+        if not self._normal_target_calculation:
+          target_inventory_amount = self._target_base_balance
+          return market.c_quantize_order_amount(trading_pair, Decimal(str(target_inventory_amount)))
+
 
     def calculate_target_inventory(self) -> Decimal:
         return self.c_calculate_target_inventory()

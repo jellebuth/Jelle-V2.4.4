@@ -1,0 +1,2 @@
+exchange_trade_id,config_file_path,strategy,market,symbol,base_asset,quote_asset,timestamp,order_id,trade_type,order_type,price,amount,leverage,trade_fee,position,age
+62703a99833672234d1813ba,conf_avellaneda_market_making_1.yml,avellaneda_market_making,kucoin,LRC-USDT,LRC,USDT,1651522202500,BLCUT1808664d9f36894b6fae3411169d6ab5640,BUY,LIMIT_MAKER,0.7273,10,1,"{'fee_type': 'AddedToCost', 'percent': '0.001', 'percent_token': None, 'flat_fees': []}",NIL,00:00:04

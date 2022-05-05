@@ -19,6 +19,8 @@ cdef class AvellanedaMarketMakingStrategy(StrategyBase):
         bint _hanging_orders_enabled
         object _hanging_orders_tracker
         object _inventory_target_base_pct
+        object _normal_target_calculation
+        object _target_base_balance
         bint _order_optimization_enabled
         bint _add_transaction_costs_to_orders
         bint _hb_app_notification
