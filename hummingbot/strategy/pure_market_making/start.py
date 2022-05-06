@@ -56,6 +56,7 @@ def start(self):
             c_map.get("inventory_target_base_pct").value / Decimal('100')
         inventory_range_multiplier = c_map.get("inventory_range_multiplier").value
         filled_order_delay = c_map.get("filled_order_delay").value
+        filled_order_delay_target_balance = c_map.get("filled_order_delay_target_balance").value
         hanging_orders_enabled = c_map.get("hanging_orders_enabled").value
         hanging_orders_cancel_pct = c_map.get("hanging_orders_cancel_pct").value / Decimal('100')
         order_optimization_enabled = c_map.get("order_optimization_enabled").value
@@ -174,6 +175,7 @@ def start(self):
             bid_order_level_spreads=bid_order_level_spreads,
             ask_order_level_spreads=ask_order_level_spreads,
             should_wait_order_cancel_confirmation=should_wait_order_cancel_confirmation,
+            filled_order_delay_target_balance = filled_order_delay_target_balance,
             moving_price_band=moving_price_band
         )
     except Exception as e:
