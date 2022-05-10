@@ -69,8 +69,22 @@ hedge_config_map = {
                   default="hedge"),
     "maker_exchange":
         ConfigVar(key="maker_exchange",
-                  prompt="Enter the spot connector to use for target market >>> ",
+                  prompt="Enter the spot connector to use for target market use Binance if multipl exchanges >>> ",
                   validator=validate_exchange,
+                  prompt_on_new=True),
+
+    "kucoin_exchange":
+        ConfigVar(key="kucoin_exchange",
+                  prompt="Type Kucoin if you also want to use Kucoin, otherwise select empty exchange >>> ",
+                  validator=validate_exchange,
+                  default="kucoin",
+                  prompt_on_new=True),
+
+    "gate_exchange":
+        ConfigVar(key="gate_exchange",
+                  prompt="Type Gate_io if you also want to use gate_io, otherwise select empty exchange >>> ",
+                  validator=validate_exchange,
+                  default="gate_io",
                   prompt_on_new=True),
     "maker_assets":
         ConfigVar(key="maker_assets",
@@ -94,7 +108,8 @@ hedge_config_map = {
                   prompt="how often do you want to check the hedge >>> ",
                   type_str="decimal",
                   default=Decimal(10),
-                  validator=lambda v: validate_decimal(v, min_value=0, inclusive=False),
+                  validator=lambda v: validate_decimal(
+                      v, min_value=0, inclusive=False),
                   prompt_on_new=True),
     "hedge_ratio":
         ConfigVar(key="hedge_ratio",
@@ -108,7 +123,8 @@ hedge_config_map = {
                   prompt="How much leverage do you want to use? >>> ",
                   type_str="int",
                   default=int(10),
-                  validator=lambda v: validate_int(v, min_value=0, inclusive=False),
+                  validator=lambda v: validate_int(
+                      v, min_value=0, inclusive=False),
                   prompt_on_new=True),
     "max_order_age":
         ConfigVar(key="max_order_age",

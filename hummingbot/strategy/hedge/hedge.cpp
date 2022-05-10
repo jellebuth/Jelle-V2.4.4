@@ -2777,14 +2777,6 @@ static CYTHON_INLINE int __Pyx_ListComp_Append(PyObject* list, PyObject* x) {
 #define __Pyx_ListComp_Append(L,x) PyList_Append(L,x)
 #endif
 
-/* set_iter.proto */
-static CYTHON_INLINE PyObject* __Pyx_set_iterator(PyObject* iterable, int is_set,
-                                                  Py_ssize_t* p_orig_length, int* p_source_is_set);
-static CYTHON_INLINE int __Pyx_set_iter_next(
-        PyObject* iter_obj, Py_ssize_t orig_length,
-        Py_ssize_t* ppos, PyObject **value,
-        int source_is_set);
-
 /* GetException.proto */
 #if CYTHON_FAST_THREAD_STATE
 #define __Pyx_GetException(type, value, tb)  __Pyx__GetException(__pyx_tstate, type, value, tb)
@@ -3187,7 +3179,7 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 /* #### Code section: module_declarations ### */
 static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_check_and_cancel_active_orders(struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self, PyObject *__pyx_v_market_pair, PyObject *__pyx_v_hedge_amount); /* proto*/
-static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_check_and_hedge_asset(struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self, PyObject *__pyx_v_maker_asset, CYTHON_UNUSED PyObject *__pyx_v_maker_balance, CYTHON_UNUSED PyObject *__pyx_v_market_pair, PyObject *__pyx_v_trading_pair, CYTHON_UNUSED PyObject *__pyx_v_taker_balance, PyObject *__pyx_v_hedge_amount, int __pyx_v_is_buy, PyObject *__pyx_v_price); /* proto*/
+static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_check_and_hedge_asset(struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self, PyObject *__pyx_v_maker_asset, CYTHON_UNUSED PyObject *__pyx_v_total_balance, CYTHON_UNUSED PyObject *__pyx_v_market_pair, PyObject *__pyx_v_trading_pair, CYTHON_UNUSED PyObject *__pyx_v_taker_balance, PyObject *__pyx_v_hedge_amount, int __pyx_v_is_buy, PyObject *__pyx_v_price); /* proto*/
 static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_place_order(struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self, PyObject *__pyx_v_maker_asset, int __pyx_v_is_buy, PyObject *__pyx_v_amount, PyObject *__pyx_v_price); /* proto*/
 static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_apply_initial_settings(CYTHON_UNUSED struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self, PyObject *__pyx_v_market_pair, PyObject *__pyx_v_position, int64_t __pyx_v_leverage); /* proto*/
 static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_did_fill_order(struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self, PyObject *__pyx_v_order_filled_event); /* proto*/
@@ -3384,11 +3376,12 @@ int __pyx_module_is_main_hummingbot__strategy__hedge__hedge = 0;
 /* #### Code section: global_var ### */
 static PyObject *__pyx_builtin_max;
 static PyObject *__pyx_builtin_round;
-static PyObject *__pyx_builtin_all;
 static PyObject *__pyx_builtin_TypeError;
 static PyObject *__pyx_builtin_ImportError;
 /* #### Code section: string_decls ### */
 static const char __pyx_k_[] = " ";
+static const char __pyx_k_TB[] = " TB:";
+static const char __pyx_k_TP[] = "TP:";
 static const char __pyx_k__2[] = "";
 static const char __pyx_k__3[] = "\n";
 static const char __pyx_k__4[] = "    ";
@@ -3401,12 +3394,13 @@ static const char __pyx_k_np[] = "np";
 static const char __pyx_k_pd[] = "pd";
 static const char __pyx_k_Age[] = "Age";
 static const char __pyx_k_BUY[] = "BUY";
+static const char __pyx_k_Bin[] = " Bin:";
 static const char __pyx_k_Buy[] = "Buy";
+static const char __pyx_k_Kuc[] = " Kuc:";
 static const char __pyx_k_NaN[] = "NaN";
 static const char __pyx_k__10[] = "*";
-static const char __pyx_k__42[] = "?";
+static const char __pyx_k__44[] = "?";
 static const char __pyx_k_age[] = "age";
-static const char __pyx_k_all[] = "all";
 static const char __pyx_k_buy[] = "buy";
 static const char __pyx_k_cls[] = "cls";
 static const char __pyx_k_get[] = "get";
@@ -3416,7 +3410,8 @@ static const char __pyx_k_max[] = "max";
 static const char __pyx_k_nan[] = "nan";
 static const char __pyx_k_str[] = "str";
 static const char __pyx_k_Dict[] = "Dict";
-static const char __pyx_k_Diff[] = "Diff";
+static const char __pyx_k_Diff[] = " Diff:";
+static const char __pyx_k_Gate[] = " Gate";
 static const char __pyx_k_INFO[] = "INFO";
 static const char __pyx_k_List[] = "List";
 static const char __pyx_k_None[] = "None";
@@ -3424,7 +3419,6 @@ static const char __pyx_k_Sell[] = "Sell";
 static const char __pyx_k_Type[] = "Type";
 static const char __pyx_k_data[] = "data";
 static const char __pyx_k_dict[] = "__dict__";
-static const char __pyx_k_info[] = "info";
 static const char __pyx_k_line[] = "line";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_math[] = "math";
@@ -3437,11 +3431,10 @@ static const char __pyx_k_Asset[] = "Asset";
 static const char __pyx_k_HEDGE[] = "HEDGE";
 static const char __pyx_k_Hedge[] = "Hedge";
 static const char __pyx_k_LIMIT[] = "LIMIT";
-static const char __pyx_k_Maker[] = "Maker";
 static const char __pyx_k_Place[] = "Place ";
 static const char __pyx_k_Price[] = "Price";
 static const char __pyx_k_SHORT[] = "SHORT";
-static const char __pyx_k_Taker[] = "Taker";
+static const char __pyx_k_Taker[] = " Taker:";
 static const char __pyx_k_float[] = "float";
 static const char __pyx_k_index[] = "index";
 static const char __pyx_k_isnan[] = "isnan";
@@ -3457,6 +3450,7 @@ static const char __pyx_k_split[] = "split";
 static const char __pyx_k_taker[] = "taker";
 static const char __pyx_k_value[] = "value";
 static const char __pyx_k_Amount[] = "Amount";
+static const char __pyx_k_Diff_2[] = "Diff";
 static const char __pyx_k_Market[] = "Market";
 static const char __pyx_k_ONEWAY[] = "ONEWAY";
 static const char __pyx_k_Wallet[] = "  Wallet:\n";
@@ -3464,6 +3458,7 @@ static const char __pyx_k_amount[] = "amount";
 static const char __pyx_k_enable[] = "enable";
 static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_is_buy[] = "is_buy";
+static const char __pyx_k_kucoin[] = "kucoin";
 static const char __pyx_k_logger[] = "logger";
 static const char __pyx_k_market[] = "market";
 static const char __pyx_k_name_2[] = "name";
@@ -3475,13 +3470,14 @@ static const char __pyx_k_typing[] = "typing";
 static const char __pyx_k_values[] = "values";
 static const char __pyx_k_Decimal[] = "Decimal";
 static const char __pyx_k_Markets[] = "  Markets:";
+static const char __pyx_k_Taker_2[] = "Taker";
 static const char __pyx_k_columns[] = "columns";
 static const char __pyx_k_decimal[] = "decimal";
 static const char __pyx_k_disable[] = "disable";
+static const char __pyx_k_gate_io[] = "gate_io";
 static const char __pyx_k_logging[] = "logging";
 static const char __pyx_k_order_2[] = "order";
 static const char __pyx_k_replace[] = "replace";
-static const char __pyx_k_warning[] = "warning";
 static const char __pyx_k_Best_Ask[] = "Best Ask";
 static const char __pyx_k_Best_Bid[] = "Best Bid";
 static const char __pyx_k_Exchange[] = "Exchange";
@@ -3494,7 +3490,6 @@ static const char __pyx_k_quantity[] = "quantity";
 static const char __pyx_k_s_logger[] = "s_logger";
 static const char __pyx_k_setstate[] = "__setstate__";
 static const char __pyx_k_slippage[] = "slippage";
-static const char __pyx_k_CONNECTED[] = "CONNECTED";
 static const char __pyx_k_DataFrame[] = "DataFrame";
 static const char __pyx_k_OrderType[] = "OrderType";
 static const char __pyx_k_TradeType[] = "TradeType";
@@ -3515,6 +3510,7 @@ static const char __pyx_k_wallet_df[] = "wallet_df";
 static const char __pyx_k_LimitOrder[] = "LimitOrder";
 static const char __pyx_k_base_asset[] = "base_asset";
 static const char __pyx_k_difference[] = "difference";
+static const char __pyx_k_log_output[] = "log_output";
 static const char __pyx_k_markets_df[] = "markets_df";
 static const char __pyx_k_order_type[] = "order_type";
 static const char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
@@ -3534,6 +3530,7 @@ static const char __pyx_k_PositionMode[] = "PositionMode";
 static const char __pyx_k_PositionSide[] = "PositionSide";
 static const char __pyx_k_StrategyBase[] = "StrategyBase";
 static const char __pyx_k_display_name[] = "display_name";
+static const char __pyx_k_gate_balance[] = "gate_balance";
 static const char __pyx_k_hedge_amount[] = "hedge_amount";
 static const char __pyx_k_initializing[] = "_initializing";
 static const char __pyx_k_is_coroutine[] = "_is_coroutine";
@@ -3552,7 +3549,6 @@ static const char __pyx_k_active_orders[] = "active_orders";
 static const char __pyx_k_class_getitem[] = "__class_getitem__";
 static const char __pyx_k_format_status[] = "format_status";
 static const char __pyx_k_get_mid_price[] = "get_mid_price";
-static const char __pyx_k_maker_balance[] = "maker_balance";
 static const char __pyx_k_max_order_age[] = "max_order_age";
 static const char __pyx_k_minimum_trade[] = "minimum_trade";
 static const char __pyx_k_order_quantum[] = ". order quantum: ";
@@ -3561,11 +3557,13 @@ static const char __pyx_k_position_side[] = "position_side";
 static const char __pyx_k_reduce_cython[] = "__reduce_cython__";
 static const char __pyx_k_s_decimal_nan[] = "s_decimal_nan";
 static const char __pyx_k_taker_balance[] = "taker_balance";
+static const char __pyx_k_total_balance[] = "total_balance";
 static const char __pyx_k_update_wallet[] = "update_wallet";
 static const char __pyx_k_hedge_interval[] = "hedge_interval";
+static const char __pyx_k_kucoin_balance[] = "kucoin_balance";
 static const char __pyx_k_log_with_clock[] = "log_with_clock";
-static const char __pyx_k_network_status[] = "network_status";
 static const char __pyx_k_s_decimal_zero[] = "s_decimal_zero";
+static const char __pyx_k_binance_balance[] = "binance_balance";
 static const char __pyx_k_client_order_id[] = "client_order_id";
 static const char __pyx_k_filled_quantity[] = "filled_quantity";
 static const char __pyx_k_markets_columns[] = "markets_columns";
@@ -3593,6 +3591,7 @@ static const char __pyx_k_connector_is_not_ready[] = " connector is not ready...
 static const char __pyx_k_status_report_interval[] = "status_report_interval";
 static const char __pyx_k_update_shadow_position[] = "update_shadow_position";
 static const char __pyx_k_HedgeStrategy_wallet_df[] = "HedgeStrategy.wallet_df";
+static const char __pyx_k_HedgeStrategy_log_output[] = "HedgeStrategy.log_output";
 static const char __pyx_k_market_status_data_frame[] = "market_status_data_frame";
 static const char __pyx_k_order_age_of_limit_order[] = ": order age of limit order (";
 static const char __pyx_k_HedgeStrategy_get_balance[] = "HedgeStrategy.get_balance";
@@ -3608,7 +3607,6 @@ static const char __pyx_k_HedgeStrategy___reduce_cython[] = "HedgeStrategy.__red
 static const char __pyx_k_HedgeStrategy_active_orders_df[] = "HedgeStrategy.active_orders_df";
 static const char __pyx_k_Dict_str_MarketTradingPairTuple[] = "Dict[str, MarketTradingPairTuple]";
 static const char __pyx_k_HedgeStrategy___setstate_cython[] = "HedgeStrategy.__setstate_cython__";
-static const char __pyx_k_Markets_are_not_ready_No_market[] = "Markets are not ready. No market making trades are permitted.";
 static const char __pyx_k_hummingbot_core_data_type_limit[] = "hummingbot.core.data_type.limit_order";
 static const char __pyx_k_hummingbot_strategy_hedge_hedge[] = "hummingbot/strategy/hedge/hedge.pyx";
 static const char __pyx_k_is_different_than_quantity_requ[] = " is different than quantity required ";
@@ -3618,8 +3616,6 @@ static const char __pyx_k_HedgeStrategy_get_shadow_positio[] = "HedgeStrategy.ge
 static const char __pyx_k_HedgeStrategy_market_status_data[] = "HedgeStrategy.market_status_data_frame";
 static const char __pyx_k_HedgeStrategy_set_shadow_positio[] = "HedgeStrategy.set_shadow_position";
 static const char __pyx_k_HedgeStrategy_update_shadow_posi[] = "HedgeStrategy.update_shadow_position";
-static const char __pyx_k_Markets_are_ready_Trading_starte[] = "Markets are ready. Trading started.";
-static const char __pyx_k_WARNING_Some_markets_are_not_con[] = "WARNING: Some markets are not connected or are down at the moment. Market making may be dangerous when markets or networks are unstable.";
 static const char __pyx_k_hummingbot_connector_exchange_ba[] = "hummingbot.connector.exchange_base";
 static const char __pyx_k_hummingbot_core_data_type_common[] = "hummingbot.core.data_type.common";
 static const char __pyx_k_hummingbot_core_network_iterator[] = "hummingbot.core.network_iterator";
@@ -3638,18 +3634,20 @@ static PyObject *__pyx_n_u_Asset;
 static PyObject *__pyx_n_s_BUY;
 static PyObject *__pyx_kp_u_Best_Ask;
 static PyObject *__pyx_kp_u_Best_Bid;
+static PyObject *__pyx_kp_u_Bin;
 static PyObject *__pyx_n_u_Buy;
-static PyObject *__pyx_n_s_CONNECTED;
 static PyObject *__pyx_kp_u_Cancelling_Order;
 static PyObject *__pyx_kp_u_Cancelling_Order_2;
 static PyObject *__pyx_n_s_DataFrame;
 static PyObject *__pyx_n_s_Decimal;
 static PyObject *__pyx_n_s_Dict;
 static PyObject *__pyx_kp_s_Dict_str_MarketTradingPairTuple;
-static PyObject *__pyx_n_u_Diff;
+static PyObject *__pyx_kp_u_Diff;
+static PyObject *__pyx_n_u_Diff_2;
 static PyObject *__pyx_n_u_Exchange;
 static PyObject *__pyx_n_s_ExchangeBase;
 static PyObject *__pyx_n_s_ExchangePairTuple;
+static PyObject *__pyx_kp_u_Gate;
 static PyObject *__pyx_n_s_HEDGE;
 static PyObject *__pyx_n_u_Hedge;
 static PyObject *__pyx_n_s_HedgeStrategy;
@@ -3661,6 +3659,7 @@ static PyObject *__pyx_n_s_HedgeStrategy_get_balance;
 static PyObject *__pyx_n_s_HedgeStrategy_get_position_amoun;
 static PyObject *__pyx_n_s_HedgeStrategy_get_shadow_positio;
 static PyObject *__pyx_n_s_HedgeStrategy_init_params;
+static PyObject *__pyx_n_s_HedgeStrategy_log_output;
 static PyObject *__pyx_n_s_HedgeStrategy_logger;
 static PyObject *__pyx_n_s_HedgeStrategy_market_status_data;
 static PyObject *__pyx_n_s_HedgeStrategy_set_shadow_positio;
@@ -3670,15 +3669,13 @@ static PyObject *__pyx_n_s_HedgeStrategy_wallet_df;
 static PyObject *__pyx_kp_u_Hedge_Ratio;
 static PyObject *__pyx_n_s_INFO;
 static PyObject *__pyx_n_s_ImportError;
+static PyObject *__pyx_kp_u_Kuc;
 static PyObject *__pyx_n_s_LIMIT;
 static PyObject *__pyx_n_s_LimitOrder;
 static PyObject *__pyx_n_s_List;
-static PyObject *__pyx_n_u_Maker;
 static PyObject *__pyx_n_u_Market;
 static PyObject *__pyx_n_s_MarketTradingPairTuple;
 static PyObject *__pyx_kp_u_Markets;
-static PyObject *__pyx_kp_u_Markets_are_not_ready_No_market;
-static PyObject *__pyx_kp_u_Markets_are_ready_Trading_starte;
 static PyObject *__pyx_n_s_NaN;
 static PyObject *__pyx_n_s_NetworkStatus;
 static PyObject *__pyx_kp_u_No_active_orders;
@@ -3693,17 +3690,19 @@ static PyObject *__pyx_n_u_Price;
 static PyObject *__pyx_n_s_SHORT;
 static PyObject *__pyx_n_u_Sell;
 static PyObject *__pyx_n_s_StrategyBase;
-static PyObject *__pyx_n_u_Taker;
+static PyObject *__pyx_kp_u_TB;
+static PyObject *__pyx_kp_u_TP;
+static PyObject *__pyx_kp_u_Taker;
+static PyObject *__pyx_n_u_Taker_2;
 static PyObject *__pyx_n_s_TradeType;
 static PyObject *__pyx_n_u_Type;
 static PyObject *__pyx_n_s_TypeError;
-static PyObject *__pyx_kp_u_WARNING_Some_markets_are_not_con;
 static PyObject *__pyx_kp_u_Wallet;
 static PyObject *__pyx_n_s__10;
 static PyObject *__pyx_kp_u__2;
 static PyObject *__pyx_kp_u__3;
 static PyObject *__pyx_kp_u__4;
-static PyObject *__pyx_n_s__42;
+static PyObject *__pyx_n_s__44;
 static PyObject *__pyx_kp_u__5;
 static PyObject *__pyx_kp_u__6;
 static PyObject *__pyx_kp_u__7;
@@ -3712,13 +3711,14 @@ static PyObject *__pyx_n_s_active_orders;
 static PyObject *__pyx_n_s_active_orders_df;
 static PyObject *__pyx_n_s_active_positions;
 static PyObject *__pyx_n_s_age;
-static PyObject *__pyx_n_s_all;
 static PyObject *__pyx_n_s_amount;
 static PyObject *__pyx_n_s_ask_price;
 static PyObject *__pyx_n_s_asyncio_coroutines;
 static PyObject *__pyx_n_s_base_asset;
 static PyObject *__pyx_n_s_base_asset_amount;
 static PyObject *__pyx_n_s_bid_price;
+static PyObject *__pyx_n_s_binance_balance;
+static PyObject *__pyx_n_u_binance_balance;
 static PyObject *__pyx_n_u_buy;
 static PyObject *__pyx_n_s_class_getitem;
 static PyObject *__pyx_n_s_client_order_id;
@@ -3741,6 +3741,9 @@ static PyObject *__pyx_n_s_filled_quantity;
 static PyObject *__pyx_kp_u_filled_quantity_2;
 static PyObject *__pyx_n_s_float;
 static PyObject *__pyx_n_s_format_status;
+static PyObject *__pyx_n_s_gate_balance;
+static PyObject *__pyx_n_u_gate_balance;
+static PyObject *__pyx_n_s_gate_io;
 static PyObject *__pyx_kp_u_gc;
 static PyObject *__pyx_n_s_get;
 static PyObject *__pyx_n_s_getLogger;
@@ -3767,7 +3770,6 @@ static PyObject *__pyx_n_s_hummingbot_strategy_utils;
 static PyObject *__pyx_n_s_idx;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_index;
-static PyObject *__pyx_n_s_info;
 static PyObject *__pyx_n_s_init_params;
 static PyObject *__pyx_n_s_initializing;
 static PyObject *__pyx_n_s_int;
@@ -3777,17 +3779,20 @@ static PyObject *__pyx_kp_u_is_different_than_quantity_requ;
 static PyObject *__pyx_kp_u_is_more_than;
 static PyObject *__pyx_kp_u_isenabled;
 static PyObject *__pyx_n_s_isnan;
+static PyObject *__pyx_n_s_kucoin;
+static PyObject *__pyx_n_s_kucoin_balance;
+static PyObject *__pyx_n_u_kucoin_balance;
 static PyObject *__pyx_kp_u_last_updated;
 static PyObject *__pyx_n_s_leverage;
 static PyObject *__pyx_n_s_line;
 static PyObject *__pyx_n_s_lines;
+static PyObject *__pyx_n_s_log_output;
 static PyObject *__pyx_n_s_log_with_clock;
 static PyObject *__pyx_n_s_logger;
 static PyObject *__pyx_n_s_logging;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_maker;
 static PyObject *__pyx_n_s_maker_asset;
-static PyObject *__pyx_n_s_maker_balance;
 static PyObject *__pyx_n_s_market;
 static PyObject *__pyx_n_s_market_info;
 static PyObject *__pyx_n_s_market_info_to_active_orders;
@@ -3807,7 +3812,6 @@ static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_n_s_name_2;
 static PyObject *__pyx_n_s_nan;
 static PyObject *__pyx_n_u_nan;
-static PyObject *__pyx_n_s_network_status;
 static PyObject *__pyx_n_s_notify_hb_app_with_timestamp;
 static PyObject *__pyx_n_s_np;
 static PyObject *__pyx_n_s_numpy;
@@ -3864,6 +3868,8 @@ static PyObject *__pyx_n_s_taker;
 static PyObject *__pyx_n_s_taker_balance;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_to_string;
+static PyObject *__pyx_n_s_total_balance;
+static PyObject *__pyx_n_u_total_balance;
 static PyObject *__pyx_n_s_trade_type;
 static PyObject *__pyx_n_s_trading_pair;
 static PyObject *__pyx_n_s_typing;
@@ -3872,7 +3878,6 @@ static PyObject *__pyx_n_s_update_wallet;
 static PyObject *__pyx_n_s_value;
 static PyObject *__pyx_n_s_values;
 static PyObject *__pyx_n_s_wallet_df;
-static PyObject *__pyx_n_s_warning;
 #endif
 /* #### Code section: decls ### */
 static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_logger(CYTHON_UNUSED PyTypeObject *__pyx_v_cls); /* proto */
@@ -3886,11 +3891,12 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
 static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_12get_balance(struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self, PyObject *__pyx_v_maker_asset); /* proto */
 static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_14market_status_data_frame(struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_16update_wallet(struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_18wallet_df(struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_20active_orders_df(struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_22format_status(struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_24__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_26__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_18log_output(struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_20wallet_df(struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_22active_orders_df(struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_24format_status(struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_26__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_28__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_tp_new_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 #if !CYTHON_COMPILING_IN_LIMITED_API
 static PyObject *__pyx_float__01;
@@ -3923,6 +3929,7 @@ static PyObject *__pyx_tuple__34;
 static PyObject *__pyx_tuple__36;
 static PyObject *__pyx_tuple__38;
 static PyObject *__pyx_tuple__40;
+static PyObject *__pyx_tuple__42;
 static PyObject *__pyx_codeobj__14;
 static PyObject *__pyx_codeobj__16;
 static PyObject *__pyx_codeobj__19;
@@ -3937,6 +3944,7 @@ static PyObject *__pyx_codeobj__35;
 static PyObject *__pyx_codeobj__37;
 static PyObject *__pyx_codeobj__39;
 static PyObject *__pyx_codeobj__41;
+static PyObject *__pyx_codeobj__43;
 #endif
 /* #### Code section: late_includes ### */
 /* #### Code section: module_state ### */
@@ -3995,18 +4003,20 @@ typedef struct {
   PyObject *__pyx_n_s_BUY;
   PyObject *__pyx_kp_u_Best_Ask;
   PyObject *__pyx_kp_u_Best_Bid;
+  PyObject *__pyx_kp_u_Bin;
   PyObject *__pyx_n_u_Buy;
-  PyObject *__pyx_n_s_CONNECTED;
   PyObject *__pyx_kp_u_Cancelling_Order;
   PyObject *__pyx_kp_u_Cancelling_Order_2;
   PyObject *__pyx_n_s_DataFrame;
   PyObject *__pyx_n_s_Decimal;
   PyObject *__pyx_n_s_Dict;
   PyObject *__pyx_kp_s_Dict_str_MarketTradingPairTuple;
-  PyObject *__pyx_n_u_Diff;
+  PyObject *__pyx_kp_u_Diff;
+  PyObject *__pyx_n_u_Diff_2;
   PyObject *__pyx_n_u_Exchange;
   PyObject *__pyx_n_s_ExchangeBase;
   PyObject *__pyx_n_s_ExchangePairTuple;
+  PyObject *__pyx_kp_u_Gate;
   PyObject *__pyx_n_s_HEDGE;
   PyObject *__pyx_n_u_Hedge;
   PyObject *__pyx_n_s_HedgeStrategy;
@@ -4018,6 +4028,7 @@ typedef struct {
   PyObject *__pyx_n_s_HedgeStrategy_get_position_amoun;
   PyObject *__pyx_n_s_HedgeStrategy_get_shadow_positio;
   PyObject *__pyx_n_s_HedgeStrategy_init_params;
+  PyObject *__pyx_n_s_HedgeStrategy_log_output;
   PyObject *__pyx_n_s_HedgeStrategy_logger;
   PyObject *__pyx_n_s_HedgeStrategy_market_status_data;
   PyObject *__pyx_n_s_HedgeStrategy_set_shadow_positio;
@@ -4027,15 +4038,13 @@ typedef struct {
   PyObject *__pyx_kp_u_Hedge_Ratio;
   PyObject *__pyx_n_s_INFO;
   PyObject *__pyx_n_s_ImportError;
+  PyObject *__pyx_kp_u_Kuc;
   PyObject *__pyx_n_s_LIMIT;
   PyObject *__pyx_n_s_LimitOrder;
   PyObject *__pyx_n_s_List;
-  PyObject *__pyx_n_u_Maker;
   PyObject *__pyx_n_u_Market;
   PyObject *__pyx_n_s_MarketTradingPairTuple;
   PyObject *__pyx_kp_u_Markets;
-  PyObject *__pyx_kp_u_Markets_are_not_ready_No_market;
-  PyObject *__pyx_kp_u_Markets_are_ready_Trading_starte;
   PyObject *__pyx_n_s_NaN;
   PyObject *__pyx_n_s_NetworkStatus;
   PyObject *__pyx_kp_u_No_active_orders;
@@ -4050,17 +4059,19 @@ typedef struct {
   PyObject *__pyx_n_s_SHORT;
   PyObject *__pyx_n_u_Sell;
   PyObject *__pyx_n_s_StrategyBase;
-  PyObject *__pyx_n_u_Taker;
+  PyObject *__pyx_kp_u_TB;
+  PyObject *__pyx_kp_u_TP;
+  PyObject *__pyx_kp_u_Taker;
+  PyObject *__pyx_n_u_Taker_2;
   PyObject *__pyx_n_s_TradeType;
   PyObject *__pyx_n_u_Type;
   PyObject *__pyx_n_s_TypeError;
-  PyObject *__pyx_kp_u_WARNING_Some_markets_are_not_con;
   PyObject *__pyx_kp_u_Wallet;
   PyObject *__pyx_n_s__10;
   PyObject *__pyx_kp_u__2;
   PyObject *__pyx_kp_u__3;
   PyObject *__pyx_kp_u__4;
-  PyObject *__pyx_n_s__42;
+  PyObject *__pyx_n_s__44;
   PyObject *__pyx_kp_u__5;
   PyObject *__pyx_kp_u__6;
   PyObject *__pyx_kp_u__7;
@@ -4069,13 +4080,14 @@ typedef struct {
   PyObject *__pyx_n_s_active_orders_df;
   PyObject *__pyx_n_s_active_positions;
   PyObject *__pyx_n_s_age;
-  PyObject *__pyx_n_s_all;
   PyObject *__pyx_n_s_amount;
   PyObject *__pyx_n_s_ask_price;
   PyObject *__pyx_n_s_asyncio_coroutines;
   PyObject *__pyx_n_s_base_asset;
   PyObject *__pyx_n_s_base_asset_amount;
   PyObject *__pyx_n_s_bid_price;
+  PyObject *__pyx_n_s_binance_balance;
+  PyObject *__pyx_n_u_binance_balance;
   PyObject *__pyx_n_u_buy;
   PyObject *__pyx_n_s_class_getitem;
   PyObject *__pyx_n_s_client_order_id;
@@ -4098,6 +4110,9 @@ typedef struct {
   PyObject *__pyx_kp_u_filled_quantity_2;
   PyObject *__pyx_n_s_float;
   PyObject *__pyx_n_s_format_status;
+  PyObject *__pyx_n_s_gate_balance;
+  PyObject *__pyx_n_u_gate_balance;
+  PyObject *__pyx_n_s_gate_io;
   PyObject *__pyx_kp_u_gc;
   PyObject *__pyx_n_s_get;
   PyObject *__pyx_n_s_getLogger;
@@ -4124,7 +4139,6 @@ typedef struct {
   PyObject *__pyx_n_s_idx;
   PyObject *__pyx_n_s_import;
   PyObject *__pyx_n_s_index;
-  PyObject *__pyx_n_s_info;
   PyObject *__pyx_n_s_init_params;
   PyObject *__pyx_n_s_initializing;
   PyObject *__pyx_n_s_int;
@@ -4134,17 +4148,20 @@ typedef struct {
   PyObject *__pyx_kp_u_is_more_than;
   PyObject *__pyx_kp_u_isenabled;
   PyObject *__pyx_n_s_isnan;
+  PyObject *__pyx_n_s_kucoin;
+  PyObject *__pyx_n_s_kucoin_balance;
+  PyObject *__pyx_n_u_kucoin_balance;
   PyObject *__pyx_kp_u_last_updated;
   PyObject *__pyx_n_s_leverage;
   PyObject *__pyx_n_s_line;
   PyObject *__pyx_n_s_lines;
+  PyObject *__pyx_n_s_log_output;
   PyObject *__pyx_n_s_log_with_clock;
   PyObject *__pyx_n_s_logger;
   PyObject *__pyx_n_s_logging;
   PyObject *__pyx_n_s_main;
   PyObject *__pyx_n_s_maker;
   PyObject *__pyx_n_s_maker_asset;
-  PyObject *__pyx_n_s_maker_balance;
   PyObject *__pyx_n_s_market;
   PyObject *__pyx_n_s_market_info;
   PyObject *__pyx_n_s_market_info_to_active_orders;
@@ -4164,7 +4181,6 @@ typedef struct {
   PyObject *__pyx_n_s_name_2;
   PyObject *__pyx_n_s_nan;
   PyObject *__pyx_n_u_nan;
-  PyObject *__pyx_n_s_network_status;
   PyObject *__pyx_n_s_notify_hb_app_with_timestamp;
   PyObject *__pyx_n_s_np;
   PyObject *__pyx_n_s_numpy;
@@ -4221,6 +4237,8 @@ typedef struct {
   PyObject *__pyx_n_s_taker_balance;
   PyObject *__pyx_n_s_test;
   PyObject *__pyx_n_s_to_string;
+  PyObject *__pyx_n_s_total_balance;
+  PyObject *__pyx_n_u_total_balance;
   PyObject *__pyx_n_s_trade_type;
   PyObject *__pyx_n_s_trading_pair;
   PyObject *__pyx_n_s_typing;
@@ -4229,7 +4247,6 @@ typedef struct {
   PyObject *__pyx_n_s_value;
   PyObject *__pyx_n_s_values;
   PyObject *__pyx_n_s_wallet_df;
-  PyObject *__pyx_n_s_warning;
   PyObject *__pyx_float__01;
   PyObject *__pyx_float_10_0;
   PyObject *__pyx_float_100_0;
@@ -4258,6 +4275,7 @@ typedef struct {
   PyObject *__pyx_tuple__36;
   PyObject *__pyx_tuple__38;
   PyObject *__pyx_tuple__40;
+  PyObject *__pyx_tuple__42;
   PyObject *__pyx_codeobj__14;
   PyObject *__pyx_codeobj__16;
   PyObject *__pyx_codeobj__19;
@@ -4272,6 +4290,7 @@ typedef struct {
   PyObject *__pyx_codeobj__37;
   PyObject *__pyx_codeobj__39;
   PyObject *__pyx_codeobj__41;
+  PyObject *__pyx_codeobj__43;
 } __pyx_mstate;
 
 #ifdef __cplusplus
@@ -4346,18 +4365,20 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_BUY);
   Py_CLEAR(clear_module_state->__pyx_kp_u_Best_Ask);
   Py_CLEAR(clear_module_state->__pyx_kp_u_Best_Bid);
+  Py_CLEAR(clear_module_state->__pyx_kp_u_Bin);
   Py_CLEAR(clear_module_state->__pyx_n_u_Buy);
-  Py_CLEAR(clear_module_state->__pyx_n_s_CONNECTED);
   Py_CLEAR(clear_module_state->__pyx_kp_u_Cancelling_Order);
   Py_CLEAR(clear_module_state->__pyx_kp_u_Cancelling_Order_2);
   Py_CLEAR(clear_module_state->__pyx_n_s_DataFrame);
   Py_CLEAR(clear_module_state->__pyx_n_s_Decimal);
   Py_CLEAR(clear_module_state->__pyx_n_s_Dict);
   Py_CLEAR(clear_module_state->__pyx_kp_s_Dict_str_MarketTradingPairTuple);
-  Py_CLEAR(clear_module_state->__pyx_n_u_Diff);
+  Py_CLEAR(clear_module_state->__pyx_kp_u_Diff);
+  Py_CLEAR(clear_module_state->__pyx_n_u_Diff_2);
   Py_CLEAR(clear_module_state->__pyx_n_u_Exchange);
   Py_CLEAR(clear_module_state->__pyx_n_s_ExchangeBase);
   Py_CLEAR(clear_module_state->__pyx_n_s_ExchangePairTuple);
+  Py_CLEAR(clear_module_state->__pyx_kp_u_Gate);
   Py_CLEAR(clear_module_state->__pyx_n_s_HEDGE);
   Py_CLEAR(clear_module_state->__pyx_n_u_Hedge);
   Py_CLEAR(clear_module_state->__pyx_n_s_HedgeStrategy);
@@ -4369,6 +4390,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_HedgeStrategy_get_position_amoun);
   Py_CLEAR(clear_module_state->__pyx_n_s_HedgeStrategy_get_shadow_positio);
   Py_CLEAR(clear_module_state->__pyx_n_s_HedgeStrategy_init_params);
+  Py_CLEAR(clear_module_state->__pyx_n_s_HedgeStrategy_log_output);
   Py_CLEAR(clear_module_state->__pyx_n_s_HedgeStrategy_logger);
   Py_CLEAR(clear_module_state->__pyx_n_s_HedgeStrategy_market_status_data);
   Py_CLEAR(clear_module_state->__pyx_n_s_HedgeStrategy_set_shadow_positio);
@@ -4378,15 +4400,13 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_kp_u_Hedge_Ratio);
   Py_CLEAR(clear_module_state->__pyx_n_s_INFO);
   Py_CLEAR(clear_module_state->__pyx_n_s_ImportError);
+  Py_CLEAR(clear_module_state->__pyx_kp_u_Kuc);
   Py_CLEAR(clear_module_state->__pyx_n_s_LIMIT);
   Py_CLEAR(clear_module_state->__pyx_n_s_LimitOrder);
   Py_CLEAR(clear_module_state->__pyx_n_s_List);
-  Py_CLEAR(clear_module_state->__pyx_n_u_Maker);
   Py_CLEAR(clear_module_state->__pyx_n_u_Market);
   Py_CLEAR(clear_module_state->__pyx_n_s_MarketTradingPairTuple);
   Py_CLEAR(clear_module_state->__pyx_kp_u_Markets);
-  Py_CLEAR(clear_module_state->__pyx_kp_u_Markets_are_not_ready_No_market);
-  Py_CLEAR(clear_module_state->__pyx_kp_u_Markets_are_ready_Trading_starte);
   Py_CLEAR(clear_module_state->__pyx_n_s_NaN);
   Py_CLEAR(clear_module_state->__pyx_n_s_NetworkStatus);
   Py_CLEAR(clear_module_state->__pyx_kp_u_No_active_orders);
@@ -4401,17 +4421,19 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_SHORT);
   Py_CLEAR(clear_module_state->__pyx_n_u_Sell);
   Py_CLEAR(clear_module_state->__pyx_n_s_StrategyBase);
-  Py_CLEAR(clear_module_state->__pyx_n_u_Taker);
+  Py_CLEAR(clear_module_state->__pyx_kp_u_TB);
+  Py_CLEAR(clear_module_state->__pyx_kp_u_TP);
+  Py_CLEAR(clear_module_state->__pyx_kp_u_Taker);
+  Py_CLEAR(clear_module_state->__pyx_n_u_Taker_2);
   Py_CLEAR(clear_module_state->__pyx_n_s_TradeType);
   Py_CLEAR(clear_module_state->__pyx_n_u_Type);
   Py_CLEAR(clear_module_state->__pyx_n_s_TypeError);
-  Py_CLEAR(clear_module_state->__pyx_kp_u_WARNING_Some_markets_are_not_con);
   Py_CLEAR(clear_module_state->__pyx_kp_u_Wallet);
   Py_CLEAR(clear_module_state->__pyx_n_s__10);
   Py_CLEAR(clear_module_state->__pyx_kp_u__2);
   Py_CLEAR(clear_module_state->__pyx_kp_u__3);
   Py_CLEAR(clear_module_state->__pyx_kp_u__4);
-  Py_CLEAR(clear_module_state->__pyx_n_s__42);
+  Py_CLEAR(clear_module_state->__pyx_n_s__44);
   Py_CLEAR(clear_module_state->__pyx_kp_u__5);
   Py_CLEAR(clear_module_state->__pyx_kp_u__6);
   Py_CLEAR(clear_module_state->__pyx_kp_u__7);
@@ -4420,13 +4442,14 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_active_orders_df);
   Py_CLEAR(clear_module_state->__pyx_n_s_active_positions);
   Py_CLEAR(clear_module_state->__pyx_n_s_age);
-  Py_CLEAR(clear_module_state->__pyx_n_s_all);
   Py_CLEAR(clear_module_state->__pyx_n_s_amount);
   Py_CLEAR(clear_module_state->__pyx_n_s_ask_price);
   Py_CLEAR(clear_module_state->__pyx_n_s_asyncio_coroutines);
   Py_CLEAR(clear_module_state->__pyx_n_s_base_asset);
   Py_CLEAR(clear_module_state->__pyx_n_s_base_asset_amount);
   Py_CLEAR(clear_module_state->__pyx_n_s_bid_price);
+  Py_CLEAR(clear_module_state->__pyx_n_s_binance_balance);
+  Py_CLEAR(clear_module_state->__pyx_n_u_binance_balance);
   Py_CLEAR(clear_module_state->__pyx_n_u_buy);
   Py_CLEAR(clear_module_state->__pyx_n_s_class_getitem);
   Py_CLEAR(clear_module_state->__pyx_n_s_client_order_id);
@@ -4449,6 +4472,9 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_kp_u_filled_quantity_2);
   Py_CLEAR(clear_module_state->__pyx_n_s_float);
   Py_CLEAR(clear_module_state->__pyx_n_s_format_status);
+  Py_CLEAR(clear_module_state->__pyx_n_s_gate_balance);
+  Py_CLEAR(clear_module_state->__pyx_n_u_gate_balance);
+  Py_CLEAR(clear_module_state->__pyx_n_s_gate_io);
   Py_CLEAR(clear_module_state->__pyx_kp_u_gc);
   Py_CLEAR(clear_module_state->__pyx_n_s_get);
   Py_CLEAR(clear_module_state->__pyx_n_s_getLogger);
@@ -4475,7 +4501,6 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_idx);
   Py_CLEAR(clear_module_state->__pyx_n_s_import);
   Py_CLEAR(clear_module_state->__pyx_n_s_index);
-  Py_CLEAR(clear_module_state->__pyx_n_s_info);
   Py_CLEAR(clear_module_state->__pyx_n_s_init_params);
   Py_CLEAR(clear_module_state->__pyx_n_s_initializing);
   Py_CLEAR(clear_module_state->__pyx_n_s_int);
@@ -4485,17 +4510,20 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_kp_u_is_more_than);
   Py_CLEAR(clear_module_state->__pyx_kp_u_isenabled);
   Py_CLEAR(clear_module_state->__pyx_n_s_isnan);
+  Py_CLEAR(clear_module_state->__pyx_n_s_kucoin);
+  Py_CLEAR(clear_module_state->__pyx_n_s_kucoin_balance);
+  Py_CLEAR(clear_module_state->__pyx_n_u_kucoin_balance);
   Py_CLEAR(clear_module_state->__pyx_kp_u_last_updated);
   Py_CLEAR(clear_module_state->__pyx_n_s_leverage);
   Py_CLEAR(clear_module_state->__pyx_n_s_line);
   Py_CLEAR(clear_module_state->__pyx_n_s_lines);
+  Py_CLEAR(clear_module_state->__pyx_n_s_log_output);
   Py_CLEAR(clear_module_state->__pyx_n_s_log_with_clock);
   Py_CLEAR(clear_module_state->__pyx_n_s_logger);
   Py_CLEAR(clear_module_state->__pyx_n_s_logging);
   Py_CLEAR(clear_module_state->__pyx_n_s_main);
   Py_CLEAR(clear_module_state->__pyx_n_s_maker);
   Py_CLEAR(clear_module_state->__pyx_n_s_maker_asset);
-  Py_CLEAR(clear_module_state->__pyx_n_s_maker_balance);
   Py_CLEAR(clear_module_state->__pyx_n_s_market);
   Py_CLEAR(clear_module_state->__pyx_n_s_market_info);
   Py_CLEAR(clear_module_state->__pyx_n_s_market_info_to_active_orders);
@@ -4515,7 +4543,6 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_name_2);
   Py_CLEAR(clear_module_state->__pyx_n_s_nan);
   Py_CLEAR(clear_module_state->__pyx_n_u_nan);
-  Py_CLEAR(clear_module_state->__pyx_n_s_network_status);
   Py_CLEAR(clear_module_state->__pyx_n_s_notify_hb_app_with_timestamp);
   Py_CLEAR(clear_module_state->__pyx_n_s_np);
   Py_CLEAR(clear_module_state->__pyx_n_s_numpy);
@@ -4572,6 +4599,8 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_taker_balance);
   Py_CLEAR(clear_module_state->__pyx_n_s_test);
   Py_CLEAR(clear_module_state->__pyx_n_s_to_string);
+  Py_CLEAR(clear_module_state->__pyx_n_s_total_balance);
+  Py_CLEAR(clear_module_state->__pyx_n_u_total_balance);
   Py_CLEAR(clear_module_state->__pyx_n_s_trade_type);
   Py_CLEAR(clear_module_state->__pyx_n_s_trading_pair);
   Py_CLEAR(clear_module_state->__pyx_n_s_typing);
@@ -4580,7 +4609,6 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_value);
   Py_CLEAR(clear_module_state->__pyx_n_s_values);
   Py_CLEAR(clear_module_state->__pyx_n_s_wallet_df);
-  Py_CLEAR(clear_module_state->__pyx_n_s_warning);
   Py_CLEAR(clear_module_state->__pyx_float__01);
   Py_CLEAR(clear_module_state->__pyx_float_10_0);
   Py_CLEAR(clear_module_state->__pyx_float_100_0);
@@ -4609,6 +4637,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_tuple__36);
   Py_CLEAR(clear_module_state->__pyx_tuple__38);
   Py_CLEAR(clear_module_state->__pyx_tuple__40);
+  Py_CLEAR(clear_module_state->__pyx_tuple__42);
   Py_CLEAR(clear_module_state->__pyx_codeobj__14);
   Py_CLEAR(clear_module_state->__pyx_codeobj__16);
   Py_CLEAR(clear_module_state->__pyx_codeobj__19);
@@ -4623,6 +4652,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_codeobj__37);
   Py_CLEAR(clear_module_state->__pyx_codeobj__39);
   Py_CLEAR(clear_module_state->__pyx_codeobj__41);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__43);
   return 0;
 }
 #endif
@@ -4684,18 +4714,20 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_BUY);
   Py_VISIT(traverse_module_state->__pyx_kp_u_Best_Ask);
   Py_VISIT(traverse_module_state->__pyx_kp_u_Best_Bid);
+  Py_VISIT(traverse_module_state->__pyx_kp_u_Bin);
   Py_VISIT(traverse_module_state->__pyx_n_u_Buy);
-  Py_VISIT(traverse_module_state->__pyx_n_s_CONNECTED);
   Py_VISIT(traverse_module_state->__pyx_kp_u_Cancelling_Order);
   Py_VISIT(traverse_module_state->__pyx_kp_u_Cancelling_Order_2);
   Py_VISIT(traverse_module_state->__pyx_n_s_DataFrame);
   Py_VISIT(traverse_module_state->__pyx_n_s_Decimal);
   Py_VISIT(traverse_module_state->__pyx_n_s_Dict);
   Py_VISIT(traverse_module_state->__pyx_kp_s_Dict_str_MarketTradingPairTuple);
-  Py_VISIT(traverse_module_state->__pyx_n_u_Diff);
+  Py_VISIT(traverse_module_state->__pyx_kp_u_Diff);
+  Py_VISIT(traverse_module_state->__pyx_n_u_Diff_2);
   Py_VISIT(traverse_module_state->__pyx_n_u_Exchange);
   Py_VISIT(traverse_module_state->__pyx_n_s_ExchangeBase);
   Py_VISIT(traverse_module_state->__pyx_n_s_ExchangePairTuple);
+  Py_VISIT(traverse_module_state->__pyx_kp_u_Gate);
   Py_VISIT(traverse_module_state->__pyx_n_s_HEDGE);
   Py_VISIT(traverse_module_state->__pyx_n_u_Hedge);
   Py_VISIT(traverse_module_state->__pyx_n_s_HedgeStrategy);
@@ -4707,6 +4739,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_HedgeStrategy_get_position_amoun);
   Py_VISIT(traverse_module_state->__pyx_n_s_HedgeStrategy_get_shadow_positio);
   Py_VISIT(traverse_module_state->__pyx_n_s_HedgeStrategy_init_params);
+  Py_VISIT(traverse_module_state->__pyx_n_s_HedgeStrategy_log_output);
   Py_VISIT(traverse_module_state->__pyx_n_s_HedgeStrategy_logger);
   Py_VISIT(traverse_module_state->__pyx_n_s_HedgeStrategy_market_status_data);
   Py_VISIT(traverse_module_state->__pyx_n_s_HedgeStrategy_set_shadow_positio);
@@ -4716,15 +4749,13 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_kp_u_Hedge_Ratio);
   Py_VISIT(traverse_module_state->__pyx_n_s_INFO);
   Py_VISIT(traverse_module_state->__pyx_n_s_ImportError);
+  Py_VISIT(traverse_module_state->__pyx_kp_u_Kuc);
   Py_VISIT(traverse_module_state->__pyx_n_s_LIMIT);
   Py_VISIT(traverse_module_state->__pyx_n_s_LimitOrder);
   Py_VISIT(traverse_module_state->__pyx_n_s_List);
-  Py_VISIT(traverse_module_state->__pyx_n_u_Maker);
   Py_VISIT(traverse_module_state->__pyx_n_u_Market);
   Py_VISIT(traverse_module_state->__pyx_n_s_MarketTradingPairTuple);
   Py_VISIT(traverse_module_state->__pyx_kp_u_Markets);
-  Py_VISIT(traverse_module_state->__pyx_kp_u_Markets_are_not_ready_No_market);
-  Py_VISIT(traverse_module_state->__pyx_kp_u_Markets_are_ready_Trading_starte);
   Py_VISIT(traverse_module_state->__pyx_n_s_NaN);
   Py_VISIT(traverse_module_state->__pyx_n_s_NetworkStatus);
   Py_VISIT(traverse_module_state->__pyx_kp_u_No_active_orders);
@@ -4739,17 +4770,19 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_SHORT);
   Py_VISIT(traverse_module_state->__pyx_n_u_Sell);
   Py_VISIT(traverse_module_state->__pyx_n_s_StrategyBase);
-  Py_VISIT(traverse_module_state->__pyx_n_u_Taker);
+  Py_VISIT(traverse_module_state->__pyx_kp_u_TB);
+  Py_VISIT(traverse_module_state->__pyx_kp_u_TP);
+  Py_VISIT(traverse_module_state->__pyx_kp_u_Taker);
+  Py_VISIT(traverse_module_state->__pyx_n_u_Taker_2);
   Py_VISIT(traverse_module_state->__pyx_n_s_TradeType);
   Py_VISIT(traverse_module_state->__pyx_n_u_Type);
   Py_VISIT(traverse_module_state->__pyx_n_s_TypeError);
-  Py_VISIT(traverse_module_state->__pyx_kp_u_WARNING_Some_markets_are_not_con);
   Py_VISIT(traverse_module_state->__pyx_kp_u_Wallet);
   Py_VISIT(traverse_module_state->__pyx_n_s__10);
   Py_VISIT(traverse_module_state->__pyx_kp_u__2);
   Py_VISIT(traverse_module_state->__pyx_kp_u__3);
   Py_VISIT(traverse_module_state->__pyx_kp_u__4);
-  Py_VISIT(traverse_module_state->__pyx_n_s__42);
+  Py_VISIT(traverse_module_state->__pyx_n_s__44);
   Py_VISIT(traverse_module_state->__pyx_kp_u__5);
   Py_VISIT(traverse_module_state->__pyx_kp_u__6);
   Py_VISIT(traverse_module_state->__pyx_kp_u__7);
@@ -4758,13 +4791,14 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_active_orders_df);
   Py_VISIT(traverse_module_state->__pyx_n_s_active_positions);
   Py_VISIT(traverse_module_state->__pyx_n_s_age);
-  Py_VISIT(traverse_module_state->__pyx_n_s_all);
   Py_VISIT(traverse_module_state->__pyx_n_s_amount);
   Py_VISIT(traverse_module_state->__pyx_n_s_ask_price);
   Py_VISIT(traverse_module_state->__pyx_n_s_asyncio_coroutines);
   Py_VISIT(traverse_module_state->__pyx_n_s_base_asset);
   Py_VISIT(traverse_module_state->__pyx_n_s_base_asset_amount);
   Py_VISIT(traverse_module_state->__pyx_n_s_bid_price);
+  Py_VISIT(traverse_module_state->__pyx_n_s_binance_balance);
+  Py_VISIT(traverse_module_state->__pyx_n_u_binance_balance);
   Py_VISIT(traverse_module_state->__pyx_n_u_buy);
   Py_VISIT(traverse_module_state->__pyx_n_s_class_getitem);
   Py_VISIT(traverse_module_state->__pyx_n_s_client_order_id);
@@ -4787,6 +4821,9 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_kp_u_filled_quantity_2);
   Py_VISIT(traverse_module_state->__pyx_n_s_float);
   Py_VISIT(traverse_module_state->__pyx_n_s_format_status);
+  Py_VISIT(traverse_module_state->__pyx_n_s_gate_balance);
+  Py_VISIT(traverse_module_state->__pyx_n_u_gate_balance);
+  Py_VISIT(traverse_module_state->__pyx_n_s_gate_io);
   Py_VISIT(traverse_module_state->__pyx_kp_u_gc);
   Py_VISIT(traverse_module_state->__pyx_n_s_get);
   Py_VISIT(traverse_module_state->__pyx_n_s_getLogger);
@@ -4813,7 +4850,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_idx);
   Py_VISIT(traverse_module_state->__pyx_n_s_import);
   Py_VISIT(traverse_module_state->__pyx_n_s_index);
-  Py_VISIT(traverse_module_state->__pyx_n_s_info);
   Py_VISIT(traverse_module_state->__pyx_n_s_init_params);
   Py_VISIT(traverse_module_state->__pyx_n_s_initializing);
   Py_VISIT(traverse_module_state->__pyx_n_s_int);
@@ -4823,17 +4859,20 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_kp_u_is_more_than);
   Py_VISIT(traverse_module_state->__pyx_kp_u_isenabled);
   Py_VISIT(traverse_module_state->__pyx_n_s_isnan);
+  Py_VISIT(traverse_module_state->__pyx_n_s_kucoin);
+  Py_VISIT(traverse_module_state->__pyx_n_s_kucoin_balance);
+  Py_VISIT(traverse_module_state->__pyx_n_u_kucoin_balance);
   Py_VISIT(traverse_module_state->__pyx_kp_u_last_updated);
   Py_VISIT(traverse_module_state->__pyx_n_s_leverage);
   Py_VISIT(traverse_module_state->__pyx_n_s_line);
   Py_VISIT(traverse_module_state->__pyx_n_s_lines);
+  Py_VISIT(traverse_module_state->__pyx_n_s_log_output);
   Py_VISIT(traverse_module_state->__pyx_n_s_log_with_clock);
   Py_VISIT(traverse_module_state->__pyx_n_s_logger);
   Py_VISIT(traverse_module_state->__pyx_n_s_logging);
   Py_VISIT(traverse_module_state->__pyx_n_s_main);
   Py_VISIT(traverse_module_state->__pyx_n_s_maker);
   Py_VISIT(traverse_module_state->__pyx_n_s_maker_asset);
-  Py_VISIT(traverse_module_state->__pyx_n_s_maker_balance);
   Py_VISIT(traverse_module_state->__pyx_n_s_market);
   Py_VISIT(traverse_module_state->__pyx_n_s_market_info);
   Py_VISIT(traverse_module_state->__pyx_n_s_market_info_to_active_orders);
@@ -4853,7 +4892,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_name_2);
   Py_VISIT(traverse_module_state->__pyx_n_s_nan);
   Py_VISIT(traverse_module_state->__pyx_n_u_nan);
-  Py_VISIT(traverse_module_state->__pyx_n_s_network_status);
   Py_VISIT(traverse_module_state->__pyx_n_s_notify_hb_app_with_timestamp);
   Py_VISIT(traverse_module_state->__pyx_n_s_np);
   Py_VISIT(traverse_module_state->__pyx_n_s_numpy);
@@ -4910,6 +4948,8 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_taker_balance);
   Py_VISIT(traverse_module_state->__pyx_n_s_test);
   Py_VISIT(traverse_module_state->__pyx_n_s_to_string);
+  Py_VISIT(traverse_module_state->__pyx_n_s_total_balance);
+  Py_VISIT(traverse_module_state->__pyx_n_u_total_balance);
   Py_VISIT(traverse_module_state->__pyx_n_s_trade_type);
   Py_VISIT(traverse_module_state->__pyx_n_s_trading_pair);
   Py_VISIT(traverse_module_state->__pyx_n_s_typing);
@@ -4918,7 +4958,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_value);
   Py_VISIT(traverse_module_state->__pyx_n_s_values);
   Py_VISIT(traverse_module_state->__pyx_n_s_wallet_df);
-  Py_VISIT(traverse_module_state->__pyx_n_s_warning);
   Py_VISIT(traverse_module_state->__pyx_float__01);
   Py_VISIT(traverse_module_state->__pyx_float_10_0);
   Py_VISIT(traverse_module_state->__pyx_float_100_0);
@@ -4947,6 +4986,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_tuple__36);
   Py_VISIT(traverse_module_state->__pyx_tuple__38);
   Py_VISIT(traverse_module_state->__pyx_tuple__40);
+  Py_VISIT(traverse_module_state->__pyx_tuple__42);
   Py_VISIT(traverse_module_state->__pyx_codeobj__14);
   Py_VISIT(traverse_module_state->__pyx_codeobj__16);
   Py_VISIT(traverse_module_state->__pyx_codeobj__19);
@@ -4961,6 +5001,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_codeobj__37);
   Py_VISIT(traverse_module_state->__pyx_codeobj__39);
   Py_VISIT(traverse_module_state->__pyx_codeobj__41);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__43);
   return 0;
 }
 #endif
@@ -5019,18 +5060,20 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_BUY __pyx_mstate_global->__pyx_n_s_BUY
 #define __pyx_kp_u_Best_Ask __pyx_mstate_global->__pyx_kp_u_Best_Ask
 #define __pyx_kp_u_Best_Bid __pyx_mstate_global->__pyx_kp_u_Best_Bid
+#define __pyx_kp_u_Bin __pyx_mstate_global->__pyx_kp_u_Bin
 #define __pyx_n_u_Buy __pyx_mstate_global->__pyx_n_u_Buy
-#define __pyx_n_s_CONNECTED __pyx_mstate_global->__pyx_n_s_CONNECTED
 #define __pyx_kp_u_Cancelling_Order __pyx_mstate_global->__pyx_kp_u_Cancelling_Order
 #define __pyx_kp_u_Cancelling_Order_2 __pyx_mstate_global->__pyx_kp_u_Cancelling_Order_2
 #define __pyx_n_s_DataFrame __pyx_mstate_global->__pyx_n_s_DataFrame
 #define __pyx_n_s_Decimal __pyx_mstate_global->__pyx_n_s_Decimal
 #define __pyx_n_s_Dict __pyx_mstate_global->__pyx_n_s_Dict
 #define __pyx_kp_s_Dict_str_MarketTradingPairTuple __pyx_mstate_global->__pyx_kp_s_Dict_str_MarketTradingPairTuple
-#define __pyx_n_u_Diff __pyx_mstate_global->__pyx_n_u_Diff
+#define __pyx_kp_u_Diff __pyx_mstate_global->__pyx_kp_u_Diff
+#define __pyx_n_u_Diff_2 __pyx_mstate_global->__pyx_n_u_Diff_2
 #define __pyx_n_u_Exchange __pyx_mstate_global->__pyx_n_u_Exchange
 #define __pyx_n_s_ExchangeBase __pyx_mstate_global->__pyx_n_s_ExchangeBase
 #define __pyx_n_s_ExchangePairTuple __pyx_mstate_global->__pyx_n_s_ExchangePairTuple
+#define __pyx_kp_u_Gate __pyx_mstate_global->__pyx_kp_u_Gate
 #define __pyx_n_s_HEDGE __pyx_mstate_global->__pyx_n_s_HEDGE
 #define __pyx_n_u_Hedge __pyx_mstate_global->__pyx_n_u_Hedge
 #define __pyx_n_s_HedgeStrategy __pyx_mstate_global->__pyx_n_s_HedgeStrategy
@@ -5042,6 +5085,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_HedgeStrategy_get_position_amoun __pyx_mstate_global->__pyx_n_s_HedgeStrategy_get_position_amoun
 #define __pyx_n_s_HedgeStrategy_get_shadow_positio __pyx_mstate_global->__pyx_n_s_HedgeStrategy_get_shadow_positio
 #define __pyx_n_s_HedgeStrategy_init_params __pyx_mstate_global->__pyx_n_s_HedgeStrategy_init_params
+#define __pyx_n_s_HedgeStrategy_log_output __pyx_mstate_global->__pyx_n_s_HedgeStrategy_log_output
 #define __pyx_n_s_HedgeStrategy_logger __pyx_mstate_global->__pyx_n_s_HedgeStrategy_logger
 #define __pyx_n_s_HedgeStrategy_market_status_data __pyx_mstate_global->__pyx_n_s_HedgeStrategy_market_status_data
 #define __pyx_n_s_HedgeStrategy_set_shadow_positio __pyx_mstate_global->__pyx_n_s_HedgeStrategy_set_shadow_positio
@@ -5051,15 +5095,13 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_kp_u_Hedge_Ratio __pyx_mstate_global->__pyx_kp_u_Hedge_Ratio
 #define __pyx_n_s_INFO __pyx_mstate_global->__pyx_n_s_INFO
 #define __pyx_n_s_ImportError __pyx_mstate_global->__pyx_n_s_ImportError
+#define __pyx_kp_u_Kuc __pyx_mstate_global->__pyx_kp_u_Kuc
 #define __pyx_n_s_LIMIT __pyx_mstate_global->__pyx_n_s_LIMIT
 #define __pyx_n_s_LimitOrder __pyx_mstate_global->__pyx_n_s_LimitOrder
 #define __pyx_n_s_List __pyx_mstate_global->__pyx_n_s_List
-#define __pyx_n_u_Maker __pyx_mstate_global->__pyx_n_u_Maker
 #define __pyx_n_u_Market __pyx_mstate_global->__pyx_n_u_Market
 #define __pyx_n_s_MarketTradingPairTuple __pyx_mstate_global->__pyx_n_s_MarketTradingPairTuple
 #define __pyx_kp_u_Markets __pyx_mstate_global->__pyx_kp_u_Markets
-#define __pyx_kp_u_Markets_are_not_ready_No_market __pyx_mstate_global->__pyx_kp_u_Markets_are_not_ready_No_market
-#define __pyx_kp_u_Markets_are_ready_Trading_starte __pyx_mstate_global->__pyx_kp_u_Markets_are_ready_Trading_starte
 #define __pyx_n_s_NaN __pyx_mstate_global->__pyx_n_s_NaN
 #define __pyx_n_s_NetworkStatus __pyx_mstate_global->__pyx_n_s_NetworkStatus
 #define __pyx_kp_u_No_active_orders __pyx_mstate_global->__pyx_kp_u_No_active_orders
@@ -5074,17 +5116,19 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_SHORT __pyx_mstate_global->__pyx_n_s_SHORT
 #define __pyx_n_u_Sell __pyx_mstate_global->__pyx_n_u_Sell
 #define __pyx_n_s_StrategyBase __pyx_mstate_global->__pyx_n_s_StrategyBase
-#define __pyx_n_u_Taker __pyx_mstate_global->__pyx_n_u_Taker
+#define __pyx_kp_u_TB __pyx_mstate_global->__pyx_kp_u_TB
+#define __pyx_kp_u_TP __pyx_mstate_global->__pyx_kp_u_TP
+#define __pyx_kp_u_Taker __pyx_mstate_global->__pyx_kp_u_Taker
+#define __pyx_n_u_Taker_2 __pyx_mstate_global->__pyx_n_u_Taker_2
 #define __pyx_n_s_TradeType __pyx_mstate_global->__pyx_n_s_TradeType
 #define __pyx_n_u_Type __pyx_mstate_global->__pyx_n_u_Type
 #define __pyx_n_s_TypeError __pyx_mstate_global->__pyx_n_s_TypeError
-#define __pyx_kp_u_WARNING_Some_markets_are_not_con __pyx_mstate_global->__pyx_kp_u_WARNING_Some_markets_are_not_con
 #define __pyx_kp_u_Wallet __pyx_mstate_global->__pyx_kp_u_Wallet
 #define __pyx_n_s__10 __pyx_mstate_global->__pyx_n_s__10
 #define __pyx_kp_u__2 __pyx_mstate_global->__pyx_kp_u__2
 #define __pyx_kp_u__3 __pyx_mstate_global->__pyx_kp_u__3
 #define __pyx_kp_u__4 __pyx_mstate_global->__pyx_kp_u__4
-#define __pyx_n_s__42 __pyx_mstate_global->__pyx_n_s__42
+#define __pyx_n_s__44 __pyx_mstate_global->__pyx_n_s__44
 #define __pyx_kp_u__5 __pyx_mstate_global->__pyx_kp_u__5
 #define __pyx_kp_u__6 __pyx_mstate_global->__pyx_kp_u__6
 #define __pyx_kp_u__7 __pyx_mstate_global->__pyx_kp_u__7
@@ -5093,13 +5137,14 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_active_orders_df __pyx_mstate_global->__pyx_n_s_active_orders_df
 #define __pyx_n_s_active_positions __pyx_mstate_global->__pyx_n_s_active_positions
 #define __pyx_n_s_age __pyx_mstate_global->__pyx_n_s_age
-#define __pyx_n_s_all __pyx_mstate_global->__pyx_n_s_all
 #define __pyx_n_s_amount __pyx_mstate_global->__pyx_n_s_amount
 #define __pyx_n_s_ask_price __pyx_mstate_global->__pyx_n_s_ask_price
 #define __pyx_n_s_asyncio_coroutines __pyx_mstate_global->__pyx_n_s_asyncio_coroutines
 #define __pyx_n_s_base_asset __pyx_mstate_global->__pyx_n_s_base_asset
 #define __pyx_n_s_base_asset_amount __pyx_mstate_global->__pyx_n_s_base_asset_amount
 #define __pyx_n_s_bid_price __pyx_mstate_global->__pyx_n_s_bid_price
+#define __pyx_n_s_binance_balance __pyx_mstate_global->__pyx_n_s_binance_balance
+#define __pyx_n_u_binance_balance __pyx_mstate_global->__pyx_n_u_binance_balance
 #define __pyx_n_u_buy __pyx_mstate_global->__pyx_n_u_buy
 #define __pyx_n_s_class_getitem __pyx_mstate_global->__pyx_n_s_class_getitem
 #define __pyx_n_s_client_order_id __pyx_mstate_global->__pyx_n_s_client_order_id
@@ -5122,6 +5167,9 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_kp_u_filled_quantity_2 __pyx_mstate_global->__pyx_kp_u_filled_quantity_2
 #define __pyx_n_s_float __pyx_mstate_global->__pyx_n_s_float
 #define __pyx_n_s_format_status __pyx_mstate_global->__pyx_n_s_format_status
+#define __pyx_n_s_gate_balance __pyx_mstate_global->__pyx_n_s_gate_balance
+#define __pyx_n_u_gate_balance __pyx_mstate_global->__pyx_n_u_gate_balance
+#define __pyx_n_s_gate_io __pyx_mstate_global->__pyx_n_s_gate_io
 #define __pyx_kp_u_gc __pyx_mstate_global->__pyx_kp_u_gc
 #define __pyx_n_s_get __pyx_mstate_global->__pyx_n_s_get
 #define __pyx_n_s_getLogger __pyx_mstate_global->__pyx_n_s_getLogger
@@ -5148,7 +5196,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_idx __pyx_mstate_global->__pyx_n_s_idx
 #define __pyx_n_s_import __pyx_mstate_global->__pyx_n_s_import
 #define __pyx_n_s_index __pyx_mstate_global->__pyx_n_s_index
-#define __pyx_n_s_info __pyx_mstate_global->__pyx_n_s_info
 #define __pyx_n_s_init_params __pyx_mstate_global->__pyx_n_s_init_params
 #define __pyx_n_s_initializing __pyx_mstate_global->__pyx_n_s_initializing
 #define __pyx_n_s_int __pyx_mstate_global->__pyx_n_s_int
@@ -5158,17 +5205,20 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_kp_u_is_more_than __pyx_mstate_global->__pyx_kp_u_is_more_than
 #define __pyx_kp_u_isenabled __pyx_mstate_global->__pyx_kp_u_isenabled
 #define __pyx_n_s_isnan __pyx_mstate_global->__pyx_n_s_isnan
+#define __pyx_n_s_kucoin __pyx_mstate_global->__pyx_n_s_kucoin
+#define __pyx_n_s_kucoin_balance __pyx_mstate_global->__pyx_n_s_kucoin_balance
+#define __pyx_n_u_kucoin_balance __pyx_mstate_global->__pyx_n_u_kucoin_balance
 #define __pyx_kp_u_last_updated __pyx_mstate_global->__pyx_kp_u_last_updated
 #define __pyx_n_s_leverage __pyx_mstate_global->__pyx_n_s_leverage
 #define __pyx_n_s_line __pyx_mstate_global->__pyx_n_s_line
 #define __pyx_n_s_lines __pyx_mstate_global->__pyx_n_s_lines
+#define __pyx_n_s_log_output __pyx_mstate_global->__pyx_n_s_log_output
 #define __pyx_n_s_log_with_clock __pyx_mstate_global->__pyx_n_s_log_with_clock
 #define __pyx_n_s_logger __pyx_mstate_global->__pyx_n_s_logger
 #define __pyx_n_s_logging __pyx_mstate_global->__pyx_n_s_logging
 #define __pyx_n_s_main __pyx_mstate_global->__pyx_n_s_main
 #define __pyx_n_s_maker __pyx_mstate_global->__pyx_n_s_maker
 #define __pyx_n_s_maker_asset __pyx_mstate_global->__pyx_n_s_maker_asset
-#define __pyx_n_s_maker_balance __pyx_mstate_global->__pyx_n_s_maker_balance
 #define __pyx_n_s_market __pyx_mstate_global->__pyx_n_s_market
 #define __pyx_n_s_market_info __pyx_mstate_global->__pyx_n_s_market_info
 #define __pyx_n_s_market_info_to_active_orders __pyx_mstate_global->__pyx_n_s_market_info_to_active_orders
@@ -5188,7 +5238,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_name_2 __pyx_mstate_global->__pyx_n_s_name_2
 #define __pyx_n_s_nan __pyx_mstate_global->__pyx_n_s_nan
 #define __pyx_n_u_nan __pyx_mstate_global->__pyx_n_u_nan
-#define __pyx_n_s_network_status __pyx_mstate_global->__pyx_n_s_network_status
 #define __pyx_n_s_notify_hb_app_with_timestamp __pyx_mstate_global->__pyx_n_s_notify_hb_app_with_timestamp
 #define __pyx_n_s_np __pyx_mstate_global->__pyx_n_s_np
 #define __pyx_n_s_numpy __pyx_mstate_global->__pyx_n_s_numpy
@@ -5245,6 +5294,8 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_taker_balance __pyx_mstate_global->__pyx_n_s_taker_balance
 #define __pyx_n_s_test __pyx_mstate_global->__pyx_n_s_test
 #define __pyx_n_s_to_string __pyx_mstate_global->__pyx_n_s_to_string
+#define __pyx_n_s_total_balance __pyx_mstate_global->__pyx_n_s_total_balance
+#define __pyx_n_u_total_balance __pyx_mstate_global->__pyx_n_u_total_balance
 #define __pyx_n_s_trade_type __pyx_mstate_global->__pyx_n_s_trade_type
 #define __pyx_n_s_trading_pair __pyx_mstate_global->__pyx_n_s_trading_pair
 #define __pyx_n_s_typing __pyx_mstate_global->__pyx_n_s_typing
@@ -5253,7 +5304,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_value __pyx_mstate_global->__pyx_n_s_value
 #define __pyx_n_s_values __pyx_mstate_global->__pyx_n_s_values
 #define __pyx_n_s_wallet_df __pyx_mstate_global->__pyx_n_s_wallet_df
-#define __pyx_n_s_warning __pyx_mstate_global->__pyx_n_s_warning
 #define __pyx_float__01 __pyx_mstate_global->__pyx_float__01
 #define __pyx_float_10_0 __pyx_mstate_global->__pyx_float_10_0
 #define __pyx_float_100_0 __pyx_mstate_global->__pyx_float_100_0
@@ -5282,6 +5332,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_tuple__36 __pyx_mstate_global->__pyx_tuple__36
 #define __pyx_tuple__38 __pyx_mstate_global->__pyx_tuple__38
 #define __pyx_tuple__40 __pyx_mstate_global->__pyx_tuple__40
+#define __pyx_tuple__42 __pyx_mstate_global->__pyx_tuple__42
 #define __pyx_codeobj__14 __pyx_mstate_global->__pyx_codeobj__14
 #define __pyx_codeobj__16 __pyx_mstate_global->__pyx_codeobj__16
 #define __pyx_codeobj__19 __pyx_mstate_global->__pyx_codeobj__19
@@ -5296,6 +5347,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_codeobj__37 __pyx_mstate_global->__pyx_codeobj__37
 #define __pyx_codeobj__39 __pyx_mstate_global->__pyx_codeobj__39
 #define __pyx_codeobj__41 __pyx_mstate_global->__pyx_codeobj__41
+#define __pyx_codeobj__43 __pyx_mstate_global->__pyx_codeobj__43
 #endif
 /* #### Code section: module_code ### */
 
@@ -6793,7 +6845,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
  *         return self.get_shadow_position(trading_pair)
  * 
  *     def get_balance(self, maker_asset: str):             # <<<<<<<<<<<<<<
- *         return self._exchanges.maker.get_balance(maker_asset)
+ *         return (self._exchanges.maker.get_balance(maker_asset) + self._exchanges.kucoin.get_balance(maker_asset) + self._exchanges.gate_io.get_balance(maker_asset))
  * 
  */
 
@@ -6884,6 +6936,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
   int __pyx_t_4;
+  PyObject *__pyx_t_5 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -6892,7 +6945,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
   /* "hummingbot/strategy/hedge/hedge.pyx":94
  * 
  *     def get_balance(self, maker_asset: str):
- *         return self._exchanges.maker.get_balance(maker_asset)             # <<<<<<<<<<<<<<
+ *         return (self._exchanges.maker.get_balance(maker_asset) + self._exchanges.kucoin.get_balance(maker_asset) + self._exchanges.gate_io.get_balance(maker_asset))             # <<<<<<<<<<<<<<
  * 
  *     cdef object check_and_cancel_active_orders(self,
  */
@@ -6922,15 +6975,73 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_exchanges, __pyx_n_s_kucoin); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 94, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_get_balance); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 94, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = NULL;
+  __pyx_t_4 = 0;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
+    __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_5);
+    if (likely(__pyx_t_2)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
+      __Pyx_INCREF(__pyx_t_2);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_5, function);
+      __pyx_t_4 = 1;
+    }
+  }
+  {
+    PyObject *__pyx_callargs[2] = {__pyx_t_2, __pyx_v_maker_asset};
+    __pyx_t_3 = __Pyx_PyObject_FastCall(__pyx_t_5, __pyx_callargs+1-__pyx_t_4, 1+__pyx_t_4);
+    __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  }
+  __pyx_t_5 = PyNumber_Add(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 94, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_exchanges, __pyx_n_s_gate_io); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_get_balance); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 94, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = NULL;
+  __pyx_t_4 = 0;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_2);
+    if (likely(__pyx_t_1)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+      __Pyx_INCREF(__pyx_t_1);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
+      __pyx_t_4 = 1;
+    }
+  }
+  {
+    PyObject *__pyx_callargs[2] = {__pyx_t_1, __pyx_v_maker_asset};
+    __pyx_t_3 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 1+__pyx_t_4);
+    __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  }
+  __pyx_t_2 = PyNumber_Add(__pyx_t_5, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 94, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_r = __pyx_t_2;
+  __pyx_t_2 = 0;
   goto __pyx_L0;
 
   /* "hummingbot/strategy/hedge/hedge.pyx":93
  *         return self.get_shadow_position(trading_pair)
  * 
  *     def get_balance(self, maker_asset: str):             # <<<<<<<<<<<<<<
- *         return self._exchanges.maker.get_balance(maker_asset)
+ *         return (self._exchanges.maker.get_balance(maker_asset) + self._exchanges.kucoin.get_balance(maker_asset) + self._exchanges.gate_io.get_balance(maker_asset))
  * 
  */
 
@@ -6939,6 +7050,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_5);
   __Pyx_AddTraceback("hummingbot.strategy.hedge.hedge.HedgeStrategy.get_balance", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
@@ -6948,7 +7060,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
 }
 
 /* "hummingbot/strategy/hedge/hedge.pyx":96
- *         return self._exchanges.maker.get_balance(maker_asset)
+ *         return (self._exchanges.maker.get_balance(maker_asset) + self._exchanges.kucoin.get_balance(maker_asset) + self._exchanges.gate_io.get_balance(maker_asset))
  * 
  *     cdef object check_and_cancel_active_orders(self,             # <<<<<<<<<<<<<<
  *                                                object market_pair,
@@ -7695,7 +7807,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_ch
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
   /* "hummingbot/strategy/hedge/hedge.pyx":96
- *         return self._exchanges.maker.get_balance(maker_asset)
+ *         return (self._exchanges.maker.get_balance(maker_asset) + self._exchanges.kucoin.get_balance(maker_asset) + self._exchanges.gate_io.get_balance(maker_asset))
  * 
  *     cdef object check_and_cancel_active_orders(self,             # <<<<<<<<<<<<<<
  *                                                object market_pair,
@@ -7733,10 +7845,10 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_ch
  * 
  *     cdef object check_and_hedge_asset(self,             # <<<<<<<<<<<<<<
  *                                       str maker_asset,
- *                                       object maker_balance,
+ *                                       object total_balance,
  */
 
-static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_check_and_hedge_asset(struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self, PyObject *__pyx_v_maker_asset, CYTHON_UNUSED PyObject *__pyx_v_maker_balance, CYTHON_UNUSED PyObject *__pyx_v_market_pair, PyObject *__pyx_v_trading_pair, CYTHON_UNUSED PyObject *__pyx_v_taker_balance, PyObject *__pyx_v_hedge_amount, int __pyx_v_is_buy, PyObject *__pyx_v_price) {
+static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_check_and_hedge_asset(struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self, PyObject *__pyx_v_maker_asset, CYTHON_UNUSED PyObject *__pyx_v_total_balance, CYTHON_UNUSED PyObject *__pyx_v_market_pair, PyObject *__pyx_v_trading_pair, CYTHON_UNUSED PyObject *__pyx_v_taker_balance, PyObject *__pyx_v_hedge_amount, int __pyx_v_is_buy, PyObject *__pyx_v_price) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
@@ -7853,7 +7965,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_ch
  * 
  *     cdef object check_and_hedge_asset(self,             # <<<<<<<<<<<<<<
  *                                       str maker_asset,
- *                                       object maker_balance,
+ *                                       object total_balance,
  */
 
   /* function exit code */
@@ -8798,7 +8910,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
   PyObject *__pyx_v_market_pair = NULL;
   PyObject *__pyx_v_trading_pair = NULL;
   PyObject *__pyx_v_taker_balance = NULL;
-  PyObject *__pyx_v_maker_balance = NULL;
+  PyObject *__pyx_v_total_balance = NULL;
   PyObject *__pyx_v_hedge_amount = NULL;
   PyObject *__pyx_v_is_buy = NULL;
   PyObject *__pyx_v_price = NULL;
@@ -8973,7 +9085,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
  *                 taker_balance = self.get_position_amount(trading_pair)
  *                 self.set_shadow_position(trading_pair, taker_balance)             # <<<<<<<<<<<<<<
  *                 position_updated=True
- *             maker_balance = self.get_balance(maker_asset)
+ *             total_balance = self.get_balance(maker_asset)
  */
       __pyx_t_8 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_set_shadow_position); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 194, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
@@ -9003,7 +9115,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
  *                 taker_balance = self.get_position_amount(trading_pair)
  *                 self.set_shadow_position(trading_pair, taker_balance)
  *                 position_updated=True             # <<<<<<<<<<<<<<
- *             maker_balance = self.get_balance(maker_asset)
+ *             total_balance = self.get_balance(maker_asset)
  *             taker_balance = self.get_shadow_position(trading_pair)
  */
       __pyx_v_position_updated = 1;
@@ -9020,9 +9132,9 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
     /* "hummingbot/strategy/hedge/hedge.pyx":196
  *                 self.set_shadow_position(trading_pair, taker_balance)
  *                 position_updated=True
- *             maker_balance = self.get_balance(maker_asset)             # <<<<<<<<<<<<<<
+ *             total_balance = self.get_balance(maker_asset)             # <<<<<<<<<<<<<<
  *             taker_balance = self.get_shadow_position(trading_pair)
- *             hedge_amount = -(maker_balance*self._hedge_ratio + taker_balance)
+ *             hedge_amount = -(total_balance*self._hedge_ratio + taker_balance)
  */
     __pyx_t_8 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_balance); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 196, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
@@ -9046,14 +9158,14 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
       __Pyx_GOTREF(__pyx_t_10);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     }
-    __Pyx_XDECREF_SET(__pyx_v_maker_balance, __pyx_t_10);
+    __Pyx_XDECREF_SET(__pyx_v_total_balance, __pyx_t_10);
     __pyx_t_10 = 0;
 
     /* "hummingbot/strategy/hedge/hedge.pyx":197
  *                 position_updated=True
- *             maker_balance = self.get_balance(maker_asset)
+ *             total_balance = self.get_balance(maker_asset)
  *             taker_balance = self.get_shadow_position(trading_pair)             # <<<<<<<<<<<<<<
- *             hedge_amount = -(maker_balance*self._hedge_ratio + taker_balance)
+ *             hedge_amount = -(total_balance*self._hedge_ratio + taker_balance)
  *             is_buy = hedge_amount > 0
  */
     __pyx_t_8 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_shadow_position); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 197, __pyx_L1_error)
@@ -9082,13 +9194,13 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
     __pyx_t_10 = 0;
 
     /* "hummingbot/strategy/hedge/hedge.pyx":198
- *             maker_balance = self.get_balance(maker_asset)
+ *             total_balance = self.get_balance(maker_asset)
  *             taker_balance = self.get_shadow_position(trading_pair)
- *             hedge_amount = -(maker_balance*self._hedge_ratio + taker_balance)             # <<<<<<<<<<<<<<
+ *             hedge_amount = -(total_balance*self._hedge_ratio + taker_balance)             # <<<<<<<<<<<<<<
  *             is_buy = hedge_amount > 0
  *             price = market_pair.get_price(is_buy)
  */
-    __pyx_t_10 = PyNumber_Multiply(__pyx_v_maker_balance, __pyx_v_self->_hedge_ratio); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 198, __pyx_L1_error)
+    __pyx_t_10 = PyNumber_Multiply(__pyx_v_total_balance, __pyx_v_self->_hedge_ratio); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 198, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
     __pyx_t_8 = PyNumber_Add(__pyx_t_10, __pyx_v_taker_balance); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 198, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
@@ -9101,7 +9213,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
 
     /* "hummingbot/strategy/hedge/hedge.pyx":199
  *             taker_balance = self.get_shadow_position(trading_pair)
- *             hedge_amount = -(maker_balance*self._hedge_ratio + taker_balance)
+ *             hedge_amount = -(total_balance*self._hedge_ratio + taker_balance)
  *             is_buy = hedge_amount > 0             # <<<<<<<<<<<<<<
  *             price = market_pair.get_price(is_buy)
  *             self.check_and_cancel_active_orders(market_pair, hedge_amount)
@@ -9111,7 +9223,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
     __pyx_t_10 = 0;
 
     /* "hummingbot/strategy/hedge/hedge.pyx":200
- *             hedge_amount = -(maker_balance*self._hedge_ratio + taker_balance)
+ *             hedge_amount = -(total_balance*self._hedge_ratio + taker_balance)
  *             is_buy = hedge_amount > 0
  *             price = market_pair.get_price(is_buy)             # <<<<<<<<<<<<<<
  *             self.check_and_cancel_active_orders(market_pair, hedge_amount)
@@ -9158,7 +9270,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
  *             self.check_and_cancel_active_orders(market_pair, hedge_amount)
  *             if market_pair not in self.market_info_to_active_orders:             # <<<<<<<<<<<<<<
  *                 self.check_and_hedge_asset(maker_asset,
- *                                            maker_balance,
+ *                                            total_balance,
  */
     __pyx_t_10 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_market_info_to_active_orders); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 202, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
@@ -9171,13 +9283,13 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
  *             self.check_and_cancel_active_orders(market_pair, hedge_amount)
  *             if market_pair not in self.market_info_to_active_orders:
  *                 self.check_and_hedge_asset(maker_asset,             # <<<<<<<<<<<<<<
- *                                            maker_balance,
+ *                                            total_balance,
  *                                            market_pair,
  */
       if (!(likely(PyUnicode_CheckExact(__pyx_v_maker_asset))||((__pyx_v_maker_asset) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_v_maker_asset))) __PYX_ERR(0, 203, __pyx_L1_error)
 
       /* "hummingbot/strategy/hedge/hedge.pyx":206
- *                                            maker_balance,
+ *                                            total_balance,
  *                                            market_pair,
  *                                            trading_pair,             # <<<<<<<<<<<<<<
  *                                            taker_balance,
@@ -9198,10 +9310,10 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
  *             self.check_and_cancel_active_orders(market_pair, hedge_amount)
  *             if market_pair not in self.market_info_to_active_orders:
  *                 self.check_and_hedge_asset(maker_asset,             # <<<<<<<<<<<<<<
- *                                            maker_balance,
+ *                                            total_balance,
  *                                            market_pair,
  */
-      __pyx_t_10 = ((struct __pyx_vtabstruct_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *)__pyx_v_self->__pyx_base.__pyx_base.__pyx_base.__pyx_vtab)->check_and_hedge_asset(__pyx_v_self, ((PyObject*)__pyx_v_maker_asset), __pyx_v_maker_balance, __pyx_v_market_pair, ((PyObject*)__pyx_v_trading_pair), __pyx_v_taker_balance, __pyx_v_hedge_amount, __pyx_t_9, __pyx_v_price); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 203, __pyx_L1_error)
+      __pyx_t_10 = ((struct __pyx_vtabstruct_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *)__pyx_v_self->__pyx_base.__pyx_base.__pyx_base.__pyx_vtab)->check_and_hedge_asset(__pyx_v_self, ((PyObject*)__pyx_v_maker_asset), __pyx_v_total_balance, __pyx_v_market_pair, ((PyObject*)__pyx_v_trading_pair), __pyx_v_taker_balance, __pyx_v_hedge_amount, __pyx_t_9, __pyx_v_price); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 203, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
 
@@ -9210,7 +9322,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
  *             self.check_and_cancel_active_orders(market_pair, hedge_amount)
  *             if market_pair not in self.market_info_to_active_orders:             # <<<<<<<<<<<<<<
  *                 self.check_and_hedge_asset(maker_asset,
- *                                            maker_balance,
+ *                                            total_balance,
  */
     }
   }
@@ -9221,7 +9333,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
  *                                            price)
  *         if position_updated:             # <<<<<<<<<<<<<<
  *             self._last_trade_time["last updated"]=self._current_timestamp
- * 
+ *     def log_output(self):
  */
   __pyx_t_9 = (__pyx_v_position_updated != 0);
   if (__pyx_t_9) {
@@ -9230,8 +9342,8 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
  *                                            price)
  *         if position_updated:
  *             self._last_trade_time["last updated"]=self._current_timestamp             # <<<<<<<<<<<<<<
- * 
- *     def wallet_df(self) -> pd.DataFrame:
+ *     def log_output(self):
+ *       for maker_asset in self._market_infos:
  */
     __pyx_t_1 = PyFloat_FromDouble(__pyx_v_self->__pyx_base.__pyx_base._current_timestamp); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 212, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
@@ -9243,7 +9355,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
  *                                            price)
  *         if position_updated:             # <<<<<<<<<<<<<<
  *             self._last_trade_time["last updated"]=self._current_timestamp
- * 
+ *     def log_output(self):
  */
   }
 
@@ -9270,7 +9382,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
   __Pyx_XDECREF(__pyx_v_market_pair);
   __Pyx_XDECREF(__pyx_v_trading_pair);
   __Pyx_XDECREF(__pyx_v_taker_balance);
-  __Pyx_XDECREF(__pyx_v_maker_balance);
+  __Pyx_XDECREF(__pyx_v_total_balance);
   __Pyx_XDECREF(__pyx_v_hedge_amount);
   __Pyx_XDECREF(__pyx_v_is_buy);
   __Pyx_XDECREF(__pyx_v_price);
@@ -9279,24 +9391,502 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/hedge/hedge.pyx":214
+/* "hummingbot/strategy/hedge/hedge.pyx":213
+ *         if position_updated:
  *             self._last_trade_time["last updated"]=self._current_timestamp
- * 
- *     def wallet_df(self) -> pd.DataFrame:             # <<<<<<<<<<<<<<
- *         data=[]
- *         columns = ["Asset", "Price", "Maker", "Taker", "Diff", "Hedge Ratio"]
+ *     def log_output(self):             # <<<<<<<<<<<<<<
+ *       for maker_asset in self._market_infos:
+ *           market_pair = self._market_infos[maker_asset]
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_19wallet_df(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_19log_output(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_19wallet_df = {"wallet_df", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_19wallet_df, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_19wallet_df(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_19log_output = {"log_output", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_19log_output, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_19log_output(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED const Py_ssize_t __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("log_output (wrapper)", 0);
+  if (unlikely(__pyx_nargs > 0)) {
+    __Pyx_RaiseArgtupleInvalid("log_output", 1, 0, 0, __pyx_nargs); return NULL;}
+  if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "log_output", 0))) return NULL;
+  __pyx_r = __pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_18log_output(((struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_18log_output(struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self) {
+  PyObject *__pyx_v_maker_asset = NULL;
+  PyObject *__pyx_v_market_pair = NULL;
+  PyObject *__pyx_v_trading_pair = NULL;
+  PyObject *__pyx_v_total_balance = NULL;
+  PyObject *__pyx_v_binance_balance = NULL;
+  PyObject *__pyx_v_kucoin_balance = NULL;
+  PyObject *__pyx_v_gate_balance = NULL;
+  PyObject *__pyx_v_taker_balance = NULL;
+  PyObject *__pyx_v_difference = NULL;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  Py_ssize_t __pyx_t_2;
+  Py_ssize_t __pyx_t_3;
+  int __pyx_t_4;
+  PyObject *__pyx_t_5 = NULL;
+  int __pyx_t_6;
+  PyObject *__pyx_t_7 = NULL;
+  PyObject *__pyx_t_8 = NULL;
+  PyObject *__pyx_t_9 = NULL;
+  Py_ssize_t __pyx_t_10;
+  Py_UCS4 __pyx_t_11;
+  PyObject *__pyx_t_12 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("log_output", 0);
+
+  /* "hummingbot/strategy/hedge/hedge.pyx":214
+ *             self._last_trade_time["last updated"]=self._current_timestamp
+ *     def log_output(self):
+ *       for maker_asset in self._market_infos:             # <<<<<<<<<<<<<<
+ *           market_pair = self._market_infos[maker_asset]
+ *           trading_pair=market_pair.trading_pair
+ */
+  __pyx_t_2 = 0;
+  if (unlikely(__pyx_v_self->_market_infos == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
+    __PYX_ERR(0, 214, __pyx_L1_error)
+  }
+  __pyx_t_5 = __Pyx_dict_iterator(__pyx_v_self->_market_infos, 1, ((PyObject *)NULL), (&__pyx_t_3), (&__pyx_t_4)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 214, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_1);
+  __pyx_t_1 = __pyx_t_5;
+  __pyx_t_5 = 0;
+  while (1) {
+    __pyx_t_6 = __Pyx_dict_iter_next(__pyx_t_1, __pyx_t_3, &__pyx_t_2, &__pyx_t_5, NULL, NULL, __pyx_t_4);
+    if (unlikely(__pyx_t_6 == 0)) break;
+    if (unlikely(__pyx_t_6 == -1)) __PYX_ERR(0, 214, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_XDECREF_SET(__pyx_v_maker_asset, __pyx_t_5);
+    __pyx_t_5 = 0;
+
+    /* "hummingbot/strategy/hedge/hedge.pyx":215
+ *     def log_output(self):
+ *       for maker_asset in self._market_infos:
+ *           market_pair = self._market_infos[maker_asset]             # <<<<<<<<<<<<<<
+ *           trading_pair=market_pair.trading_pair
+ *           total_balance = self.get_balance(maker_asset)
+ */
+    if (unlikely(__pyx_v_self->_market_infos == Py_None)) {
+      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+      __PYX_ERR(0, 215, __pyx_L1_error)
+    }
+    __pyx_t_5 = __Pyx_PyDict_GetItem(__pyx_v_self->_market_infos, __pyx_v_maker_asset); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 215, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_XDECREF_SET(__pyx_v_market_pair, __pyx_t_5);
+    __pyx_t_5 = 0;
+
+    /* "hummingbot/strategy/hedge/hedge.pyx":216
+ *       for maker_asset in self._market_infos:
+ *           market_pair = self._market_infos[maker_asset]
+ *           trading_pair=market_pair.trading_pair             # <<<<<<<<<<<<<<
+ *           total_balance = self.get_balance(maker_asset)
+ *           binance_balance = self._exchanges.maker.get_balance(maker_asset)
+ */
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_market_pair, __pyx_n_s_trading_pair); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 216, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_XDECREF_SET(__pyx_v_trading_pair, __pyx_t_5);
+    __pyx_t_5 = 0;
+
+    /* "hummingbot/strategy/hedge/hedge.pyx":217
+ *           market_pair = self._market_infos[maker_asset]
+ *           trading_pair=market_pair.trading_pair
+ *           total_balance = self.get_balance(maker_asset)             # <<<<<<<<<<<<<<
+ *           binance_balance = self._exchanges.maker.get_balance(maker_asset)
+ *           kucoin_balance = self._exchanges.kucoin.get_balance(maker_asset)
+ */
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_balance); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 217, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_7);
+    __pyx_t_8 = NULL;
+    __pyx_t_6 = 0;
+    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_7))) {
+      __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_7);
+      if (likely(__pyx_t_8)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
+        __Pyx_INCREF(__pyx_t_8);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_7, function);
+        __pyx_t_6 = 1;
+      }
+    }
+    {
+      PyObject *__pyx_callargs[2] = {__pyx_t_8, __pyx_v_maker_asset};
+      __pyx_t_5 = __Pyx_PyObject_FastCall(__pyx_t_7, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
+      __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
+      if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 217, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    }
+    __Pyx_XDECREF_SET(__pyx_v_total_balance, __pyx_t_5);
+    __pyx_t_5 = 0;
+
+    /* "hummingbot/strategy/hedge/hedge.pyx":218
+ *           trading_pair=market_pair.trading_pair
+ *           total_balance = self.get_balance(maker_asset)
+ *           binance_balance = self._exchanges.maker.get_balance(maker_asset)             # <<<<<<<<<<<<<<
+ *           kucoin_balance = self._exchanges.kucoin.get_balance(maker_asset)
+ *           gate_balance = self._exchanges.gate_io.get_balance(maker_asset)
+ */
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_exchanges, __pyx_n_s_maker); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 218, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_7);
+    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_get_balance); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 218, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
+    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __pyx_t_7 = NULL;
+    __pyx_t_6 = 0;
+    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_8))) {
+      __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_8);
+      if (likely(__pyx_t_7)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_8);
+        __Pyx_INCREF(__pyx_t_7);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_8, function);
+        __pyx_t_6 = 1;
+      }
+    }
+    {
+      PyObject *__pyx_callargs[2] = {__pyx_t_7, __pyx_v_maker_asset};
+      __pyx_t_5 = __Pyx_PyObject_FastCall(__pyx_t_8, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
+      __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+      if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 218, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+    }
+    __Pyx_XDECREF_SET(__pyx_v_binance_balance, __pyx_t_5);
+    __pyx_t_5 = 0;
+
+    /* "hummingbot/strategy/hedge/hedge.pyx":219
+ *           total_balance = self.get_balance(maker_asset)
+ *           binance_balance = self._exchanges.maker.get_balance(maker_asset)
+ *           kucoin_balance = self._exchanges.kucoin.get_balance(maker_asset)             # <<<<<<<<<<<<<<
+ *           gate_balance = self._exchanges.gate_io.get_balance(maker_asset)
+ *           taker_balance = self.get_shadow_position(trading_pair)
+ */
+    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_exchanges, __pyx_n_s_kucoin); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 219, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_get_balance); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 219, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_7);
+    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+    __pyx_t_8 = NULL;
+    __pyx_t_6 = 0;
+    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_7))) {
+      __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_7);
+      if (likely(__pyx_t_8)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
+        __Pyx_INCREF(__pyx_t_8);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_7, function);
+        __pyx_t_6 = 1;
+      }
+    }
+    {
+      PyObject *__pyx_callargs[2] = {__pyx_t_8, __pyx_v_maker_asset};
+      __pyx_t_5 = __Pyx_PyObject_FastCall(__pyx_t_7, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
+      __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
+      if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 219, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    }
+    __Pyx_XDECREF_SET(__pyx_v_kucoin_balance, __pyx_t_5);
+    __pyx_t_5 = 0;
+
+    /* "hummingbot/strategy/hedge/hedge.pyx":220
+ *           binance_balance = self._exchanges.maker.get_balance(maker_asset)
+ *           kucoin_balance = self._exchanges.kucoin.get_balance(maker_asset)
+ *           gate_balance = self._exchanges.gate_io.get_balance(maker_asset)             # <<<<<<<<<<<<<<
+ *           taker_balance = self.get_shadow_position(trading_pair)
+ *           difference = - (total_balance + taker_balance)
+ */
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_exchanges, __pyx_n_s_gate_io); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 220, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_7);
+    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_get_balance); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 220, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
+    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __pyx_t_7 = NULL;
+    __pyx_t_6 = 0;
+    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_8))) {
+      __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_8);
+      if (likely(__pyx_t_7)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_8);
+        __Pyx_INCREF(__pyx_t_7);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_8, function);
+        __pyx_t_6 = 1;
+      }
+    }
+    {
+      PyObject *__pyx_callargs[2] = {__pyx_t_7, __pyx_v_maker_asset};
+      __pyx_t_5 = __Pyx_PyObject_FastCall(__pyx_t_8, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
+      __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+      if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 220, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+    }
+    __Pyx_XDECREF_SET(__pyx_v_gate_balance, __pyx_t_5);
+    __pyx_t_5 = 0;
+
+    /* "hummingbot/strategy/hedge/hedge.pyx":221
+ *           kucoin_balance = self._exchanges.kucoin.get_balance(maker_asset)
+ *           gate_balance = self._exchanges.gate_io.get_balance(maker_asset)
+ *           taker_balance = self.get_shadow_position(trading_pair)             # <<<<<<<<<<<<<<
+ *           difference = - (total_balance + taker_balance)
+ *           self.log_with_clock(logging.INFO,
+ */
+    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_shadow_position); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 221, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
+    __pyx_t_7 = NULL;
+    __pyx_t_6 = 0;
+    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_8))) {
+      __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_8);
+      if (likely(__pyx_t_7)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_8);
+        __Pyx_INCREF(__pyx_t_7);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_8, function);
+        __pyx_t_6 = 1;
+      }
+    }
+    {
+      PyObject *__pyx_callargs[2] = {__pyx_t_7, __pyx_v_trading_pair};
+      __pyx_t_5 = __Pyx_PyObject_FastCall(__pyx_t_8, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
+      __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+      if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 221, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+    }
+    __Pyx_XDECREF_SET(__pyx_v_taker_balance, __pyx_t_5);
+    __pyx_t_5 = 0;
+
+    /* "hummingbot/strategy/hedge/hedge.pyx":222
+ *           gate_balance = self._exchanges.gate_io.get_balance(maker_asset)
+ *           taker_balance = self.get_shadow_position(trading_pair)
+ *           difference = - (total_balance + taker_balance)             # <<<<<<<<<<<<<<
+ *           self.log_with_clock(logging.INFO,
+ *                               f"TP:{trading_pair} TB:{total_balance} Bin:{binance_balance} Kuc:{kucoin_balance} Gate{gate_balance} Taker:{taker_balance} Diff:{difference} ")
+ */
+    __pyx_t_5 = PyNumber_Add(__pyx_v_total_balance, __pyx_v_taker_balance); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 222, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_8 = PyNumber_Negative(__pyx_t_5); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 222, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __Pyx_XDECREF_SET(__pyx_v_difference, __pyx_t_8);
+    __pyx_t_8 = 0;
+
+    /* "hummingbot/strategy/hedge/hedge.pyx":223
+ *           taker_balance = self.get_shadow_position(trading_pair)
+ *           difference = - (total_balance + taker_balance)
+ *           self.log_with_clock(logging.INFO,             # <<<<<<<<<<<<<<
+ *                               f"TP:{trading_pair} TB:{total_balance} Bin:{binance_balance} Kuc:{kucoin_balance} Gate{gate_balance} Taker:{taker_balance} Diff:{difference} ")
+ * 
+ */
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_log_with_clock); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 223, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_logging); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 223, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_7);
+    __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_INFO); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 223, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_9);
+    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+
+    /* "hummingbot/strategy/hedge/hedge.pyx":224
+ *           difference = - (total_balance + taker_balance)
+ *           self.log_with_clock(logging.INFO,
+ *                               f"TP:{trading_pair} TB:{total_balance} Bin:{binance_balance} Kuc:{kucoin_balance} Gate{gate_balance} Taker:{taker_balance} Diff:{difference} ")             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+    __pyx_t_7 = PyTuple_New(15); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 224, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_7);
+    __pyx_t_10 = 0;
+    __pyx_t_11 = 127;
+    __Pyx_INCREF(__pyx_kp_u_TP);
+    __pyx_t_10 += 3;
+    __Pyx_GIVEREF(__pyx_kp_u_TP);
+    PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_kp_u_TP);
+    __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_v_trading_pair, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 224, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_12);
+    __pyx_t_11 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) > __pyx_t_11) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) : __pyx_t_11;
+    __pyx_t_10 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_12);
+    __Pyx_GIVEREF(__pyx_t_12);
+    PyTuple_SET_ITEM(__pyx_t_7, 1, __pyx_t_12);
+    __pyx_t_12 = 0;
+    __Pyx_INCREF(__pyx_kp_u_TB);
+    __pyx_t_10 += 4;
+    __Pyx_GIVEREF(__pyx_kp_u_TB);
+    PyTuple_SET_ITEM(__pyx_t_7, 2, __pyx_kp_u_TB);
+    __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_v_total_balance, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 224, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_12);
+    __pyx_t_11 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) > __pyx_t_11) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) : __pyx_t_11;
+    __pyx_t_10 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_12);
+    __Pyx_GIVEREF(__pyx_t_12);
+    PyTuple_SET_ITEM(__pyx_t_7, 3, __pyx_t_12);
+    __pyx_t_12 = 0;
+    __Pyx_INCREF(__pyx_kp_u_Bin);
+    __pyx_t_10 += 5;
+    __Pyx_GIVEREF(__pyx_kp_u_Bin);
+    PyTuple_SET_ITEM(__pyx_t_7, 4, __pyx_kp_u_Bin);
+    __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_v_binance_balance, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 224, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_12);
+    __pyx_t_11 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) > __pyx_t_11) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) : __pyx_t_11;
+    __pyx_t_10 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_12);
+    __Pyx_GIVEREF(__pyx_t_12);
+    PyTuple_SET_ITEM(__pyx_t_7, 5, __pyx_t_12);
+    __pyx_t_12 = 0;
+    __Pyx_INCREF(__pyx_kp_u_Kuc);
+    __pyx_t_10 += 5;
+    __Pyx_GIVEREF(__pyx_kp_u_Kuc);
+    PyTuple_SET_ITEM(__pyx_t_7, 6, __pyx_kp_u_Kuc);
+    __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_v_kucoin_balance, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 224, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_12);
+    __pyx_t_11 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) > __pyx_t_11) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) : __pyx_t_11;
+    __pyx_t_10 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_12);
+    __Pyx_GIVEREF(__pyx_t_12);
+    PyTuple_SET_ITEM(__pyx_t_7, 7, __pyx_t_12);
+    __pyx_t_12 = 0;
+    __Pyx_INCREF(__pyx_kp_u_Gate);
+    __pyx_t_10 += 5;
+    __Pyx_GIVEREF(__pyx_kp_u_Gate);
+    PyTuple_SET_ITEM(__pyx_t_7, 8, __pyx_kp_u_Gate);
+    __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_v_gate_balance, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 224, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_12);
+    __pyx_t_11 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) > __pyx_t_11) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) : __pyx_t_11;
+    __pyx_t_10 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_12);
+    __Pyx_GIVEREF(__pyx_t_12);
+    PyTuple_SET_ITEM(__pyx_t_7, 9, __pyx_t_12);
+    __pyx_t_12 = 0;
+    __Pyx_INCREF(__pyx_kp_u_Taker);
+    __pyx_t_10 += 7;
+    __Pyx_GIVEREF(__pyx_kp_u_Taker);
+    PyTuple_SET_ITEM(__pyx_t_7, 10, __pyx_kp_u_Taker);
+    __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_v_taker_balance, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 224, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_12);
+    __pyx_t_11 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) > __pyx_t_11) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) : __pyx_t_11;
+    __pyx_t_10 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_12);
+    __Pyx_GIVEREF(__pyx_t_12);
+    PyTuple_SET_ITEM(__pyx_t_7, 11, __pyx_t_12);
+    __pyx_t_12 = 0;
+    __Pyx_INCREF(__pyx_kp_u_Diff);
+    __pyx_t_10 += 6;
+    __Pyx_GIVEREF(__pyx_kp_u_Diff);
+    PyTuple_SET_ITEM(__pyx_t_7, 12, __pyx_kp_u_Diff);
+    __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_v_difference, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 224, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_12);
+    __pyx_t_11 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) > __pyx_t_11) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) : __pyx_t_11;
+    __pyx_t_10 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_12);
+    __Pyx_GIVEREF(__pyx_t_12);
+    PyTuple_SET_ITEM(__pyx_t_7, 13, __pyx_t_12);
+    __pyx_t_12 = 0;
+    __Pyx_INCREF(__pyx_kp_u_);
+    __pyx_t_10 += 1;
+    __Pyx_GIVEREF(__pyx_kp_u_);
+    PyTuple_SET_ITEM(__pyx_t_7, 14, __pyx_kp_u_);
+    __pyx_t_12 = __Pyx_PyUnicode_Join(__pyx_t_7, 15, __pyx_t_10, __pyx_t_11); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 224, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_12);
+    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __pyx_t_7 = NULL;
+    __pyx_t_6 = 0;
+    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
+      __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_5);
+      if (likely(__pyx_t_7)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
+        __Pyx_INCREF(__pyx_t_7);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_5, function);
+        __pyx_t_6 = 1;
+      }
+    }
+    {
+      PyObject *__pyx_callargs[3] = {__pyx_t_7, __pyx_t_9, __pyx_t_12};
+      __pyx_t_8 = __Pyx_PyObject_FastCall(__pyx_t_5, __pyx_callargs+1-__pyx_t_6, 2+__pyx_t_6);
+      __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+      if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 223, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_8);
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    }
+    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+  }
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "hummingbot/strategy/hedge/hedge.pyx":213
+ *         if position_updated:
+ *             self._last_trade_time["last updated"]=self._current_timestamp
+ *     def log_output(self):             # <<<<<<<<<<<<<<
+ *       for maker_asset in self._market_infos:
+ *           market_pair = self._market_infos[maker_asset]
+ */
+
+  /* function exit code */
+  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_XDECREF(__pyx_t_8);
+  __Pyx_XDECREF(__pyx_t_9);
+  __Pyx_XDECREF(__pyx_t_12);
+  __Pyx_AddTraceback("hummingbot.strategy.hedge.hedge.HedgeStrategy.log_output", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_maker_asset);
+  __Pyx_XDECREF(__pyx_v_market_pair);
+  __Pyx_XDECREF(__pyx_v_trading_pair);
+  __Pyx_XDECREF(__pyx_v_total_balance);
+  __Pyx_XDECREF(__pyx_v_binance_balance);
+  __Pyx_XDECREF(__pyx_v_kucoin_balance);
+  __Pyx_XDECREF(__pyx_v_gate_balance);
+  __Pyx_XDECREF(__pyx_v_taker_balance);
+  __Pyx_XDECREF(__pyx_v_difference);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "hummingbot/strategy/hedge/hedge.pyx":227
+ * 
+ * 
+ *     def wallet_df(self) -> pd.DataFrame:             # <<<<<<<<<<<<<<
+ *         data=[]
+ *         columns = ["Asset", "Price", "total_balance","binance_balance","kucoin_balance","gate_balance", "Taker", "Diff", "Hedge Ratio"]
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_21wallet_df(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+static PyMethodDef __pyx_mdef_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_21wallet_df = {"wallet_df", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_21wallet_df, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_21wallet_df(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -9313,20 +9903,23 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   if (unlikely(__pyx_nargs > 0)) {
     __Pyx_RaiseArgtupleInvalid("wallet_df", 1, 0, 0, __pyx_nargs); return NULL;}
   if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "wallet_df", 0))) return NULL;
-  __pyx_r = __pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_18wallet_df(((struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *)__pyx_v_self));
+  __pyx_r = __pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_20wallet_df(((struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_18wallet_df(struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self) {
+static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_20wallet_df(struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self) {
   PyObject *__pyx_v_data = NULL;
   PyObject *__pyx_v_columns = NULL;
   PyObject *__pyx_v_maker_asset = NULL;
   PyObject *__pyx_v_market_pair = NULL;
   PyObject *__pyx_v_trading_pair = NULL;
-  PyObject *__pyx_v_maker_balance = NULL;
+  PyObject *__pyx_v_total_balance = NULL;
+  PyObject *__pyx_v_binance_balance = NULL;
+  PyObject *__pyx_v_kucoin_balance = NULL;
+  PyObject *__pyx_v_gate_balance = NULL;
   PyObject *__pyx_v_taker_balance = NULL;
   PyObject *__pyx_v_mid_price = NULL;
   PyObject *__pyx_v_difference = NULL;
@@ -9350,26 +9943,26 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("wallet_df", 0);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":215
+  /* "hummingbot/strategy/hedge/hedge.pyx":228
  * 
  *     def wallet_df(self) -> pd.DataFrame:
  *         data=[]             # <<<<<<<<<<<<<<
- *         columns = ["Asset", "Price", "Maker", "Taker", "Diff", "Hedge Ratio"]
+ *         columns = ["Asset", "Price", "total_balance","binance_balance","kucoin_balance","gate_balance", "Taker", "Diff", "Hedge Ratio"]
  *         for maker_asset in self._market_infos:
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 215, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 228, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_data = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":216
+  /* "hummingbot/strategy/hedge/hedge.pyx":229
  *     def wallet_df(self) -> pd.DataFrame:
  *         data=[]
- *         columns = ["Asset", "Price", "Maker", "Taker", "Diff", "Hedge Ratio"]             # <<<<<<<<<<<<<<
+ *         columns = ["Asset", "Price", "total_balance","binance_balance","kucoin_balance","gate_balance", "Taker", "Diff", "Hedge Ratio"]             # <<<<<<<<<<<<<<
  *         for maker_asset in self._market_infos:
  *             market_pair = self._market_infos[maker_asset]
  */
-  __pyx_t_1 = PyList_New(6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 229, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_n_u_Asset);
   __Pyx_GIVEREF(__pyx_n_u_Asset);
@@ -9377,24 +9970,33 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
   __Pyx_INCREF(__pyx_n_u_Price);
   __Pyx_GIVEREF(__pyx_n_u_Price);
   PyList_SET_ITEM(__pyx_t_1, 1, __pyx_n_u_Price);
-  __Pyx_INCREF(__pyx_n_u_Maker);
-  __Pyx_GIVEREF(__pyx_n_u_Maker);
-  PyList_SET_ITEM(__pyx_t_1, 2, __pyx_n_u_Maker);
-  __Pyx_INCREF(__pyx_n_u_Taker);
-  __Pyx_GIVEREF(__pyx_n_u_Taker);
-  PyList_SET_ITEM(__pyx_t_1, 3, __pyx_n_u_Taker);
-  __Pyx_INCREF(__pyx_n_u_Diff);
-  __Pyx_GIVEREF(__pyx_n_u_Diff);
-  PyList_SET_ITEM(__pyx_t_1, 4, __pyx_n_u_Diff);
+  __Pyx_INCREF(__pyx_n_u_total_balance);
+  __Pyx_GIVEREF(__pyx_n_u_total_balance);
+  PyList_SET_ITEM(__pyx_t_1, 2, __pyx_n_u_total_balance);
+  __Pyx_INCREF(__pyx_n_u_binance_balance);
+  __Pyx_GIVEREF(__pyx_n_u_binance_balance);
+  PyList_SET_ITEM(__pyx_t_1, 3, __pyx_n_u_binance_balance);
+  __Pyx_INCREF(__pyx_n_u_kucoin_balance);
+  __Pyx_GIVEREF(__pyx_n_u_kucoin_balance);
+  PyList_SET_ITEM(__pyx_t_1, 4, __pyx_n_u_kucoin_balance);
+  __Pyx_INCREF(__pyx_n_u_gate_balance);
+  __Pyx_GIVEREF(__pyx_n_u_gate_balance);
+  PyList_SET_ITEM(__pyx_t_1, 5, __pyx_n_u_gate_balance);
+  __Pyx_INCREF(__pyx_n_u_Taker_2);
+  __Pyx_GIVEREF(__pyx_n_u_Taker_2);
+  PyList_SET_ITEM(__pyx_t_1, 6, __pyx_n_u_Taker_2);
+  __Pyx_INCREF(__pyx_n_u_Diff_2);
+  __Pyx_GIVEREF(__pyx_n_u_Diff_2);
+  PyList_SET_ITEM(__pyx_t_1, 7, __pyx_n_u_Diff_2);
   __Pyx_INCREF(__pyx_kp_u_Hedge_Ratio);
   __Pyx_GIVEREF(__pyx_kp_u_Hedge_Ratio);
-  PyList_SET_ITEM(__pyx_t_1, 5, __pyx_kp_u_Hedge_Ratio);
+  PyList_SET_ITEM(__pyx_t_1, 8, __pyx_kp_u_Hedge_Ratio);
   __pyx_v_columns = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":217
+  /* "hummingbot/strategy/hedge/hedge.pyx":230
  *         data=[]
- *         columns = ["Asset", "Price", "Maker", "Taker", "Diff", "Hedge Ratio"]
+ *         columns = ["Asset", "Price", "total_balance","binance_balance","kucoin_balance","gate_balance", "Taker", "Diff", "Hedge Ratio"]
  *         for maker_asset in self._market_infos:             # <<<<<<<<<<<<<<
  *             market_pair = self._market_infos[maker_asset]
  *             trading_pair=market_pair.trading_pair
@@ -9402,9 +10004,9 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
   __pyx_t_2 = 0;
   if (unlikely(__pyx_v_self->_market_infos == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 217, __pyx_L1_error)
+    __PYX_ERR(0, 230, __pyx_L1_error)
   }
-  __pyx_t_5 = __Pyx_dict_iterator(__pyx_v_self->_market_infos, 1, ((PyObject *)NULL), (&__pyx_t_3), (&__pyx_t_4)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 217, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_dict_iterator(__pyx_v_self->_market_infos, 1, ((PyObject *)NULL), (&__pyx_t_3), (&__pyx_t_4)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 230, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_1);
   __pyx_t_1 = __pyx_t_5;
@@ -9412,47 +10014,47 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
   while (1) {
     __pyx_t_6 = __Pyx_dict_iter_next(__pyx_t_1, __pyx_t_3, &__pyx_t_2, &__pyx_t_5, NULL, NULL, __pyx_t_4);
     if (unlikely(__pyx_t_6 == 0)) break;
-    if (unlikely(__pyx_t_6 == -1)) __PYX_ERR(0, 217, __pyx_L1_error)
+    if (unlikely(__pyx_t_6 == -1)) __PYX_ERR(0, 230, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_XDECREF_SET(__pyx_v_maker_asset, __pyx_t_5);
     __pyx_t_5 = 0;
 
-    /* "hummingbot/strategy/hedge/hedge.pyx":218
- *         columns = ["Asset", "Price", "Maker", "Taker", "Diff", "Hedge Ratio"]
+    /* "hummingbot/strategy/hedge/hedge.pyx":231
+ *         columns = ["Asset", "Price", "total_balance","binance_balance","kucoin_balance","gate_balance", "Taker", "Diff", "Hedge Ratio"]
  *         for maker_asset in self._market_infos:
  *             market_pair = self._market_infos[maker_asset]             # <<<<<<<<<<<<<<
  *             trading_pair=market_pair.trading_pair
- *             maker_balance = self.get_balance(maker_asset)
+ *             total_balance = self.get_balance(maker_asset)
  */
     if (unlikely(__pyx_v_self->_market_infos == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 218, __pyx_L1_error)
+      __PYX_ERR(0, 231, __pyx_L1_error)
     }
-    __pyx_t_5 = __Pyx_PyDict_GetItem(__pyx_v_self->_market_infos, __pyx_v_maker_asset); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 218, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyDict_GetItem(__pyx_v_self->_market_infos, __pyx_v_maker_asset); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 231, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_XDECREF_SET(__pyx_v_market_pair, __pyx_t_5);
     __pyx_t_5 = 0;
 
-    /* "hummingbot/strategy/hedge/hedge.pyx":219
+    /* "hummingbot/strategy/hedge/hedge.pyx":232
  *         for maker_asset in self._market_infos:
  *             market_pair = self._market_infos[maker_asset]
  *             trading_pair=market_pair.trading_pair             # <<<<<<<<<<<<<<
- *             maker_balance = self.get_balance(maker_asset)
- *             taker_balance = self.get_shadow_position(trading_pair)
+ *             total_balance = self.get_balance(maker_asset)
+ *             binance_balance = self._exchanges.maker.get_balance(maker_asset)
  */
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_market_pair, __pyx_n_s_trading_pair); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 219, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_market_pair, __pyx_n_s_trading_pair); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 232, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_XDECREF_SET(__pyx_v_trading_pair, __pyx_t_5);
     __pyx_t_5 = 0;
 
-    /* "hummingbot/strategy/hedge/hedge.pyx":220
+    /* "hummingbot/strategy/hedge/hedge.pyx":233
  *             market_pair = self._market_infos[maker_asset]
  *             trading_pair=market_pair.trading_pair
- *             maker_balance = self.get_balance(maker_asset)             # <<<<<<<<<<<<<<
- *             taker_balance = self.get_shadow_position(trading_pair)
- *             mid_price = market_pair.get_mid_price()
+ *             total_balance = self.get_balance(maker_asset)             # <<<<<<<<<<<<<<
+ *             binance_balance = self._exchanges.maker.get_balance(maker_asset)
+ *             kucoin_balance = self._exchanges.kucoin.get_balance(maker_asset)
  */
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_balance); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 220, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_balance); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 233, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __pyx_t_8 = NULL;
     __pyx_t_6 = 0;
@@ -9470,22 +10072,60 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
       PyObject *__pyx_callargs[2] = {__pyx_t_8, __pyx_v_maker_asset};
       __pyx_t_5 = __Pyx_PyObject_FastCall(__pyx_t_7, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
       __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-      if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 220, __pyx_L1_error)
+      if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 233, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     }
-    __Pyx_XDECREF_SET(__pyx_v_maker_balance, __pyx_t_5);
+    __Pyx_XDECREF_SET(__pyx_v_total_balance, __pyx_t_5);
     __pyx_t_5 = 0;
 
-    /* "hummingbot/strategy/hedge/hedge.pyx":221
+    /* "hummingbot/strategy/hedge/hedge.pyx":234
  *             trading_pair=market_pair.trading_pair
- *             maker_balance = self.get_balance(maker_asset)
- *             taker_balance = self.get_shadow_position(trading_pair)             # <<<<<<<<<<<<<<
- *             mid_price = market_pair.get_mid_price()
- *             difference = - (maker_balance + taker_balance)
+ *             total_balance = self.get_balance(maker_asset)
+ *             binance_balance = self._exchanges.maker.get_balance(maker_asset)             # <<<<<<<<<<<<<<
+ *             kucoin_balance = self._exchanges.kucoin.get_balance(maker_asset)
+ *             gate_balance = self._exchanges.gate_io.get_balance(maker_asset)
  */
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_shadow_position); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 221, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_exchanges, __pyx_n_s_maker); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 234, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
+    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_get_balance); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 234, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
+    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __pyx_t_7 = NULL;
+    __pyx_t_6 = 0;
+    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_8))) {
+      __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_8);
+      if (likely(__pyx_t_7)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_8);
+        __Pyx_INCREF(__pyx_t_7);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_8, function);
+        __pyx_t_6 = 1;
+      }
+    }
+    {
+      PyObject *__pyx_callargs[2] = {__pyx_t_7, __pyx_v_maker_asset};
+      __pyx_t_5 = __Pyx_PyObject_FastCall(__pyx_t_8, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
+      __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+      if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 234, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+    }
+    __Pyx_XDECREF_SET(__pyx_v_binance_balance, __pyx_t_5);
+    __pyx_t_5 = 0;
+
+    /* "hummingbot/strategy/hedge/hedge.pyx":235
+ *             total_balance = self.get_balance(maker_asset)
+ *             binance_balance = self._exchanges.maker.get_balance(maker_asset)
+ *             kucoin_balance = self._exchanges.kucoin.get_balance(maker_asset)             # <<<<<<<<<<<<<<
+ *             gate_balance = self._exchanges.gate_io.get_balance(maker_asset)
+ *             taker_balance = self.get_shadow_position(trading_pair)
+ */
+    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_exchanges, __pyx_n_s_kucoin); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 235, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_get_balance); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 235, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_7);
+    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     __pyx_t_8 = NULL;
     __pyx_t_6 = 0;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_7))) {
@@ -9499,80 +10139,147 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
       }
     }
     {
-      PyObject *__pyx_callargs[2] = {__pyx_t_8, __pyx_v_trading_pair};
+      PyObject *__pyx_callargs[2] = {__pyx_t_8, __pyx_v_maker_asset};
       __pyx_t_5 = __Pyx_PyObject_FastCall(__pyx_t_7, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
       __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-      if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 221, __pyx_L1_error)
+      if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 235, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    }
+    __Pyx_XDECREF_SET(__pyx_v_kucoin_balance, __pyx_t_5);
+    __pyx_t_5 = 0;
+
+    /* "hummingbot/strategy/hedge/hedge.pyx":236
+ *             binance_balance = self._exchanges.maker.get_balance(maker_asset)
+ *             kucoin_balance = self._exchanges.kucoin.get_balance(maker_asset)
+ *             gate_balance = self._exchanges.gate_io.get_balance(maker_asset)             # <<<<<<<<<<<<<<
+ *             taker_balance = self.get_shadow_position(trading_pair)
+ *             mid_price = market_pair.get_mid_price()
+ */
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_exchanges, __pyx_n_s_gate_io); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 236, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_7);
+    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_get_balance); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 236, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
+    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __pyx_t_7 = NULL;
+    __pyx_t_6 = 0;
+    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_8))) {
+      __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_8);
+      if (likely(__pyx_t_7)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_8);
+        __Pyx_INCREF(__pyx_t_7);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_8, function);
+        __pyx_t_6 = 1;
+      }
+    }
+    {
+      PyObject *__pyx_callargs[2] = {__pyx_t_7, __pyx_v_maker_asset};
+      __pyx_t_5 = __Pyx_PyObject_FastCall(__pyx_t_8, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
+      __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+      if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 236, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+    }
+    __Pyx_XDECREF_SET(__pyx_v_gate_balance, __pyx_t_5);
+    __pyx_t_5 = 0;
+
+    /* "hummingbot/strategy/hedge/hedge.pyx":237
+ *             kucoin_balance = self._exchanges.kucoin.get_balance(maker_asset)
+ *             gate_balance = self._exchanges.gate_io.get_balance(maker_asset)
+ *             taker_balance = self.get_shadow_position(trading_pair)             # <<<<<<<<<<<<<<
+ *             mid_price = market_pair.get_mid_price()
+ *             difference = - (total_balance + taker_balance)
+ */
+    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_shadow_position); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 237, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
+    __pyx_t_7 = NULL;
+    __pyx_t_6 = 0;
+    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_8))) {
+      __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_8);
+      if (likely(__pyx_t_7)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_8);
+        __Pyx_INCREF(__pyx_t_7);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_8, function);
+        __pyx_t_6 = 1;
+      }
+    }
+    {
+      PyObject *__pyx_callargs[2] = {__pyx_t_7, __pyx_v_trading_pair};
+      __pyx_t_5 = __Pyx_PyObject_FastCall(__pyx_t_8, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
+      __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+      if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 237, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     }
     __Pyx_XDECREF_SET(__pyx_v_taker_balance, __pyx_t_5);
     __pyx_t_5 = 0;
 
-    /* "hummingbot/strategy/hedge/hedge.pyx":222
- *             maker_balance = self.get_balance(maker_asset)
+    /* "hummingbot/strategy/hedge/hedge.pyx":238
+ *             gate_balance = self._exchanges.gate_io.get_balance(maker_asset)
  *             taker_balance = self.get_shadow_position(trading_pair)
  *             mid_price = market_pair.get_mid_price()             # <<<<<<<<<<<<<<
- *             difference = - (maker_balance + taker_balance)
- *             hedge_ratio = Decimal(-round(taker_balance/maker_balance, 2)) if maker_balance != 0 else 1
+ *             difference = - (total_balance + taker_balance)
+ *             hedge_ratio = Decimal(-round(taker_balance/total_balance, 2)) if total_balance != 0 else 1
  */
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_market_pair, __pyx_n_s_get_mid_price); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 222, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_8 = NULL;
+    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_market_pair, __pyx_n_s_get_mid_price); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 238, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
+    __pyx_t_7 = NULL;
     __pyx_t_6 = 0;
-    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_7))) {
-      __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_7);
-      if (likely(__pyx_t_8)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
-        __Pyx_INCREF(__pyx_t_8);
+    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_8))) {
+      __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_8);
+      if (likely(__pyx_t_7)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_8);
+        __Pyx_INCREF(__pyx_t_7);
         __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_7, function);
+        __Pyx_DECREF_SET(__pyx_t_8, function);
         __pyx_t_6 = 1;
       }
     }
     {
-      PyObject *__pyx_callargs[1] = {__pyx_t_8, };
-      __pyx_t_5 = __Pyx_PyObject_FastCall(__pyx_t_7, __pyx_callargs+1-__pyx_t_6, 0+__pyx_t_6);
-      __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-      if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 222, __pyx_L1_error)
+      PyObject *__pyx_callargs[1] = {__pyx_t_7, };
+      __pyx_t_5 = __Pyx_PyObject_FastCall(__pyx_t_8, __pyx_callargs+1-__pyx_t_6, 0+__pyx_t_6);
+      __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+      if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 238, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     }
     __Pyx_XDECREF_SET(__pyx_v_mid_price, __pyx_t_5);
     __pyx_t_5 = 0;
 
-    /* "hummingbot/strategy/hedge/hedge.pyx":223
+    /* "hummingbot/strategy/hedge/hedge.pyx":239
  *             taker_balance = self.get_shadow_position(trading_pair)
  *             mid_price = market_pair.get_mid_price()
- *             difference = - (maker_balance + taker_balance)             # <<<<<<<<<<<<<<
- *             hedge_ratio = Decimal(-round(taker_balance/maker_balance, 2)) if maker_balance != 0 else 1
+ *             difference = - (total_balance + taker_balance)             # <<<<<<<<<<<<<<
+ *             hedge_ratio = Decimal(-round(taker_balance/total_balance, 2)) if total_balance != 0 else 1
  *             data.append([
  */
-    __pyx_t_5 = PyNumber_Add(__pyx_v_maker_balance, __pyx_v_taker_balance); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 223, __pyx_L1_error)
+    __pyx_t_5 = PyNumber_Add(__pyx_v_total_balance, __pyx_v_taker_balance); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 239, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_7 = PyNumber_Negative(__pyx_t_5); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 223, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
+    __pyx_t_8 = PyNumber_Negative(__pyx_t_5); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 239, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_XDECREF_SET(__pyx_v_difference, __pyx_t_7);
-    __pyx_t_7 = 0;
+    __Pyx_XDECREF_SET(__pyx_v_difference, __pyx_t_8);
+    __pyx_t_8 = 0;
 
-    /* "hummingbot/strategy/hedge/hedge.pyx":224
+    /* "hummingbot/strategy/hedge/hedge.pyx":240
  *             mid_price = market_pair.get_mid_price()
- *             difference = - (maker_balance + taker_balance)
- *             hedge_ratio = Decimal(-round(taker_balance/maker_balance, 2)) if maker_balance != 0 else 1             # <<<<<<<<<<<<<<
+ *             difference = - (total_balance + taker_balance)
+ *             hedge_ratio = Decimal(-round(taker_balance/total_balance, 2)) if total_balance != 0 else 1             # <<<<<<<<<<<<<<
  *             data.append([
  *                 maker_asset,
  */
-    __pyx_t_5 = __Pyx_PyInt_NeObjC(__pyx_v_maker_balance, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 224, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyInt_NeObjC(__pyx_v_total_balance, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 240, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely((__pyx_t_9 < 0))) __PYX_ERR(0, 224, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely((__pyx_t_9 < 0))) __PYX_ERR(0, 240, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     if (__pyx_t_9) {
-      __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_Decimal); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 224, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_8);
-      __pyx_t_10 = __Pyx_PyNumber_Divide(__pyx_v_taker_balance, __pyx_v_maker_balance); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 224, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_Decimal); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 240, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_7);
+      __pyx_t_10 = __Pyx_PyNumber_Divide(__pyx_v_taker_balance, __pyx_v_total_balance); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 240, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
-      __pyx_t_11 = PyTuple_New(2); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 224, __pyx_L1_error)
+      __pyx_t_11 = PyTuple_New(2); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 240, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
       __Pyx_GIVEREF(__pyx_t_10);
       PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_10);
@@ -9580,75 +10287,84 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
       __Pyx_GIVEREF(__pyx_int_2);
       PyTuple_SET_ITEM(__pyx_t_11, 1, __pyx_int_2);
       __pyx_t_10 = 0;
-      __pyx_t_10 = __Pyx_PyObject_Call(__pyx_builtin_round, __pyx_t_11, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 224, __pyx_L1_error)
+      __pyx_t_10 = __Pyx_PyObject_Call(__pyx_builtin_round, __pyx_t_11, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 240, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __pyx_t_11 = PyNumber_Negative(__pyx_t_10); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 224, __pyx_L1_error)
+      __pyx_t_11 = PyNumber_Negative(__pyx_t_10); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 240, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
       __pyx_t_10 = NULL;
       __pyx_t_6 = 0;
-      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_8))) {
-        __pyx_t_10 = PyMethod_GET_SELF(__pyx_t_8);
+      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_7))) {
+        __pyx_t_10 = PyMethod_GET_SELF(__pyx_t_7);
         if (likely(__pyx_t_10)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_8);
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
           __Pyx_INCREF(__pyx_t_10);
           __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_8, function);
+          __Pyx_DECREF_SET(__pyx_t_7, function);
           __pyx_t_6 = 1;
         }
       }
       {
         PyObject *__pyx_callargs[2] = {__pyx_t_10, __pyx_t_11};
-        __pyx_t_5 = __Pyx_PyObject_FastCall(__pyx_t_8, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
+        __pyx_t_5 = __Pyx_PyObject_FastCall(__pyx_t_7, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
         __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
         __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-        if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 224, __pyx_L1_error)
+        if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 240, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
-        __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+        __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       }
-      __pyx_t_7 = __pyx_t_5;
+      __pyx_t_8 = __pyx_t_5;
       __pyx_t_5 = 0;
     } else {
       __Pyx_INCREF(__pyx_int_1);
-      __pyx_t_7 = __pyx_int_1;
+      __pyx_t_8 = __pyx_int_1;
     }
-    __Pyx_XDECREF_SET(__pyx_v_hedge_ratio, __pyx_t_7);
-    __pyx_t_7 = 0;
+    __Pyx_XDECREF_SET(__pyx_v_hedge_ratio, __pyx_t_8);
+    __pyx_t_8 = 0;
 
-    /* "hummingbot/strategy/hedge/hedge.pyx":225
- *             difference = - (maker_balance + taker_balance)
- *             hedge_ratio = Decimal(-round(taker_balance/maker_balance, 2)) if maker_balance != 0 else 1
+    /* "hummingbot/strategy/hedge/hedge.pyx":241
+ *             difference = - (total_balance + taker_balance)
+ *             hedge_ratio = Decimal(-round(taker_balance/total_balance, 2)) if total_balance != 0 else 1
  *             data.append([             # <<<<<<<<<<<<<<
  *                 maker_asset,
  *                 mid_price,
  */
-    __pyx_t_7 = PyList_New(6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 225, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
+    __pyx_t_8 = PyList_New(9); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 241, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
     __Pyx_INCREF(__pyx_v_maker_asset);
     __Pyx_GIVEREF(__pyx_v_maker_asset);
-    PyList_SET_ITEM(__pyx_t_7, 0, __pyx_v_maker_asset);
+    PyList_SET_ITEM(__pyx_t_8, 0, __pyx_v_maker_asset);
     __Pyx_INCREF(__pyx_v_mid_price);
     __Pyx_GIVEREF(__pyx_v_mid_price);
-    PyList_SET_ITEM(__pyx_t_7, 1, __pyx_v_mid_price);
-    __Pyx_INCREF(__pyx_v_maker_balance);
-    __Pyx_GIVEREF(__pyx_v_maker_balance);
-    PyList_SET_ITEM(__pyx_t_7, 2, __pyx_v_maker_balance);
+    PyList_SET_ITEM(__pyx_t_8, 1, __pyx_v_mid_price);
+    __Pyx_INCREF(__pyx_v_total_balance);
+    __Pyx_GIVEREF(__pyx_v_total_balance);
+    PyList_SET_ITEM(__pyx_t_8, 2, __pyx_v_total_balance);
+    __Pyx_INCREF(__pyx_v_binance_balance);
+    __Pyx_GIVEREF(__pyx_v_binance_balance);
+    PyList_SET_ITEM(__pyx_t_8, 3, __pyx_v_binance_balance);
+    __Pyx_INCREF(__pyx_v_kucoin_balance);
+    __Pyx_GIVEREF(__pyx_v_kucoin_balance);
+    PyList_SET_ITEM(__pyx_t_8, 4, __pyx_v_kucoin_balance);
+    __Pyx_INCREF(__pyx_v_gate_balance);
+    __Pyx_GIVEREF(__pyx_v_gate_balance);
+    PyList_SET_ITEM(__pyx_t_8, 5, __pyx_v_gate_balance);
     __Pyx_INCREF(__pyx_v_taker_balance);
     __Pyx_GIVEREF(__pyx_v_taker_balance);
-    PyList_SET_ITEM(__pyx_t_7, 3, __pyx_v_taker_balance);
+    PyList_SET_ITEM(__pyx_t_8, 6, __pyx_v_taker_balance);
     __Pyx_INCREF(__pyx_v_difference);
     __Pyx_GIVEREF(__pyx_v_difference);
-    PyList_SET_ITEM(__pyx_t_7, 4, __pyx_v_difference);
+    PyList_SET_ITEM(__pyx_t_8, 7, __pyx_v_difference);
     __Pyx_INCREF(__pyx_v_hedge_ratio);
     __Pyx_GIVEREF(__pyx_v_hedge_ratio);
-    PyList_SET_ITEM(__pyx_t_7, 5, __pyx_v_hedge_ratio);
-    __pyx_t_12 = __Pyx_PyList_Append(__pyx_v_data, __pyx_t_7); if (unlikely(__pyx_t_12 == ((int)-1))) __PYX_ERR(0, 225, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    PyList_SET_ITEM(__pyx_t_8, 8, __pyx_v_hedge_ratio);
+    __pyx_t_12 = __Pyx_PyList_Append(__pyx_v_data, __pyx_t_8); if (unlikely(__pyx_t_12 == ((int)-1))) __PYX_ERR(0, 241, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":233
+  /* "hummingbot/strategy/hedge/hedge.pyx":252
  *                 hedge_ratio,
  *             ])
  *         return pd.DataFrame(data=data, columns=columns)             # <<<<<<<<<<<<<<
@@ -9656,29 +10372,29 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
  *     def active_orders_df(self) -> pd.DataFrame:
  */
   __Pyx_XDECREF(__pyx_r);
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_pd); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 233, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_pd); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 252, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_DataFrame); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 233, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_7);
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_DataFrame); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 252, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 233, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 252, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_data, __pyx_v_data) < 0) __PYX_ERR(0, 233, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_columns, __pyx_v_columns) < 0) __PYX_ERR(0, 233, __pyx_L1_error)
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_empty_tuple, __pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 233, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_data, __pyx_v_data) < 0) __PYX_ERR(0, 252, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_columns, __pyx_v_columns) < 0) __PYX_ERR(0, 252, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_empty_tuple, __pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 252, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_5;
   __pyx_t_5 = 0;
   goto __pyx_L0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":214
- *             self._last_trade_time["last updated"]=self._current_timestamp
+  /* "hummingbot/strategy/hedge/hedge.pyx":227
+ * 
  * 
  *     def wallet_df(self) -> pd.DataFrame:             # <<<<<<<<<<<<<<
  *         data=[]
- *         columns = ["Asset", "Price", "Maker", "Taker", "Diff", "Hedge Ratio"]
+ *         columns = ["Asset", "Price", "total_balance","binance_balance","kucoin_balance","gate_balance", "Taker", "Diff", "Hedge Ratio"]
  */
 
   /* function exit code */
@@ -9697,7 +10413,10 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
   __Pyx_XDECREF(__pyx_v_maker_asset);
   __Pyx_XDECREF(__pyx_v_market_pair);
   __Pyx_XDECREF(__pyx_v_trading_pair);
-  __Pyx_XDECREF(__pyx_v_maker_balance);
+  __Pyx_XDECREF(__pyx_v_total_balance);
+  __Pyx_XDECREF(__pyx_v_binance_balance);
+  __Pyx_XDECREF(__pyx_v_kucoin_balance);
+  __Pyx_XDECREF(__pyx_v_gate_balance);
   __Pyx_XDECREF(__pyx_v_taker_balance);
   __Pyx_XDECREF(__pyx_v_mid_price);
   __Pyx_XDECREF(__pyx_v_difference);
@@ -9707,7 +10426,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/hedge/hedge.pyx":235
+/* "hummingbot/strategy/hedge/hedge.pyx":254
  *         return pd.DataFrame(data=data, columns=columns)
  * 
  *     def active_orders_df(self) -> pd.DataFrame:             # <<<<<<<<<<<<<<
@@ -9716,15 +10435,15 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_1
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_21active_orders_df(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_23active_orders_df(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_21active_orders_df = {"active_orders_df", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_21active_orders_df, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_21active_orders_df(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_23active_orders_df = {"active_orders_df", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_23active_orders_df, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_23active_orders_df(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -9741,14 +10460,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   if (unlikely(__pyx_nargs > 0)) {
     __Pyx_RaiseArgtupleInvalid("active_orders_df", 1, 0, 0, __pyx_nargs); return NULL;}
   if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "active_orders_df", 0))) return NULL;
-  __pyx_r = __pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_20active_orders_df(((struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *)__pyx_v_self));
+  __pyx_r = __pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_22active_orders_df(((struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_20active_orders_df(struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self) {
+static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_22active_orders_df(struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self) {
   PyObject *__pyx_v_active_orders = NULL;
   PyObject *__pyx_v_columns = NULL;
   PyObject *__pyx_v_data = NULL;
@@ -9777,26 +10496,26 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("active_orders_df", 0);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":237
+  /* "hummingbot/strategy/hedge/hedge.pyx":256
  *     def active_orders_df(self) -> pd.DataFrame:
  * 
  *         active_orders = self.market_info_to_active_orders             # <<<<<<<<<<<<<<
  *         columns = ["Market", "Type", "Price", "Amount", "Age"]
  *         data = []
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_market_info_to_active_orders); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 237, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_market_info_to_active_orders); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 256, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_active_orders = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":238
+  /* "hummingbot/strategy/hedge/hedge.pyx":257
  * 
  *         active_orders = self.market_info_to_active_orders
  *         columns = ["Market", "Type", "Price", "Amount", "Age"]             # <<<<<<<<<<<<<<
  *         data = []
  *         for market_info in active_orders:
  */
-  __pyx_t_1 = PyList_New(5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 238, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 257, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_n_u_Market);
   __Pyx_GIVEREF(__pyx_n_u_Market);
@@ -9816,19 +10535,19 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
   __pyx_v_columns = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":239
+  /* "hummingbot/strategy/hedge/hedge.pyx":258
  *         active_orders = self.market_info_to_active_orders
  *         columns = ["Market", "Type", "Price", "Amount", "Age"]
  *         data = []             # <<<<<<<<<<<<<<
  *         for market_info in active_orders:
  *             orders = active_orders[market_info]
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 239, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 258, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_data = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":240
+  /* "hummingbot/strategy/hedge/hedge.pyx":259
  *         columns = ["Market", "Type", "Price", "Amount", "Age"]
  *         data = []
  *         for market_info in active_orders:             # <<<<<<<<<<<<<<
@@ -9839,26 +10558,26 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
     __pyx_t_1 = __pyx_v_active_orders; __Pyx_INCREF(__pyx_t_1); __pyx_t_2 = 0;
     __pyx_t_3 = NULL;
   } else {
-    __pyx_t_2 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_active_orders); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 240, __pyx_L1_error)
+    __pyx_t_2 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_active_orders); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 259, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 240, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 259, __pyx_L1_error)
   }
   for (;;) {
     if (likely(!__pyx_t_3)) {
       if (likely(PyList_CheckExact(__pyx_t_1))) {
         if (__pyx_t_2 >= PyList_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely((0 < 0))) __PYX_ERR(0, 240, __pyx_L1_error)
+        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely((0 < 0))) __PYX_ERR(0, 259, __pyx_L1_error)
         #else
-        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 240, __pyx_L1_error)
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 259, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         #endif
       } else {
         if (__pyx_t_2 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely((0 < 0))) __PYX_ERR(0, 240, __pyx_L1_error)
+        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely((0 < 0))) __PYX_ERR(0, 259, __pyx_L1_error)
         #else
-        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 240, __pyx_L1_error)
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 259, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         #endif
       }
@@ -9868,7 +10587,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 240, __pyx_L1_error)
+          else __PYX_ERR(0, 259, __pyx_L1_error)
         }
         break;
       }
@@ -9877,19 +10596,19 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
     __Pyx_XDECREF_SET(__pyx_v_market_info, __pyx_t_4);
     __pyx_t_4 = 0;
 
-    /* "hummingbot/strategy/hedge/hedge.pyx":241
+    /* "hummingbot/strategy/hedge/hedge.pyx":260
  *         data = []
  *         for market_info in active_orders:
  *             orders = active_orders[market_info]             # <<<<<<<<<<<<<<
  *             for order in orders:
  *                 market = order.trading_pair
  */
-    __pyx_t_4 = __Pyx_PyObject_GetItem(__pyx_v_active_orders, __pyx_v_market_info); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 241, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetItem(__pyx_v_active_orders, __pyx_v_market_info); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 260, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_XDECREF_SET(__pyx_v_orders, __pyx_t_4);
     __pyx_t_4 = 0;
 
-    /* "hummingbot/strategy/hedge/hedge.pyx":242
+    /* "hummingbot/strategy/hedge/hedge.pyx":261
  *         for market_info in active_orders:
  *             orders = active_orders[market_info]
  *             for order in orders:             # <<<<<<<<<<<<<<
@@ -9900,26 +10619,26 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
       __pyx_t_4 = __pyx_v_orders; __Pyx_INCREF(__pyx_t_4); __pyx_t_5 = 0;
       __pyx_t_6 = NULL;
     } else {
-      __pyx_t_5 = -1; __pyx_t_4 = PyObject_GetIter(__pyx_v_orders); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 242, __pyx_L1_error)
+      __pyx_t_5 = -1; __pyx_t_4 = PyObject_GetIter(__pyx_v_orders); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 261, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_6 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_4); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 242, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_4); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 261, __pyx_L1_error)
     }
     for (;;) {
       if (likely(!__pyx_t_6)) {
         if (likely(PyList_CheckExact(__pyx_t_4))) {
           if (__pyx_t_5 >= PyList_GET_SIZE(__pyx_t_4)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_7 = PyList_GET_ITEM(__pyx_t_4, __pyx_t_5); __Pyx_INCREF(__pyx_t_7); __pyx_t_5++; if (unlikely((0 < 0))) __PYX_ERR(0, 242, __pyx_L1_error)
+          __pyx_t_7 = PyList_GET_ITEM(__pyx_t_4, __pyx_t_5); __Pyx_INCREF(__pyx_t_7); __pyx_t_5++; if (unlikely((0 < 0))) __PYX_ERR(0, 261, __pyx_L1_error)
           #else
-          __pyx_t_7 = PySequence_ITEM(__pyx_t_4, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 242, __pyx_L1_error)
+          __pyx_t_7 = PySequence_ITEM(__pyx_t_4, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 261, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_7);
           #endif
         } else {
           if (__pyx_t_5 >= PyTuple_GET_SIZE(__pyx_t_4)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_7 = PyTuple_GET_ITEM(__pyx_t_4, __pyx_t_5); __Pyx_INCREF(__pyx_t_7); __pyx_t_5++; if (unlikely((0 < 0))) __PYX_ERR(0, 242, __pyx_L1_error)
+          __pyx_t_7 = PyTuple_GET_ITEM(__pyx_t_4, __pyx_t_5); __Pyx_INCREF(__pyx_t_7); __pyx_t_5++; if (unlikely((0 < 0))) __PYX_ERR(0, 261, __pyx_L1_error)
           #else
-          __pyx_t_7 = PySequence_ITEM(__pyx_t_4, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 242, __pyx_L1_error)
+          __pyx_t_7 = PySequence_ITEM(__pyx_t_4, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 261, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_7);
           #endif
         }
@@ -9929,7 +10648,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 242, __pyx_L1_error)
+            else __PYX_ERR(0, 261, __pyx_L1_error)
           }
           break;
         }
@@ -9938,28 +10657,28 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
       __Pyx_XDECREF_SET(__pyx_v_order, __pyx_t_7);
       __pyx_t_7 = 0;
 
-      /* "hummingbot/strategy/hedge/hedge.pyx":243
+      /* "hummingbot/strategy/hedge/hedge.pyx":262
  *             orders = active_orders[market_info]
  *             for order in orders:
  *                 market = order.trading_pair             # <<<<<<<<<<<<<<
  *                 age = order_age(order, self._current_timestamp)
  *                 data.append([
  */
-      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_order, __pyx_n_s_trading_pair); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 243, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_order, __pyx_n_s_trading_pair); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 262, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_XDECREF_SET(__pyx_v_market, __pyx_t_7);
       __pyx_t_7 = 0;
 
-      /* "hummingbot/strategy/hedge/hedge.pyx":244
+      /* "hummingbot/strategy/hedge/hedge.pyx":263
  *             for order in orders:
  *                 market = order.trading_pair
  *                 age = order_age(order, self._current_timestamp)             # <<<<<<<<<<<<<<
  *                 data.append([
  *                     market,
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_order_age); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 244, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_order_age); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 263, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
-      __pyx_t_9 = PyFloat_FromDouble(__pyx_v_self->__pyx_base.__pyx_base._current_timestamp); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 244, __pyx_L1_error)
+      __pyx_t_9 = PyFloat_FromDouble(__pyx_v_self->__pyx_base.__pyx_base._current_timestamp); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 263, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __pyx_t_10 = NULL;
       __pyx_t_11 = 0;
@@ -9978,23 +10697,23 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
         __pyx_t_7 = __Pyx_PyObject_FastCall(__pyx_t_8, __pyx_callargs+1-__pyx_t_11, 2+__pyx_t_11);
         __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-        if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 244, __pyx_L1_error)
+        if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 263, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_7);
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       }
       __Pyx_XDECREF_SET(__pyx_v_age, __pyx_t_7);
       __pyx_t_7 = 0;
 
-      /* "hummingbot/strategy/hedge/hedge.pyx":247
+      /* "hummingbot/strategy/hedge/hedge.pyx":266
  *                 data.append([
  *                     market,
  *                     "buy" if order.is_buy else "sell",             # <<<<<<<<<<<<<<
  *                     float(order.price),
  *                     float(order.quantity),
  */
-      __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_order, __pyx_n_s_is_buy); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 247, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_order, __pyx_n_s_is_buy); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 266, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
-      __pyx_t_12 = __Pyx_PyObject_IsTrue(__pyx_t_8); if (unlikely((__pyx_t_12 < 0))) __PYX_ERR(0, 247, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyObject_IsTrue(__pyx_t_8); if (unlikely((__pyx_t_12 < 0))) __PYX_ERR(0, 266, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       if (__pyx_t_12) {
         __Pyx_INCREF(__pyx_n_u_buy);
@@ -10004,40 +10723,40 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
         __pyx_t_7 = __pyx_n_u_sell;
       }
 
-      /* "hummingbot/strategy/hedge/hedge.pyx":248
+      /* "hummingbot/strategy/hedge/hedge.pyx":267
  *                     market,
  *                     "buy" if order.is_buy else "sell",
  *                     float(order.price),             # <<<<<<<<<<<<<<
  *                     float(order.quantity),
  *                     age
  */
-      __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_order, __pyx_n_s_price); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 248, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_order, __pyx_n_s_price); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 267, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
-      __pyx_t_9 = __Pyx_PyNumber_Float(__pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 248, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyNumber_Float(__pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 267, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-      /* "hummingbot/strategy/hedge/hedge.pyx":249
+      /* "hummingbot/strategy/hedge/hedge.pyx":268
  *                     "buy" if order.is_buy else "sell",
  *                     float(order.price),
  *                     float(order.quantity),             # <<<<<<<<<<<<<<
  *                     age
  *                 ])
  */
-      __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_order, __pyx_n_s_quantity); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 249, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_order, __pyx_n_s_quantity); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 268, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
-      __pyx_t_10 = __Pyx_PyNumber_Float(__pyx_t_8); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 249, __pyx_L1_error)
+      __pyx_t_10 = __Pyx_PyNumber_Float(__pyx_t_8); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 268, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-      /* "hummingbot/strategy/hedge/hedge.pyx":245
+      /* "hummingbot/strategy/hedge/hedge.pyx":264
  *                 market = order.trading_pair
  *                 age = order_age(order, self._current_timestamp)
  *                 data.append([             # <<<<<<<<<<<<<<
  *                     market,
  *                     "buy" if order.is_buy else "sell",
  */
-      __pyx_t_8 = PyList_New(5); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 245, __pyx_L1_error)
+      __pyx_t_8 = PyList_New(5); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 264, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_INCREF(__pyx_v_market);
       __Pyx_GIVEREF(__pyx_v_market);
@@ -10054,10 +10773,10 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
       __pyx_t_7 = 0;
       __pyx_t_9 = 0;
       __pyx_t_10 = 0;
-      __pyx_t_13 = __Pyx_PyList_Append(__pyx_v_data, __pyx_t_8); if (unlikely(__pyx_t_13 == ((int)-1))) __PYX_ERR(0, 245, __pyx_L1_error)
+      __pyx_t_13 = __Pyx_PyList_Append(__pyx_v_data, __pyx_t_8); if (unlikely(__pyx_t_13 == ((int)-1))) __PYX_ERR(0, 264, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-      /* "hummingbot/strategy/hedge/hedge.pyx":242
+      /* "hummingbot/strategy/hedge/hedge.pyx":261
  *         for market_info in active_orders:
  *             orders = active_orders[market_info]
  *             for order in orders:             # <<<<<<<<<<<<<<
@@ -10067,7 +10786,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
     }
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "hummingbot/strategy/hedge/hedge.pyx":240
+    /* "hummingbot/strategy/hedge/hedge.pyx":259
  *         columns = ["Market", "Type", "Price", "Amount", "Age"]
  *         data = []
  *         for market_info in active_orders:             # <<<<<<<<<<<<<<
@@ -10077,7 +10796,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":252
+  /* "hummingbot/strategy/hedge/hedge.pyx":271
  *                     age
  *                 ])
  *         return pd.DataFrame(data=data, columns=columns)             # <<<<<<<<<<<<<<
@@ -10085,16 +10804,16 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
  *     def format_status(self) -> str:
  */
   __Pyx_XDECREF(__pyx_r);
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_pd); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 252, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_pd); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 271, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_DataFrame); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 252, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_DataFrame); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 271, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 252, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 271, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_data, __pyx_v_data) < 0) __PYX_ERR(0, 252, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_columns, __pyx_v_columns) < 0) __PYX_ERR(0, 252, __pyx_L1_error)
-  __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_empty_tuple, __pyx_t_1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 252, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_data, __pyx_v_data) < 0) __PYX_ERR(0, 271, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_columns, __pyx_v_columns) < 0) __PYX_ERR(0, 271, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_empty_tuple, __pyx_t_1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 271, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -10102,7 +10821,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
   __pyx_t_8 = 0;
   goto __pyx_L0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":235
+  /* "hummingbot/strategy/hedge/hedge.pyx":254
  *         return pd.DataFrame(data=data, columns=columns)
  * 
  *     def active_orders_df(self) -> pd.DataFrame:             # <<<<<<<<<<<<<<
@@ -10134,7 +10853,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/hedge/hedge.pyx":254
+/* "hummingbot/strategy/hedge/hedge.pyx":273
  *         return pd.DataFrame(data=data, columns=columns)
  * 
  *     def format_status(self) -> str:             # <<<<<<<<<<<<<<
@@ -10143,15 +10862,15 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_23format_status(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_25format_status(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_23format_status = {"format_status", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_23format_status, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_23format_status(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_25format_status = {"format_status", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_25format_status, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_25format_status(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -10168,14 +10887,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   if (unlikely(__pyx_nargs > 0)) {
     __Pyx_RaiseArgtupleInvalid("format_status", 1, 0, 0, __pyx_nargs); return NULL;}
   if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "format_status", 0))) return NULL;
-  __pyx_r = __pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_22format_status(((struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *)__pyx_v_self));
+  __pyx_r = __pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_24format_status(((struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_22format_status(struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self) {
+static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_24format_status(struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self) {
   PyObject *__pyx_v_lines = NULL;
   PyObject *__pyx_v_exchange = NULL;
   PyObject *__pyx_v_markets_df = NULL;
@@ -10204,19 +10923,19 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("format_status", 0);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":255
+  /* "hummingbot/strategy/hedge/hedge.pyx":274
  * 
  *     def format_status(self) -> str:
  *         lines = []             # <<<<<<<<<<<<<<
  *         if not self._all_markets_ready:
  *             for exchange in self._exchanges:
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 255, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 274, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_lines = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":256
+  /* "hummingbot/strategy/hedge/hedge.pyx":275
  *     def format_status(self) -> str:
  *         lines = []
  *         if not self._all_markets_ready:             # <<<<<<<<<<<<<<
@@ -10226,7 +10945,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
   __pyx_t_2 = ((!(__pyx_v_self->_all_markets_ready != 0)) != 0);
   if (__pyx_t_2) {
 
-    /* "hummingbot/strategy/hedge/hedge.pyx":257
+    /* "hummingbot/strategy/hedge/hedge.pyx":276
  *         lines = []
  *         if not self._all_markets_ready:
  *             for exchange in self._exchanges:             # <<<<<<<<<<<<<<
@@ -10237,26 +10956,26 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
       __pyx_t_1 = __pyx_v_self->_exchanges; __Pyx_INCREF(__pyx_t_1); __pyx_t_3 = 0;
       __pyx_t_4 = NULL;
     } else {
-      __pyx_t_3 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_self->_exchanges); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 257, __pyx_L1_error)
+      __pyx_t_3 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_self->_exchanges); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 276, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_4 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 257, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 276, __pyx_L1_error)
     }
     for (;;) {
       if (likely(!__pyx_t_4)) {
         if (likely(PyList_CheckExact(__pyx_t_1))) {
           if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_1)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_5 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_5); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 257, __pyx_L1_error)
+          __pyx_t_5 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_5); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 276, __pyx_L1_error)
           #else
-          __pyx_t_5 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 257, __pyx_L1_error)
+          __pyx_t_5 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 276, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_5);
           #endif
         } else {
           if (__pyx_t_3 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_5); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 257, __pyx_L1_error)
+          __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_5); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 276, __pyx_L1_error)
           #else
-          __pyx_t_5 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 257, __pyx_L1_error)
+          __pyx_t_5 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 276, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_5);
           #endif
         }
@@ -10266,7 +10985,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 257, __pyx_L1_error)
+            else __PYX_ERR(0, 276, __pyx_L1_error)
           }
           break;
         }
@@ -10275,39 +10994,39 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
       __Pyx_XDECREF_SET(__pyx_v_exchange, __pyx_t_5);
       __pyx_t_5 = 0;
 
-      /* "hummingbot/strategy/hedge/hedge.pyx":258
+      /* "hummingbot/strategy/hedge/hedge.pyx":277
  *         if not self._all_markets_ready:
  *             for exchange in self._exchanges:
  *                 if not exchange.ready:             # <<<<<<<<<<<<<<
  *                     lines.extend(f"{exchange.name} connector is not ready...\n")
  *             return ''.join(lines)
  */
-      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_exchange, __pyx_n_s_ready); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 258, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_exchange, __pyx_n_s_ready); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 277, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(0, 258, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(0, 277, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __pyx_t_6 = ((!__pyx_t_2) != 0);
       if (__pyx_t_6) {
 
-        /* "hummingbot/strategy/hedge/hedge.pyx":259
+        /* "hummingbot/strategy/hedge/hedge.pyx":278
  *             for exchange in self._exchanges:
  *                 if not exchange.ready:
  *                     lines.extend(f"{exchange.name} connector is not ready...\n")             # <<<<<<<<<<<<<<
  *             return ''.join(lines)
  * 
  */
-        __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_exchange, __pyx_n_s_name_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 259, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_exchange, __pyx_n_s_name_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 278, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
-        __pyx_t_7 = __Pyx_PyObject_FormatSimple(__pyx_t_5, __pyx_empty_unicode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 259, __pyx_L1_error)
+        __pyx_t_7 = __Pyx_PyObject_FormatSimple(__pyx_t_5, __pyx_empty_unicode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 278, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_7);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-        __pyx_t_5 = __Pyx_PyUnicode_ConcatInPlace(__pyx_t_7, __pyx_kp_u_connector_is_not_ready); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 259, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyUnicode_ConcatInPlace(__pyx_t_7, __pyx_kp_u_connector_is_not_ready); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 278, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-        __pyx_t_8 = __Pyx_PyList_Extend(__pyx_v_lines, __pyx_t_5); if (unlikely(__pyx_t_8 == ((int)-1))) __PYX_ERR(0, 259, __pyx_L1_error)
+        __pyx_t_8 = __Pyx_PyList_Extend(__pyx_v_lines, __pyx_t_5); if (unlikely(__pyx_t_8 == ((int)-1))) __PYX_ERR(0, 278, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-        /* "hummingbot/strategy/hedge/hedge.pyx":258
+        /* "hummingbot/strategy/hedge/hedge.pyx":277
  *         if not self._all_markets_ready:
  *             for exchange in self._exchanges:
  *                 if not exchange.ready:             # <<<<<<<<<<<<<<
@@ -10316,7 +11035,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
  */
       }
 
-      /* "hummingbot/strategy/hedge/hedge.pyx":257
+      /* "hummingbot/strategy/hedge/hedge.pyx":276
  *         lines = []
  *         if not self._all_markets_ready:
  *             for exchange in self._exchanges:             # <<<<<<<<<<<<<<
@@ -10326,7 +11045,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
     }
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "hummingbot/strategy/hedge/hedge.pyx":260
+    /* "hummingbot/strategy/hedge/hedge.pyx":279
  *                 if not exchange.ready:
  *                     lines.extend(f"{exchange.name} connector is not ready...\n")
  *             return ''.join(lines)             # <<<<<<<<<<<<<<
@@ -10334,13 +11053,13 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
  *         markets_df = self.market_status_data_frame()
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_1 = PyUnicode_Join(__pyx_kp_u__2, __pyx_v_lines); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 260, __pyx_L1_error)
+    __pyx_t_1 = PyUnicode_Join(__pyx_kp_u__2, __pyx_v_lines); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 279, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_r = ((PyObject*)__pyx_t_1);
     __pyx_t_1 = 0;
     goto __pyx_L0;
 
-    /* "hummingbot/strategy/hedge/hedge.pyx":256
+    /* "hummingbot/strategy/hedge/hedge.pyx":275
  *     def format_status(self) -> str:
  *         lines = []
  *         if not self._all_markets_ready:             # <<<<<<<<<<<<<<
@@ -10349,14 +11068,14 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
  */
   }
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":262
+  /* "hummingbot/strategy/hedge/hedge.pyx":281
  *             return ''.join(lines)
  * 
  *         markets_df = self.market_status_data_frame()             # <<<<<<<<<<<<<<
  *         wallet_df = self.wallet_df()
  *         lines.extend(["", "  Markets:"] + ["    " + line for line in markets_df.to_string(index=False).split("\n")])
  */
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_market_status_data_frame); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 262, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_market_status_data_frame); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 281, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __pyx_t_7 = NULL;
   __pyx_t_9 = 0;
@@ -10374,21 +11093,21 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
     PyObject *__pyx_callargs[1] = {__pyx_t_7, };
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_5, __pyx_callargs+1-__pyx_t_9, 0+__pyx_t_9);
     __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 262, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 281, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   }
   __pyx_v_markets_df = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":263
+  /* "hummingbot/strategy/hedge/hedge.pyx":282
  * 
  *         markets_df = self.market_status_data_frame()
  *         wallet_df = self.wallet_df()             # <<<<<<<<<<<<<<
  *         lines.extend(["", "  Markets:"] + ["    " + line for line in markets_df.to_string(index=False).split("\n")])
  * 
  */
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_wallet_df); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 263, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_wallet_df); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 282, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __pyx_t_7 = NULL;
   __pyx_t_9 = 0;
@@ -10406,21 +11125,21 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
     PyObject *__pyx_callargs[1] = {__pyx_t_7, };
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_5, __pyx_callargs+1-__pyx_t_9, 0+__pyx_t_9);
     __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 263, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 282, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   }
   __pyx_v_wallet_df = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":264
+  /* "hummingbot/strategy/hedge/hedge.pyx":283
  *         markets_df = self.market_status_data_frame()
  *         wallet_df = self.wallet_df()
  *         lines.extend(["", "  Markets:"] + ["    " + line for line in markets_df.to_string(index=False).split("\n")])             # <<<<<<<<<<<<<<
  * 
  *         lines.extend(["", f"  Wallet:\n"])
  */
-  __pyx_t_1 = PyList_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 264, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 283, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_kp_u__2);
   __Pyx_GIVEREF(__pyx_kp_u__2);
@@ -10429,18 +11148,18 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
   __Pyx_GIVEREF(__pyx_kp_u_Markets);
   PyList_SET_ITEM(__pyx_t_1, 1, __pyx_kp_u_Markets);
   { /* enter inner scope */
-    __pyx_t_5 = PyList_New(0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 264, __pyx_L9_error)
+    __pyx_t_5 = PyList_New(0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 283, __pyx_L9_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_v_markets_df, __pyx_n_s_to_string); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 264, __pyx_L9_error)
+    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_v_markets_df, __pyx_n_s_to_string); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 283, __pyx_L9_error)
     __Pyx_GOTREF(__pyx_t_10);
-    __pyx_t_11 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 264, __pyx_L9_error)
+    __pyx_t_11 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 283, __pyx_L9_error)
     __Pyx_GOTREF(__pyx_t_11);
-    if (PyDict_SetItem(__pyx_t_11, __pyx_n_s_index, Py_False) < 0) __PYX_ERR(0, 264, __pyx_L9_error)
-    __pyx_t_12 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_empty_tuple, __pyx_t_11); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 264, __pyx_L9_error)
+    if (PyDict_SetItem(__pyx_t_11, __pyx_n_s_index, Py_False) < 0) __PYX_ERR(0, 283, __pyx_L9_error)
+    __pyx_t_12 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_empty_tuple, __pyx_t_11); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 283, __pyx_L9_error)
     __Pyx_GOTREF(__pyx_t_12);
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-    __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_split); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 264, __pyx_L9_error)
+    __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_split); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 283, __pyx_L9_error)
     __Pyx_GOTREF(__pyx_t_11);
     __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
     __pyx_t_12 = NULL;
@@ -10459,7 +11178,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
       PyObject *__pyx_callargs[2] = {__pyx_t_12, __pyx_kp_u__3};
       __pyx_t_7 = __Pyx_PyObject_FastCall(__pyx_t_11, __pyx_callargs+1-__pyx_t_9, 1+__pyx_t_9);
       __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-      if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 264, __pyx_L9_error)
+      if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 283, __pyx_L9_error)
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
     }
@@ -10467,9 +11186,9 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
       __pyx_t_11 = __pyx_t_7; __Pyx_INCREF(__pyx_t_11); __pyx_t_3 = 0;
       __pyx_t_4 = NULL;
     } else {
-      __pyx_t_3 = -1; __pyx_t_11 = PyObject_GetIter(__pyx_t_7); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 264, __pyx_L9_error)
+      __pyx_t_3 = -1; __pyx_t_11 = PyObject_GetIter(__pyx_t_7); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 283, __pyx_L9_error)
       __Pyx_GOTREF(__pyx_t_11);
-      __pyx_t_4 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_11); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 264, __pyx_L9_error)
+      __pyx_t_4 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_11); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 283, __pyx_L9_error)
     }
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     for (;;) {
@@ -10477,17 +11196,17 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
         if (likely(PyList_CheckExact(__pyx_t_11))) {
           if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_11)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_7 = PyList_GET_ITEM(__pyx_t_11, __pyx_t_3); __Pyx_INCREF(__pyx_t_7); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 264, __pyx_L9_error)
+          __pyx_t_7 = PyList_GET_ITEM(__pyx_t_11, __pyx_t_3); __Pyx_INCREF(__pyx_t_7); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 283, __pyx_L9_error)
           #else
-          __pyx_t_7 = PySequence_ITEM(__pyx_t_11, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 264, __pyx_L9_error)
+          __pyx_t_7 = PySequence_ITEM(__pyx_t_11, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 283, __pyx_L9_error)
           __Pyx_GOTREF(__pyx_t_7);
           #endif
         } else {
           if (__pyx_t_3 >= PyTuple_GET_SIZE(__pyx_t_11)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_7 = PyTuple_GET_ITEM(__pyx_t_11, __pyx_t_3); __Pyx_INCREF(__pyx_t_7); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 264, __pyx_L9_error)
+          __pyx_t_7 = PyTuple_GET_ITEM(__pyx_t_11, __pyx_t_3); __Pyx_INCREF(__pyx_t_7); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 283, __pyx_L9_error)
           #else
-          __pyx_t_7 = PySequence_ITEM(__pyx_t_11, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 264, __pyx_L9_error)
+          __pyx_t_7 = PySequence_ITEM(__pyx_t_11, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 283, __pyx_L9_error)
           __Pyx_GOTREF(__pyx_t_7);
           #endif
         }
@@ -10497,7 +11216,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 264, __pyx_L9_error)
+            else __PYX_ERR(0, 283, __pyx_L9_error)
           }
           break;
         }
@@ -10505,9 +11224,9 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
       }
       __Pyx_XDECREF_SET(__pyx_7genexpr__pyx_v_line, __pyx_t_7);
       __pyx_t_7 = 0;
-      __pyx_t_7 = PyNumber_Add(__pyx_kp_u__4, __pyx_7genexpr__pyx_v_line); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 264, __pyx_L9_error)
+      __pyx_t_7 = PyNumber_Add(__pyx_kp_u__4, __pyx_7genexpr__pyx_v_line); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 283, __pyx_L9_error)
       __Pyx_GOTREF(__pyx_t_7);
-      if (unlikely(__Pyx_ListComp_Append(__pyx_t_5, (PyObject*)__pyx_t_7))) __PYX_ERR(0, 264, __pyx_L9_error)
+      if (unlikely(__Pyx_ListComp_Append(__pyx_t_5, (PyObject*)__pyx_t_7))) __PYX_ERR(0, 283, __pyx_L9_error)
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     }
     __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
@@ -10518,25 +11237,25 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
     goto __pyx_L1_error;
     __pyx_L12_exit_scope:;
   } /* exit inner scope */
-  __pyx_t_11 = PyNumber_Add(__pyx_t_1, __pyx_t_5); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 264, __pyx_L1_error)
+  __pyx_t_11 = PyNumber_Add(__pyx_t_1, __pyx_t_5); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 283, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_8 = __Pyx_PyList_Extend(__pyx_v_lines, __pyx_t_11); if (unlikely(__pyx_t_8 == ((int)-1))) __PYX_ERR(0, 264, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyList_Extend(__pyx_v_lines, __pyx_t_11); if (unlikely(__pyx_t_8 == ((int)-1))) __PYX_ERR(0, 283, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":266
+  /* "hummingbot/strategy/hedge/hedge.pyx":285
  *         lines.extend(["", "  Markets:"] + ["    " + line for line in markets_df.to_string(index=False).split("\n")])
  * 
  *         lines.extend(["", f"  Wallet:\n"])             # <<<<<<<<<<<<<<
  *         lines.extend(["    " + line for line in wallet_df.to_string(index=False).split("\n")])
  * 
  */
-  __pyx_t_8 = __Pyx_ListComp_Append(__pyx_v_lines, __pyx_kp_u__2); if (unlikely(__pyx_t_8 == ((int)-1))) __PYX_ERR(0, 266, __pyx_L1_error)
-  __pyx_t_13 = __Pyx_PyList_Append(__pyx_v_lines, __pyx_kp_u_Wallet); if (unlikely(__pyx_t_13 == ((int)-1))) __PYX_ERR(0, 266, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_ListComp_Append(__pyx_v_lines, __pyx_kp_u__2); if (unlikely(__pyx_t_8 == ((int)-1))) __PYX_ERR(0, 285, __pyx_L1_error)
+  __pyx_t_13 = __Pyx_PyList_Append(__pyx_v_lines, __pyx_kp_u_Wallet); if (unlikely(__pyx_t_13 == ((int)-1))) __PYX_ERR(0, 285, __pyx_L1_error)
   (void)((__pyx_t_8 | __pyx_t_13));
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":267
+  /* "hummingbot/strategy/hedge/hedge.pyx":286
  * 
  *         lines.extend(["", f"  Wallet:\n"])
  *         lines.extend(["    " + line for line in wallet_df.to_string(index=False).split("\n")])             # <<<<<<<<<<<<<<
@@ -10544,18 +11263,18 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
  *         # See if there're any active positions.
  */
   { /* enter inner scope */
-    __pyx_t_11 = PyList_New(0); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 267, __pyx_L15_error)
+    __pyx_t_11 = PyList_New(0); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 286, __pyx_L15_error)
     __Pyx_GOTREF(__pyx_t_11);
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_wallet_df, __pyx_n_s_to_string); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 267, __pyx_L15_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_wallet_df, __pyx_n_s_to_string); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 286, __pyx_L15_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_7 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 267, __pyx_L15_error)
+    __pyx_t_7 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 286, __pyx_L15_error)
     __Pyx_GOTREF(__pyx_t_7);
-    if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_index, Py_False) < 0) __PYX_ERR(0, 267, __pyx_L15_error)
-    __pyx_t_12 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_empty_tuple, __pyx_t_7); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 267, __pyx_L15_error)
+    if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_index, Py_False) < 0) __PYX_ERR(0, 286, __pyx_L15_error)
+    __pyx_t_12 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_empty_tuple, __pyx_t_7); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 286, __pyx_L15_error)
     __Pyx_GOTREF(__pyx_t_12);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_split); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 267, __pyx_L15_error)
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_split); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 286, __pyx_L15_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
     __pyx_t_12 = NULL;
@@ -10574,7 +11293,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
       PyObject *__pyx_callargs[2] = {__pyx_t_12, __pyx_kp_u__3};
       __pyx_t_5 = __Pyx_PyObject_FastCall(__pyx_t_7, __pyx_callargs+1-__pyx_t_9, 1+__pyx_t_9);
       __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-      if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 267, __pyx_L15_error)
+      if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 286, __pyx_L15_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     }
@@ -10582,9 +11301,9 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
       __pyx_t_7 = __pyx_t_5; __Pyx_INCREF(__pyx_t_7); __pyx_t_3 = 0;
       __pyx_t_4 = NULL;
     } else {
-      __pyx_t_3 = -1; __pyx_t_7 = PyObject_GetIter(__pyx_t_5); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 267, __pyx_L15_error)
+      __pyx_t_3 = -1; __pyx_t_7 = PyObject_GetIter(__pyx_t_5); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 286, __pyx_L15_error)
       __Pyx_GOTREF(__pyx_t_7);
-      __pyx_t_4 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 267, __pyx_L15_error)
+      __pyx_t_4 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 286, __pyx_L15_error)
     }
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     for (;;) {
@@ -10592,17 +11311,17 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
         if (likely(PyList_CheckExact(__pyx_t_7))) {
           if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_7)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_5 = PyList_GET_ITEM(__pyx_t_7, __pyx_t_3); __Pyx_INCREF(__pyx_t_5); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 267, __pyx_L15_error)
+          __pyx_t_5 = PyList_GET_ITEM(__pyx_t_7, __pyx_t_3); __Pyx_INCREF(__pyx_t_5); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 286, __pyx_L15_error)
           #else
-          __pyx_t_5 = PySequence_ITEM(__pyx_t_7, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 267, __pyx_L15_error)
+          __pyx_t_5 = PySequence_ITEM(__pyx_t_7, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 286, __pyx_L15_error)
           __Pyx_GOTREF(__pyx_t_5);
           #endif
         } else {
           if (__pyx_t_3 >= PyTuple_GET_SIZE(__pyx_t_7)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_7, __pyx_t_3); __Pyx_INCREF(__pyx_t_5); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 267, __pyx_L15_error)
+          __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_7, __pyx_t_3); __Pyx_INCREF(__pyx_t_5); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 286, __pyx_L15_error)
           #else
-          __pyx_t_5 = PySequence_ITEM(__pyx_t_7, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 267, __pyx_L15_error)
+          __pyx_t_5 = PySequence_ITEM(__pyx_t_7, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 286, __pyx_L15_error)
           __Pyx_GOTREF(__pyx_t_5);
           #endif
         }
@@ -10612,7 +11331,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 267, __pyx_L15_error)
+            else __PYX_ERR(0, 286, __pyx_L15_error)
           }
           break;
         }
@@ -10620,9 +11339,9 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
       }
       __Pyx_XDECREF_SET(__pyx_8genexpr1__pyx_v_line, __pyx_t_5);
       __pyx_t_5 = 0;
-      __pyx_t_5 = PyNumber_Add(__pyx_kp_u__4, __pyx_8genexpr1__pyx_v_line); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 267, __pyx_L15_error)
+      __pyx_t_5 = PyNumber_Add(__pyx_kp_u__4, __pyx_8genexpr1__pyx_v_line); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 286, __pyx_L15_error)
       __Pyx_GOTREF(__pyx_t_5);
-      if (unlikely(__Pyx_ListComp_Append(__pyx_t_11, (PyObject*)__pyx_t_5))) __PYX_ERR(0, 267, __pyx_L15_error)
+      if (unlikely(__Pyx_ListComp_Append(__pyx_t_11, (PyObject*)__pyx_t_5))) __PYX_ERR(0, 286, __pyx_L15_error)
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     }
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
@@ -10633,31 +11352,31 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
     goto __pyx_L1_error;
     __pyx_L18_exit_scope:;
   } /* exit inner scope */
-  __pyx_t_13 = __Pyx_PyList_Extend(__pyx_v_lines, __pyx_t_11); if (unlikely(__pyx_t_13 == ((int)-1))) __PYX_ERR(0, 267, __pyx_L1_error)
+  __pyx_t_13 = __Pyx_PyList_Extend(__pyx_v_lines, __pyx_t_11); if (unlikely(__pyx_t_13 == ((int)-1))) __PYX_ERR(0, 286, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":270
+  /* "hummingbot/strategy/hedge/hedge.pyx":289
  * 
  *         # See if there're any active positions.
  *         if len(self.market_info_to_active_orders) > 0:             # <<<<<<<<<<<<<<
  *             df = self.active_orders_df()
  *             lines.extend(["", "  Active Orders:"] + ["    " + line for line in df.to_string(index=False).split("\n")])
  */
-  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_market_info_to_active_orders); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 270, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_market_info_to_active_orders); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 289, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
-  __pyx_t_3 = PyObject_Length(__pyx_t_11); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 270, __pyx_L1_error)
+  __pyx_t_3 = PyObject_Length(__pyx_t_11); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 289, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
   __pyx_t_6 = ((__pyx_t_3 > 0) != 0);
   if (__pyx_t_6) {
 
-    /* "hummingbot/strategy/hedge/hedge.pyx":271
+    /* "hummingbot/strategy/hedge/hedge.pyx":290
  *         # See if there're any active positions.
  *         if len(self.market_info_to_active_orders) > 0:
  *             df = self.active_orders_df()             # <<<<<<<<<<<<<<
  *             lines.extend(["", "  Active Orders:"] + ["    " + line for line in df.to_string(index=False).split("\n")])
  *         else:
  */
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_active_orders_df); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 271, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_active_orders_df); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 290, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __pyx_t_5 = NULL;
     __pyx_t_9 = 0;
@@ -10675,21 +11394,21 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
       PyObject *__pyx_callargs[1] = {__pyx_t_5, };
       __pyx_t_11 = __Pyx_PyObject_FastCall(__pyx_t_7, __pyx_callargs+1-__pyx_t_9, 0+__pyx_t_9);
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-      if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 271, __pyx_L1_error)
+      if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 290, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     }
     __pyx_v_df = __pyx_t_11;
     __pyx_t_11 = 0;
 
-    /* "hummingbot/strategy/hedge/hedge.pyx":272
+    /* "hummingbot/strategy/hedge/hedge.pyx":291
  *         if len(self.market_info_to_active_orders) > 0:
  *             df = self.active_orders_df()
  *             lines.extend(["", "  Active Orders:"] + ["    " + line for line in df.to_string(index=False).split("\n")])             # <<<<<<<<<<<<<<
  *         else:
  *             lines.extend(["", "  No active orders."])
  */
-    __pyx_t_11 = PyList_New(2); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 272, __pyx_L1_error)
+    __pyx_t_11 = PyList_New(2); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 291, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_11);
     __Pyx_INCREF(__pyx_kp_u__2);
     __Pyx_GIVEREF(__pyx_kp_u__2);
@@ -10698,18 +11417,18 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
     __Pyx_GIVEREF(__pyx_kp_u_Active_Orders);
     PyList_SET_ITEM(__pyx_t_11, 1, __pyx_kp_u_Active_Orders);
     { /* enter inner scope */
-      __pyx_t_7 = PyList_New(0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 272, __pyx_L22_error)
+      __pyx_t_7 = PyList_New(0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 291, __pyx_L22_error)
       __Pyx_GOTREF(__pyx_t_7);
-      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_df, __pyx_n_s_to_string); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 272, __pyx_L22_error)
+      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_df, __pyx_n_s_to_string); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 291, __pyx_L22_error)
       __Pyx_GOTREF(__pyx_t_12);
-      __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 272, __pyx_L22_error)
+      __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 291, __pyx_L22_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_index, Py_False) < 0) __PYX_ERR(0, 272, __pyx_L22_error)
-      __pyx_t_10 = __Pyx_PyObject_Call(__pyx_t_12, __pyx_empty_tuple, __pyx_t_1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 272, __pyx_L22_error)
+      if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_index, Py_False) < 0) __PYX_ERR(0, 291, __pyx_L22_error)
+      __pyx_t_10 = __Pyx_PyObject_Call(__pyx_t_12, __pyx_empty_tuple, __pyx_t_1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 291, __pyx_L22_error)
       __Pyx_GOTREF(__pyx_t_10);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_split); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 272, __pyx_L22_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_split); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 291, __pyx_L22_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
       __pyx_t_10 = NULL;
@@ -10728,7 +11447,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
         PyObject *__pyx_callargs[2] = {__pyx_t_10, __pyx_kp_u__3};
         __pyx_t_5 = __Pyx_PyObject_FastCall(__pyx_t_1, __pyx_callargs+1-__pyx_t_9, 1+__pyx_t_9);
         __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
-        if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 272, __pyx_L22_error)
+        if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 291, __pyx_L22_error)
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       }
@@ -10736,9 +11455,9 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
         __pyx_t_1 = __pyx_t_5; __Pyx_INCREF(__pyx_t_1); __pyx_t_3 = 0;
         __pyx_t_4 = NULL;
       } else {
-        __pyx_t_3 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 272, __pyx_L22_error)
+        __pyx_t_3 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 291, __pyx_L22_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_4 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 272, __pyx_L22_error)
+        __pyx_t_4 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 291, __pyx_L22_error)
       }
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       for (;;) {
@@ -10746,17 +11465,17 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
           if (likely(PyList_CheckExact(__pyx_t_1))) {
             if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_1)) break;
             #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-            __pyx_t_5 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_5); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 272, __pyx_L22_error)
+            __pyx_t_5 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_5); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 291, __pyx_L22_error)
             #else
-            __pyx_t_5 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 272, __pyx_L22_error)
+            __pyx_t_5 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 291, __pyx_L22_error)
             __Pyx_GOTREF(__pyx_t_5);
             #endif
           } else {
             if (__pyx_t_3 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
             #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-            __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_5); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 272, __pyx_L22_error)
+            __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_5); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 291, __pyx_L22_error)
             #else
-            __pyx_t_5 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 272, __pyx_L22_error)
+            __pyx_t_5 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 291, __pyx_L22_error)
             __Pyx_GOTREF(__pyx_t_5);
             #endif
           }
@@ -10766,7 +11485,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
             PyObject* exc_type = PyErr_Occurred();
             if (exc_type) {
               if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-              else __PYX_ERR(0, 272, __pyx_L22_error)
+              else __PYX_ERR(0, 291, __pyx_L22_error)
             }
             break;
           }
@@ -10774,9 +11493,9 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
         }
         __Pyx_XDECREF_SET(__pyx_8genexpr2__pyx_v_line, __pyx_t_5);
         __pyx_t_5 = 0;
-        __pyx_t_5 = PyNumber_Add(__pyx_kp_u__4, __pyx_8genexpr2__pyx_v_line); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 272, __pyx_L22_error)
+        __pyx_t_5 = PyNumber_Add(__pyx_kp_u__4, __pyx_8genexpr2__pyx_v_line); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 291, __pyx_L22_error)
         __Pyx_GOTREF(__pyx_t_5);
-        if (unlikely(__Pyx_ListComp_Append(__pyx_t_7, (PyObject*)__pyx_t_5))) __PYX_ERR(0, 272, __pyx_L22_error)
+        if (unlikely(__Pyx_ListComp_Append(__pyx_t_7, (PyObject*)__pyx_t_5))) __PYX_ERR(0, 291, __pyx_L22_error)
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       }
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -10787,14 +11506,14 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
       goto __pyx_L1_error;
       __pyx_L25_exit_scope:;
     } /* exit inner scope */
-    __pyx_t_1 = PyNumber_Add(__pyx_t_11, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 272, __pyx_L1_error)
+    __pyx_t_1 = PyNumber_Add(__pyx_t_11, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 291, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_13 = __Pyx_PyList_Extend(__pyx_v_lines, __pyx_t_1); if (unlikely(__pyx_t_13 == ((int)-1))) __PYX_ERR(0, 272, __pyx_L1_error)
+    __pyx_t_13 = __Pyx_PyList_Extend(__pyx_v_lines, __pyx_t_1); if (unlikely(__pyx_t_13 == ((int)-1))) __PYX_ERR(0, 291, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "hummingbot/strategy/hedge/hedge.pyx":270
+    /* "hummingbot/strategy/hedge/hedge.pyx":289
  * 
  *         # See if there're any active positions.
  *         if len(self.market_info_to_active_orders) > 0:             # <<<<<<<<<<<<<<
@@ -10804,7 +11523,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
     goto __pyx_L19;
   }
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":274
+  /* "hummingbot/strategy/hedge/hedge.pyx":293
  *             lines.extend(["", "  Active Orders:"] + ["    " + line for line in df.to_string(index=False).split("\n")])
  *         else:
  *             lines.extend(["", "  No active orders."])             # <<<<<<<<<<<<<<
@@ -10812,13 +11531,13 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
  *         return "\n".join(lines)
  */
   /*else*/ {
-    __pyx_t_13 = __Pyx_ListComp_Append(__pyx_v_lines, __pyx_kp_u__2); if (unlikely(__pyx_t_13 == ((int)-1))) __PYX_ERR(0, 274, __pyx_L1_error)
-    __pyx_t_8 = __Pyx_PyList_Append(__pyx_v_lines, __pyx_kp_u_No_active_orders); if (unlikely(__pyx_t_8 == ((int)-1))) __PYX_ERR(0, 274, __pyx_L1_error)
+    __pyx_t_13 = __Pyx_ListComp_Append(__pyx_v_lines, __pyx_kp_u__2); if (unlikely(__pyx_t_13 == ((int)-1))) __PYX_ERR(0, 293, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyList_Append(__pyx_v_lines, __pyx_kp_u_No_active_orders); if (unlikely(__pyx_t_8 == ((int)-1))) __PYX_ERR(0, 293, __pyx_L1_error)
     (void)((__pyx_t_13 | __pyx_t_8));
   }
   __pyx_L19:;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":276
+  /* "hummingbot/strategy/hedge/hedge.pyx":295
  *             lines.extend(["", "  No active orders."])
  * 
  *         return "\n".join(lines)             # <<<<<<<<<<<<<<
@@ -10826,13 +11545,13 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
  *     cdef c_apply_initial_settings(self, object market_pair, object position, int64_t leverage):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyUnicode_Join(__pyx_kp_u__3, __pyx_v_lines); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 276, __pyx_L1_error)
+  __pyx_t_1 = PyUnicode_Join(__pyx_kp_u__3, __pyx_v_lines); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 295, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":254
+  /* "hummingbot/strategy/hedge/hedge.pyx":273
  *         return pd.DataFrame(data=data, columns=columns)
  * 
  *     def format_status(self) -> str:             # <<<<<<<<<<<<<<
@@ -10864,7 +11583,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/hedge/hedge.pyx":278
+/* "hummingbot/strategy/hedge/hedge.pyx":297
  *         return "\n".join(lines)
  * 
  *     cdef c_apply_initial_settings(self, object market_pair, object position, int64_t leverage):             # <<<<<<<<<<<<<<
@@ -10887,42 +11606,42 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("c_apply_initial_settings", 0);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":280
+  /* "hummingbot/strategy/hedge/hedge.pyx":299
  *     cdef c_apply_initial_settings(self, object market_pair, object position, int64_t leverage):
  *         cdef:
  *             ExchangeBase market = market_pair.market             # <<<<<<<<<<<<<<
  *             str trading_pair = market_pair.trading_pair
  *         market.set_leverage(trading_pair, leverage)
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_market_pair, __pyx_n_s_market); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 280, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_market_pair, __pyx_n_s_market); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 299, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_10hummingbot_9connector_13exchange_base_ExchangeBase))))) __PYX_ERR(0, 280, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_10hummingbot_9connector_13exchange_base_ExchangeBase))))) __PYX_ERR(0, 299, __pyx_L1_error)
   __pyx_v_market = ((struct __pyx_obj_10hummingbot_9connector_13exchange_base_ExchangeBase *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":281
+  /* "hummingbot/strategy/hedge/hedge.pyx":300
  *         cdef:
  *             ExchangeBase market = market_pair.market
  *             str trading_pair = market_pair.trading_pair             # <<<<<<<<<<<<<<
  *         market.set_leverage(trading_pair, leverage)
  *         market.set_position_mode(position)
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_market_pair, __pyx_n_s_trading_pair); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 281, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_market_pair, __pyx_n_s_trading_pair); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 300, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_1))) __PYX_ERR(0, 281, __pyx_L1_error)
+  if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_1))) __PYX_ERR(0, 300, __pyx_L1_error)
   __pyx_v_trading_pair = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":282
+  /* "hummingbot/strategy/hedge/hedge.pyx":301
  *             ExchangeBase market = market_pair.market
  *             str trading_pair = market_pair.trading_pair
  *         market.set_leverage(trading_pair, leverage)             # <<<<<<<<<<<<<<
  *         market.set_position_mode(position)
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_market), __pyx_n_s_set_leverage); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 282, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_market), __pyx_n_s_set_leverage); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 301, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyInt_From_int64_t(__pyx_v_leverage); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 282, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_int64_t(__pyx_v_leverage); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 301, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = NULL;
   __pyx_t_5 = 0;
@@ -10941,20 +11660,20 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_5, 2+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 282, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 301, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":283
+  /* "hummingbot/strategy/hedge/hedge.pyx":302
  *             str trading_pair = market_pair.trading_pair
  *         market.set_leverage(trading_pair, leverage)
  *         market.set_position_mode(position)             # <<<<<<<<<<<<<<
  * 
  *     cdef c_did_fill_order(self, object order_filled_event):
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_market), __pyx_n_s_set_position_mode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 283, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_market), __pyx_n_s_set_position_mode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 302, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   __pyx_t_5 = 0;
@@ -10972,13 +11691,13 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
     PyObject *__pyx_callargs[2] = {__pyx_t_3, __pyx_v_position};
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 283, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 302, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":278
+  /* "hummingbot/strategy/hedge/hedge.pyx":297
  *         return "\n".join(lines)
  * 
  *     cdef c_apply_initial_settings(self, object market_pair, object position, int64_t leverage):             # <<<<<<<<<<<<<<
@@ -11004,7 +11723,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/hedge/hedge.pyx":285
+/* "hummingbot/strategy/hedge/hedge.pyx":304
  *         market.set_position_mode(position)
  * 
  *     cdef c_did_fill_order(self, object order_filled_event):             # <<<<<<<<<<<<<<
@@ -11034,37 +11753,37 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("c_did_fill_order", 0);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":287
+  /* "hummingbot/strategy/hedge/hedge.pyx":306
  *     cdef c_did_fill_order(self, object order_filled_event):
  *         cdef:
  *             str trading_pair = order_filled_event.trading_pair             # <<<<<<<<<<<<<<
  *             str trade_type = "Buy" if order_filled_event.trade_type == TradeType.BUY else "sell"
  *             object price = order_filled_event.price
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_filled_event, __pyx_n_s_trading_pair); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 287, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_filled_event, __pyx_n_s_trading_pair); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 306, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_1))) __PYX_ERR(0, 287, __pyx_L1_error)
+  if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_1))) __PYX_ERR(0, 306, __pyx_L1_error)
   __pyx_v_trading_pair = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":288
+  /* "hummingbot/strategy/hedge/hedge.pyx":307
  *         cdef:
  *             str trading_pair = order_filled_event.trading_pair
  *             str trade_type = "Buy" if order_filled_event.trade_type == TradeType.BUY else "sell"             # <<<<<<<<<<<<<<
  *             object price = order_filled_event.price
  *             object amount = order_filled_event.amount
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_filled_event, __pyx_n_s_trade_type); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 288, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_filled_event, __pyx_n_s_trade_type); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 307, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_TradeType); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 288, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_TradeType); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 307, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_BUY); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 288, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_BUY); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 307, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyObject_RichCompare(__pyx_t_2, __pyx_t_4, Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 288, __pyx_L1_error)
+  __pyx_t_3 = PyObject_RichCompare(__pyx_t_2, __pyx_t_4, Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 307, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 288, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 307, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   if (__pyx_t_5) {
     __Pyx_INCREF(__pyx_n_u_Buy);
@@ -11076,43 +11795,43 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __pyx_v_trade_type = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":289
+  /* "hummingbot/strategy/hedge/hedge.pyx":308
  *             str trading_pair = order_filled_event.trading_pair
  *             str trade_type = "Buy" if order_filled_event.trade_type == TradeType.BUY else "sell"
  *             object price = order_filled_event.price             # <<<<<<<<<<<<<<
  *             object amount = order_filled_event.amount
  *             object order_amount = amount if trade_type == "Buy" else -amount
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_filled_event, __pyx_n_s_price); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 289, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_filled_event, __pyx_n_s_price); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 308, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_price = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":290
+  /* "hummingbot/strategy/hedge/hedge.pyx":309
  *             str trade_type = "Buy" if order_filled_event.trade_type == TradeType.BUY else "sell"
  *             object price = order_filled_event.price
  *             object amount = order_filled_event.amount             # <<<<<<<<<<<<<<
  *             object order_amount = amount if trade_type == "Buy" else -amount
  *         self.update_shadow_position(trading_pair, order_amount)
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_filled_event, __pyx_n_s_amount); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 290, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_filled_event, __pyx_n_s_amount); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 309, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_amount = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":291
+  /* "hummingbot/strategy/hedge/hedge.pyx":310
  *             object price = order_filled_event.price
  *             object amount = order_filled_event.amount
  *             object order_amount = amount if trade_type == "Buy" else -amount             # <<<<<<<<<<<<<<
  *         self.update_shadow_position(trading_pair, order_amount)
  * 
  */
-  __pyx_t_5 = (__Pyx_PyUnicode_Equals(__pyx_v_trade_type, __pyx_n_u_Buy, Py_EQ)); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 291, __pyx_L1_error)
+  __pyx_t_5 = (__Pyx_PyUnicode_Equals(__pyx_v_trade_type, __pyx_n_u_Buy, Py_EQ)); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 310, __pyx_L1_error)
   if ((__pyx_t_5 != 0)) {
     __Pyx_INCREF(__pyx_v_amount);
     __pyx_t_1 = __pyx_v_amount;
   } else {
-    __pyx_t_3 = PyNumber_Negative(__pyx_v_amount); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 291, __pyx_L1_error)
+    __pyx_t_3 = PyNumber_Negative(__pyx_v_amount); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 310, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_1 = __pyx_t_3;
     __pyx_t_3 = 0;
@@ -11120,14 +11839,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __pyx_v_order_amount = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":292
+  /* "hummingbot/strategy/hedge/hedge.pyx":311
  *             object amount = order_filled_event.amount
  *             object order_amount = amount if trade_type == "Buy" else -amount
  *         self.update_shadow_position(trading_pair, order_amount)             # <<<<<<<<<<<<<<
  * 
  *         self.log_with_clock(
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_update_shadow_position); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 292, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_update_shadow_position); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 311, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = NULL;
   __pyx_t_6 = 0;
@@ -11145,47 +11864,47 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
     PyObject *__pyx_callargs[3] = {__pyx_t_4, __pyx_v_trading_pair, __pyx_v_order_amount};
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_6, 2+__pyx_t_6);
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 292, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 311, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":294
+  /* "hummingbot/strategy/hedge/hedge.pyx":313
  *         self.update_shadow_position(trading_pair, order_amount)
  * 
  *         self.log_with_clock(             # <<<<<<<<<<<<<<
  *             logging.INFO,
  *             f"{trading_pair} {trade_type} order of "
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_log_with_clock); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 294, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_log_with_clock); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 313, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":295
+  /* "hummingbot/strategy/hedge/hedge.pyx":314
  * 
  *         self.log_with_clock(
  *             logging.INFO,             # <<<<<<<<<<<<<<
  *             f"{trading_pair} {trade_type} order of "
  *             f"{amount}  filled at {price}.")
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_logging); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 295, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_logging); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 314, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_INFO); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 295, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_INFO); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 314, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":296
+  /* "hummingbot/strategy/hedge/hedge.pyx":315
  *         self.log_with_clock(
  *             logging.INFO,
  *             f"{trading_pair} {trade_type} order of "             # <<<<<<<<<<<<<<
  *             f"{amount}  filled at {price}.")
  * 
  */
-  __pyx_t_4 = PyTuple_New(8); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 296, __pyx_L1_error)
+  __pyx_t_4 = PyTuple_New(8); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 315, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_7 = 0;
   __pyx_t_8 = 127;
-  __pyx_t_9 = __Pyx_PyUnicode_Unicode(__pyx_v_trading_pair); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 296, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyUnicode_Unicode(__pyx_v_trading_pair); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 315, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __pyx_t_8 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_8) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_8;
   __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_9);
@@ -11196,7 +11915,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __pyx_t_7 += 1;
   __Pyx_GIVEREF(__pyx_kp_u_);
   PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_kp_u_);
-  __pyx_t_9 = __Pyx_PyUnicode_Unicode(__pyx_v_trade_type); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 296, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyUnicode_Unicode(__pyx_v_trade_type); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 315, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __pyx_t_8 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_8) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_8;
   __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_9);
@@ -11208,14 +11927,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __Pyx_GIVEREF(__pyx_kp_u_order_of);
   PyTuple_SET_ITEM(__pyx_t_4, 3, __pyx_kp_u_order_of);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":297
+  /* "hummingbot/strategy/hedge/hedge.pyx":316
  *             logging.INFO,
  *             f"{trading_pair} {trade_type} order of "
  *             f"{amount}  filled at {price}.")             # <<<<<<<<<<<<<<
  * 
  *     cdef c_start(self, Clock clock, double timestamp):
  */
-  __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_v_amount, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 297, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_v_amount, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 316, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __pyx_t_8 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_8) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_8;
   __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_9);
@@ -11226,7 +11945,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __pyx_t_7 += 12;
   __Pyx_GIVEREF(__pyx_kp_u_filled_at);
   PyTuple_SET_ITEM(__pyx_t_4, 5, __pyx_kp_u_filled_at);
-  __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_v_price, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 297, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_v_price, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 316, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __pyx_t_8 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_8) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_8;
   __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_9);
@@ -11238,14 +11957,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __Pyx_GIVEREF(__pyx_kp_u__5);
   PyTuple_SET_ITEM(__pyx_t_4, 7, __pyx_kp_u__5);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":296
+  /* "hummingbot/strategy/hedge/hedge.pyx":315
  *         self.log_with_clock(
  *             logging.INFO,
  *             f"{trading_pair} {trade_type} order of "             # <<<<<<<<<<<<<<
  *             f"{amount}  filled at {price}.")
  * 
  */
-  __pyx_t_9 = __Pyx_PyUnicode_Join(__pyx_t_4, 8, __pyx_t_7, __pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 296, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyUnicode_Join(__pyx_t_4, 8, __pyx_t_7, __pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 315, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_4 = NULL;
@@ -11266,13 +11985,13 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 294, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 313, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":285
+  /* "hummingbot/strategy/hedge/hedge.pyx":304
  *         market.set_position_mode(position)
  * 
  *     cdef c_did_fill_order(self, object order_filled_event):             # <<<<<<<<<<<<<<
@@ -11302,7 +12021,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/hedge/hedge.pyx":299
+/* "hummingbot/strategy/hedge/hedge.pyx":318
  *             f"{amount}  filled at {price}.")
  * 
  *     cdef c_start(self, Clock clock, double timestamp):             # <<<<<<<<<<<<<<
@@ -11330,7 +12049,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("c_start", 0);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":300
+  /* "hummingbot/strategy/hedge/hedge.pyx":319
  * 
  *     cdef c_start(self, Clock clock, double timestamp):
  *         clock._tick_size = self._hedge_interval             # <<<<<<<<<<<<<<
@@ -11340,18 +12059,18 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __pyx_t_1 = __pyx_v_self->_hedge_interval;
   __pyx_v_clock->_tick_size = __pyx_t_1;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":301
+  /* "hummingbot/strategy/hedge/hedge.pyx":320
  *     cdef c_start(self, Clock clock, double timestamp):
  *         clock._tick_size = self._hedge_interval
  *         StrategyBase.c_start(self, clock, timestamp)             # <<<<<<<<<<<<<<
  *         cdef:
  *             object market_pair
  */
-  __pyx_t_2 = __pyx_vtabptr_10hummingbot_8strategy_13strategy_base_StrategyBase->__pyx_base.c_start(((struct __pyx_obj_10hummingbot_4core_13time_iterator_TimeIterator *)__pyx_v_self), __pyx_v_clock, __pyx_v_timestamp); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 301, __pyx_L1_error)
+  __pyx_t_2 = __pyx_vtabptr_10hummingbot_8strategy_13strategy_base_StrategyBase->__pyx_base.c_start(((struct __pyx_obj_10hummingbot_4core_13time_iterator_TimeIterator *)__pyx_v_self), __pyx_v_clock, __pyx_v_timestamp); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 320, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":306
+  /* "hummingbot/strategy/hedge/hedge.pyx":325
  *             str trading_pair
  *             object taker_balance
  *         self._last_timestamp = timestamp             # <<<<<<<<<<<<<<
@@ -11360,7 +12079,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
  */
   __pyx_v_self->_last_timestamp = __pyx_v_timestamp;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":307
+  /* "hummingbot/strategy/hedge/hedge.pyx":326
  *             object taker_balance
  *         self._last_timestamp = timestamp
  *         for maker_asset in self._market_infos:             # <<<<<<<<<<<<<<
@@ -11370,9 +12089,9 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __pyx_t_3 = 0;
   if (unlikely(__pyx_v_self->_market_infos == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 307, __pyx_L1_error)
+    __PYX_ERR(0, 326, __pyx_L1_error)
   }
-  __pyx_t_6 = __Pyx_dict_iterator(__pyx_v_self->_market_infos, 1, ((PyObject *)NULL), (&__pyx_t_4), (&__pyx_t_5)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 307, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_dict_iterator(__pyx_v_self->_market_infos, 1, ((PyObject *)NULL), (&__pyx_t_4), (&__pyx_t_5)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 326, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_2);
   __pyx_t_2 = __pyx_t_6;
@@ -11380,12 +12099,12 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   while (1) {
     __pyx_t_7 = __Pyx_dict_iter_next(__pyx_t_2, __pyx_t_4, &__pyx_t_3, &__pyx_t_6, NULL, NULL, __pyx_t_5);
     if (unlikely(__pyx_t_7 == 0)) break;
-    if (unlikely(__pyx_t_7 == -1)) __PYX_ERR(0, 307, __pyx_L1_error)
+    if (unlikely(__pyx_t_7 == -1)) __PYX_ERR(0, 326, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_XDECREF_SET(__pyx_v_maker_asset, __pyx_t_6);
     __pyx_t_6 = 0;
 
-    /* "hummingbot/strategy/hedge/hedge.pyx":308
+    /* "hummingbot/strategy/hedge/hedge.pyx":327
  *         self._last_timestamp = timestamp
  *         for maker_asset in self._market_infos:
  *             market_pair = self._market_infos[maker_asset]             # <<<<<<<<<<<<<<
@@ -11394,27 +12113,27 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
  */
     if (unlikely(__pyx_v_self->_market_infos == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 308, __pyx_L1_error)
+      __PYX_ERR(0, 327, __pyx_L1_error)
     }
-    __pyx_t_6 = __Pyx_PyDict_GetItem(__pyx_v_self->_market_infos, __pyx_v_maker_asset); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 308, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyDict_GetItem(__pyx_v_self->_market_infos, __pyx_v_maker_asset); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 327, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_XDECREF_SET(__pyx_v_market_pair, __pyx_t_6);
     __pyx_t_6 = 0;
 
-    /* "hummingbot/strategy/hedge/hedge.pyx":309
+    /* "hummingbot/strategy/hedge/hedge.pyx":328
  *         for maker_asset in self._market_infos:
  *             market_pair = self._market_infos[maker_asset]
  *             trading_pair = market_pair.trading_pair             # <<<<<<<<<<<<<<
  *             self._shadow_taker_balance[trading_pair]=0
  *             self._last_trade_time[maker_asset]=0
  */
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_market_pair, __pyx_n_s_trading_pair); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 309, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_market_pair, __pyx_n_s_trading_pair); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 328, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    if (!(likely(PyUnicode_CheckExact(__pyx_t_6))||((__pyx_t_6) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_6))) __PYX_ERR(0, 309, __pyx_L1_error)
+    if (!(likely(PyUnicode_CheckExact(__pyx_t_6))||((__pyx_t_6) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_6))) __PYX_ERR(0, 328, __pyx_L1_error)
     __Pyx_XDECREF_SET(__pyx_v_trading_pair, ((PyObject*)__pyx_t_6));
     __pyx_t_6 = 0;
 
-    /* "hummingbot/strategy/hedge/hedge.pyx":310
+    /* "hummingbot/strategy/hedge/hedge.pyx":329
  *             market_pair = self._market_infos[maker_asset]
  *             trading_pair = market_pair.trading_pair
  *             self._shadow_taker_balance[trading_pair]=0             # <<<<<<<<<<<<<<
@@ -11423,20 +12142,20 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
  */
     if (unlikely(__pyx_v_self->_shadow_taker_balance == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 310, __pyx_L1_error)
+      __PYX_ERR(0, 329, __pyx_L1_error)
     }
-    if (unlikely((PyDict_SetItem(__pyx_v_self->_shadow_taker_balance, __pyx_v_trading_pair, __pyx_int_0) < 0))) __PYX_ERR(0, 310, __pyx_L1_error)
+    if (unlikely((PyDict_SetItem(__pyx_v_self->_shadow_taker_balance, __pyx_v_trading_pair, __pyx_int_0) < 0))) __PYX_ERR(0, 329, __pyx_L1_error)
 
-    /* "hummingbot/strategy/hedge/hedge.pyx":311
+    /* "hummingbot/strategy/hedge/hedge.pyx":330
  *             trading_pair = market_pair.trading_pair
  *             self._shadow_taker_balance[trading_pair]=0
  *             self._last_trade_time[maker_asset]=0             # <<<<<<<<<<<<<<
  *             self.c_apply_initial_settings(market_pair, self._position_mode, self._leverage)
  * 
  */
-    if (unlikely((PyObject_SetItem(__pyx_v_self->_last_trade_time, __pyx_v_maker_asset, __pyx_int_0) < 0))) __PYX_ERR(0, 311, __pyx_L1_error)
+    if (unlikely((PyObject_SetItem(__pyx_v_self->_last_trade_time, __pyx_v_maker_asset, __pyx_int_0) < 0))) __PYX_ERR(0, 330, __pyx_L1_error)
 
-    /* "hummingbot/strategy/hedge/hedge.pyx":312
+    /* "hummingbot/strategy/hedge/hedge.pyx":331
  *             self._shadow_taker_balance[trading_pair]=0
  *             self._last_trade_time[maker_asset]=0
  *             self.c_apply_initial_settings(market_pair, self._position_mode, self._leverage)             # <<<<<<<<<<<<<<
@@ -11445,15 +12164,15 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
  */
     __pyx_t_6 = __pyx_v_self->_position_mode;
     __Pyx_INCREF(__pyx_t_6);
-    __pyx_t_8 = __Pyx_PyInt_As_int64_t(__pyx_v_self->_leverage); if (unlikely((__pyx_t_8 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 312, __pyx_L1_error)
-    __pyx_t_9 = ((struct __pyx_vtabstruct_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *)__pyx_v_self->__pyx_base.__pyx_base.__pyx_base.__pyx_vtab)->c_apply_initial_settings(__pyx_v_self, __pyx_v_market_pair, __pyx_t_6, __pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 312, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyInt_As_int64_t(__pyx_v_self->_leverage); if (unlikely((__pyx_t_8 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 331, __pyx_L1_error)
+    __pyx_t_9 = ((struct __pyx_vtabstruct_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *)__pyx_v_self->__pyx_base.__pyx_base.__pyx_base.__pyx_vtab)->c_apply_initial_settings(__pyx_v_self, __pyx_v_market_pair, __pyx_t_6, __pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 331, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":299
+  /* "hummingbot/strategy/hedge/hedge.pyx":318
  *             f"{amount}  filled at {price}.")
  * 
  *     cdef c_start(self, Clock clock, double timestamp):             # <<<<<<<<<<<<<<
@@ -11479,7 +12198,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/hedge/hedge.pyx":314
+/* "hummingbot/strategy/hedge/hedge.pyx":333
  *             self.c_apply_initial_settings(market_pair, self._position_mode, self._leverage)
  * 
  *     cdef c_tick(self, double timestamp):             # <<<<<<<<<<<<<<
@@ -11490,46 +12209,38 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
 static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_tick(struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self, double __pyx_v_timestamp) {
   int64_t __pyx_v_current_tick;
   int64_t __pyx_v_last_tick;
-  int __pyx_v_should_report_warnings;
-  PyObject *__pyx_8genexpr3__pyx_v_market = NULL;
-  PyObject *__pyx_8genexpr4__pyx_v_market = NULL;
+  CYTHON_UNUSED int __pyx_v_should_report_warnings;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  int __pyx_t_2;
+  PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
-  Py_ssize_t __pyx_t_4;
-  Py_ssize_t __pyx_t_5;
-  int __pyx_t_6;
+  int __pyx_t_4;
+  int __pyx_t_5;
+  char const *__pyx_t_6;
   PyObject *__pyx_t_7 = NULL;
-  int __pyx_t_8;
+  PyObject *__pyx_t_8 = NULL;
   PyObject *__pyx_t_9 = NULL;
   PyObject *__pyx_t_10 = NULL;
-  int __pyx_t_11;
-  char const *__pyx_t_12;
-  PyObject *__pyx_t_13 = NULL;
-  PyObject *__pyx_t_14 = NULL;
-  PyObject *__pyx_t_15 = NULL;
-  PyObject *__pyx_t_16 = NULL;
-  PyObject *__pyx_t_17 = NULL;
-  PyObject *__pyx_t_18 = NULL;
+  PyObject *__pyx_t_11 = NULL;
+  PyObject *__pyx_t_12 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("c_tick", 0);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":315
+  /* "hummingbot/strategy/hedge/hedge.pyx":334
  * 
  *     cdef c_tick(self, double timestamp):
  *         StrategyBase.c_tick(self, timestamp)             # <<<<<<<<<<<<<<
  *         cdef:
  *             int64_t current_tick = <int64_t>(timestamp // self._status_report_interval)
  */
-  __pyx_t_1 = __pyx_vtabptr_10hummingbot_8strategy_13strategy_base_StrategyBase->__pyx_base.c_tick(((struct __pyx_obj_10hummingbot_4core_13time_iterator_TimeIterator *)__pyx_v_self), __pyx_v_timestamp); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 315, __pyx_L1_error)
+  __pyx_t_1 = __pyx_vtabptr_10hummingbot_8strategy_13strategy_base_StrategyBase->__pyx_base.c_tick(((struct __pyx_obj_10hummingbot_4core_13time_iterator_TimeIterator *)__pyx_v_self), __pyx_v_timestamp); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 334, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":317
+  /* "hummingbot/strategy/hedge/hedge.pyx":336
  *         StrategyBase.c_tick(self, timestamp)
  *         cdef:
  *             int64_t current_tick = <int64_t>(timestamp // self._status_report_interval)             # <<<<<<<<<<<<<<
@@ -11538,11 +12249,11 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
  */
   if (unlikely(__pyx_v_self->_status_report_interval == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-    __PYX_ERR(0, 317, __pyx_L1_error)
+    __PYX_ERR(0, 336, __pyx_L1_error)
   }
   __pyx_v_current_tick = ((int64_t)floor(__pyx_v_timestamp / __pyx_v_self->_status_report_interval));
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":318
+  /* "hummingbot/strategy/hedge/hedge.pyx":337
  *         cdef:
  *             int64_t current_tick = <int64_t>(timestamp // self._status_report_interval)
  *             int64_t last_tick = <int64_t>(self._last_timestamp // self._status_report_interval)             # <<<<<<<<<<<<<<
@@ -11551,11 +12262,11 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
  */
   if (unlikely(__pyx_v_self->_status_report_interval == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-    __PYX_ERR(0, 318, __pyx_L1_error)
+    __PYX_ERR(0, 337, __pyx_L1_error)
   }
   __pyx_v_last_tick = ((int64_t)floor(__pyx_v_self->_last_timestamp / __pyx_v_self->_status_report_interval));
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":319
+  /* "hummingbot/strategy/hedge/hedge.pyx":338
  *             int64_t current_tick = <int64_t>(timestamp // self._status_report_interval)
  *             int64_t last_tick = <int64_t>(self._last_timestamp // self._status_report_interval)
  *             bint should_report_warnings = (current_tick > last_tick)             # <<<<<<<<<<<<<<
@@ -11564,405 +12275,79 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
  */
   __pyx_v_should_report_warnings = (__pyx_v_current_tick > __pyx_v_last_tick);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":321
+  /* "hummingbot/strategy/hedge/hedge.pyx":340
  *             bint should_report_warnings = (current_tick > last_tick)
  * 
  *         try:             # <<<<<<<<<<<<<<
- *             if not self._all_markets_ready:
- *                 self._all_markets_ready = all([market.ready for market in self._sb_markets])
+ *             self.update_wallet()
+ *             self.log_output()
  */
   /*try:*/ {
 
-    /* "hummingbot/strategy/hedge/hedge.pyx":322
+    /* "hummingbot/strategy/hedge/hedge.pyx":341
  * 
  *         try:
- *             if not self._all_markets_ready:             # <<<<<<<<<<<<<<
- *                 self._all_markets_ready = all([market.ready for market in self._sb_markets])
- *                 if not self._all_markets_ready:
- */
-    __pyx_t_2 = ((!(__pyx_v_self->_all_markets_ready != 0)) != 0);
-    if (__pyx_t_2) {
-
-      /* "hummingbot/strategy/hedge/hedge.pyx":323
- *         try:
- *             if not self._all_markets_ready:
- *                 self._all_markets_ready = all([market.ready for market in self._sb_markets])             # <<<<<<<<<<<<<<
- *                 if not self._all_markets_ready:
- *                     # Markets not ready yet. Don't do anything.
- */
-      { /* enter inner scope */
-        __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 323, __pyx_L9_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_4 = 0;
-        __pyx_t_7 = __Pyx_set_iterator(__pyx_v_self->__pyx_base._sb_markets, 1, (&__pyx_t_5), (&__pyx_t_6)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 323, __pyx_L9_error)
-        __Pyx_GOTREF(__pyx_t_7);
-        __Pyx_XDECREF(__pyx_t_3);
-        __pyx_t_3 = __pyx_t_7;
-        __pyx_t_7 = 0;
-        while (1) {
-          __pyx_t_8 = __Pyx_set_iter_next(__pyx_t_3, __pyx_t_5, &__pyx_t_4, &__pyx_t_7, __pyx_t_6);
-          if (unlikely(__pyx_t_8 == 0)) break;
-          if (unlikely(__pyx_t_8 == -1)) __PYX_ERR(0, 323, __pyx_L9_error)
-          __Pyx_GOTREF(__pyx_t_7);
-          __Pyx_XDECREF_SET(__pyx_8genexpr3__pyx_v_market, __pyx_t_7);
-          __pyx_t_7 = 0;
-          __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_8genexpr3__pyx_v_market, __pyx_n_s_ready); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 323, __pyx_L9_error)
-          __Pyx_GOTREF(__pyx_t_7);
-          if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_7))) __PYX_ERR(0, 323, __pyx_L9_error)
-          __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-        }
-        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        __Pyx_XDECREF(__pyx_8genexpr3__pyx_v_market); __pyx_8genexpr3__pyx_v_market = 0;
-        goto __pyx_L12_exit_scope;
-        __pyx_L9_error:;
-        __Pyx_XDECREF(__pyx_8genexpr3__pyx_v_market); __pyx_8genexpr3__pyx_v_market = 0;
-        goto __pyx_L4_error;
-        __pyx_L12_exit_scope:;
-      } /* exit inner scope */
-      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_builtin_all, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 323, __pyx_L4_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 323, __pyx_L4_error)
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_v_self->_all_markets_ready = __pyx_t_2;
-
-      /* "hummingbot/strategy/hedge/hedge.pyx":324
- *             if not self._all_markets_ready:
- *                 self._all_markets_ready = all([market.ready for market in self._sb_markets])
- *                 if not self._all_markets_ready:             # <<<<<<<<<<<<<<
- *                     # Markets not ready yet. Don't do anything.
- *                     if should_report_warnings:
- */
-      __pyx_t_2 = ((!(__pyx_v_self->_all_markets_ready != 0)) != 0);
-      if (__pyx_t_2) {
-
-        /* "hummingbot/strategy/hedge/hedge.pyx":326
- *                 if not self._all_markets_ready:
- *                     # Markets not ready yet. Don't do anything.
- *                     if should_report_warnings:             # <<<<<<<<<<<<<<
- *                         self.logger().warning(f"Markets are not ready. No market making trades are permitted.")
- *                     return
- */
-        __pyx_t_2 = (__pyx_v_should_report_warnings != 0);
-        if (__pyx_t_2) {
-
-          /* "hummingbot/strategy/hedge/hedge.pyx":327
- *                     # Markets not ready yet. Don't do anything.
- *                     if should_report_warnings:
- *                         self.logger().warning(f"Markets are not ready. No market making trades are permitted.")             # <<<<<<<<<<<<<<
- *                     return
- *                 else:
- */
-          __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_logger); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 327, __pyx_L4_error)
-          __Pyx_GOTREF(__pyx_t_7);
-          __pyx_t_9 = NULL;
-          __pyx_t_6 = 0;
-          if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_7))) {
-            __pyx_t_9 = PyMethod_GET_SELF(__pyx_t_7);
-            if (likely(__pyx_t_9)) {
-              PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
-              __Pyx_INCREF(__pyx_t_9);
-              __Pyx_INCREF(function);
-              __Pyx_DECREF_SET(__pyx_t_7, function);
-              __pyx_t_6 = 1;
-            }
-          }
-          {
-            PyObject *__pyx_callargs[1] = {__pyx_t_9, };
-            __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_7, __pyx_callargs+1-__pyx_t_6, 0+__pyx_t_6);
-            __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
-            if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 327, __pyx_L4_error)
-            __Pyx_GOTREF(__pyx_t_1);
-            __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-          }
-          __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_warning); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 327, __pyx_L4_error)
-          __Pyx_GOTREF(__pyx_t_7);
-          __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-          __pyx_t_1 = NULL;
-          __pyx_t_6 = 0;
-          if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_7))) {
-            __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_7);
-            if (likely(__pyx_t_1)) {
-              PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
-              __Pyx_INCREF(__pyx_t_1);
-              __Pyx_INCREF(function);
-              __Pyx_DECREF_SET(__pyx_t_7, function);
-              __pyx_t_6 = 1;
-            }
-          }
-          {
-            PyObject *__pyx_callargs[2] = {__pyx_t_1, __pyx_kp_u_Markets_are_not_ready_No_market};
-            __pyx_t_3 = __Pyx_PyObject_FastCall(__pyx_t_7, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
-            __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-            if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 327, __pyx_L4_error)
-            __Pyx_GOTREF(__pyx_t_3);
-            __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-          }
-          __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-
-          /* "hummingbot/strategy/hedge/hedge.pyx":326
- *                 if not self._all_markets_ready:
- *                     # Markets not ready yet. Don't do anything.
- *                     if should_report_warnings:             # <<<<<<<<<<<<<<
- *                         self.logger().warning(f"Markets are not ready. No market making trades are permitted.")
- *                     return
- */
-        }
-
-        /* "hummingbot/strategy/hedge/hedge.pyx":328
- *                     if should_report_warnings:
- *                         self.logger().warning(f"Markets are not ready. No market making trades are permitted.")
- *                     return             # <<<<<<<<<<<<<<
- *                 else:
- *                     # Markets are ready, ok to proceed.
- */
-        __Pyx_XDECREF(__pyx_r);
-        __pyx_r = Py_None; __Pyx_INCREF(Py_None);
-        goto __pyx_L3_return;
-
-        /* "hummingbot/strategy/hedge/hedge.pyx":324
- *             if not self._all_markets_ready:
- *                 self._all_markets_ready = all([market.ready for market in self._sb_markets])
- *                 if not self._all_markets_ready:             # <<<<<<<<<<<<<<
- *                     # Markets not ready yet. Don't do anything.
- *                     if should_report_warnings:
- */
-      }
-
-      /* "hummingbot/strategy/hedge/hedge.pyx":331
- *                 else:
- *                     # Markets are ready, ok to proceed.
- *                     self.logger().info(f"Markets are ready. Trading started.")             # <<<<<<<<<<<<<<
- * 
- *             if should_report_warnings:
- */
-      /*else*/ {
-        __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_logger); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 331, __pyx_L4_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_9 = NULL;
-        __pyx_t_6 = 0;
-        if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
-          __pyx_t_9 = PyMethod_GET_SELF(__pyx_t_1);
-          if (likely(__pyx_t_9)) {
-            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
-            __Pyx_INCREF(__pyx_t_9);
-            __Pyx_INCREF(function);
-            __Pyx_DECREF_SET(__pyx_t_1, function);
-            __pyx_t_6 = 1;
-          }
-        }
-        {
-          PyObject *__pyx_callargs[1] = {__pyx_t_9, };
-          __pyx_t_7 = __Pyx_PyObject_FastCall(__pyx_t_1, __pyx_callargs+1-__pyx_t_6, 0+__pyx_t_6);
-          __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
-          if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 331, __pyx_L4_error)
-          __Pyx_GOTREF(__pyx_t_7);
-          __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        }
-        __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_info); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 331, __pyx_L4_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-        __pyx_t_7 = NULL;
-        __pyx_t_6 = 0;
-        if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
-          __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_1);
-          if (likely(__pyx_t_7)) {
-            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
-            __Pyx_INCREF(__pyx_t_7);
-            __Pyx_INCREF(function);
-            __Pyx_DECREF_SET(__pyx_t_1, function);
-            __pyx_t_6 = 1;
-          }
-        }
-        {
-          PyObject *__pyx_callargs[2] = {__pyx_t_7, __pyx_kp_u_Markets_are_ready_Trading_starte};
-          __pyx_t_3 = __Pyx_PyObject_FastCall(__pyx_t_1, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
-          __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
-          if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 331, __pyx_L4_error)
-          __Pyx_GOTREF(__pyx_t_3);
-          __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        }
-        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      }
-
-      /* "hummingbot/strategy/hedge/hedge.pyx":322
- * 
- *         try:
- *             if not self._all_markets_ready:             # <<<<<<<<<<<<<<
- *                 self._all_markets_ready = all([market.ready for market in self._sb_markets])
- *                 if not self._all_markets_ready:
- */
-    }
-
-    /* "hummingbot/strategy/hedge/hedge.pyx":333
- *                     self.logger().info(f"Markets are ready. Trading started.")
- * 
- *             if should_report_warnings:             # <<<<<<<<<<<<<<
- *                 # Check if all markets are still connected or not. If not, log a warning.
- *                 if not all([market.network_status is NetworkStatus.CONNECTED for market in self._sb_markets]):
- */
-    __pyx_t_2 = (__pyx_v_should_report_warnings != 0);
-    if (__pyx_t_2) {
-
-      /* "hummingbot/strategy/hedge/hedge.pyx":335
- *             if should_report_warnings:
- *                 # Check if all markets are still connected or not. If not, log a warning.
- *                 if not all([market.network_status is NetworkStatus.CONNECTED for market in self._sb_markets]):             # <<<<<<<<<<<<<<
- *                     self.logger().warning(f"WARNING: Some markets are not connected or are down at the moment. Market "
- *                                           f"making may be dangerous when markets or networks are unstable.")
- */
-      { /* enter inner scope */
-        __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 335, __pyx_L19_error)
-        __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_5 = 0;
-        __pyx_t_7 = __Pyx_set_iterator(__pyx_v_self->__pyx_base._sb_markets, 1, (&__pyx_t_4), (&__pyx_t_6)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 335, __pyx_L19_error)
-        __Pyx_GOTREF(__pyx_t_7);
-        __Pyx_XDECREF(__pyx_t_1);
-        __pyx_t_1 = __pyx_t_7;
-        __pyx_t_7 = 0;
-        while (1) {
-          __pyx_t_8 = __Pyx_set_iter_next(__pyx_t_1, __pyx_t_4, &__pyx_t_5, &__pyx_t_7, __pyx_t_6);
-          if (unlikely(__pyx_t_8 == 0)) break;
-          if (unlikely(__pyx_t_8 == -1)) __PYX_ERR(0, 335, __pyx_L19_error)
-          __Pyx_GOTREF(__pyx_t_7);
-          __Pyx_XDECREF_SET(__pyx_8genexpr4__pyx_v_market, __pyx_t_7);
-          __pyx_t_7 = 0;
-          __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_8genexpr4__pyx_v_market, __pyx_n_s_network_status); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 335, __pyx_L19_error)
-          __Pyx_GOTREF(__pyx_t_7);
-          __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_NetworkStatus); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 335, __pyx_L19_error)
-          __Pyx_GOTREF(__pyx_t_9);
-          __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_CONNECTED); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 335, __pyx_L19_error)
-          __Pyx_GOTREF(__pyx_t_10);
-          __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-          __pyx_t_2 = (__pyx_t_7 == __pyx_t_10);
-          __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-          __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-          __pyx_t_10 = __Pyx_PyBool_FromLong(__pyx_t_2); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 335, __pyx_L19_error)
-          __Pyx_GOTREF(__pyx_t_10);
-          if (unlikely(__Pyx_ListComp_Append(__pyx_t_3, (PyObject*)__pyx_t_10))) __PYX_ERR(0, 335, __pyx_L19_error)
-          __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-        }
-        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __Pyx_XDECREF(__pyx_8genexpr4__pyx_v_market); __pyx_8genexpr4__pyx_v_market = 0;
-        goto __pyx_L22_exit_scope;
-        __pyx_L19_error:;
-        __Pyx_XDECREF(__pyx_8genexpr4__pyx_v_market); __pyx_8genexpr4__pyx_v_market = 0;
-        goto __pyx_L4_error;
-        __pyx_L22_exit_scope:;
-      } /* exit inner scope */
-      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_builtin_all, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 335, __pyx_L4_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(0, 335, __pyx_L4_error)
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_11 = ((!__pyx_t_2) != 0);
-      if (__pyx_t_11) {
-
-        /* "hummingbot/strategy/hedge/hedge.pyx":336
- *                 # Check if all markets are still connected or not. If not, log a warning.
- *                 if not all([market.network_status is NetworkStatus.CONNECTED for market in self._sb_markets]):
- *                     self.logger().warning(f"WARNING: Some markets are not connected or are down at the moment. Market "             # <<<<<<<<<<<<<<
- *                                           f"making may be dangerous when markets or networks are unstable.")
- * 
- */
-        __pyx_t_10 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_logger); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 336, __pyx_L4_error)
-        __Pyx_GOTREF(__pyx_t_10);
-        __pyx_t_7 = NULL;
-        __pyx_t_6 = 0;
-        if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_10))) {
-          __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_10);
-          if (likely(__pyx_t_7)) {
-            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_10);
-            __Pyx_INCREF(__pyx_t_7);
-            __Pyx_INCREF(function);
-            __Pyx_DECREF_SET(__pyx_t_10, function);
-            __pyx_t_6 = 1;
-          }
-        }
-        {
-          PyObject *__pyx_callargs[1] = {__pyx_t_7, };
-          __pyx_t_3 = __Pyx_PyObject_FastCall(__pyx_t_10, __pyx_callargs+1-__pyx_t_6, 0+__pyx_t_6);
-          __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
-          if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 336, __pyx_L4_error)
-          __Pyx_GOTREF(__pyx_t_3);
-          __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-        }
-        __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_warning); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 336, __pyx_L4_error)
-        __Pyx_GOTREF(__pyx_t_10);
-        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        __pyx_t_3 = NULL;
-        __pyx_t_6 = 0;
-        if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_10))) {
-          __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_10);
-          if (likely(__pyx_t_3)) {
-            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_10);
-            __Pyx_INCREF(__pyx_t_3);
-            __Pyx_INCREF(function);
-            __Pyx_DECREF_SET(__pyx_t_10, function);
-            __pyx_t_6 = 1;
-          }
-        }
-        {
-          PyObject *__pyx_callargs[2] = {__pyx_t_3, __pyx_kp_u_WARNING_Some_markets_are_not_con};
-          __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_10, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
-          __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-          if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 336, __pyx_L4_error)
-          __Pyx_GOTREF(__pyx_t_1);
-          __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-        }
-        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-        /* "hummingbot/strategy/hedge/hedge.pyx":335
- *             if should_report_warnings:
- *                 # Check if all markets are still connected or not. If not, log a warning.
- *                 if not all([market.network_status is NetworkStatus.CONNECTED for market in self._sb_markets]):             # <<<<<<<<<<<<<<
- *                     self.logger().warning(f"WARNING: Some markets are not connected or are down at the moment. Market "
- *                                           f"making may be dangerous when markets or networks are unstable.")
- */
-      }
-
-      /* "hummingbot/strategy/hedge/hedge.pyx":333
- *                     self.logger().info(f"Markets are ready. Trading started.")
- * 
- *             if should_report_warnings:             # <<<<<<<<<<<<<<
- *                 # Check if all markets are still connected or not. If not, log a warning.
- *                 if not all([market.network_status is NetworkStatus.CONNECTED for market in self._sb_markets]):
- */
-    }
-
-    /* "hummingbot/strategy/hedge/hedge.pyx":339
- *                                           f"making may be dangerous when markets or networks are unstable.")
- * 
  *             self.update_wallet()             # <<<<<<<<<<<<<<
+ *             self.log_output()
  * 
- *         finally:
  */
-    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_update_wallet); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 339, __pyx_L4_error)
-    __Pyx_GOTREF(__pyx_t_10);
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_update_wallet); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 341, __pyx_L4_error)
+    __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_3 = NULL;
-    __pyx_t_6 = 0;
-    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_10))) {
-      __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_10);
+    __pyx_t_4 = 0;
+    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
+      __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
       if (likely(__pyx_t_3)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_10);
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
         __Pyx_INCREF(__pyx_t_3);
         __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_10, function);
-        __pyx_t_6 = 1;
+        __Pyx_DECREF_SET(__pyx_t_2, function);
+        __pyx_t_4 = 1;
       }
     }
     {
       PyObject *__pyx_callargs[1] = {__pyx_t_3, };
-      __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_10, __pyx_callargs+1-__pyx_t_6, 0+__pyx_t_6);
+      __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 0+__pyx_t_4);
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 339, __pyx_L4_error)
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 341, __pyx_L4_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    }
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+    /* "hummingbot/strategy/hedge/hedge.pyx":342
+ *         try:
+ *             self.update_wallet()
+ *             self.log_output()             # <<<<<<<<<<<<<<
+ * 
+ *         finally:
+ */
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_log_output); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 342, __pyx_L4_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_3 = NULL;
+    __pyx_t_4 = 0;
+    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
+      __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
+      if (likely(__pyx_t_3)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+        __Pyx_INCREF(__pyx_t_3);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_2, function);
+        __pyx_t_4 = 1;
+      }
+    }
+    {
+      PyObject *__pyx_callargs[1] = {__pyx_t_3, };
+      __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 0+__pyx_t_4);
+      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 342, __pyx_L4_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     }
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":342
+  /* "hummingbot/strategy/hedge/hedge.pyx":345
  * 
  *         finally:
  *             self._last_timestamp=timestamp             # <<<<<<<<<<<<<<
@@ -11978,50 +12363,40 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
     /*exception exit:*/{
       __Pyx_PyThreadState_declare
       __Pyx_PyThreadState_assign
-      __pyx_t_13 = 0; __pyx_t_14 = 0; __pyx_t_15 = 0; __pyx_t_16 = 0; __pyx_t_17 = 0; __pyx_t_18 = 0;
+      __pyx_t_7 = 0; __pyx_t_8 = 0; __pyx_t_9 = 0; __pyx_t_10 = 0; __pyx_t_11 = 0; __pyx_t_12 = 0;
       __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
+      __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
-      __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
-      if (PY_MAJOR_VERSION >= 3) __Pyx_ExceptionSwap(&__pyx_t_16, &__pyx_t_17, &__pyx_t_18);
-      if ((PY_MAJOR_VERSION < 3) || unlikely(__Pyx_GetException(&__pyx_t_13, &__pyx_t_14, &__pyx_t_15) < 0)) __Pyx_ErrFetch(&__pyx_t_13, &__pyx_t_14, &__pyx_t_15);
-      __Pyx_XGOTREF(__pyx_t_13);
-      __Pyx_XGOTREF(__pyx_t_14);
-      __Pyx_XGOTREF(__pyx_t_15);
-      __Pyx_XGOTREF(__pyx_t_16);
-      __Pyx_XGOTREF(__pyx_t_17);
-      __Pyx_XGOTREF(__pyx_t_18);
-      __pyx_t_6 = __pyx_lineno; __pyx_t_8 = __pyx_clineno; __pyx_t_12 = __pyx_filename;
+      if (PY_MAJOR_VERSION >= 3) __Pyx_ExceptionSwap(&__pyx_t_10, &__pyx_t_11, &__pyx_t_12);
+      if ((PY_MAJOR_VERSION < 3) || unlikely(__Pyx_GetException(&__pyx_t_7, &__pyx_t_8, &__pyx_t_9) < 0)) __Pyx_ErrFetch(&__pyx_t_7, &__pyx_t_8, &__pyx_t_9);
+      __Pyx_XGOTREF(__pyx_t_7);
+      __Pyx_XGOTREF(__pyx_t_8);
+      __Pyx_XGOTREF(__pyx_t_9);
+      __Pyx_XGOTREF(__pyx_t_10);
+      __Pyx_XGOTREF(__pyx_t_11);
+      __Pyx_XGOTREF(__pyx_t_12);
+      __pyx_t_4 = __pyx_lineno; __pyx_t_5 = __pyx_clineno; __pyx_t_6 = __pyx_filename;
       {
         __pyx_v_self->_last_timestamp = __pyx_v_timestamp;
       }
       if (PY_MAJOR_VERSION >= 3) {
-        __Pyx_XGIVEREF(__pyx_t_16);
-        __Pyx_XGIVEREF(__pyx_t_17);
-        __Pyx_XGIVEREF(__pyx_t_18);
-        __Pyx_ExceptionReset(__pyx_t_16, __pyx_t_17, __pyx_t_18);
+        __Pyx_XGIVEREF(__pyx_t_10);
+        __Pyx_XGIVEREF(__pyx_t_11);
+        __Pyx_XGIVEREF(__pyx_t_12);
+        __Pyx_ExceptionReset(__pyx_t_10, __pyx_t_11, __pyx_t_12);
       }
-      __Pyx_XGIVEREF(__pyx_t_13);
-      __Pyx_XGIVEREF(__pyx_t_14);
-      __Pyx_XGIVEREF(__pyx_t_15);
-      __Pyx_ErrRestore(__pyx_t_13, __pyx_t_14, __pyx_t_15);
-      __pyx_t_13 = 0; __pyx_t_14 = 0; __pyx_t_15 = 0; __pyx_t_16 = 0; __pyx_t_17 = 0; __pyx_t_18 = 0;
-      __pyx_lineno = __pyx_t_6; __pyx_clineno = __pyx_t_8; __pyx_filename = __pyx_t_12;
+      __Pyx_XGIVEREF(__pyx_t_7);
+      __Pyx_XGIVEREF(__pyx_t_8);
+      __Pyx_XGIVEREF(__pyx_t_9);
+      __Pyx_ErrRestore(__pyx_t_7, __pyx_t_8, __pyx_t_9);
+      __pyx_t_7 = 0; __pyx_t_8 = 0; __pyx_t_9 = 0; __pyx_t_10 = 0; __pyx_t_11 = 0; __pyx_t_12 = 0;
+      __pyx_lineno = __pyx_t_4; __pyx_clineno = __pyx_t_5; __pyx_filename = __pyx_t_6;
       goto __pyx_L1_error;
-    }
-    __pyx_L3_return: {
-      __pyx_t_18 = __pyx_r;
-      __pyx_r = 0;
-      __pyx_v_self->_last_timestamp = __pyx_v_timestamp;
-      __pyx_r = __pyx_t_18;
-      __pyx_t_18 = 0;
-      goto __pyx_L0;
     }
     __pyx_L5:;
   }
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":314
+  /* "hummingbot/strategy/hedge/hedge.pyx":333
  *             self.c_apply_initial_settings(market_pair, self._position_mode, self._leverage)
  * 
  *     cdef c_tick(self, double timestamp):             # <<<<<<<<<<<<<<
@@ -12034,21 +12409,17 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_XDECREF(__pyx_t_9);
-  __Pyx_XDECREF(__pyx_t_10);
   __Pyx_AddTraceback("hummingbot.strategy.hedge.hedge.HedgeStrategy.c_tick", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
-  __Pyx_XDECREF(__pyx_8genexpr3__pyx_v_market);
-  __Pyx_XDECREF(__pyx_8genexpr4__pyx_v_market);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/hedge/hedge.pyx":344
+/* "hummingbot/strategy/hedge/hedge.pyx":347
  *             self._last_timestamp=timestamp
  * 
  *     cdef c_did_complete_buy_order(self, object order_completed_event):             # <<<<<<<<<<<<<<
@@ -12078,116 +12449,116 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("c_did_complete_buy_order", 0);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":350
+  /* "hummingbot/strategy/hedge/hedge.pyx":353
  *         """
  *         cdef:
  *             str order_id = order_completed_event.order_id             # <<<<<<<<<<<<<<
  *             object order_type = order_completed_event.order_type
  *             object base_asset_amount = order_completed_event.base_asset_amount
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_completed_event, __pyx_n_s_order_id); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 350, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_completed_event, __pyx_n_s_order_id); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 353, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_1))) __PYX_ERR(0, 350, __pyx_L1_error)
+  if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_1))) __PYX_ERR(0, 353, __pyx_L1_error)
   __pyx_v_order_id = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":351
+  /* "hummingbot/strategy/hedge/hedge.pyx":354
  *         cdef:
  *             str order_id = order_completed_event.order_id
  *             object order_type = order_completed_event.order_type             # <<<<<<<<<<<<<<
  *             object base_asset_amount = order_completed_event.base_asset_amount
  *             object quote_asset_amount = order_completed_event.quote_asset_amount
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_completed_event, __pyx_n_s_order_type); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 351, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_completed_event, __pyx_n_s_order_type); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 354, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_order_type = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":352
+  /* "hummingbot/strategy/hedge/hedge.pyx":355
  *             str order_id = order_completed_event.order_id
  *             object order_type = order_completed_event.order_type
  *             object base_asset_amount = order_completed_event.base_asset_amount             # <<<<<<<<<<<<<<
  *             object quote_asset_amount = order_completed_event.quote_asset_amount
  *             str base_asset = order_completed_event.base_asset
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_completed_event, __pyx_n_s_base_asset_amount); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 352, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_completed_event, __pyx_n_s_base_asset_amount); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 355, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_base_asset_amount = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":353
+  /* "hummingbot/strategy/hedge/hedge.pyx":356
  *             object order_type = order_completed_event.order_type
  *             object base_asset_amount = order_completed_event.base_asset_amount
  *             object quote_asset_amount = order_completed_event.quote_asset_amount             # <<<<<<<<<<<<<<
  *             str base_asset = order_completed_event.base_asset
  *             str quote_asset = order_completed_event.quote_asset
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_completed_event, __pyx_n_s_quote_asset_amount); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 353, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_completed_event, __pyx_n_s_quote_asset_amount); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 356, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_quote_asset_amount = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":354
+  /* "hummingbot/strategy/hedge/hedge.pyx":357
  *             object base_asset_amount = order_completed_event.base_asset_amount
  *             object quote_asset_amount = order_completed_event.quote_asset_amount
  *             str base_asset = order_completed_event.base_asset             # <<<<<<<<<<<<<<
  *             str quote_asset = order_completed_event.quote_asset
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_completed_event, __pyx_n_s_base_asset); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 354, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_completed_event, __pyx_n_s_base_asset); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 357, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_1))) __PYX_ERR(0, 354, __pyx_L1_error)
+  if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_1))) __PYX_ERR(0, 357, __pyx_L1_error)
   __pyx_v_base_asset = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":355
+  /* "hummingbot/strategy/hedge/hedge.pyx":358
  *             object quote_asset_amount = order_completed_event.quote_asset_amount
  *             str base_asset = order_completed_event.base_asset
  *             str quote_asset = order_completed_event.quote_asset             # <<<<<<<<<<<<<<
  * 
  *         self.log_with_clock(
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_completed_event, __pyx_n_s_quote_asset); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 355, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_completed_event, __pyx_n_s_quote_asset); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 358, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_1))) __PYX_ERR(0, 355, __pyx_L1_error)
+  if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_1))) __PYX_ERR(0, 358, __pyx_L1_error)
   __pyx_v_quote_asset = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":357
+  /* "hummingbot/strategy/hedge/hedge.pyx":360
  *             str quote_asset = order_completed_event.quote_asset
  * 
  *         self.log_with_clock(             # <<<<<<<<<<<<<<
  *             logging.INFO,
  *             f"{order_type} order {order_id} "
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_log_with_clock); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 357, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_log_with_clock); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 360, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":358
+  /* "hummingbot/strategy/hedge/hedge.pyx":361
  * 
  *         self.log_with_clock(
  *             logging.INFO,             # <<<<<<<<<<<<<<
  *             f"{order_type} order {order_id} "
  *             f"({base_asset_amount} {base_asset} @ "
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_logging); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 358, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_logging); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 361, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_INFO); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 358, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_INFO); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 361, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":359
+  /* "hummingbot/strategy/hedge/hedge.pyx":362
  *         self.log_with_clock(
  *             logging.INFO,
  *             f"{order_type} order {order_id} "             # <<<<<<<<<<<<<<
  *             f"({base_asset_amount} {base_asset} @ "
  *             f"{quote_asset_amount} {quote_asset}) has been completely filled."
  */
-  __pyx_t_3 = PyTuple_New(12); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 359, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(12); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 362, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_5 = 0;
   __pyx_t_6 = 127;
-  __pyx_t_7 = __Pyx_PyObject_FormatSimple(__pyx_v_order_type, __pyx_empty_unicode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 359, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_FormatSimple(__pyx_v_order_type, __pyx_empty_unicode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 362, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __pyx_t_6 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_7) > __pyx_t_6) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_7) : __pyx_t_6;
   __pyx_t_5 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_7);
@@ -12198,7 +12569,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __pyx_t_5 += 7;
   __Pyx_GIVEREF(__pyx_kp_u_order);
   PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_kp_u_order);
-  __pyx_t_7 = __Pyx_PyUnicode_Unicode(__pyx_v_order_id); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 359, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyUnicode_Unicode(__pyx_v_order_id); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 362, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __pyx_t_6 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_7) > __pyx_t_6) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_7) : __pyx_t_6;
   __pyx_t_5 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_7);
@@ -12210,14 +12581,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __Pyx_GIVEREF(__pyx_kp_u__6);
   PyTuple_SET_ITEM(__pyx_t_3, 3, __pyx_kp_u__6);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":360
+  /* "hummingbot/strategy/hedge/hedge.pyx":363
  *             logging.INFO,
  *             f"{order_type} order {order_id} "
  *             f"({base_asset_amount} {base_asset} @ "             # <<<<<<<<<<<<<<
  *             f"{quote_asset_amount} {quote_asset}) has been completely filled."
  *         )
  */
-  __pyx_t_7 = __Pyx_PyObject_FormatSimple(__pyx_v_base_asset_amount, __pyx_empty_unicode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 360, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_FormatSimple(__pyx_v_base_asset_amount, __pyx_empty_unicode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 363, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __pyx_t_6 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_7) > __pyx_t_6) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_7) : __pyx_t_6;
   __pyx_t_5 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_7);
@@ -12228,7 +12599,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __pyx_t_5 += 1;
   __Pyx_GIVEREF(__pyx_kp_u_);
   PyTuple_SET_ITEM(__pyx_t_3, 5, __pyx_kp_u_);
-  __pyx_t_7 = __Pyx_PyUnicode_Unicode(__pyx_v_base_asset); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 360, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyUnicode_Unicode(__pyx_v_base_asset); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 363, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __pyx_t_6 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_7) > __pyx_t_6) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_7) : __pyx_t_6;
   __pyx_t_5 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_7);
@@ -12240,14 +12611,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __Pyx_GIVEREF(__pyx_kp_u__7);
   PyTuple_SET_ITEM(__pyx_t_3, 7, __pyx_kp_u__7);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":361
+  /* "hummingbot/strategy/hedge/hedge.pyx":364
  *             f"{order_type} order {order_id} "
  *             f"({base_asset_amount} {base_asset} @ "
  *             f"{quote_asset_amount} {quote_asset}) has been completely filled."             # <<<<<<<<<<<<<<
  *         )
  *         self.notify_hb_app_with_timestamp(
  */
-  __pyx_t_7 = __Pyx_PyObject_FormatSimple(__pyx_v_quote_asset_amount, __pyx_empty_unicode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 361, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_FormatSimple(__pyx_v_quote_asset_amount, __pyx_empty_unicode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 364, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __pyx_t_6 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_7) > __pyx_t_6) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_7) : __pyx_t_6;
   __pyx_t_5 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_7);
@@ -12258,7 +12629,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __pyx_t_5 += 1;
   __Pyx_GIVEREF(__pyx_kp_u_);
   PyTuple_SET_ITEM(__pyx_t_3, 9, __pyx_kp_u_);
-  __pyx_t_7 = __Pyx_PyUnicode_Unicode(__pyx_v_quote_asset); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 361, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyUnicode_Unicode(__pyx_v_quote_asset); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 364, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __pyx_t_6 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_7) > __pyx_t_6) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_7) : __pyx_t_6;
   __pyx_t_5 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_7);
@@ -12270,14 +12641,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __Pyx_GIVEREF(__pyx_kp_u_has_been_completely_filled);
   PyTuple_SET_ITEM(__pyx_t_3, 11, __pyx_kp_u_has_been_completely_filled);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":359
+  /* "hummingbot/strategy/hedge/hedge.pyx":362
  *         self.log_with_clock(
  *             logging.INFO,
  *             f"{order_type} order {order_id} "             # <<<<<<<<<<<<<<
  *             f"({base_asset_amount} {base_asset} @ "
  *             f"{quote_asset_amount} {quote_asset}) has been completely filled."
  */
-  __pyx_t_7 = __Pyx_PyUnicode_Join(__pyx_t_3, 12, __pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 359, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyUnicode_Join(__pyx_t_3, 12, __pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 362, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
@@ -12298,34 +12669,34 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 357, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 360, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":363
+  /* "hummingbot/strategy/hedge/hedge.pyx":366
  *             f"{quote_asset_amount} {quote_asset}) has been completely filled."
  *         )
  *         self.notify_hb_app_with_timestamp(             # <<<<<<<<<<<<<<
  *             f"{order_type} order {order_id} "
  *             f"({base_asset_amount} {base_asset} @ "
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_notify_hb_app_with_timestamp); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 363, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_notify_hb_app_with_timestamp); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 366, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":364
+  /* "hummingbot/strategy/hedge/hedge.pyx":367
  *         )
  *         self.notify_hb_app_with_timestamp(
  *             f"{order_type} order {order_id} "             # <<<<<<<<<<<<<<
  *             f"({base_asset_amount} {base_asset} @ "
  *             f"{quote_asset_amount} {quote_asset}) has been completely filled."
  */
-  __pyx_t_7 = PyTuple_New(12); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 364, __pyx_L1_error)
+  __pyx_t_7 = PyTuple_New(12); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 367, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __pyx_t_5 = 0;
   __pyx_t_6 = 127;
-  __pyx_t_4 = __Pyx_PyObject_FormatSimple(__pyx_v_order_type, __pyx_empty_unicode); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 364, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_FormatSimple(__pyx_v_order_type, __pyx_empty_unicode); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 367, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_6 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) > __pyx_t_6) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) : __pyx_t_6;
   __pyx_t_5 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_4);
@@ -12336,7 +12707,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __pyx_t_5 += 7;
   __Pyx_GIVEREF(__pyx_kp_u_order);
   PyTuple_SET_ITEM(__pyx_t_7, 1, __pyx_kp_u_order);
-  __pyx_t_4 = __Pyx_PyUnicode_Unicode(__pyx_v_order_id); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 364, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyUnicode_Unicode(__pyx_v_order_id); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 367, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_6 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) > __pyx_t_6) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) : __pyx_t_6;
   __pyx_t_5 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_4);
@@ -12348,14 +12719,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __Pyx_GIVEREF(__pyx_kp_u__6);
   PyTuple_SET_ITEM(__pyx_t_7, 3, __pyx_kp_u__6);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":365
+  /* "hummingbot/strategy/hedge/hedge.pyx":368
  *         self.notify_hb_app_with_timestamp(
  *             f"{order_type} order {order_id} "
  *             f"({base_asset_amount} {base_asset} @ "             # <<<<<<<<<<<<<<
  *             f"{quote_asset_amount} {quote_asset}) has been completely filled."
  *         )
  */
-  __pyx_t_4 = __Pyx_PyObject_FormatSimple(__pyx_v_base_asset_amount, __pyx_empty_unicode); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 365, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_FormatSimple(__pyx_v_base_asset_amount, __pyx_empty_unicode); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 368, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_6 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) > __pyx_t_6) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) : __pyx_t_6;
   __pyx_t_5 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_4);
@@ -12366,7 +12737,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __pyx_t_5 += 1;
   __Pyx_GIVEREF(__pyx_kp_u_);
   PyTuple_SET_ITEM(__pyx_t_7, 5, __pyx_kp_u_);
-  __pyx_t_4 = __Pyx_PyUnicode_Unicode(__pyx_v_base_asset); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 365, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyUnicode_Unicode(__pyx_v_base_asset); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 368, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_6 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) > __pyx_t_6) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) : __pyx_t_6;
   __pyx_t_5 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_4);
@@ -12378,14 +12749,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __Pyx_GIVEREF(__pyx_kp_u__7);
   PyTuple_SET_ITEM(__pyx_t_7, 7, __pyx_kp_u__7);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":366
+  /* "hummingbot/strategy/hedge/hedge.pyx":369
  *             f"{order_type} order {order_id} "
  *             f"({base_asset_amount} {base_asset} @ "
  *             f"{quote_asset_amount} {quote_asset}) has been completely filled."             # <<<<<<<<<<<<<<
  *         )
  * 
  */
-  __pyx_t_4 = __Pyx_PyObject_FormatSimple(__pyx_v_quote_asset_amount, __pyx_empty_unicode); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 366, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_FormatSimple(__pyx_v_quote_asset_amount, __pyx_empty_unicode); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 369, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_6 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) > __pyx_t_6) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) : __pyx_t_6;
   __pyx_t_5 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_4);
@@ -12396,7 +12767,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __pyx_t_5 += 1;
   __Pyx_GIVEREF(__pyx_kp_u_);
   PyTuple_SET_ITEM(__pyx_t_7, 9, __pyx_kp_u_);
-  __pyx_t_4 = __Pyx_PyUnicode_Unicode(__pyx_v_quote_asset); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 366, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyUnicode_Unicode(__pyx_v_quote_asset); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 369, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_6 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) > __pyx_t_6) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) : __pyx_t_6;
   __pyx_t_5 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_4);
@@ -12408,14 +12779,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __Pyx_GIVEREF(__pyx_kp_u_has_been_completely_filled);
   PyTuple_SET_ITEM(__pyx_t_7, 11, __pyx_kp_u_has_been_completely_filled);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":364
+  /* "hummingbot/strategy/hedge/hedge.pyx":367
  *         )
  *         self.notify_hb_app_with_timestamp(
  *             f"{order_type} order {order_id} "             # <<<<<<<<<<<<<<
  *             f"({base_asset_amount} {base_asset} @ "
  *             f"{quote_asset_amount} {quote_asset}) has been completely filled."
  */
-  __pyx_t_4 = __Pyx_PyUnicode_Join(__pyx_t_7, 12, __pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 364, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyUnicode_Join(__pyx_t_7, 12, __pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 367, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __pyx_t_7 = NULL;
@@ -12435,13 +12806,13 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_8, 1+__pyx_t_8);
     __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 363, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 366, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":344
+  /* "hummingbot/strategy/hedge/hedge.pyx":347
  *             self._last_timestamp=timestamp
  * 
  *     cdef c_did_complete_buy_order(self, object order_completed_event):             # <<<<<<<<<<<<<<
@@ -12472,7 +12843,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/hedge/hedge.pyx":369
+/* "hummingbot/strategy/hedge/hedge.pyx":372
  *         )
  * 
  *     cdef c_did_complete_sell_order(self, object order_completed_event):             # <<<<<<<<<<<<<<
@@ -12502,116 +12873,116 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("c_did_complete_sell_order", 0);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":375
+  /* "hummingbot/strategy/hedge/hedge.pyx":378
  *         """
  *         cdef:
  *             str order_id = order_completed_event.order_id             # <<<<<<<<<<<<<<
  *             object order_type = order_completed_event.order_type
  *             object base_asset_amount = order_completed_event.base_asset_amount
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_completed_event, __pyx_n_s_order_id); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 375, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_completed_event, __pyx_n_s_order_id); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 378, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_1))) __PYX_ERR(0, 375, __pyx_L1_error)
+  if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_1))) __PYX_ERR(0, 378, __pyx_L1_error)
   __pyx_v_order_id = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":376
+  /* "hummingbot/strategy/hedge/hedge.pyx":379
  *         cdef:
  *             str order_id = order_completed_event.order_id
  *             object order_type = order_completed_event.order_type             # <<<<<<<<<<<<<<
  *             object base_asset_amount = order_completed_event.base_asset_amount
  *             object quote_asset_amount = order_completed_event.quote_asset_amount
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_completed_event, __pyx_n_s_order_type); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 376, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_completed_event, __pyx_n_s_order_type); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 379, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_order_type = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":377
+  /* "hummingbot/strategy/hedge/hedge.pyx":380
  *             str order_id = order_completed_event.order_id
  *             object order_type = order_completed_event.order_type
  *             object base_asset_amount = order_completed_event.base_asset_amount             # <<<<<<<<<<<<<<
  *             object quote_asset_amount = order_completed_event.quote_asset_amount
  *             str base_asset = order_completed_event.base_asset
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_completed_event, __pyx_n_s_base_asset_amount); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 377, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_completed_event, __pyx_n_s_base_asset_amount); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 380, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_base_asset_amount = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":378
+  /* "hummingbot/strategy/hedge/hedge.pyx":381
  *             object order_type = order_completed_event.order_type
  *             object base_asset_amount = order_completed_event.base_asset_amount
  *             object quote_asset_amount = order_completed_event.quote_asset_amount             # <<<<<<<<<<<<<<
  *             str base_asset = order_completed_event.base_asset
  *             str quote_asset = order_completed_event.quote_asset
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_completed_event, __pyx_n_s_quote_asset_amount); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 378, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_completed_event, __pyx_n_s_quote_asset_amount); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 381, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_quote_asset_amount = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":379
+  /* "hummingbot/strategy/hedge/hedge.pyx":382
  *             object base_asset_amount = order_completed_event.base_asset_amount
  *             object quote_asset_amount = order_completed_event.quote_asset_amount
  *             str base_asset = order_completed_event.base_asset             # <<<<<<<<<<<<<<
  *             str quote_asset = order_completed_event.quote_asset
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_completed_event, __pyx_n_s_base_asset); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 379, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_completed_event, __pyx_n_s_base_asset); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 382, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_1))) __PYX_ERR(0, 379, __pyx_L1_error)
+  if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_1))) __PYX_ERR(0, 382, __pyx_L1_error)
   __pyx_v_base_asset = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":380
+  /* "hummingbot/strategy/hedge/hedge.pyx":383
  *             object quote_asset_amount = order_completed_event.quote_asset_amount
  *             str base_asset = order_completed_event.base_asset
  *             str quote_asset = order_completed_event.quote_asset             # <<<<<<<<<<<<<<
  * 
  *         self.log_with_clock(
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_completed_event, __pyx_n_s_quote_asset); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 380, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_completed_event, __pyx_n_s_quote_asset); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 383, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_1))) __PYX_ERR(0, 380, __pyx_L1_error)
+  if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_1))) __PYX_ERR(0, 383, __pyx_L1_error)
   __pyx_v_quote_asset = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":382
+  /* "hummingbot/strategy/hedge/hedge.pyx":385
  *             str quote_asset = order_completed_event.quote_asset
  * 
  *         self.log_with_clock(             # <<<<<<<<<<<<<<
  *             logging.INFO,
  *             f"{order_type} order {order_id} "
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_log_with_clock); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 382, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_log_with_clock); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 385, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":383
+  /* "hummingbot/strategy/hedge/hedge.pyx":386
  * 
  *         self.log_with_clock(
  *             logging.INFO,             # <<<<<<<<<<<<<<
  *             f"{order_type} order {order_id} "
  *             f"({base_asset_amount} {base_asset} @ "
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_logging); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 383, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_logging); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 386, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_INFO); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 383, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_INFO); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 386, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":384
+  /* "hummingbot/strategy/hedge/hedge.pyx":387
  *         self.log_with_clock(
  *             logging.INFO,
  *             f"{order_type} order {order_id} "             # <<<<<<<<<<<<<<
  *             f"({base_asset_amount} {base_asset} @ "
  *             f"{quote_asset_amount} {quote_asset}) has been completely filled."
  */
-  __pyx_t_3 = PyTuple_New(12); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 384, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(12); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 387, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_5 = 0;
   __pyx_t_6 = 127;
-  __pyx_t_7 = __Pyx_PyObject_FormatSimple(__pyx_v_order_type, __pyx_empty_unicode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 384, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_FormatSimple(__pyx_v_order_type, __pyx_empty_unicode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 387, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __pyx_t_6 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_7) > __pyx_t_6) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_7) : __pyx_t_6;
   __pyx_t_5 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_7);
@@ -12622,7 +12993,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __pyx_t_5 += 7;
   __Pyx_GIVEREF(__pyx_kp_u_order);
   PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_kp_u_order);
-  __pyx_t_7 = __Pyx_PyUnicode_Unicode(__pyx_v_order_id); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 384, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyUnicode_Unicode(__pyx_v_order_id); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 387, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __pyx_t_6 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_7) > __pyx_t_6) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_7) : __pyx_t_6;
   __pyx_t_5 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_7);
@@ -12634,14 +13005,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __Pyx_GIVEREF(__pyx_kp_u__6);
   PyTuple_SET_ITEM(__pyx_t_3, 3, __pyx_kp_u__6);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":385
+  /* "hummingbot/strategy/hedge/hedge.pyx":388
  *             logging.INFO,
  *             f"{order_type} order {order_id} "
  *             f"({base_asset_amount} {base_asset} @ "             # <<<<<<<<<<<<<<
  *             f"{quote_asset_amount} {quote_asset}) has been completely filled."
  *         )
  */
-  __pyx_t_7 = __Pyx_PyObject_FormatSimple(__pyx_v_base_asset_amount, __pyx_empty_unicode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 385, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_FormatSimple(__pyx_v_base_asset_amount, __pyx_empty_unicode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 388, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __pyx_t_6 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_7) > __pyx_t_6) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_7) : __pyx_t_6;
   __pyx_t_5 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_7);
@@ -12652,7 +13023,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __pyx_t_5 += 1;
   __Pyx_GIVEREF(__pyx_kp_u_);
   PyTuple_SET_ITEM(__pyx_t_3, 5, __pyx_kp_u_);
-  __pyx_t_7 = __Pyx_PyUnicode_Unicode(__pyx_v_base_asset); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 385, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyUnicode_Unicode(__pyx_v_base_asset); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 388, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __pyx_t_6 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_7) > __pyx_t_6) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_7) : __pyx_t_6;
   __pyx_t_5 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_7);
@@ -12664,14 +13035,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __Pyx_GIVEREF(__pyx_kp_u__7);
   PyTuple_SET_ITEM(__pyx_t_3, 7, __pyx_kp_u__7);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":386
+  /* "hummingbot/strategy/hedge/hedge.pyx":389
  *             f"{order_type} order {order_id} "
  *             f"({base_asset_amount} {base_asset} @ "
  *             f"{quote_asset_amount} {quote_asset}) has been completely filled."             # <<<<<<<<<<<<<<
  *         )
  *         self.notify_hb_app_with_timestamp(
  */
-  __pyx_t_7 = __Pyx_PyObject_FormatSimple(__pyx_v_quote_asset_amount, __pyx_empty_unicode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 386, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_FormatSimple(__pyx_v_quote_asset_amount, __pyx_empty_unicode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 389, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __pyx_t_6 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_7) > __pyx_t_6) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_7) : __pyx_t_6;
   __pyx_t_5 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_7);
@@ -12682,7 +13053,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __pyx_t_5 += 1;
   __Pyx_GIVEREF(__pyx_kp_u_);
   PyTuple_SET_ITEM(__pyx_t_3, 9, __pyx_kp_u_);
-  __pyx_t_7 = __Pyx_PyUnicode_Unicode(__pyx_v_quote_asset); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 386, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyUnicode_Unicode(__pyx_v_quote_asset); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 389, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __pyx_t_6 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_7) > __pyx_t_6) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_7) : __pyx_t_6;
   __pyx_t_5 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_7);
@@ -12694,14 +13065,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __Pyx_GIVEREF(__pyx_kp_u_has_been_completely_filled);
   PyTuple_SET_ITEM(__pyx_t_3, 11, __pyx_kp_u_has_been_completely_filled);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":384
+  /* "hummingbot/strategy/hedge/hedge.pyx":387
  *         self.log_with_clock(
  *             logging.INFO,
  *             f"{order_type} order {order_id} "             # <<<<<<<<<<<<<<
  *             f"({base_asset_amount} {base_asset} @ "
  *             f"{quote_asset_amount} {quote_asset}) has been completely filled."
  */
-  __pyx_t_7 = __Pyx_PyUnicode_Join(__pyx_t_3, 12, __pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 384, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyUnicode_Join(__pyx_t_3, 12, __pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 387, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
@@ -12722,34 +13093,34 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 382, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 385, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":388
+  /* "hummingbot/strategy/hedge/hedge.pyx":391
  *             f"{quote_asset_amount} {quote_asset}) has been completely filled."
  *         )
  *         self.notify_hb_app_with_timestamp(             # <<<<<<<<<<<<<<
  *             f"{order_type} order {order_id} "
  *             f"({base_asset_amount} {base_asset} @ "
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_notify_hb_app_with_timestamp); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 388, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_notify_hb_app_with_timestamp); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 391, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":389
+  /* "hummingbot/strategy/hedge/hedge.pyx":392
  *         )
  *         self.notify_hb_app_with_timestamp(
  *             f"{order_type} order {order_id} "             # <<<<<<<<<<<<<<
  *             f"({base_asset_amount} {base_asset} @ "
  *             f"{quote_asset_amount} {quote_asset}) has been completely filled."
  */
-  __pyx_t_7 = PyTuple_New(12); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 389, __pyx_L1_error)
+  __pyx_t_7 = PyTuple_New(12); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 392, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __pyx_t_5 = 0;
   __pyx_t_6 = 127;
-  __pyx_t_4 = __Pyx_PyObject_FormatSimple(__pyx_v_order_type, __pyx_empty_unicode); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 389, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_FormatSimple(__pyx_v_order_type, __pyx_empty_unicode); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 392, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_6 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) > __pyx_t_6) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) : __pyx_t_6;
   __pyx_t_5 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_4);
@@ -12760,7 +13131,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __pyx_t_5 += 7;
   __Pyx_GIVEREF(__pyx_kp_u_order);
   PyTuple_SET_ITEM(__pyx_t_7, 1, __pyx_kp_u_order);
-  __pyx_t_4 = __Pyx_PyUnicode_Unicode(__pyx_v_order_id); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 389, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyUnicode_Unicode(__pyx_v_order_id); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 392, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_6 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) > __pyx_t_6) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) : __pyx_t_6;
   __pyx_t_5 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_4);
@@ -12772,14 +13143,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __Pyx_GIVEREF(__pyx_kp_u__6);
   PyTuple_SET_ITEM(__pyx_t_7, 3, __pyx_kp_u__6);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":390
+  /* "hummingbot/strategy/hedge/hedge.pyx":393
  *         self.notify_hb_app_with_timestamp(
  *             f"{order_type} order {order_id} "
  *             f"({base_asset_amount} {base_asset} @ "             # <<<<<<<<<<<<<<
  *             f"{quote_asset_amount} {quote_asset}) has been completely filled."
  *         )
  */
-  __pyx_t_4 = __Pyx_PyObject_FormatSimple(__pyx_v_base_asset_amount, __pyx_empty_unicode); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 390, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_FormatSimple(__pyx_v_base_asset_amount, __pyx_empty_unicode); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 393, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_6 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) > __pyx_t_6) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) : __pyx_t_6;
   __pyx_t_5 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_4);
@@ -12790,7 +13161,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __pyx_t_5 += 1;
   __Pyx_GIVEREF(__pyx_kp_u_);
   PyTuple_SET_ITEM(__pyx_t_7, 5, __pyx_kp_u_);
-  __pyx_t_4 = __Pyx_PyUnicode_Unicode(__pyx_v_base_asset); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 390, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyUnicode_Unicode(__pyx_v_base_asset); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 393, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_6 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) > __pyx_t_6) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) : __pyx_t_6;
   __pyx_t_5 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_4);
@@ -12802,13 +13173,13 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __Pyx_GIVEREF(__pyx_kp_u__7);
   PyTuple_SET_ITEM(__pyx_t_7, 7, __pyx_kp_u__7);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":391
+  /* "hummingbot/strategy/hedge/hedge.pyx":394
  *             f"{order_type} order {order_id} "
  *             f"({base_asset_amount} {base_asset} @ "
  *             f"{quote_asset_amount} {quote_asset}) has been completely filled."             # <<<<<<<<<<<<<<
  *         )
  */
-  __pyx_t_4 = __Pyx_PyObject_FormatSimple(__pyx_v_quote_asset_amount, __pyx_empty_unicode); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 391, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_FormatSimple(__pyx_v_quote_asset_amount, __pyx_empty_unicode); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 394, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_6 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) > __pyx_t_6) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) : __pyx_t_6;
   __pyx_t_5 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_4);
@@ -12819,7 +13190,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __pyx_t_5 += 1;
   __Pyx_GIVEREF(__pyx_kp_u_);
   PyTuple_SET_ITEM(__pyx_t_7, 9, __pyx_kp_u_);
-  __pyx_t_4 = __Pyx_PyUnicode_Unicode(__pyx_v_quote_asset); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 391, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyUnicode_Unicode(__pyx_v_quote_asset); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 394, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_6 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) > __pyx_t_6) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) : __pyx_t_6;
   __pyx_t_5 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_4);
@@ -12831,14 +13202,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
   __Pyx_GIVEREF(__pyx_kp_u_has_been_completely_filled);
   PyTuple_SET_ITEM(__pyx_t_7, 11, __pyx_kp_u_has_been_completely_filled);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":389
+  /* "hummingbot/strategy/hedge/hedge.pyx":392
  *         )
  *         self.notify_hb_app_with_timestamp(
  *             f"{order_type} order {order_id} "             # <<<<<<<<<<<<<<
  *             f"({base_asset_amount} {base_asset} @ "
  *             f"{quote_asset_amount} {quote_asset}) has been completely filled."
  */
-  __pyx_t_4 = __Pyx_PyUnicode_Join(__pyx_t_7, 12, __pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 389, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyUnicode_Join(__pyx_t_7, 12, __pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 392, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __pyx_t_7 = NULL;
@@ -12858,13 +13229,13 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_8, 1+__pyx_t_8);
     __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 388, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 391, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":369
+  /* "hummingbot/strategy/hedge/hedge.pyx":372
  *         )
  * 
  *     cdef c_did_complete_sell_order(self, object order_completed_event):             # <<<<<<<<<<<<<<
@@ -12902,15 +13273,15 @@ static PyObject *__pyx_f_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_c_
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_25__reduce_cython__(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_27__reduce_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_25__reduce_cython__ = {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_25__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_25__reduce_cython__(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_27__reduce_cython__ = {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_27__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_27__reduce_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -12927,14 +13298,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   if (unlikely(__pyx_nargs > 0)) {
     __Pyx_RaiseArgtupleInvalid("__reduce_cython__", 1, 0, 0, __pyx_nargs); return NULL;}
   if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "__reduce_cython__", 0))) return NULL;
-  __pyx_r = __pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_24__reduce_cython__(((struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *)__pyx_v_self));
+  __pyx_r = __pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_26__reduce_cython__(((struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_24__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self) {
+static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_26__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_lineno = 0;
@@ -12974,15 +13345,15 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_2
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_27__setstate_cython__(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_29__setstate_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_27__setstate_cython__ = {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_27__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_27__setstate_cython__(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_29__setstate_cython__ = {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_29__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_29__setstate_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -13041,14 +13412,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_26__setstate_cython__(((struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *)__pyx_v_self), __pyx_v___pyx_state);
+  __pyx_r = __pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_28__setstate_cython__(((struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *)__pyx_v_self), __pyx_v___pyx_state);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_26__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_28__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_lineno = 0;
@@ -14492,11 +14863,12 @@ static PyMethodDef __pyx_methods_10hummingbot_8strategy_5hedge_5hedge_HedgeStrat
   {"get_balance", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_13get_balance, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
   {"market_status_data_frame", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_15market_status_data_frame, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
   {"update_wallet", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_17update_wallet, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
-  {"wallet_df", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_19wallet_df, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
-  {"active_orders_df", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_21active_orders_df, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
-  {"format_status", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_23format_status, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
-  {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_25__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
-  {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_27__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"log_output", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_19log_output, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"wallet_df", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_21wallet_df, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"active_orders_df", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_23active_orders_df, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"format_status", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_25format_status, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_27__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_29__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
   {0, 0, 0, 0}
 };
 
@@ -14621,18 +14993,20 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, __pyx_k_BUY, sizeof(__pyx_k_BUY), 0, 0, 1, 1},
   {0, __pyx_k_Best_Ask, sizeof(__pyx_k_Best_Ask), 0, 1, 0, 0},
   {0, __pyx_k_Best_Bid, sizeof(__pyx_k_Best_Bid), 0, 1, 0, 0},
+  {0, __pyx_k_Bin, sizeof(__pyx_k_Bin), 0, 1, 0, 0},
   {0, __pyx_k_Buy, sizeof(__pyx_k_Buy), 0, 1, 0, 1},
-  {0, __pyx_k_CONNECTED, sizeof(__pyx_k_CONNECTED), 0, 0, 1, 1},
   {0, __pyx_k_Cancelling_Order, sizeof(__pyx_k_Cancelling_Order), 0, 1, 0, 0},
   {0, __pyx_k_Cancelling_Order_2, sizeof(__pyx_k_Cancelling_Order_2), 0, 1, 0, 0},
   {0, __pyx_k_DataFrame, sizeof(__pyx_k_DataFrame), 0, 0, 1, 1},
   {0, __pyx_k_Decimal, sizeof(__pyx_k_Decimal), 0, 0, 1, 1},
   {0, __pyx_k_Dict, sizeof(__pyx_k_Dict), 0, 0, 1, 1},
   {0, __pyx_k_Dict_str_MarketTradingPairTuple, sizeof(__pyx_k_Dict_str_MarketTradingPairTuple), 0, 0, 1, 0},
-  {0, __pyx_k_Diff, sizeof(__pyx_k_Diff), 0, 1, 0, 1},
+  {0, __pyx_k_Diff, sizeof(__pyx_k_Diff), 0, 1, 0, 0},
+  {0, __pyx_k_Diff_2, sizeof(__pyx_k_Diff_2), 0, 1, 0, 1},
   {0, __pyx_k_Exchange, sizeof(__pyx_k_Exchange), 0, 1, 0, 1},
   {0, __pyx_k_ExchangeBase, sizeof(__pyx_k_ExchangeBase), 0, 0, 1, 1},
   {0, __pyx_k_ExchangePairTuple, sizeof(__pyx_k_ExchangePairTuple), 0, 0, 1, 1},
+  {0, __pyx_k_Gate, sizeof(__pyx_k_Gate), 0, 1, 0, 0},
   {0, __pyx_k_HEDGE, sizeof(__pyx_k_HEDGE), 0, 0, 1, 1},
   {0, __pyx_k_Hedge, sizeof(__pyx_k_Hedge), 0, 1, 0, 1},
   {0, __pyx_k_HedgeStrategy, sizeof(__pyx_k_HedgeStrategy), 0, 0, 1, 1},
@@ -14644,6 +15018,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, __pyx_k_HedgeStrategy_get_position_amoun, sizeof(__pyx_k_HedgeStrategy_get_position_amoun), 0, 0, 1, 1},
   {0, __pyx_k_HedgeStrategy_get_shadow_positio, sizeof(__pyx_k_HedgeStrategy_get_shadow_positio), 0, 0, 1, 1},
   {0, __pyx_k_HedgeStrategy_init_params, sizeof(__pyx_k_HedgeStrategy_init_params), 0, 0, 1, 1},
+  {0, __pyx_k_HedgeStrategy_log_output, sizeof(__pyx_k_HedgeStrategy_log_output), 0, 0, 1, 1},
   {0, __pyx_k_HedgeStrategy_logger, sizeof(__pyx_k_HedgeStrategy_logger), 0, 0, 1, 1},
   {0, __pyx_k_HedgeStrategy_market_status_data, sizeof(__pyx_k_HedgeStrategy_market_status_data), 0, 0, 1, 1},
   {0, __pyx_k_HedgeStrategy_set_shadow_positio, sizeof(__pyx_k_HedgeStrategy_set_shadow_positio), 0, 0, 1, 1},
@@ -14653,15 +15028,13 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, __pyx_k_Hedge_Ratio, sizeof(__pyx_k_Hedge_Ratio), 0, 1, 0, 0},
   {0, __pyx_k_INFO, sizeof(__pyx_k_INFO), 0, 0, 1, 1},
   {0, __pyx_k_ImportError, sizeof(__pyx_k_ImportError), 0, 0, 1, 1},
+  {0, __pyx_k_Kuc, sizeof(__pyx_k_Kuc), 0, 1, 0, 0},
   {0, __pyx_k_LIMIT, sizeof(__pyx_k_LIMIT), 0, 0, 1, 1},
   {0, __pyx_k_LimitOrder, sizeof(__pyx_k_LimitOrder), 0, 0, 1, 1},
   {0, __pyx_k_List, sizeof(__pyx_k_List), 0, 0, 1, 1},
-  {0, __pyx_k_Maker, sizeof(__pyx_k_Maker), 0, 1, 0, 1},
   {0, __pyx_k_Market, sizeof(__pyx_k_Market), 0, 1, 0, 1},
   {0, __pyx_k_MarketTradingPairTuple, sizeof(__pyx_k_MarketTradingPairTuple), 0, 0, 1, 1},
   {0, __pyx_k_Markets, sizeof(__pyx_k_Markets), 0, 1, 0, 0},
-  {0, __pyx_k_Markets_are_not_ready_No_market, sizeof(__pyx_k_Markets_are_not_ready_No_market), 0, 1, 0, 0},
-  {0, __pyx_k_Markets_are_ready_Trading_starte, sizeof(__pyx_k_Markets_are_ready_Trading_starte), 0, 1, 0, 0},
   {0, __pyx_k_NaN, sizeof(__pyx_k_NaN), 0, 0, 1, 1},
   {0, __pyx_k_NetworkStatus, sizeof(__pyx_k_NetworkStatus), 0, 0, 1, 1},
   {0, __pyx_k_No_active_orders, sizeof(__pyx_k_No_active_orders), 0, 1, 0, 0},
@@ -14676,17 +15049,19 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, __pyx_k_SHORT, sizeof(__pyx_k_SHORT), 0, 0, 1, 1},
   {0, __pyx_k_Sell, sizeof(__pyx_k_Sell), 0, 1, 0, 1},
   {0, __pyx_k_StrategyBase, sizeof(__pyx_k_StrategyBase), 0, 0, 1, 1},
-  {0, __pyx_k_Taker, sizeof(__pyx_k_Taker), 0, 1, 0, 1},
+  {0, __pyx_k_TB, sizeof(__pyx_k_TB), 0, 1, 0, 0},
+  {0, __pyx_k_TP, sizeof(__pyx_k_TP), 0, 1, 0, 0},
+  {0, __pyx_k_Taker, sizeof(__pyx_k_Taker), 0, 1, 0, 0},
+  {0, __pyx_k_Taker_2, sizeof(__pyx_k_Taker_2), 0, 1, 0, 1},
   {0, __pyx_k_TradeType, sizeof(__pyx_k_TradeType), 0, 0, 1, 1},
   {0, __pyx_k_Type, sizeof(__pyx_k_Type), 0, 1, 0, 1},
   {0, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
-  {0, __pyx_k_WARNING_Some_markets_are_not_con, sizeof(__pyx_k_WARNING_Some_markets_are_not_con), 0, 1, 0, 0},
   {0, __pyx_k_Wallet, sizeof(__pyx_k_Wallet), 0, 1, 0, 0},
   {0, __pyx_k__10, sizeof(__pyx_k__10), 0, 0, 1, 1},
   {0, __pyx_k__2, sizeof(__pyx_k__2), 0, 1, 0, 0},
   {0, __pyx_k__3, sizeof(__pyx_k__3), 0, 1, 0, 0},
   {0, __pyx_k__4, sizeof(__pyx_k__4), 0, 1, 0, 0},
-  {0, __pyx_k__42, sizeof(__pyx_k__42), 0, 0, 1, 1},
+  {0, __pyx_k__44, sizeof(__pyx_k__44), 0, 0, 1, 1},
   {0, __pyx_k__5, sizeof(__pyx_k__5), 0, 1, 0, 0},
   {0, __pyx_k__6, sizeof(__pyx_k__6), 0, 1, 0, 0},
   {0, __pyx_k__7, sizeof(__pyx_k__7), 0, 1, 0, 0},
@@ -14695,13 +15070,14 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, __pyx_k_active_orders_df, sizeof(__pyx_k_active_orders_df), 0, 0, 1, 1},
   {0, __pyx_k_active_positions, sizeof(__pyx_k_active_positions), 0, 0, 1, 1},
   {0, __pyx_k_age, sizeof(__pyx_k_age), 0, 0, 1, 1},
-  {0, __pyx_k_all, sizeof(__pyx_k_all), 0, 0, 1, 1},
   {0, __pyx_k_amount, sizeof(__pyx_k_amount), 0, 0, 1, 1},
   {0, __pyx_k_ask_price, sizeof(__pyx_k_ask_price), 0, 0, 1, 1},
   {0, __pyx_k_asyncio_coroutines, sizeof(__pyx_k_asyncio_coroutines), 0, 0, 1, 1},
   {0, __pyx_k_base_asset, sizeof(__pyx_k_base_asset), 0, 0, 1, 1},
   {0, __pyx_k_base_asset_amount, sizeof(__pyx_k_base_asset_amount), 0, 0, 1, 1},
   {0, __pyx_k_bid_price, sizeof(__pyx_k_bid_price), 0, 0, 1, 1},
+  {0, __pyx_k_binance_balance, sizeof(__pyx_k_binance_balance), 0, 0, 1, 1},
+  {0, __pyx_k_binance_balance, sizeof(__pyx_k_binance_balance), 0, 1, 0, 1},
   {0, __pyx_k_buy, sizeof(__pyx_k_buy), 0, 1, 0, 1},
   {0, __pyx_k_class_getitem, sizeof(__pyx_k_class_getitem), 0, 0, 1, 1},
   {0, __pyx_k_client_order_id, sizeof(__pyx_k_client_order_id), 0, 0, 1, 1},
@@ -14724,6 +15100,9 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, __pyx_k_filled_quantity_2, sizeof(__pyx_k_filled_quantity_2), 0, 1, 0, 0},
   {0, __pyx_k_float, sizeof(__pyx_k_float), 0, 0, 1, 1},
   {0, __pyx_k_format_status, sizeof(__pyx_k_format_status), 0, 0, 1, 1},
+  {0, __pyx_k_gate_balance, sizeof(__pyx_k_gate_balance), 0, 0, 1, 1},
+  {0, __pyx_k_gate_balance, sizeof(__pyx_k_gate_balance), 0, 1, 0, 1},
+  {0, __pyx_k_gate_io, sizeof(__pyx_k_gate_io), 0, 0, 1, 1},
   {0, __pyx_k_gc, sizeof(__pyx_k_gc), 0, 1, 0, 0},
   {0, __pyx_k_get, sizeof(__pyx_k_get), 0, 0, 1, 1},
   {0, __pyx_k_getLogger, sizeof(__pyx_k_getLogger), 0, 0, 1, 1},
@@ -14750,7 +15129,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, __pyx_k_idx, sizeof(__pyx_k_idx), 0, 0, 1, 1},
   {0, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {0, __pyx_k_index, sizeof(__pyx_k_index), 0, 0, 1, 1},
-  {0, __pyx_k_info, sizeof(__pyx_k_info), 0, 0, 1, 1},
   {0, __pyx_k_init_params, sizeof(__pyx_k_init_params), 0, 0, 1, 1},
   {0, __pyx_k_initializing, sizeof(__pyx_k_initializing), 0, 0, 1, 1},
   {0, __pyx_k_int, sizeof(__pyx_k_int), 0, 0, 1, 1},
@@ -14760,17 +15138,20 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, __pyx_k_is_more_than, sizeof(__pyx_k_is_more_than), 0, 1, 0, 0},
   {0, __pyx_k_isenabled, sizeof(__pyx_k_isenabled), 0, 1, 0, 0},
   {0, __pyx_k_isnan, sizeof(__pyx_k_isnan), 0, 0, 1, 1},
+  {0, __pyx_k_kucoin, sizeof(__pyx_k_kucoin), 0, 0, 1, 1},
+  {0, __pyx_k_kucoin_balance, sizeof(__pyx_k_kucoin_balance), 0, 0, 1, 1},
+  {0, __pyx_k_kucoin_balance, sizeof(__pyx_k_kucoin_balance), 0, 1, 0, 1},
   {0, __pyx_k_last_updated, sizeof(__pyx_k_last_updated), 0, 1, 0, 0},
   {0, __pyx_k_leverage, sizeof(__pyx_k_leverage), 0, 0, 1, 1},
   {0, __pyx_k_line, sizeof(__pyx_k_line), 0, 0, 1, 1},
   {0, __pyx_k_lines, sizeof(__pyx_k_lines), 0, 0, 1, 1},
+  {0, __pyx_k_log_output, sizeof(__pyx_k_log_output), 0, 0, 1, 1},
   {0, __pyx_k_log_with_clock, sizeof(__pyx_k_log_with_clock), 0, 0, 1, 1},
   {0, __pyx_k_logger, sizeof(__pyx_k_logger), 0, 0, 1, 1},
   {0, __pyx_k_logging, sizeof(__pyx_k_logging), 0, 0, 1, 1},
   {0, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {0, __pyx_k_maker, sizeof(__pyx_k_maker), 0, 0, 1, 1},
   {0, __pyx_k_maker_asset, sizeof(__pyx_k_maker_asset), 0, 0, 1, 1},
-  {0, __pyx_k_maker_balance, sizeof(__pyx_k_maker_balance), 0, 0, 1, 1},
   {0, __pyx_k_market, sizeof(__pyx_k_market), 0, 0, 1, 1},
   {0, __pyx_k_market_info, sizeof(__pyx_k_market_info), 0, 0, 1, 1},
   {0, __pyx_k_market_info_to_active_orders, sizeof(__pyx_k_market_info_to_active_orders), 0, 0, 1, 1},
@@ -14790,7 +15171,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, __pyx_k_name_2, sizeof(__pyx_k_name_2), 0, 0, 1, 1},
   {0, __pyx_k_nan, sizeof(__pyx_k_nan), 0, 0, 1, 1},
   {0, __pyx_k_nan, sizeof(__pyx_k_nan), 0, 1, 0, 1},
-  {0, __pyx_k_network_status, sizeof(__pyx_k_network_status), 0, 0, 1, 1},
   {0, __pyx_k_notify_hb_app_with_timestamp, sizeof(__pyx_k_notify_hb_app_with_timestamp), 0, 0, 1, 1},
   {0, __pyx_k_np, sizeof(__pyx_k_np), 0, 0, 1, 1},
   {0, __pyx_k_numpy, sizeof(__pyx_k_numpy), 0, 0, 1, 1},
@@ -14847,6 +15227,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, __pyx_k_taker_balance, sizeof(__pyx_k_taker_balance), 0, 0, 1, 1},
   {0, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {0, __pyx_k_to_string, sizeof(__pyx_k_to_string), 0, 0, 1, 1},
+  {0, __pyx_k_total_balance, sizeof(__pyx_k_total_balance), 0, 0, 1, 1},
+  {0, __pyx_k_total_balance, sizeof(__pyx_k_total_balance), 0, 1, 0, 1},
   {0, __pyx_k_trade_type, sizeof(__pyx_k_trade_type), 0, 0, 1, 1},
   {0, __pyx_k_trading_pair, sizeof(__pyx_k_trading_pair), 0, 0, 1, 1},
   {0, __pyx_k_typing, sizeof(__pyx_k_typing), 0, 0, 1, 1},
@@ -14855,7 +15237,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, __pyx_k_value, sizeof(__pyx_k_value), 0, 0, 1, 1},
   {0, __pyx_k_values, sizeof(__pyx_k_values), 0, 0, 1, 1},
   {0, __pyx_k_wallet_df, sizeof(__pyx_k_wallet_df), 0, 0, 1, 1},
-  {0, __pyx_k_warning, sizeof(__pyx_k_warning), 0, 0, 1, 1},
   #else
   {&__pyx_kp_u_, __pyx_k_, sizeof(__pyx_k_), 0, 1, 0, 0},
   {&__pyx_kp_u_Active_Orders, __pyx_k_Active_Orders, sizeof(__pyx_k_Active_Orders), 0, 1, 0, 0},
@@ -14865,18 +15246,20 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_BUY, __pyx_k_BUY, sizeof(__pyx_k_BUY), 0, 0, 1, 1},
   {&__pyx_kp_u_Best_Ask, __pyx_k_Best_Ask, sizeof(__pyx_k_Best_Ask), 0, 1, 0, 0},
   {&__pyx_kp_u_Best_Bid, __pyx_k_Best_Bid, sizeof(__pyx_k_Best_Bid), 0, 1, 0, 0},
+  {&__pyx_kp_u_Bin, __pyx_k_Bin, sizeof(__pyx_k_Bin), 0, 1, 0, 0},
   {&__pyx_n_u_Buy, __pyx_k_Buy, sizeof(__pyx_k_Buy), 0, 1, 0, 1},
-  {&__pyx_n_s_CONNECTED, __pyx_k_CONNECTED, sizeof(__pyx_k_CONNECTED), 0, 0, 1, 1},
   {&__pyx_kp_u_Cancelling_Order, __pyx_k_Cancelling_Order, sizeof(__pyx_k_Cancelling_Order), 0, 1, 0, 0},
   {&__pyx_kp_u_Cancelling_Order_2, __pyx_k_Cancelling_Order_2, sizeof(__pyx_k_Cancelling_Order_2), 0, 1, 0, 0},
   {&__pyx_n_s_DataFrame, __pyx_k_DataFrame, sizeof(__pyx_k_DataFrame), 0, 0, 1, 1},
   {&__pyx_n_s_Decimal, __pyx_k_Decimal, sizeof(__pyx_k_Decimal), 0, 0, 1, 1},
   {&__pyx_n_s_Dict, __pyx_k_Dict, sizeof(__pyx_k_Dict), 0, 0, 1, 1},
   {&__pyx_kp_s_Dict_str_MarketTradingPairTuple, __pyx_k_Dict_str_MarketTradingPairTuple, sizeof(__pyx_k_Dict_str_MarketTradingPairTuple), 0, 0, 1, 0},
-  {&__pyx_n_u_Diff, __pyx_k_Diff, sizeof(__pyx_k_Diff), 0, 1, 0, 1},
+  {&__pyx_kp_u_Diff, __pyx_k_Diff, sizeof(__pyx_k_Diff), 0, 1, 0, 0},
+  {&__pyx_n_u_Diff_2, __pyx_k_Diff_2, sizeof(__pyx_k_Diff_2), 0, 1, 0, 1},
   {&__pyx_n_u_Exchange, __pyx_k_Exchange, sizeof(__pyx_k_Exchange), 0, 1, 0, 1},
   {&__pyx_n_s_ExchangeBase, __pyx_k_ExchangeBase, sizeof(__pyx_k_ExchangeBase), 0, 0, 1, 1},
   {&__pyx_n_s_ExchangePairTuple, __pyx_k_ExchangePairTuple, sizeof(__pyx_k_ExchangePairTuple), 0, 0, 1, 1},
+  {&__pyx_kp_u_Gate, __pyx_k_Gate, sizeof(__pyx_k_Gate), 0, 1, 0, 0},
   {&__pyx_n_s_HEDGE, __pyx_k_HEDGE, sizeof(__pyx_k_HEDGE), 0, 0, 1, 1},
   {&__pyx_n_u_Hedge, __pyx_k_Hedge, sizeof(__pyx_k_Hedge), 0, 1, 0, 1},
   {&__pyx_n_s_HedgeStrategy, __pyx_k_HedgeStrategy, sizeof(__pyx_k_HedgeStrategy), 0, 0, 1, 1},
@@ -14888,6 +15271,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_HedgeStrategy_get_position_amoun, __pyx_k_HedgeStrategy_get_position_amoun, sizeof(__pyx_k_HedgeStrategy_get_position_amoun), 0, 0, 1, 1},
   {&__pyx_n_s_HedgeStrategy_get_shadow_positio, __pyx_k_HedgeStrategy_get_shadow_positio, sizeof(__pyx_k_HedgeStrategy_get_shadow_positio), 0, 0, 1, 1},
   {&__pyx_n_s_HedgeStrategy_init_params, __pyx_k_HedgeStrategy_init_params, sizeof(__pyx_k_HedgeStrategy_init_params), 0, 0, 1, 1},
+  {&__pyx_n_s_HedgeStrategy_log_output, __pyx_k_HedgeStrategy_log_output, sizeof(__pyx_k_HedgeStrategy_log_output), 0, 0, 1, 1},
   {&__pyx_n_s_HedgeStrategy_logger, __pyx_k_HedgeStrategy_logger, sizeof(__pyx_k_HedgeStrategy_logger), 0, 0, 1, 1},
   {&__pyx_n_s_HedgeStrategy_market_status_data, __pyx_k_HedgeStrategy_market_status_data, sizeof(__pyx_k_HedgeStrategy_market_status_data), 0, 0, 1, 1},
   {&__pyx_n_s_HedgeStrategy_set_shadow_positio, __pyx_k_HedgeStrategy_set_shadow_positio, sizeof(__pyx_k_HedgeStrategy_set_shadow_positio), 0, 0, 1, 1},
@@ -14897,15 +15281,13 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_u_Hedge_Ratio, __pyx_k_Hedge_Ratio, sizeof(__pyx_k_Hedge_Ratio), 0, 1, 0, 0},
   {&__pyx_n_s_INFO, __pyx_k_INFO, sizeof(__pyx_k_INFO), 0, 0, 1, 1},
   {&__pyx_n_s_ImportError, __pyx_k_ImportError, sizeof(__pyx_k_ImportError), 0, 0, 1, 1},
+  {&__pyx_kp_u_Kuc, __pyx_k_Kuc, sizeof(__pyx_k_Kuc), 0, 1, 0, 0},
   {&__pyx_n_s_LIMIT, __pyx_k_LIMIT, sizeof(__pyx_k_LIMIT), 0, 0, 1, 1},
   {&__pyx_n_s_LimitOrder, __pyx_k_LimitOrder, sizeof(__pyx_k_LimitOrder), 0, 0, 1, 1},
   {&__pyx_n_s_List, __pyx_k_List, sizeof(__pyx_k_List), 0, 0, 1, 1},
-  {&__pyx_n_u_Maker, __pyx_k_Maker, sizeof(__pyx_k_Maker), 0, 1, 0, 1},
   {&__pyx_n_u_Market, __pyx_k_Market, sizeof(__pyx_k_Market), 0, 1, 0, 1},
   {&__pyx_n_s_MarketTradingPairTuple, __pyx_k_MarketTradingPairTuple, sizeof(__pyx_k_MarketTradingPairTuple), 0, 0, 1, 1},
   {&__pyx_kp_u_Markets, __pyx_k_Markets, sizeof(__pyx_k_Markets), 0, 1, 0, 0},
-  {&__pyx_kp_u_Markets_are_not_ready_No_market, __pyx_k_Markets_are_not_ready_No_market, sizeof(__pyx_k_Markets_are_not_ready_No_market), 0, 1, 0, 0},
-  {&__pyx_kp_u_Markets_are_ready_Trading_starte, __pyx_k_Markets_are_ready_Trading_starte, sizeof(__pyx_k_Markets_are_ready_Trading_starte), 0, 1, 0, 0},
   {&__pyx_n_s_NaN, __pyx_k_NaN, sizeof(__pyx_k_NaN), 0, 0, 1, 1},
   {&__pyx_n_s_NetworkStatus, __pyx_k_NetworkStatus, sizeof(__pyx_k_NetworkStatus), 0, 0, 1, 1},
   {&__pyx_kp_u_No_active_orders, __pyx_k_No_active_orders, sizeof(__pyx_k_No_active_orders), 0, 1, 0, 0},
@@ -14920,17 +15302,19 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_SHORT, __pyx_k_SHORT, sizeof(__pyx_k_SHORT), 0, 0, 1, 1},
   {&__pyx_n_u_Sell, __pyx_k_Sell, sizeof(__pyx_k_Sell), 0, 1, 0, 1},
   {&__pyx_n_s_StrategyBase, __pyx_k_StrategyBase, sizeof(__pyx_k_StrategyBase), 0, 0, 1, 1},
-  {&__pyx_n_u_Taker, __pyx_k_Taker, sizeof(__pyx_k_Taker), 0, 1, 0, 1},
+  {&__pyx_kp_u_TB, __pyx_k_TB, sizeof(__pyx_k_TB), 0, 1, 0, 0},
+  {&__pyx_kp_u_TP, __pyx_k_TP, sizeof(__pyx_k_TP), 0, 1, 0, 0},
+  {&__pyx_kp_u_Taker, __pyx_k_Taker, sizeof(__pyx_k_Taker), 0, 1, 0, 0},
+  {&__pyx_n_u_Taker_2, __pyx_k_Taker_2, sizeof(__pyx_k_Taker_2), 0, 1, 0, 1},
   {&__pyx_n_s_TradeType, __pyx_k_TradeType, sizeof(__pyx_k_TradeType), 0, 0, 1, 1},
   {&__pyx_n_u_Type, __pyx_k_Type, sizeof(__pyx_k_Type), 0, 1, 0, 1},
   {&__pyx_n_s_TypeError, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
-  {&__pyx_kp_u_WARNING_Some_markets_are_not_con, __pyx_k_WARNING_Some_markets_are_not_con, sizeof(__pyx_k_WARNING_Some_markets_are_not_con), 0, 1, 0, 0},
   {&__pyx_kp_u_Wallet, __pyx_k_Wallet, sizeof(__pyx_k_Wallet), 0, 1, 0, 0},
   {&__pyx_n_s__10, __pyx_k__10, sizeof(__pyx_k__10), 0, 0, 1, 1},
   {&__pyx_kp_u__2, __pyx_k__2, sizeof(__pyx_k__2), 0, 1, 0, 0},
   {&__pyx_kp_u__3, __pyx_k__3, sizeof(__pyx_k__3), 0, 1, 0, 0},
   {&__pyx_kp_u__4, __pyx_k__4, sizeof(__pyx_k__4), 0, 1, 0, 0},
-  {&__pyx_n_s__42, __pyx_k__42, sizeof(__pyx_k__42), 0, 0, 1, 1},
+  {&__pyx_n_s__44, __pyx_k__44, sizeof(__pyx_k__44), 0, 0, 1, 1},
   {&__pyx_kp_u__5, __pyx_k__5, sizeof(__pyx_k__5), 0, 1, 0, 0},
   {&__pyx_kp_u__6, __pyx_k__6, sizeof(__pyx_k__6), 0, 1, 0, 0},
   {&__pyx_kp_u__7, __pyx_k__7, sizeof(__pyx_k__7), 0, 1, 0, 0},
@@ -14939,13 +15323,14 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_active_orders_df, __pyx_k_active_orders_df, sizeof(__pyx_k_active_orders_df), 0, 0, 1, 1},
   {&__pyx_n_s_active_positions, __pyx_k_active_positions, sizeof(__pyx_k_active_positions), 0, 0, 1, 1},
   {&__pyx_n_s_age, __pyx_k_age, sizeof(__pyx_k_age), 0, 0, 1, 1},
-  {&__pyx_n_s_all, __pyx_k_all, sizeof(__pyx_k_all), 0, 0, 1, 1},
   {&__pyx_n_s_amount, __pyx_k_amount, sizeof(__pyx_k_amount), 0, 0, 1, 1},
   {&__pyx_n_s_ask_price, __pyx_k_ask_price, sizeof(__pyx_k_ask_price), 0, 0, 1, 1},
   {&__pyx_n_s_asyncio_coroutines, __pyx_k_asyncio_coroutines, sizeof(__pyx_k_asyncio_coroutines), 0, 0, 1, 1},
   {&__pyx_n_s_base_asset, __pyx_k_base_asset, sizeof(__pyx_k_base_asset), 0, 0, 1, 1},
   {&__pyx_n_s_base_asset_amount, __pyx_k_base_asset_amount, sizeof(__pyx_k_base_asset_amount), 0, 0, 1, 1},
   {&__pyx_n_s_bid_price, __pyx_k_bid_price, sizeof(__pyx_k_bid_price), 0, 0, 1, 1},
+  {&__pyx_n_s_binance_balance, __pyx_k_binance_balance, sizeof(__pyx_k_binance_balance), 0, 0, 1, 1},
+  {&__pyx_n_u_binance_balance, __pyx_k_binance_balance, sizeof(__pyx_k_binance_balance), 0, 1, 0, 1},
   {&__pyx_n_u_buy, __pyx_k_buy, sizeof(__pyx_k_buy), 0, 1, 0, 1},
   {&__pyx_n_s_class_getitem, __pyx_k_class_getitem, sizeof(__pyx_k_class_getitem), 0, 0, 1, 1},
   {&__pyx_n_s_client_order_id, __pyx_k_client_order_id, sizeof(__pyx_k_client_order_id), 0, 0, 1, 1},
@@ -14968,6 +15353,9 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_u_filled_quantity_2, __pyx_k_filled_quantity_2, sizeof(__pyx_k_filled_quantity_2), 0, 1, 0, 0},
   {&__pyx_n_s_float, __pyx_k_float, sizeof(__pyx_k_float), 0, 0, 1, 1},
   {&__pyx_n_s_format_status, __pyx_k_format_status, sizeof(__pyx_k_format_status), 0, 0, 1, 1},
+  {&__pyx_n_s_gate_balance, __pyx_k_gate_balance, sizeof(__pyx_k_gate_balance), 0, 0, 1, 1},
+  {&__pyx_n_u_gate_balance, __pyx_k_gate_balance, sizeof(__pyx_k_gate_balance), 0, 1, 0, 1},
+  {&__pyx_n_s_gate_io, __pyx_k_gate_io, sizeof(__pyx_k_gate_io), 0, 0, 1, 1},
   {&__pyx_kp_u_gc, __pyx_k_gc, sizeof(__pyx_k_gc), 0, 1, 0, 0},
   {&__pyx_n_s_get, __pyx_k_get, sizeof(__pyx_k_get), 0, 0, 1, 1},
   {&__pyx_n_s_getLogger, __pyx_k_getLogger, sizeof(__pyx_k_getLogger), 0, 0, 1, 1},
@@ -14994,7 +15382,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_idx, __pyx_k_idx, sizeof(__pyx_k_idx), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_index, __pyx_k_index, sizeof(__pyx_k_index), 0, 0, 1, 1},
-  {&__pyx_n_s_info, __pyx_k_info, sizeof(__pyx_k_info), 0, 0, 1, 1},
   {&__pyx_n_s_init_params, __pyx_k_init_params, sizeof(__pyx_k_init_params), 0, 0, 1, 1},
   {&__pyx_n_s_initializing, __pyx_k_initializing, sizeof(__pyx_k_initializing), 0, 0, 1, 1},
   {&__pyx_n_s_int, __pyx_k_int, sizeof(__pyx_k_int), 0, 0, 1, 1},
@@ -15004,17 +15391,20 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_u_is_more_than, __pyx_k_is_more_than, sizeof(__pyx_k_is_more_than), 0, 1, 0, 0},
   {&__pyx_kp_u_isenabled, __pyx_k_isenabled, sizeof(__pyx_k_isenabled), 0, 1, 0, 0},
   {&__pyx_n_s_isnan, __pyx_k_isnan, sizeof(__pyx_k_isnan), 0, 0, 1, 1},
+  {&__pyx_n_s_kucoin, __pyx_k_kucoin, sizeof(__pyx_k_kucoin), 0, 0, 1, 1},
+  {&__pyx_n_s_kucoin_balance, __pyx_k_kucoin_balance, sizeof(__pyx_k_kucoin_balance), 0, 0, 1, 1},
+  {&__pyx_n_u_kucoin_balance, __pyx_k_kucoin_balance, sizeof(__pyx_k_kucoin_balance), 0, 1, 0, 1},
   {&__pyx_kp_u_last_updated, __pyx_k_last_updated, sizeof(__pyx_k_last_updated), 0, 1, 0, 0},
   {&__pyx_n_s_leverage, __pyx_k_leverage, sizeof(__pyx_k_leverage), 0, 0, 1, 1},
   {&__pyx_n_s_line, __pyx_k_line, sizeof(__pyx_k_line), 0, 0, 1, 1},
   {&__pyx_n_s_lines, __pyx_k_lines, sizeof(__pyx_k_lines), 0, 0, 1, 1},
+  {&__pyx_n_s_log_output, __pyx_k_log_output, sizeof(__pyx_k_log_output), 0, 0, 1, 1},
   {&__pyx_n_s_log_with_clock, __pyx_k_log_with_clock, sizeof(__pyx_k_log_with_clock), 0, 0, 1, 1},
   {&__pyx_n_s_logger, __pyx_k_logger, sizeof(__pyx_k_logger), 0, 0, 1, 1},
   {&__pyx_n_s_logging, __pyx_k_logging, sizeof(__pyx_k_logging), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_maker, __pyx_k_maker, sizeof(__pyx_k_maker), 0, 0, 1, 1},
   {&__pyx_n_s_maker_asset, __pyx_k_maker_asset, sizeof(__pyx_k_maker_asset), 0, 0, 1, 1},
-  {&__pyx_n_s_maker_balance, __pyx_k_maker_balance, sizeof(__pyx_k_maker_balance), 0, 0, 1, 1},
   {&__pyx_n_s_market, __pyx_k_market, sizeof(__pyx_k_market), 0, 0, 1, 1},
   {&__pyx_n_s_market_info, __pyx_k_market_info, sizeof(__pyx_k_market_info), 0, 0, 1, 1},
   {&__pyx_n_s_market_info_to_active_orders, __pyx_k_market_info_to_active_orders, sizeof(__pyx_k_market_info_to_active_orders), 0, 0, 1, 1},
@@ -15034,7 +15424,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_name_2, __pyx_k_name_2, sizeof(__pyx_k_name_2), 0, 0, 1, 1},
   {&__pyx_n_s_nan, __pyx_k_nan, sizeof(__pyx_k_nan), 0, 0, 1, 1},
   {&__pyx_n_u_nan, __pyx_k_nan, sizeof(__pyx_k_nan), 0, 1, 0, 1},
-  {&__pyx_n_s_network_status, __pyx_k_network_status, sizeof(__pyx_k_network_status), 0, 0, 1, 1},
   {&__pyx_n_s_notify_hb_app_with_timestamp, __pyx_k_notify_hb_app_with_timestamp, sizeof(__pyx_k_notify_hb_app_with_timestamp), 0, 0, 1, 1},
   {&__pyx_n_s_np, __pyx_k_np, sizeof(__pyx_k_np), 0, 0, 1, 1},
   {&__pyx_n_s_numpy, __pyx_k_numpy, sizeof(__pyx_k_numpy), 0, 0, 1, 1},
@@ -15091,6 +15480,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_taker_balance, __pyx_k_taker_balance, sizeof(__pyx_k_taker_balance), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {&__pyx_n_s_to_string, __pyx_k_to_string, sizeof(__pyx_k_to_string), 0, 0, 1, 1},
+  {&__pyx_n_s_total_balance, __pyx_k_total_balance, sizeof(__pyx_k_total_balance), 0, 0, 1, 1},
+  {&__pyx_n_u_total_balance, __pyx_k_total_balance, sizeof(__pyx_k_total_balance), 0, 1, 0, 1},
   {&__pyx_n_s_trade_type, __pyx_k_trade_type, sizeof(__pyx_k_trade_type), 0, 0, 1, 1},
   {&__pyx_n_s_trading_pair, __pyx_k_trading_pair, sizeof(__pyx_k_trading_pair), 0, 0, 1, 1},
   {&__pyx_n_s_typing, __pyx_k_typing, sizeof(__pyx_k_typing), 0, 0, 1, 1},
@@ -15099,15 +15490,13 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_value, __pyx_k_value, sizeof(__pyx_k_value), 0, 0, 1, 1},
   {&__pyx_n_s_values, __pyx_k_values, sizeof(__pyx_k_values), 0, 0, 1, 1},
   {&__pyx_n_s_wallet_df, __pyx_k_wallet_df, sizeof(__pyx_k_wallet_df), 0, 0, 1, 1},
-  {&__pyx_n_s_warning, __pyx_k_warning, sizeof(__pyx_k_warning), 0, 0, 1, 1},
   #endif
   {0, 0, 0, 0, 0, 0, 0}
 };
 /* #### Code section: cached_builtins ### */
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_max = __Pyx_GetBuiltinName(__pyx_n_s_max); if (!__pyx_builtin_max) __PYX_ERR(0, 192, __pyx_L1_error)
-  __pyx_builtin_round = __Pyx_GetBuiltinName(__pyx_n_s_round); if (!__pyx_builtin_round) __PYX_ERR(0, 224, __pyx_L1_error)
-  __pyx_builtin_all = __Pyx_GetBuiltinName(__pyx_n_s_all); if (!__pyx_builtin_all) __PYX_ERR(0, 323, __pyx_L1_error)
+  __pyx_builtin_round = __Pyx_GetBuiltinName(__pyx_n_s_round); if (!__pyx_builtin_round) __PYX_ERR(0, 240, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
   __pyx_builtin_ImportError = __Pyx_GetBuiltinName(__pyx_n_s_ImportError); if (!__pyx_builtin_ImportError) __PYX_ERR(2, 989, __pyx_L1_error)
   return 0;
@@ -15243,7 +15632,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  *         return self.get_shadow_position(trading_pair)
  * 
  *     def get_balance(self, maker_asset: str):             # <<<<<<<<<<<<<<
- *         return self._exchanges.maker.get_balance(maker_asset)
+ *         return (self._exchanges.maker.get_balance(maker_asset) + self._exchanges.kucoin.get_balance(maker_asset) + self._exchanges.gate_io.get_balance(maker_asset))
  * 
  */
   __pyx_tuple__26 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_maker_asset); if (unlikely(!__pyx_tuple__26)) __PYX_ERR(0, 93, __pyx_L1_error)
@@ -15270,56 +15659,68 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  *         position_updated=False
  *         for maker_asset in self._market_infos:
  */
-  __pyx_tuple__30 = PyTuple_Pack(10, __pyx_n_s_self, __pyx_n_s_position_updated, __pyx_n_s_maker_asset, __pyx_n_s_market_pair, __pyx_n_s_trading_pair, __pyx_n_s_taker_balance, __pyx_n_s_maker_balance, __pyx_n_s_hedge_amount, __pyx_n_s_is_buy, __pyx_n_s_price); if (unlikely(!__pyx_tuple__30)) __PYX_ERR(0, 184, __pyx_L1_error)
+  __pyx_tuple__30 = PyTuple_Pack(10, __pyx_n_s_self, __pyx_n_s_position_updated, __pyx_n_s_maker_asset, __pyx_n_s_market_pair, __pyx_n_s_trading_pair, __pyx_n_s_taker_balance, __pyx_n_s_total_balance, __pyx_n_s_hedge_amount, __pyx_n_s_is_buy, __pyx_n_s_price); if (unlikely(!__pyx_tuple__30)) __PYX_ERR(0, 184, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__30);
   __Pyx_GIVEREF(__pyx_tuple__30);
   __pyx_codeobj__31 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 10, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__30, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hummingbot_strategy_hedge_hedge, __pyx_n_s_update_wallet, 184, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__31)) __PYX_ERR(0, 184, __pyx_L1_error)
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":214
+  /* "hummingbot/strategy/hedge/hedge.pyx":213
+ *         if position_updated:
  *             self._last_trade_time["last updated"]=self._current_timestamp
+ *     def log_output(self):             # <<<<<<<<<<<<<<
+ *       for maker_asset in self._market_infos:
+ *           market_pair = self._market_infos[maker_asset]
+ */
+  __pyx_tuple__32 = PyTuple_Pack(10, __pyx_n_s_self, __pyx_n_s_maker_asset, __pyx_n_s_market_pair, __pyx_n_s_trading_pair, __pyx_n_s_total_balance, __pyx_n_s_binance_balance, __pyx_n_s_kucoin_balance, __pyx_n_s_gate_balance, __pyx_n_s_taker_balance, __pyx_n_s_difference); if (unlikely(!__pyx_tuple__32)) __PYX_ERR(0, 213, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__32);
+  __Pyx_GIVEREF(__pyx_tuple__32);
+  __pyx_codeobj__33 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 10, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__32, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hummingbot_strategy_hedge_hedge, __pyx_n_s_log_output, 213, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__33)) __PYX_ERR(0, 213, __pyx_L1_error)
+
+  /* "hummingbot/strategy/hedge/hedge.pyx":227
+ * 
  * 
  *     def wallet_df(self) -> pd.DataFrame:             # <<<<<<<<<<<<<<
  *         data=[]
- *         columns = ["Asset", "Price", "Maker", "Taker", "Diff", "Hedge Ratio"]
+ *         columns = ["Asset", "Price", "total_balance","binance_balance","kucoin_balance","gate_balance", "Taker", "Diff", "Hedge Ratio"]
  */
-  __pyx_tuple__32 = PyTuple_Pack(11, __pyx_n_s_self, __pyx_n_s_data, __pyx_n_s_columns, __pyx_n_s_maker_asset, __pyx_n_s_market_pair, __pyx_n_s_trading_pair, __pyx_n_s_maker_balance, __pyx_n_s_taker_balance, __pyx_n_s_mid_price, __pyx_n_s_difference, __pyx_n_s_hedge_ratio); if (unlikely(!__pyx_tuple__32)) __PYX_ERR(0, 214, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__32);
-  __Pyx_GIVEREF(__pyx_tuple__32);
-  __pyx_codeobj__33 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 11, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__32, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hummingbot_strategy_hedge_hedge, __pyx_n_s_wallet_df, 214, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__33)) __PYX_ERR(0, 214, __pyx_L1_error)
+  __pyx_tuple__34 = PyTuple_Pack(14, __pyx_n_s_self, __pyx_n_s_data, __pyx_n_s_columns, __pyx_n_s_maker_asset, __pyx_n_s_market_pair, __pyx_n_s_trading_pair, __pyx_n_s_total_balance, __pyx_n_s_binance_balance, __pyx_n_s_kucoin_balance, __pyx_n_s_gate_balance, __pyx_n_s_taker_balance, __pyx_n_s_mid_price, __pyx_n_s_difference, __pyx_n_s_hedge_ratio); if (unlikely(!__pyx_tuple__34)) __PYX_ERR(0, 227, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__34);
+  __Pyx_GIVEREF(__pyx_tuple__34);
+  __pyx_codeobj__35 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 14, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__34, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hummingbot_strategy_hedge_hedge, __pyx_n_s_wallet_df, 227, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__35)) __PYX_ERR(0, 227, __pyx_L1_error)
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":235
+  /* "hummingbot/strategy/hedge/hedge.pyx":254
  *         return pd.DataFrame(data=data, columns=columns)
  * 
  *     def active_orders_df(self) -> pd.DataFrame:             # <<<<<<<<<<<<<<
  * 
  *         active_orders = self.market_info_to_active_orders
  */
-  __pyx_tuple__34 = PyTuple_Pack(9, __pyx_n_s_self, __pyx_n_s_active_orders, __pyx_n_s_columns, __pyx_n_s_data, __pyx_n_s_market_info, __pyx_n_s_orders, __pyx_n_s_order_2, __pyx_n_s_market, __pyx_n_s_age); if (unlikely(!__pyx_tuple__34)) __PYX_ERR(0, 235, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__34);
-  __Pyx_GIVEREF(__pyx_tuple__34);
-  __pyx_codeobj__35 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 9, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__34, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hummingbot_strategy_hedge_hedge, __pyx_n_s_active_orders_df, 235, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__35)) __PYX_ERR(0, 235, __pyx_L1_error)
+  __pyx_tuple__36 = PyTuple_Pack(9, __pyx_n_s_self, __pyx_n_s_active_orders, __pyx_n_s_columns, __pyx_n_s_data, __pyx_n_s_market_info, __pyx_n_s_orders, __pyx_n_s_order_2, __pyx_n_s_market, __pyx_n_s_age); if (unlikely(!__pyx_tuple__36)) __PYX_ERR(0, 254, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__36);
+  __Pyx_GIVEREF(__pyx_tuple__36);
+  __pyx_codeobj__37 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 9, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__36, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hummingbot_strategy_hedge_hedge, __pyx_n_s_active_orders_df, 254, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__37)) __PYX_ERR(0, 254, __pyx_L1_error)
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":254
+  /* "hummingbot/strategy/hedge/hedge.pyx":273
  *         return pd.DataFrame(data=data, columns=columns)
  * 
  *     def format_status(self) -> str:             # <<<<<<<<<<<<<<
  *         lines = []
  *         if not self._all_markets_ready:
  */
-  __pyx_tuple__36 = PyTuple_Pack(9, __pyx_n_s_self, __pyx_n_s_lines, __pyx_n_s_exchange, __pyx_n_s_markets_df, __pyx_n_s_wallet_df, __pyx_n_s_df, __pyx_n_s_line, __pyx_n_s_line, __pyx_n_s_line); if (unlikely(!__pyx_tuple__36)) __PYX_ERR(0, 254, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__36);
-  __Pyx_GIVEREF(__pyx_tuple__36);
-  __pyx_codeobj__37 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 9, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__36, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hummingbot_strategy_hedge_hedge, __pyx_n_s_format_status, 254, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__37)) __PYX_ERR(0, 254, __pyx_L1_error)
+  __pyx_tuple__38 = PyTuple_Pack(9, __pyx_n_s_self, __pyx_n_s_lines, __pyx_n_s_exchange, __pyx_n_s_markets_df, __pyx_n_s_wallet_df, __pyx_n_s_df, __pyx_n_s_line, __pyx_n_s_line, __pyx_n_s_line); if (unlikely(!__pyx_tuple__38)) __PYX_ERR(0, 273, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__38);
+  __Pyx_GIVEREF(__pyx_tuple__38);
+  __pyx_codeobj__39 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 9, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__38, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hummingbot_strategy_hedge_hedge, __pyx_n_s_format_status, 273, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__39)) __PYX_ERR(0, 273, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
  *     raise TypeError, "self._events cannot be converted to a Python object for pickling"
  * def __setstate_cython__(self, __pyx_state):
  */
-  __pyx_tuple__38 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__38)) __PYX_ERR(1, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__38);
-  __Pyx_GIVEREF(__pyx_tuple__38);
-  __pyx_codeobj__39 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__38, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_reduce_cython, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__39)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_tuple__40 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__40)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__40);
+  __Pyx_GIVEREF(__pyx_tuple__40);
+  __pyx_codeobj__41 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__40, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_reduce_cython, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__41)) __PYX_ERR(1, 1, __pyx_L1_error)
 
   /* "(tree fragment)":3
  * def __reduce_cython__(self):
@@ -15327,10 +15728,10 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     raise TypeError, "self._events cannot be converted to a Python object for pickling"
  */
-  __pyx_tuple__40 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_pyx_state); if (unlikely(!__pyx_tuple__40)) __PYX_ERR(1, 3, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__40);
-  __Pyx_GIVEREF(__pyx_tuple__40);
-  __pyx_codeobj__41 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__40, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_setstate_cython, 3, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__41)) __PYX_ERR(1, 3, __pyx_L1_error)
+  __pyx_tuple__42 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_pyx_state); if (unlikely(!__pyx_tuple__42)) __PYX_ERR(1, 3, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__42);
+  __Pyx_GIVEREF(__pyx_tuple__42);
+  __pyx_codeobj__43 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__42, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_setstate_cython, 3, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__43)) __PYX_ERR(1, 3, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -15349,241 +15750,250 @@ static CYTHON_SMALL_CODE int __Pyx_InitGlobals(void) {
   if (__Pyx_InitString(__pyx_string_tab[5], &__pyx_n_s_BUY) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
   if (__Pyx_InitString(__pyx_string_tab[6], &__pyx_kp_u_Best_Ask) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
   if (__Pyx_InitString(__pyx_string_tab[7], &__pyx_kp_u_Best_Bid) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[8], &__pyx_n_u_Buy) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[9], &__pyx_n_s_CONNECTED) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[8], &__pyx_kp_u_Bin) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[9], &__pyx_n_u_Buy) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
   if (__Pyx_InitString(__pyx_string_tab[10], &__pyx_kp_u_Cancelling_Order) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
   if (__Pyx_InitString(__pyx_string_tab[11], &__pyx_kp_u_Cancelling_Order_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
   if (__Pyx_InitString(__pyx_string_tab[12], &__pyx_n_s_DataFrame) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
   if (__Pyx_InitString(__pyx_string_tab[13], &__pyx_n_s_Decimal) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
   if (__Pyx_InitString(__pyx_string_tab[14], &__pyx_n_s_Dict) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
   if (__Pyx_InitString(__pyx_string_tab[15], &__pyx_kp_s_Dict_str_MarketTradingPairTuple) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[16], &__pyx_n_u_Diff) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[17], &__pyx_n_u_Exchange) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[18], &__pyx_n_s_ExchangeBase) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[19], &__pyx_n_s_ExchangePairTuple) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[20], &__pyx_n_s_HEDGE) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[21], &__pyx_n_u_Hedge) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[22], &__pyx_n_s_HedgeStrategy) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[23], &__pyx_n_s_HedgeStrategy___reduce_cython) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[24], &__pyx_n_s_HedgeStrategy___setstate_cython) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[25], &__pyx_n_s_HedgeStrategy_active_orders_df) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[26], &__pyx_n_s_HedgeStrategy_format_status) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[27], &__pyx_n_s_HedgeStrategy_get_balance) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[28], &__pyx_n_s_HedgeStrategy_get_position_amoun) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[29], &__pyx_n_s_HedgeStrategy_get_shadow_positio) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[30], &__pyx_n_s_HedgeStrategy_init_params) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[31], &__pyx_n_s_HedgeStrategy_logger) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[32], &__pyx_n_s_HedgeStrategy_market_status_data) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[33], &__pyx_n_s_HedgeStrategy_set_shadow_positio) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[34], &__pyx_n_s_HedgeStrategy_update_shadow_posi) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[35], &__pyx_n_s_HedgeStrategy_update_wallet) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[36], &__pyx_n_s_HedgeStrategy_wallet_df) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[37], &__pyx_kp_u_Hedge_Ratio) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[38], &__pyx_n_s_INFO) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[39], &__pyx_n_s_ImportError) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[40], &__pyx_n_s_LIMIT) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[41], &__pyx_n_s_LimitOrder) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[42], &__pyx_n_s_List) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[43], &__pyx_n_u_Maker) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[44], &__pyx_n_u_Market) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[45], &__pyx_n_s_MarketTradingPairTuple) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[46], &__pyx_kp_u_Markets) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[47], &__pyx_kp_u_Markets_are_not_ready_No_market) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[48], &__pyx_kp_u_Markets_are_ready_Trading_starte) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[49], &__pyx_n_s_NaN) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[50], &__pyx_n_s_NetworkStatus) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[51], &__pyx_kp_u_No_active_orders) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[52], &__pyx_kp_u_None) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[53], &__pyx_n_s_ONEWAY) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[54], &__pyx_n_u_ONEWAY) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[55], &__pyx_n_s_OrderType) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[56], &__pyx_kp_u_Place) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[57], &__pyx_n_s_PositionMode) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[58], &__pyx_n_s_PositionSide) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[59], &__pyx_n_u_Price) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[60], &__pyx_n_s_SHORT) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[61], &__pyx_n_u_Sell) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[62], &__pyx_n_s_StrategyBase) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[63], &__pyx_n_u_Taker) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[64], &__pyx_n_s_TradeType) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[65], &__pyx_n_u_Type) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[66], &__pyx_n_s_TypeError) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[67], &__pyx_kp_u_WARNING_Some_markets_are_not_con) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[68], &__pyx_kp_u_Wallet) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[69], &__pyx_n_s__10) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[70], &__pyx_kp_u__2) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[71], &__pyx_kp_u__3) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[72], &__pyx_kp_u__4) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[73], &__pyx_n_s__42) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[74], &__pyx_kp_u__5) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[75], &__pyx_kp_u__6) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[76], &__pyx_kp_u__7) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[77], &__pyx_n_s_account_positions) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[78], &__pyx_n_s_active_orders) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[79], &__pyx_n_s_active_orders_df) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[80], &__pyx_n_s_active_positions) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[81], &__pyx_n_s_age) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[82], &__pyx_n_s_all) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[83], &__pyx_n_s_amount) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[84], &__pyx_n_s_ask_price) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[85], &__pyx_n_s_asyncio_coroutines) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[86], &__pyx_n_s_base_asset) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[87], &__pyx_n_s_base_asset_amount) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[88], &__pyx_n_s_bid_price) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[89], &__pyx_n_u_buy) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[90], &__pyx_n_s_class_getitem) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[91], &__pyx_n_s_client_order_id) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[92], &__pyx_n_s_cline_in_traceback) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[93], &__pyx_n_s_cls) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[94], &__pyx_n_s_columns) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[95], &__pyx_kp_u_connector_is_not_ready) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[96], &__pyx_n_s_data) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[97], &__pyx_n_s_decimal) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[98], &__pyx_n_s_df) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[99], &__pyx_n_s_dict) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[100], &__pyx_n_s_difference) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[101], &__pyx_kp_u_disable) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[102], &__pyx_n_s_display_name) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[103], &__pyx_kp_u_enable) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[104], &__pyx_n_s_exchange) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[105], &__pyx_n_s_exchanges) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[106], &__pyx_kp_u_filled_at) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[107], &__pyx_n_s_filled_quantity) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[108], &__pyx_kp_u_filled_quantity_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[109], &__pyx_n_s_float) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[110], &__pyx_n_s_format_status) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[111], &__pyx_kp_u_gc) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[112], &__pyx_n_s_get) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[113], &__pyx_n_s_getLogger) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[114], &__pyx_n_s_get_balance) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[115], &__pyx_n_s_get_mid_price) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[116], &__pyx_n_s_get_position_amount) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[117], &__pyx_n_s_get_price) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[118], &__pyx_n_s_get_shadow_position) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[119], &__pyx_n_s_getstate) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[120], &__pyx_kp_u_has_been_completely_filled) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[121], &__pyx_n_s_hedge_amount) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[122], &__pyx_n_s_hedge_interval) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[123], &__pyx_n_s_hedge_ratio) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[124], &__pyx_n_s_hummingbot_connector_exchange_ba) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[125], &__pyx_n_s_hummingbot_core_data_type_common) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[126], &__pyx_n_s_hummingbot_core_data_type_limit) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[127], &__pyx_n_s_hummingbot_core_network_iterator) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[128], &__pyx_n_s_hummingbot_strategy_hedge_exchan) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[129], &__pyx_kp_s_hummingbot_strategy_hedge_hedge) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[130], &__pyx_n_s_hummingbot_strategy_hedge_hedge_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[131], &__pyx_n_s_hummingbot_strategy_market_tradi) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[132], &__pyx_n_s_hummingbot_strategy_strategy_bas) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[133], &__pyx_n_s_hummingbot_strategy_utils) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[134], &__pyx_n_s_idx) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[135], &__pyx_n_s_import) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[136], &__pyx_n_s_index) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[137], &__pyx_n_s_info) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[138], &__pyx_n_s_init_params) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[139], &__pyx_n_s_initializing) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[140], &__pyx_n_s_int) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[141], &__pyx_n_s_is_buy) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[142], &__pyx_n_s_is_coroutine) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[143], &__pyx_kp_u_is_different_than_quantity_requ) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[144], &__pyx_kp_u_is_more_than) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[145], &__pyx_kp_u_isenabled) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[146], &__pyx_n_s_isnan) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[147], &__pyx_kp_u_last_updated) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[148], &__pyx_n_s_leverage) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[149], &__pyx_n_s_line) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[150], &__pyx_n_s_lines) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[151], &__pyx_n_s_log_with_clock) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[152], &__pyx_n_s_logger) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[153], &__pyx_n_s_logging) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[154], &__pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[155], &__pyx_n_s_maker) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[156], &__pyx_n_s_maker_asset) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[157], &__pyx_n_s_maker_balance) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[158], &__pyx_n_s_market) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[159], &__pyx_n_s_market_info) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[160], &__pyx_n_s_market_info_to_active_orders) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[161], &__pyx_n_s_market_infos) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[162], &__pyx_n_s_market_pair) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[163], &__pyx_n_s_market_pair_to_active_orders) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[164], &__pyx_n_s_market_status_data_frame) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[165], &__pyx_n_s_markets_columns) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[166], &__pyx_n_s_markets_data) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[167], &__pyx_n_s_markets_df) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[168], &__pyx_n_s_math) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[169], &__pyx_n_s_max) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[170], &__pyx_n_s_max_order_age) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[171], &__pyx_n_s_mid_price) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[172], &__pyx_n_s_minimum_trade) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[173], &__pyx_n_s_name) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[174], &__pyx_n_s_name_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[175], &__pyx_n_s_nan) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[176], &__pyx_n_u_nan) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[177], &__pyx_n_s_network_status) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[178], &__pyx_n_s_notify_hb_app_with_timestamp) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[179], &__pyx_n_s_np) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[180], &__pyx_n_s_numpy) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[181], &__pyx_kp_u_numpy_core_multiarray_failed_to) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[182], &__pyx_kp_u_numpy_core_umath_failed_to_impor) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[183], &__pyx_kp_u_order) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[184], &__pyx_n_s_order_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[185], &__pyx_n_s_order_age) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[186], &__pyx_kp_u_order_age_of_limit_order) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[187], &__pyx_n_s_order_id) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[188], &__pyx_kp_u_order_of) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[189], &__pyx_kp_u_order_quantum) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[190], &__pyx_n_s_order_type) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[191], &__pyx_n_s_orders) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[192], &__pyx_n_s_pandas) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[193], &__pyx_n_s_pd) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[194], &__pyx_kp_s_pd_DataFrame) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[195], &__pyx_n_s_position_mode) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[196], &__pyx_n_s_position_side) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[197], &__pyx_n_s_position_updated) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[198], &__pyx_n_s_price) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[199], &__pyx_n_s_pyx_state) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[200], &__pyx_n_s_pyx_vtable) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[201], &__pyx_n_s_quantity) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[202], &__pyx_kp_u_quantity_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[203], &__pyx_n_s_quote_asset) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[204], &__pyx_n_s_quote_asset_amount) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[205], &__pyx_n_s_ready) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[206], &__pyx_n_s_reduce) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[207], &__pyx_n_s_reduce_cython) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[208], &__pyx_n_s_reduce_ex) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[209], &__pyx_n_s_regex) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[210], &__pyx_n_s_replace) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[211], &__pyx_n_s_return) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[212], &__pyx_n_s_round) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[213], &__pyx_n_s_s_decimal_nan) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[214], &__pyx_n_s_s_decimal_zero) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[215], &__pyx_n_s_s_logger) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[216], &__pyx_n_s_self) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[217], &__pyx_kp_s_self__events_cannot_be_converted) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[218], &__pyx_n_u_sell) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[219], &__pyx_n_s_set_leverage) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[220], &__pyx_n_s_set_position_mode) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[221], &__pyx_n_s_set_shadow_position) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[222], &__pyx_n_s_setstate) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[223], &__pyx_n_s_setstate_cython) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[224], &__pyx_n_s_slippage) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[225], &__pyx_n_s_spec) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[226], &__pyx_n_s_split) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[227], &__pyx_n_s_status_report_interval) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[228], &__pyx_n_s_str) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[229], &__pyx_kp_s_stringsource) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[230], &__pyx_n_s_taker) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[231], &__pyx_n_s_taker_balance) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[232], &__pyx_n_s_test) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[233], &__pyx_n_s_to_string) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[234], &__pyx_n_s_trade_type) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[235], &__pyx_n_s_trading_pair) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[236], &__pyx_n_s_typing) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[237], &__pyx_n_s_update_shadow_position) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[238], &__pyx_n_s_update_wallet) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[239], &__pyx_n_s_value) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[240], &__pyx_n_s_values) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[241], &__pyx_n_s_wallet_df) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[242], &__pyx_n_s_warning) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[16], &__pyx_kp_u_Diff) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[17], &__pyx_n_u_Diff_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[18], &__pyx_n_u_Exchange) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[19], &__pyx_n_s_ExchangeBase) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[20], &__pyx_n_s_ExchangePairTuple) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[21], &__pyx_kp_u_Gate) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[22], &__pyx_n_s_HEDGE) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[23], &__pyx_n_u_Hedge) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[24], &__pyx_n_s_HedgeStrategy) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[25], &__pyx_n_s_HedgeStrategy___reduce_cython) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[26], &__pyx_n_s_HedgeStrategy___setstate_cython) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[27], &__pyx_n_s_HedgeStrategy_active_orders_df) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[28], &__pyx_n_s_HedgeStrategy_format_status) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[29], &__pyx_n_s_HedgeStrategy_get_balance) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[30], &__pyx_n_s_HedgeStrategy_get_position_amoun) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[31], &__pyx_n_s_HedgeStrategy_get_shadow_positio) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[32], &__pyx_n_s_HedgeStrategy_init_params) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[33], &__pyx_n_s_HedgeStrategy_log_output) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[34], &__pyx_n_s_HedgeStrategy_logger) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[35], &__pyx_n_s_HedgeStrategy_market_status_data) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[36], &__pyx_n_s_HedgeStrategy_set_shadow_positio) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[37], &__pyx_n_s_HedgeStrategy_update_shadow_posi) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[38], &__pyx_n_s_HedgeStrategy_update_wallet) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[39], &__pyx_n_s_HedgeStrategy_wallet_df) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[40], &__pyx_kp_u_Hedge_Ratio) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[41], &__pyx_n_s_INFO) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[42], &__pyx_n_s_ImportError) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[43], &__pyx_kp_u_Kuc) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[44], &__pyx_n_s_LIMIT) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[45], &__pyx_n_s_LimitOrder) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[46], &__pyx_n_s_List) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[47], &__pyx_n_u_Market) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[48], &__pyx_n_s_MarketTradingPairTuple) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[49], &__pyx_kp_u_Markets) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[50], &__pyx_n_s_NaN) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[51], &__pyx_n_s_NetworkStatus) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[52], &__pyx_kp_u_No_active_orders) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[53], &__pyx_kp_u_None) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[54], &__pyx_n_s_ONEWAY) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[55], &__pyx_n_u_ONEWAY) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[56], &__pyx_n_s_OrderType) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[57], &__pyx_kp_u_Place) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[58], &__pyx_n_s_PositionMode) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[59], &__pyx_n_s_PositionSide) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[60], &__pyx_n_u_Price) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[61], &__pyx_n_s_SHORT) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[62], &__pyx_n_u_Sell) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[63], &__pyx_n_s_StrategyBase) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[64], &__pyx_kp_u_TB) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[65], &__pyx_kp_u_TP) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[66], &__pyx_kp_u_Taker) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[67], &__pyx_n_u_Taker_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[68], &__pyx_n_s_TradeType) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[69], &__pyx_n_u_Type) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[70], &__pyx_n_s_TypeError) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[71], &__pyx_kp_u_Wallet) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[72], &__pyx_n_s__10) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[73], &__pyx_kp_u__2) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[74], &__pyx_kp_u__3) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[75], &__pyx_kp_u__4) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[76], &__pyx_n_s__44) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[77], &__pyx_kp_u__5) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[78], &__pyx_kp_u__6) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[79], &__pyx_kp_u__7) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[80], &__pyx_n_s_account_positions) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[81], &__pyx_n_s_active_orders) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[82], &__pyx_n_s_active_orders_df) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[83], &__pyx_n_s_active_positions) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[84], &__pyx_n_s_age) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[85], &__pyx_n_s_amount) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[86], &__pyx_n_s_ask_price) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[87], &__pyx_n_s_asyncio_coroutines) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[88], &__pyx_n_s_base_asset) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[89], &__pyx_n_s_base_asset_amount) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[90], &__pyx_n_s_bid_price) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[91], &__pyx_n_s_binance_balance) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[92], &__pyx_n_u_binance_balance) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[93], &__pyx_n_u_buy) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[94], &__pyx_n_s_class_getitem) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[95], &__pyx_n_s_client_order_id) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[96], &__pyx_n_s_cline_in_traceback) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[97], &__pyx_n_s_cls) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[98], &__pyx_n_s_columns) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[99], &__pyx_kp_u_connector_is_not_ready) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[100], &__pyx_n_s_data) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[101], &__pyx_n_s_decimal) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[102], &__pyx_n_s_df) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[103], &__pyx_n_s_dict) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[104], &__pyx_n_s_difference) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[105], &__pyx_kp_u_disable) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[106], &__pyx_n_s_display_name) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[107], &__pyx_kp_u_enable) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[108], &__pyx_n_s_exchange) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[109], &__pyx_n_s_exchanges) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[110], &__pyx_kp_u_filled_at) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[111], &__pyx_n_s_filled_quantity) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[112], &__pyx_kp_u_filled_quantity_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[113], &__pyx_n_s_float) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[114], &__pyx_n_s_format_status) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[115], &__pyx_n_s_gate_balance) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[116], &__pyx_n_u_gate_balance) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[117], &__pyx_n_s_gate_io) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[118], &__pyx_kp_u_gc) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[119], &__pyx_n_s_get) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[120], &__pyx_n_s_getLogger) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[121], &__pyx_n_s_get_balance) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[122], &__pyx_n_s_get_mid_price) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[123], &__pyx_n_s_get_position_amount) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[124], &__pyx_n_s_get_price) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[125], &__pyx_n_s_get_shadow_position) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[126], &__pyx_n_s_getstate) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[127], &__pyx_kp_u_has_been_completely_filled) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[128], &__pyx_n_s_hedge_amount) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[129], &__pyx_n_s_hedge_interval) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[130], &__pyx_n_s_hedge_ratio) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[131], &__pyx_n_s_hummingbot_connector_exchange_ba) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[132], &__pyx_n_s_hummingbot_core_data_type_common) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[133], &__pyx_n_s_hummingbot_core_data_type_limit) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[134], &__pyx_n_s_hummingbot_core_network_iterator) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[135], &__pyx_n_s_hummingbot_strategy_hedge_exchan) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[136], &__pyx_kp_s_hummingbot_strategy_hedge_hedge) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[137], &__pyx_n_s_hummingbot_strategy_hedge_hedge_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[138], &__pyx_n_s_hummingbot_strategy_market_tradi) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[139], &__pyx_n_s_hummingbot_strategy_strategy_bas) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[140], &__pyx_n_s_hummingbot_strategy_utils) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[141], &__pyx_n_s_idx) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[142], &__pyx_n_s_import) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[143], &__pyx_n_s_index) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[144], &__pyx_n_s_init_params) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[145], &__pyx_n_s_initializing) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[146], &__pyx_n_s_int) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[147], &__pyx_n_s_is_buy) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[148], &__pyx_n_s_is_coroutine) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[149], &__pyx_kp_u_is_different_than_quantity_requ) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[150], &__pyx_kp_u_is_more_than) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[151], &__pyx_kp_u_isenabled) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[152], &__pyx_n_s_isnan) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[153], &__pyx_n_s_kucoin) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[154], &__pyx_n_s_kucoin_balance) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[155], &__pyx_n_u_kucoin_balance) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[156], &__pyx_kp_u_last_updated) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[157], &__pyx_n_s_leverage) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[158], &__pyx_n_s_line) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[159], &__pyx_n_s_lines) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[160], &__pyx_n_s_log_output) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[161], &__pyx_n_s_log_with_clock) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[162], &__pyx_n_s_logger) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[163], &__pyx_n_s_logging) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[164], &__pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[165], &__pyx_n_s_maker) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[166], &__pyx_n_s_maker_asset) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[167], &__pyx_n_s_market) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[168], &__pyx_n_s_market_info) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[169], &__pyx_n_s_market_info_to_active_orders) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[170], &__pyx_n_s_market_infos) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[171], &__pyx_n_s_market_pair) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[172], &__pyx_n_s_market_pair_to_active_orders) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[173], &__pyx_n_s_market_status_data_frame) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[174], &__pyx_n_s_markets_columns) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[175], &__pyx_n_s_markets_data) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[176], &__pyx_n_s_markets_df) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[177], &__pyx_n_s_math) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[178], &__pyx_n_s_max) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[179], &__pyx_n_s_max_order_age) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[180], &__pyx_n_s_mid_price) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[181], &__pyx_n_s_minimum_trade) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[182], &__pyx_n_s_name) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[183], &__pyx_n_s_name_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[184], &__pyx_n_s_nan) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[185], &__pyx_n_u_nan) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[186], &__pyx_n_s_notify_hb_app_with_timestamp) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[187], &__pyx_n_s_np) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[188], &__pyx_n_s_numpy) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[189], &__pyx_kp_u_numpy_core_multiarray_failed_to) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[190], &__pyx_kp_u_numpy_core_umath_failed_to_impor) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[191], &__pyx_kp_u_order) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[192], &__pyx_n_s_order_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[193], &__pyx_n_s_order_age) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[194], &__pyx_kp_u_order_age_of_limit_order) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[195], &__pyx_n_s_order_id) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[196], &__pyx_kp_u_order_of) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[197], &__pyx_kp_u_order_quantum) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[198], &__pyx_n_s_order_type) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[199], &__pyx_n_s_orders) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[200], &__pyx_n_s_pandas) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[201], &__pyx_n_s_pd) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[202], &__pyx_kp_s_pd_DataFrame) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[203], &__pyx_n_s_position_mode) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[204], &__pyx_n_s_position_side) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[205], &__pyx_n_s_position_updated) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[206], &__pyx_n_s_price) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[207], &__pyx_n_s_pyx_state) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[208], &__pyx_n_s_pyx_vtable) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[209], &__pyx_n_s_quantity) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[210], &__pyx_kp_u_quantity_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[211], &__pyx_n_s_quote_asset) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[212], &__pyx_n_s_quote_asset_amount) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[213], &__pyx_n_s_ready) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[214], &__pyx_n_s_reduce) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[215], &__pyx_n_s_reduce_cython) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[216], &__pyx_n_s_reduce_ex) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[217], &__pyx_n_s_regex) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[218], &__pyx_n_s_replace) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[219], &__pyx_n_s_return) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[220], &__pyx_n_s_round) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[221], &__pyx_n_s_s_decimal_nan) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[222], &__pyx_n_s_s_decimal_zero) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[223], &__pyx_n_s_s_logger) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[224], &__pyx_n_s_self) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[225], &__pyx_kp_s_self__events_cannot_be_converted) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[226], &__pyx_n_u_sell) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[227], &__pyx_n_s_set_leverage) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[228], &__pyx_n_s_set_position_mode) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[229], &__pyx_n_s_set_shadow_position) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[230], &__pyx_n_s_setstate) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[231], &__pyx_n_s_setstate_cython) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[232], &__pyx_n_s_slippage) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[233], &__pyx_n_s_spec) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[234], &__pyx_n_s_split) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[235], &__pyx_n_s_status_report_interval) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[236], &__pyx_n_s_str) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[237], &__pyx_kp_s_stringsource) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[238], &__pyx_n_s_taker) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[239], &__pyx_n_s_taker_balance) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[240], &__pyx_n_s_test) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[241], &__pyx_n_s_to_string) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[242], &__pyx_n_s_total_balance) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[243], &__pyx_n_u_total_balance) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[244], &__pyx_n_s_trade_type) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[245], &__pyx_n_s_trading_pair) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[246], &__pyx_n_s_typing) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[247], &__pyx_n_s_update_shadow_position) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[248], &__pyx_n_s_update_wallet) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[249], &__pyx_n_s_value) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[250], &__pyx_n_s_values) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[251], &__pyx_n_s_wallet_df) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
   if (__Pyx_InitStrings(__pyx_string_tab) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
@@ -16589,7 +16999,7 @@ if (!__Pyx_RefNanny) {
  *         return self.get_shadow_position(trading_pair)
  * 
  *     def get_balance(self, maker_asset: str):             # <<<<<<<<<<<<<<
- *         return self._exchanges.maker.get_balance(maker_asset)
+ *         return (self._exchanges.maker.get_balance(maker_asset) + self._exchanges.kucoin.get_balance(maker_asset) + self._exchanges.gate_io.get_balance(maker_asset))
  * 
  */
   __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 93, __pyx_L1_error)
@@ -16634,57 +17044,70 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":214
+  /* "hummingbot/strategy/hedge/hedge.pyx":213
+ *         if position_updated:
  *             self._last_trade_time["last updated"]=self._current_timestamp
+ *     def log_output(self):             # <<<<<<<<<<<<<<
+ *       for maker_asset in self._market_infos:
+ *           market_pair = self._market_infos[maker_asset]
+ */
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_19log_output, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HedgeStrategy_log_output, NULL, __pyx_n_s_hummingbot_strategy_hedge_hedge_2, __pyx_d, ((PyObject *)__pyx_codeobj__33)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 213, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy->tp_dict, __pyx_n_s_log_output, __pyx_t_2) < 0) __PYX_ERR(0, 213, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  PyType_Modified(__pyx_ptype_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy);
+
+  /* "hummingbot/strategy/hedge/hedge.pyx":227
+ * 
  * 
  *     def wallet_df(self) -> pd.DataFrame:             # <<<<<<<<<<<<<<
  *         data=[]
- *         columns = ["Asset", "Price", "Maker", "Taker", "Diff", "Hedge Ratio"]
+ *         columns = ["Asset", "Price", "total_balance","binance_balance","kucoin_balance","gate_balance", "Taker", "Diff", "Hedge Ratio"]
  */
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 214, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 227, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_return, __pyx_kp_s_pd_DataFrame) < 0) __PYX_ERR(0, 214, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_19wallet_df, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HedgeStrategy_wallet_df, NULL, __pyx_n_s_hummingbot_strategy_hedge_hedge_2, __pyx_d, ((PyObject *)__pyx_codeobj__33)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 214, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_return, __pyx_kp_s_pd_DataFrame) < 0) __PYX_ERR(0, 227, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_21wallet_df, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HedgeStrategy_wallet_df, NULL, __pyx_n_s_hummingbot_strategy_hedge_hedge_2, __pyx_d, ((PyObject *)__pyx_codeobj__35)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 227, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_1, __pyx_t_2);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy->tp_dict, __pyx_n_s_wallet_df, __pyx_t_1) < 0) __PYX_ERR(0, 214, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy->tp_dict, __pyx_n_s_wallet_df, __pyx_t_1) < 0) __PYX_ERR(0, 227, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":235
+  /* "hummingbot/strategy/hedge/hedge.pyx":254
  *         return pd.DataFrame(data=data, columns=columns)
  * 
  *     def active_orders_df(self) -> pd.DataFrame:             # <<<<<<<<<<<<<<
  * 
  *         active_orders = self.market_info_to_active_orders
  */
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 235, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 254, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_return, __pyx_kp_s_pd_DataFrame) < 0) __PYX_ERR(0, 235, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_21active_orders_df, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HedgeStrategy_active_orders_df, NULL, __pyx_n_s_hummingbot_strategy_hedge_hedge_2, __pyx_d, ((PyObject *)__pyx_codeobj__35)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 235, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_return, __pyx_kp_s_pd_DataFrame) < 0) __PYX_ERR(0, 254, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_23active_orders_df, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HedgeStrategy_active_orders_df, NULL, __pyx_n_s_hummingbot_strategy_hedge_hedge_2, __pyx_d, ((PyObject *)__pyx_codeobj__37)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 254, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_2, __pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy->tp_dict, __pyx_n_s_active_orders_df, __pyx_t_2) < 0) __PYX_ERR(0, 235, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy->tp_dict, __pyx_n_s_active_orders_df, __pyx_t_2) < 0) __PYX_ERR(0, 254, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy);
 
-  /* "hummingbot/strategy/hedge/hedge.pyx":254
+  /* "hummingbot/strategy/hedge/hedge.pyx":273
  *         return pd.DataFrame(data=data, columns=columns)
  * 
  *     def format_status(self) -> str:             # <<<<<<<<<<<<<<
  *         lines = []
  *         if not self._all_markets_ready:
  */
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 254, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 273, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_return, __pyx_n_s_str) < 0) __PYX_ERR(0, 254, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_23format_status, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HedgeStrategy_format_status, NULL, __pyx_n_s_hummingbot_strategy_hedge_hedge_2, __pyx_d, ((PyObject *)__pyx_codeobj__37)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 254, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_return, __pyx_n_s_str) < 0) __PYX_ERR(0, 273, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_25format_status, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HedgeStrategy_format_status, NULL, __pyx_n_s_hummingbot_strategy_hedge_hedge_2, __pyx_d, ((PyObject *)__pyx_codeobj__39)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 273, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_1, __pyx_t_2);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy->tp_dict, __pyx_n_s_format_status, __pyx_t_1) < 0) __PYX_ERR(0, 254, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy->tp_dict, __pyx_n_s_format_status, __pyx_t_1) < 0) __PYX_ERR(0, 273, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_10hummingbot_8strategy_5hedge_5hedge_HedgeStrategy);
 
@@ -16693,7 +17116,7 @@ if (!__Pyx_RefNanny) {
  *     raise TypeError, "self._events cannot be converted to a Python object for pickling"
  * def __setstate_cython__(self, __pyx_state):
  */
-  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_25__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HedgeStrategy___reduce_cython, NULL, __pyx_n_s_hummingbot_strategy_hedge_hedge_2, __pyx_d, ((PyObject *)__pyx_codeobj__39)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_27__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HedgeStrategy___reduce_cython, NULL, __pyx_n_s_hummingbot_strategy_hedge_hedge_2, __pyx_d, ((PyObject *)__pyx_codeobj__41)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_reduce_cython, __pyx_t_1) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -16704,7 +17127,7 @@ if (!__Pyx_RefNanny) {
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     raise TypeError, "self._events cannot be converted to a Python object for pickling"
  */
-  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_27__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HedgeStrategy___setstate_cython, NULL, __pyx_n_s_hummingbot_strategy_hedge_hedge_2, __pyx_d, ((PyObject *)__pyx_codeobj__41)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 3, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_10hummingbot_8strategy_5hedge_5hedge_13HedgeStrategy_29__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HedgeStrategy___setstate_cython, NULL, __pyx_n_s_hummingbot_strategy_hedge_hedge_2, __pyx_d, ((PyObject *)__pyx_codeobj__43)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 3, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_setstate_cython, __pyx_t_1) < 0) __PYX_ERR(1, 3, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -18649,57 +19072,6 @@ static CYTHON_INLINE PyObject *__Pyx_PyUnicode_ConcatInPlaceImpl(PyObject **p_le
     }
   }
 #endif
-
-/* set_iter */
-static CYTHON_INLINE PyObject* __Pyx_set_iterator(PyObject* iterable, int is_set,
-                                                  Py_ssize_t* p_orig_length, int* p_source_is_set) {
-#if CYTHON_COMPILING_IN_CPYTHON
-    is_set = is_set || likely(PySet_CheckExact(iterable) || PyFrozenSet_CheckExact(iterable));
-    *p_source_is_set = is_set;
-    if (likely(is_set)) {
-        *p_orig_length = PySet_Size(iterable);
-        Py_INCREF(iterable);
-        return iterable;
-    }
-#else
-    (void)is_set;
-    *p_source_is_set = 0;
-#endif
-    *p_orig_length = 0;
-    return PyObject_GetIter(iterable);
-}
-static CYTHON_INLINE int __Pyx_set_iter_next(
-        PyObject* iter_obj, Py_ssize_t orig_length,
-        Py_ssize_t* ppos, PyObject **value,
-        int source_is_set) {
-    if (!CYTHON_COMPILING_IN_CPYTHON || unlikely(!source_is_set)) {
-        *value = PyIter_Next(iter_obj);
-        if (unlikely(!*value)) {
-            return __Pyx_IterFinish();
-        }
-        (void)orig_length;
-        (void)ppos;
-        return 1;
-    }
-#if CYTHON_COMPILING_IN_CPYTHON
-    if (unlikely(PySet_GET_SIZE(iter_obj) != orig_length)) {
-        PyErr_SetString(
-            PyExc_RuntimeError,
-            "set changed size during iteration");
-        return -1;
-    }
-    {
-        Py_hash_t hash;
-        int ret = _PySet_NextEntry(iter_obj, ppos, value, &hash);
-        assert (ret != -1);
-        if (likely(ret)) {
-            Py_INCREF(*value);
-            return 1;
-        }
-    }
-#endif
-    return 0;
-}
 
 /* GetException */
 #if CYTHON_FAST_THREAD_STATE
@@ -21485,7 +21857,7 @@ __Pyx_PyType_GetName(PyTypeObject* tp)
                                                __pyx_n_s_name);
     if (unlikely(name == NULL) || unlikely(!PyUnicode_Check(name))) {
         PyErr_Clear();
-        Py_XSETREF(name, __Pyx_NewRef(__pyx_n_s__42));
+        Py_XSETREF(name, __Pyx_NewRef(__pyx_n_s__44));
     }
     return name;
 }

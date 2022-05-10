@@ -628,6 +628,8 @@ cdef class CrossExchangeMarketMakingStrategy(StrategyBase):
             limit_orders = limit_orders.get(market_tuple, {})
             for order in limit_orders:
               self.c_cancel_order(market_tuple, order)
+              self.c_stop_tracking_limit_order(market_tuple, order)
+
 
     cdef c_cancel_all_taker_limit_orders(self, market_pair):
             market_tuple = market_pair.taker
@@ -842,7 +844,7 @@ cdef class CrossExchangeMarketMakingStrategy(StrategyBase):
 
 
         #if there is a difference in balance wait for it to be restored before doing something else
-        if self._keep_target_balance and self.c_balance_fix_check(market_pair) and not self._use_oracle_conversion_rate:
+        if self._keep_target_balance and self.c_balance_fix_check(market_pair):
           self.c_balance_fix_fix(market_pair)
           if self._maker_order_update:
                 self.c_place_top_maker(market_pair)
@@ -1810,6 +1812,7 @@ cdef class CrossExchangeMarketMakingStrategy(StrategyBase):
               logging.INFO,
               f"timer over, cancelled all"
           )
+          self._top_maker_cancel_timer = self._current_timestamp + self._top_maker_cancel_seconds
 
 
         if len(limit_orders) > 1:
@@ -1819,18 +1822,19 @@ cdef class CrossExchangeMarketMakingStrategy(StrategyBase):
               f"too many orders, cancelled all "
           )
 
-        if len(limit_orders) == 0 and pref_base_min_actual > 0: #need to buy
-          self.c_place_order(market_pair, True, market_pair.maker, False, order_size_base, Decimal(top_bid_price))
-          self._top_maker_cancel_timer = self._current_timestamp + self._top_maker_cancel_seconds
-          self.log_with_clock(
+        else:
+          if len(limit_orders) == 0 and pref_base_min_actual > 0: #need to buy
+            self.c_place_order(market_pair, True, market_pair.maker, False, order_size_base, Decimal(top_bid_price))
+            self._top_maker_cancel_timer = self._current_timestamp + self._top_maker_cancel_seconds
+            self.log_with_clock(
               logging.INFO,
               f"buy fixing maker order top bid {top_bid_price}, top_ask {top_ask_price} self._top_maker_cancel_timer{self._top_maker_cancel_timer} self._top_maker_cancel_seconds{self._top_maker_cancel_seconds} "
-          )
+              )
 
-        if len(limit_orders) == 0 and pref_base_min_actual < 0: #need to sell
-          self.c_place_order(market_pair, False, market_pair.maker, False, order_size_base, Decimal(top_ask_price))
-          self._top_maker_cancel_timer = self._current_timestamp + self._top_maker_cancel_seconds
-          self.log_with_clock(
+          if len(limit_orders) == 0 and pref_base_min_actual < 0: #need to sell
+            self.c_place_order(market_pair, False, market_pair.maker, False, order_size_base, Decimal(top_ask_price))
+            self._top_maker_cancel_timer = self._current_timestamp + self._top_maker_cancel_seconds
+            self.log_with_clock(
               logging.INFO,
               f"sell fixing maker order top bid {top_bid_price}, top_ask {top_ask_price} self._top_maker_cancel_timer{self._top_maker_cancel_timer} self._top_maker_cancel_seconds{self._top_maker_cancel_seconds} "
           )

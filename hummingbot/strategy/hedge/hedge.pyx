@@ -91,7 +91,7 @@ cdef class HedgeStrategy(StrategyBase):
         return self.get_shadow_position(trading_pair)
 
     def get_balance(self, maker_asset: str):
-        return self._exchanges.maker.get_balance(maker_asset)
+        return (self._exchanges.maker.get_balance(maker_asset) + self._exchanges.kucoin.get_balance(maker_asset) + self._exchanges.gate_io.get_balance(maker_asset))
 
     cdef object check_and_cancel_active_orders(self,
                                                object market_pair,
@@ -126,7 +126,7 @@ cdef class HedgeStrategy(StrategyBase):
 
     cdef object check_and_hedge_asset(self,
                                       str maker_asset,
-                                      object maker_balance,
+                                      object total_balance,
                                       object market_pair,
                                       str trading_pair,
                                       object taker_balance,
@@ -193,15 +193,15 @@ cdef class HedgeStrategy(StrategyBase):
                 taker_balance = self.get_position_amount(trading_pair)
                 self.set_shadow_position(trading_pair, taker_balance)
                 position_updated=True
-            maker_balance = self.get_balance(maker_asset)
+            total_balance = self.get_balance(maker_asset)
             taker_balance = self.get_shadow_position(trading_pair)
-            hedge_amount = -(maker_balance*self._hedge_ratio + taker_balance)
+            hedge_amount = -(total_balance*self._hedge_ratio + taker_balance)
             is_buy = hedge_amount > 0
             price = market_pair.get_price(is_buy)
             self.check_and_cancel_active_orders(market_pair, hedge_amount)
             if market_pair not in self.market_info_to_active_orders:
                 self.check_and_hedge_asset(maker_asset,
-                                           maker_balance,
+                                           total_balance,
                                            market_pair,
                                            trading_pair,
                                            taker_balance,
@@ -210,22 +210,41 @@ cdef class HedgeStrategy(StrategyBase):
                                            price)
         if position_updated:
             self._last_trade_time["last updated"]=self._current_timestamp
+    def log_output(self):
+      for maker_asset in self._market_infos:
+          market_pair = self._market_infos[maker_asset]
+          trading_pair=market_pair.trading_pair
+          total_balance = self.get_balance(maker_asset)
+          binance_balance = self._exchanges.maker.get_balance(maker_asset)
+          kucoin_balance = self._exchanges.kucoin.get_balance(maker_asset)
+          gate_balance = self._exchanges.gate_io.get_balance(maker_asset)
+          taker_balance = self.get_shadow_position(trading_pair)
+          difference = - (total_balance + taker_balance)
+          self.log_with_clock(logging.INFO,
+                              f"TP:{trading_pair} TB:{total_balance} Bin:{binance_balance} Kuc:{kucoin_balance} Gate{gate_balance} Taker:{taker_balance} Diff:{difference} ")
+
 
     def wallet_df(self) -> pd.DataFrame:
         data=[]
-        columns = ["Asset", "Price", "Maker", "Taker", "Diff", "Hedge Ratio"]
+        columns = ["Asset", "Price", "total_balance","binance_balance","kucoin_balance","gate_balance", "Taker", "Diff", "Hedge Ratio"]
         for maker_asset in self._market_infos:
             market_pair = self._market_infos[maker_asset]
             trading_pair=market_pair.trading_pair
-            maker_balance = self.get_balance(maker_asset)
+            total_balance = self.get_balance(maker_asset)
+            binance_balance = self._exchanges.maker.get_balance(maker_asset)
+            kucoin_balance = self._exchanges.kucoin.get_balance(maker_asset)
+            gate_balance = self._exchanges.gate_io.get_balance(maker_asset)
             taker_balance = self.get_shadow_position(trading_pair)
             mid_price = market_pair.get_mid_price()
-            difference = - (maker_balance + taker_balance)
-            hedge_ratio = Decimal(-round(taker_balance/maker_balance, 2)) if maker_balance != 0 else 1
+            difference = - (total_balance + taker_balance)
+            hedge_ratio = Decimal(-round(taker_balance/total_balance, 2)) if total_balance != 0 else 1
             data.append([
                 maker_asset,
                 mid_price,
-                maker_balance,
+                total_balance,
+                binance_balance,
+                kucoin_balance,
+                gate_balance,
                 taker_balance,
                 difference,
                 hedge_ratio,
@@ -319,24 +338,8 @@ cdef class HedgeStrategy(StrategyBase):
             bint should_report_warnings = (current_tick > last_tick)
 
         try:
-            if not self._all_markets_ready:
-                self._all_markets_ready = all([market.ready for market in self._sb_markets])
-                if not self._all_markets_ready:
-                    # Markets not ready yet. Don't do anything.
-                    if should_report_warnings:
-                        self.logger().warning(f"Markets are not ready. No market making trades are permitted.")
-                    return
-                else:
-                    # Markets are ready, ok to proceed.
-                    self.logger().info(f"Markets are ready. Trading started.")
-
-            if should_report_warnings:
-                # Check if all markets are still connected or not. If not, log a warning.
-                if not all([market.network_status is NetworkStatus.CONNECTED for market in self._sb_markets]):
-                    self.logger().warning(f"WARNING: Some markets are not connected or are down at the moment. Market "
-                                          f"making may be dangerous when markets or networks are unstable.")
-
             self.update_wallet()
+            self.log_output()
 
         finally:
             self._last_timestamp=timestamp
