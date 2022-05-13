@@ -843,6 +843,7 @@ cdef class PureMarketMakingStrategy(StrategyBase):
                 self.c_cancel_active_orders(proposal)
 
             self._hanging_orders_tracker.process_tick()
+            
 
 
 
