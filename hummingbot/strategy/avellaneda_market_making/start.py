@@ -34,12 +34,20 @@ def start(self):
         filled_order_delay = c_map.get("filled_order_delay").value
         order_refresh_tolerance_pct = c_map.get(
             "order_refresh_tolerance_pct").value / Decimal('100')
+        use_micro_price = c_map.get("use_micro_price").value
+        micro_price_percentage_depth = c_map.get(
+            "micro_price_percentage_depth").value
+        micro_price_effect = c_map.get("micro_price_effect").value
         order_levels = c_map.get("order_levels").value
         level_distances = c_map.get("level_distances").value
         order_override = c_map.get("order_override").value
         hanging_orders_enabled = c_map.get("hanging_orders_enabled").value
         normal_target_calculation = c_map.get(
             "normal_target_calculation").value
+        max_deviation = c_map.get(
+            "max_deviation").value
+        target_balance_spread_reducer = c_map.get(
+            "target_balance_spread_reducer").value
         target_base_balance = c_map.get("target_base_balance").value
 
         hanging_orders_cancel_pct = c_map.get(
@@ -123,6 +131,11 @@ def start(self):
             normal_target_calculation=normal_target_calculation,
             target_base_balance=target_base_balance,
             should_wait_order_cancel_confirmation=should_wait_order_cancel_confirmation,
+            use_micro_price=use_micro_price,
+            micro_price_percentage_depth=micro_price_percentage_depth,
+            micro_price_effect=micro_price_effect,
+            max_deviation=max_deviation,
+            target_balance_spread_reducer=target_balance_spread_reducer,
             is_debug=False
         )
     except Exception as e:

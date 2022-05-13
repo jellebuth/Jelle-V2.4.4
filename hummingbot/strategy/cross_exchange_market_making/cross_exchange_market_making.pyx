@@ -915,7 +915,6 @@ cdef class CrossExchangeMarketMakingStrategy(StrategyBase):
                     )
                 if self._filled_order_delay:
                   self._filled_order_delay_timer = self._current_timestamp + self._filled_order_delay_seconds
-                  self.c_cancel_all_maker_limit_orders(market_pair)
                   self.logger().info(f"Just canceled all maker order and will not place any new orders for {self._cancel_order_timer_seconds} seconds")
 
             else:
@@ -932,7 +931,6 @@ cdef class CrossExchangeMarketMakingStrategy(StrategyBase):
                     )
                 if self._filled_order_delay:
                   self._filled_order_delay_timer = self._current_timestamp + self._filled_order_delay_seconds
-                  self.c_cancel_all_maker_limit_orders(market_pair)
                   self.logger().info(f"Just canceled all maker order and will not place any new orders for {self._cancel_order_timer_seconds} seconds")
 
             # Call c_check_and_hedge_orders() to emit the orders on the taker side.
@@ -1134,13 +1132,13 @@ cdef class CrossExchangeMarketMakingStrategy(StrategyBase):
                 except ZeroDivisionError:
                     order_price = 0
                 self.notify_hb_app_with_timestamp(
-                    f"M. Buy  Min P.{round(((((order_price * quote_rate) - avg_fill_price) / avg_fill_price) * 100),3)}, Max P. {round(((((taker_top * quote_rate) - avg_fill_price) / avg_fill_price) * 100),3)}, OP {PerformanceMetrics.smart_round(order_price * quote_rate)} AF {PerformanceMetrics.smart_round(avg_fill_price)}"
+                    f"M. Buy  Min P.{round(((((order_price * self._third_market.get_mid_price()) - avg_fill_price) / avg_fill_price) * 100),3)}, Max P. {round(((((taker_top * self._third_market.get_mid_price()) - avg_fill_price) / avg_fill_price) * 100),3)}, OP {PerformanceMetrics.smart_round(order_price * self._third_market.get_mid_price())} AF {PerformanceMetrics.smart_round(avg_fill_price)}"
                 )
 
               if not self._triangular_arbitrage:
                 order_id = self.c_place_order(market_pair, False, market_pair.taker, False, quantized_hedge_amount, order_price)
                 self.notify_hb_app_with_timestamp(
-                f"M. Buy Min P. {round(((((order_price / base_rate * quote_rate) - avg_fill_price) / avg_fill_price) * 100),3)}, Max. P. {round(((((taker_top / base_rate * quote_rate) - avg_fill_price) / avg_fill_price) * 100),3)} OP: {PerformanceMetrics.smart_round((order_price / base_rate * quote_rate))} AF: {PerformanceMetrics.smart_round(avg_fill_price)} TT: {PerformanceMetrics.smart_round((taker_top / base_rate * quote_rate))}"
+                f"M. Buy Min P. {round(((((order_price / base_rate / self._third_market.get_mid_price()) - avg_fill_price) / avg_fill_price) * 100),3)}, Max. P. {round(((((taker_top / base_rate / self._third_market.get_mid_price()) - avg_fill_price) / avg_fill_price) * 100),3)} OP: {PerformanceMetrics.smart_round((order_price / base_rate / self._third_market.get_mid_price()))} AF: {PerformanceMetrics.smart_round(avg_fill_price)} TT: {PerformanceMetrics.smart_round((taker_top / base_rate / self._third_market.get_mid_price()))}"
                 )
 
                 #add the third leg of a triangular arbitrage order in this case you need to buy back the asset
@@ -1208,11 +1206,8 @@ cdef class CrossExchangeMarketMakingStrategy(StrategyBase):
                     order_price = 0
 
                 self.notify_hb_app_with_timestamp(
-                    f"M. Sell Min P.{round((((avg_fill_price - (order_price * quote_rate)) / (order_price * quote_rate)) * 100),3)}, Max P. {round((((avg_fill_price - (taker_top * quote_rate)) / (order_price * quote_rate)) * 100),3)}, OP {PerformanceMetrics.smart_round(order_price * quote_rate)} AF {PerformanceMetrics.smart_round(avg_fill_price)} TT {PerformanceMetrics.smart_round(taker_top)}"
+                    f"M. Sell Min P.{round((((avg_fill_price - (order_price * self._third_market.get_mid_price())) / (order_price * self._third_market.get_mid_price())) * 100),3)}, Max P. {round((((avg_fill_price - (taker_top * self._third_market.get_mid_price())) / (order_price * self._third_market.get_mid_price())) * 100),3)}, OP {PerformanceMetrics.smart_round(order_price * self._third_market.get_mid_price())} AF {PerformanceMetrics.smart_round(avg_fill_price)} TT {PerformanceMetrics.smart_round(taker_top)}"
                 )
-
-
-
 
               if not self._triangular_arbitrage:
                 order_id = self.c_place_order(market_pair, True, market_pair.taker, False, quantized_hedge_amount, order_price)
@@ -1439,8 +1434,10 @@ cdef class CrossExchangeMarketMakingStrategy(StrategyBase):
                 return s_decimal_nan
 
             # If quote assets are not same, convert them from taker's quote asset to maker's quote asset
-            if market_pair.maker.quote_asset != market_pair.taker.quote_asset:
-                taker_price *= self.market_conversion_rate()
+            if market_pair.maker.quote_asset != market_pair.taker.quote_asset and not self._triangular_switch:
+                taker_price *= self._third_market.get_mid_price()
+            if market_pair.maker.quote_asset != market_pair.taker.quote_asset and self._triangular_switch:
+                taker_price /= self._third_market.get_mid_price()
             if market_pair.maker.base_asset != market_pair.taker.base_asset:
                 taker_price *= self.market_conversion_rate()
 
@@ -1538,8 +1535,10 @@ cdef class CrossExchangeMarketMakingStrategy(StrategyBase):
                 return None
 
             # If quote assets are not same, convert them from taker's quote asset to maker's quote asset
-            if market_pair.maker.quote_asset != market_pair.taker.quote_asset:
-                taker_price *= self.market_conversion_rate()
+            if market_pair.maker.quote_asset != market_pair.taker.quote_asset and not self._triangular_switch:
+                taker_price *= self._third_market.get_mid_price()
+            if market_pair.maker.quote_asset != market_pair.taker.quote_asset and self._triangular_switch:
+                taker_price /= self._third_market.get_mid_price()
 
             if market_pair.maker.base_asset != market_pair.taker.base_asset:
                 taker_price *= self.market_conversion_rate()
@@ -1559,8 +1558,10 @@ cdef class CrossExchangeMarketMakingStrategy(StrategyBase):
             except ZeroDivisionError:
                 return None
 
-            if market_pair.maker.quote_asset != market_pair.taker.quote_asset:
-                taker_price *= self.market_conversion_rate()
+            if market_pair.maker.quote_asset != market_pair.taker.quote_asset and not self._triangular_switch:
+                taker_price *= self._third_market.get_mid_price()
+            if market_pair.maker.quote_asset != market_pair.taker.quote_asset and self._triangular_switch:
+                taker_price /= self._third_market.get_mid_price()
 
             if market_pair.maker.base_asset != market_pair.taker.base_asset:
                 taker_price *= self.market_conversion_rate()

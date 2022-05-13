@@ -86,6 +86,11 @@ cdef class AvellanedaMarketMakingStrategy(StrategyBase):
                     is_debug: bool = False,
                     normal_target_calculation : bool = True,
                     target_base_balance : Decimal = 0,
+                    use_micro_price : Bool= False,
+                    max_deviation : Decimal = Decimal(0),
+                    micro_price_percentage_depth : Decimal = Decimal(0.1),
+                    micro_price_effect : Decimal = Decimal(0.9),
+                    target_balance_spread_reducer : Decimal = Decimal(0.99),
                     ):
         self._sb_order_tracker = OrderTracker()
         self._market_info = market_info
@@ -138,6 +143,11 @@ cdef class AvellanedaMarketMakingStrategy(StrategyBase):
         self._debug_csv_path = debug_csv_path
         self._normal_target_calculation = normal_target_calculation
         self._target_base_balance = target_base_balance
+        self._use_micro_price = use_micro_price
+        self._micro_price_percentage_depth = micro_price_percentage_depth
+        self._micro_price_effect = micro_price_effect
+        self._max_deviation = max_deviation
+        self._target_balance_spread_reducer = target_balance_spread_reducer
         self._is_debug = is_debug
         try:
             if self._is_debug:
@@ -622,20 +632,27 @@ cdef class AvellanedaMarketMakingStrategy(StrategyBase):
             # 1. Calculate reservation price and optimal spread from gamma, alpha, kappa and volatility
             self.c_calculate_reservation_price_and_optimal_spread()
             # 2. Check if calculated prices make sense
+            self.logger().info(f"test1")
             if self._optimal_bid > 0 and self._optimal_ask > 0:
                 # 3. Create base order proposals
                 proposal = self.c_create_base_proposal()
+                self.logger().info(f"test2")
                 # 4. Apply functions that modify orders amount
-                self.c_apply_order_amount_eta_transformation(proposal)
+                if self.c_check_imbalance():
+                  self.c_apply_order_amount_eta_transformation(proposal)
+
                 # 5. Apply functions that modify orders price
                 self.c_apply_order_price_modifiers(proposal)
                 # 6. Apply budget constraint, i.e. can't buy/sell more than what you have.
-                self.c_apply_budget_constraint(proposal)
+                if self.c_check_imbalance():
+                  self.c_apply_budget_constraint(proposal)
 
                 self.c_cancel_active_orders(proposal)
+                self.logger().info(f"proposal {proposal}")
 
         if self.c_to_create_orders(proposal):
             self.c_execute_orders_proposal(proposal)
+
 
         if self._is_debug:
             self.dump_debug_variables()
@@ -684,6 +701,44 @@ cdef class AvellanedaMarketMakingStrategy(StrategyBase):
     def measure_order_book_liquidity(self):
         return self.c_measure_order_book_liquidity()
 
+
+
+    cdef c_weighted_mid_price(self):
+          cdef:
+              ExchangeBase market = self._market_info.market
+              str trading_pair = self._market_info.trading_pair
+
+          top_ask = market.c_get_price(self.trading_pair, True)
+          top_bid = market.c_get_price(self.trading_pair, False)
+          mid_price = self._market_info.get_mid_price()
+          percentage_depth = self._micro_price_percentage_depth
+          ask_price_range =  (top_ask * (Decimal(1) + percentage_depth))
+          bid_price_range = (top_bid / (Decimal(1) + percentage_depth))
+          volume_bid_side = market.c_get_volume_for_price(self._market_info.trading_pair, False, bid_price_range).result_volume
+          volume_ask_side = market.c_get_volume_for_price(self._market_info.trading_pair, True, ask_price_range).result_volume
+          vwap_ask_price = market.c_get_vwap_for_volume(trading_pair, True, volume_ask_side).result_price
+          vwap_bid_price = market.c_get_vwap_for_volume(trading_pair, False, volume_bid_side).result_price
+
+          micro_price = ((volume_ask_side * vwap_bid_price) + (vwap_ask_price * volume_bid_side)) / (volume_ask_side + volume_bid_side)
+          adjusted_micro_price = ((micro_price * self._micro_price_effect) + (mid_price * (Decimal(1) - self._micro_price_effect)))
+
+          return adjusted_micro_price
+
+    cdef c_check_imbalance(self):
+      cdef:
+          ExchangeBase market = self._market_info.market
+
+      base_balance = float(market.get_balance(self._market_info.base_asset))
+
+      if (abs(base_balance - float(self._target_base_balance)) > self._max_deviation) and not self._normal_target_calculation:
+
+        return False
+
+      else:
+
+        return True
+
+
     cdef c_calculate_reservation_price_and_optimal_spread(self):
         cdef:
             ExchangeBase market = self._market_info.market
@@ -727,7 +782,11 @@ cdef class AvellanedaMarketMakingStrategy(StrategyBase):
             # current mid price
             # This leads to normalization of the risk_factor and will guaranetee consistent behavior on all price ranges of the asset, and across assets
 
-            self._reservation_price = price - (q * self._gamma * vol * time_left_fraction)
+            self._reservation_price = price #- (q * self._gamma * vol * time_left_fraction)
+            if self._use_micro_price:
+              mid_price = self._market_info.get_mid_price()
+              micro_price = self.c_weighted_mid_price()
+              self._reservation_price = ((micro_price * self._micro_price_effect) + (mid_price * (Decimal(1) - self._micro_price_effect)))
 
             self._optimal_spread = self._gamma * vol * time_left_fraction
             self._optimal_spread += 2 * Decimal(1 + self._gamma / self._kappa).ln() / self._gamma
@@ -862,7 +921,23 @@ cdef class AvellanedaMarketMakingStrategy(StrategyBase):
             list sells = []
         bid_level_spreads, ask_level_spreads = self._get_level_spreads()
         size = market.c_quantize_order_amount(self.trading_pair, self._order_amount)
-        if size > 0:
+
+        if not self.c_check_imbalance(): #if imbalance, then do this
+          base_balance = float(market.get_balance(self._market_info.base_asset))
+          deviation = base_balance - float(self._target_base_balance)
+          mid_price = self._market_info.get_mid_price()
+
+          bid_level_spreads, ask_level_spreads = self._get_level_spreads()
+          bid_level_spreads = bid_level_spreads[0] * (Decimal(1) - self._target_balance_spread_reducer)
+          ask_level_spreads = ask_level_spreads[0] * (Decimal(1) - self._target_balance_spread_reducer)
+          size = Decimal(abs(deviation))
+          size = market.c_quantize_order_amount(self.trading_pair, size)
+
+        else:
+          bid_level_spreads, ask_level_spreads = self._get_level_spreads()
+          size = market.c_quantize_order_amount(self.trading_pair, self._order_amount)
+
+        if size > 0 and self.c_check_imbalance():
             for level in range(self._order_levels):
                 bid_price = market.c_quantize_order_price(self.trading_pair,
                                                           self._optimal_bid - Decimal(str(bid_level_spreads[level])))
@@ -871,6 +946,22 @@ cdef class AvellanedaMarketMakingStrategy(StrategyBase):
 
                 buys.append(PriceSize(bid_price, size))
                 sells.append(PriceSize(ask_price, size))
+        if size > 0 and not self.c_check_imbalance() and deviation > 0: #need to sell
+                bid_price = market.c_quantize_order_price(self.trading_pair,
+                                                          self._market_info.get_mid_price() / (Decimal(1) - Decimal(str(bid_level_spreads))))
+                ask_price = market.c_quantize_order_price(self.trading_pair,
+                                                          self._market_info.get_mid_price() * (Decimal(1) - Decimal(str(bid_level_spreads))))
+
+                sells.append(PriceSize(ask_price, size)) # only append sells
+
+        if size > 0 and not  self.c_check_imbalance() and deviation < 0: #need to buy
+                bid_price = market.c_quantize_order_price(self.trading_pair,
+                                                          self._market_info.get_mid_price() / (Decimal(1) - Decimal(str(bid_level_spreads))))
+                ask_price = market.c_quantize_order_price(self.trading_pair,
+                                                          self._market_info.get_mid_price() * (Decimal(1) - Decimal(str(bid_level_spreads))))
+
+                buys.append(PriceSize(bid_price, size)) # only append buys
+
         return buys, sells
 
     def create_proposal_based_on_order_levels(self):
@@ -1256,7 +1347,7 @@ cdef class AvellanedaMarketMakingStrategy(StrategyBase):
         number_of_pairs = min((len(proposal.buys), len(proposal.sells))) if self._hanging_orders_enabled else 0
 
         if len(proposal.buys) > 0:
-            if self._logging_options & self.OPTION_LOG_CREATE_ORDER:
+            if self._logging_options & self.OPTION_LOG_CREATE_ORDER and self.c_check_imbalance():
                 price_quote_str = [f"{buy.size.normalize()} {self.base_asset}, "
                                    f"{buy.price.normalize()} {self.quote_asset}"
                                    for buy in proposal.buys]
@@ -1279,7 +1370,7 @@ cdef class AvellanedaMarketMakingStrategy(StrategyBase):
                         self._hanging_orders_tracker.add_current_pairs_of_proposal_orders_executed_by_strategy(
                             CreatedPairOfOrders(order, None))
         if len(proposal.sells) > 0:
-            if self._logging_options & self.OPTION_LOG_CREATE_ORDER:
+            if self._logging_options & self.OPTION_LOG_CREATE_ORDER and self.c_check_imbalance():
                 price_quote_str = [f"{sell.size.normalize()} {self.base_asset}, "
                                    f"{sell.price.normalize()} {self.quote_asset}"
                                    for sell in proposal.sells]
@@ -1338,6 +1429,7 @@ cdef class AvellanedaMarketMakingStrategy(StrategyBase):
                                        'best_bid',
                                        'best_ask',
                                        'reservation_price',
+                                       'weighted_mid_price',
                                        'optimal_spread',
                                        'optimal_bid',
                                        'optimal_ask',
@@ -1366,6 +1458,7 @@ cdef class AvellanedaMarketMakingStrategy(StrategyBase):
                             best_bid,
                             best_ask,
                             self._reservation_price,
+                            self.c_weighted_mid_price(),
                             self._optimal_spread,
                             self._optimal_bid,
                             self._optimal_ask,

@@ -9,8 +9,8 @@
             "hummingbot/core/cpp/PyRef.h"
         ],
         "include_dirs": [
-            "./hummingbot/core",
-            "./hummingbot/core/data_type"
+            "./hummingbot/core/data_type",
+            "./hummingbot/core"
         ],
         "language": "c++",
         "name": "hummingbot.strategy.hedge.hedge",

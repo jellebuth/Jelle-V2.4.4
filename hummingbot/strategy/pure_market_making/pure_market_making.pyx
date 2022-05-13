@@ -88,13 +88,15 @@ cdef class PureMarketMakingStrategy(StrategyBase):
                     bid_order_level_spreads: List[Decimal] = None,
                     ask_order_level_spreads: List[Decimal] = None,
                     should_wait_order_cancel_confirmation: bool = True,
-                    use_micro_price : Bool= False,
+                    use_micro_price : bool= False,
                     micro_price_percentage_depth : Decimal = Decimal(0.1),
                     micro_price_effect : Decimal = Decimal(0.9),
                     keep_target_balance : bool = False,
                     target_base_balance: float = 0,
                     max_deviation : Decimal = Decimal(0),
                     filled_order_delay_target_balance : float = 30,
+                    target_balance_spread_reducer_temp : Decimal = Decimal(0.99),
+                    hanging_orders_enabled_other : bool = False,
                     moving_price_band: Optional[MovingPriceBand] = None
                     ):
         if order_override is None:
@@ -165,6 +167,13 @@ cdef class PureMarketMakingStrategy(StrategyBase):
         self._target_balance_spread_reducer = target_balance_spread_reducer
         self._filled_order_delay_target_balance = filled_order_delay_target_balance
         self._balance_fixer_timestamp = 0
+
+        self._target_balance_spread_reducer_temp = target_balance_spread_reducer_temp
+        self._hanging_orders_enabled_other = hanging_orders_enabled_other
+        self._buy_order_fill = False
+        self._sell_order_fill = False
+        self._last_buy_order_price = 0
+        self._last_sell_order_price = 0
 
         self.c_add_markets([market_info.market])
 
@@ -790,6 +799,23 @@ cdef class PureMarketMakingStrategy(StrategyBase):
                     self.c_execute_orders_proposal(proposal)
 
 
+
+              self._buy_order_fill = False
+              self._sell_order_fill = False
+
+            if (self._buy_order_fill or self._sell_order_fill) and not self.c_check_imbalance():
+              proposal = self.c_create_base_proposal()
+              self.c_apply_order_levels_modifiers(proposal)
+              # 3. Apply functions that modify orders price
+              self.c_apply_order_price_modifiers(proposal)
+              # 4. Apply functions that modify orders size
+              self.c_apply_order_size_modifiers(proposal)
+              # 5. Apply budget constraint, i.e. can't buy/sell more than what you have.
+              self.c_apply_budget_constraint(proposal)
+              if self.c_to_create_orders(proposal):
+                self.c_execute_orders_proposal(proposal)
+
+
             if self._create_timestamp <= self._current_timestamp and self.c_check_imbalance():
                 # 1. Create base order proposals
                 proposal = self.c_create_base_proposal()
@@ -809,11 +835,16 @@ cdef class PureMarketMakingStrategy(StrategyBase):
                 #only create normal orders whenever the timer is over
                 if self.c_to_create_orders(proposal):
                       self.c_execute_orders_proposal(proposal)
+                self._buy_order_fill = False
+                self._sell_order_fill = False
+
+            if (not self._buy_order_fill and not self._sell_order_fill):
+                self.c_cancel_active_orders_on_max_age_limit()
+                self.c_cancel_active_orders(proposal)
 
             self._hanging_orders_tracker.process_tick()
 
-            self.c_cancel_active_orders_on_max_age_limit()
-            self.c_cancel_active_orders(proposal)
+
 
 
         finally:
@@ -934,7 +965,7 @@ cdef class PureMarketMakingStrategy(StrategyBase):
                       if size > 0:
                           sells.append(PriceSize(price, size))
             #what if there is an imbalance. Do order levels to 0 for proposa and reduce spread to 0.001%
-            if not self.c_check_imbalance():
+            if not self.c_check_imbalance() and (not self._buy_order_fill and not self._sell_order_fill):
               base_balance = float(market.get_balance(self._market_info.base_asset))
               deviation = base_balance - float(self._target_base_balance)
               mid_price = self._market_info.get_mid_price()
@@ -952,6 +983,30 @@ cdef class PureMarketMakingStrategy(StrategyBase):
               if deviation > 0:
                   for level in range(0, 1): #only 1 order in that case
                       price = (mid_price * (Decimal(1) + (self._ask_spread * (Decimal(1) - self._target_balance_spread_reducer))) + (level * self._order_level_spread))
+                      price = market.c_quantize_order_price(self.trading_pair, price)
+                      size = Decimal(abs(deviation))
+                      size = market.c_quantize_order_amount(self.trading_pair, size)
+                      if size > 0:
+                            sells.append(PriceSize(price, size))
+                            buys=[]
+
+            if self._buy_order_fill or self._sell_order_fill:
+              base_balance = float(market.get_balance(self._market_info.base_asset))
+              deviation = base_balance - float(self._target_base_balance)
+              mid_price = self._market_info.get_mid_price()
+              if deviation < 0:
+                  for level in range(0, 1): #only 1 order, place a buy
+                      price = (self._last_sell_order_price / (Decimal(1) + (self._bid_spread)) - (level * self._order_level_spread))
+                      price = market.c_quantize_order_price(self.trading_pair, price)
+                      size = Decimal(abs(deviation))
+                      size = market.c_quantize_order_amount(self.trading_pair, size)
+
+                      if size > 0:
+                          buys.append(PriceSize(price, size))
+                          sells = []
+              if deviation > 0:
+                  for level in range(0, 1): #only 1 order in that case, place a sell
+                      price = (self._last_buy_order_price * (Decimal(1) + (self._ask_spread)) + (level * self._order_level_spread))
                       price = market.c_quantize_order_price(self.trading_pair, price)
                       size = Decimal(abs(deviation))
                       size = market.c_quantize_order_amount(self.trading_pair, size)
@@ -1231,6 +1286,7 @@ cdef class PureMarketMakingStrategy(StrategyBase):
             return
         active_sell_ids = [x.client_order_id for x in self.active_orders if not x.is_buy]
 
+
         if self._hanging_orders_enabled:
             # If the filled order is a hanging order, do nothing
             if order_id in self.hanging_order_ids:
@@ -1245,6 +1301,11 @@ cdef class PureMarketMakingStrategy(StrategyBase):
                     f"{limit_order_record.price} {limit_order_record.quote_currency} is filled."
                 )
                 return
+        if not self._hanging_orders_enabled and self._hanging_orders_enabled_other:
+          self.c_cancel_all_orders()
+          self._buy_order_fill = True
+          self._last_buy_order_price = limit_order_record.price
+
 
         # delay order creation by filled_order_dalay (in seconds)
         self._create_timestamp = self._current_timestamp + self._filled_order_delay
@@ -1272,6 +1333,7 @@ cdef class PureMarketMakingStrategy(StrategyBase):
         if limit_order_record is None:
             return
         active_buy_ids = [x.client_order_id for x in self.active_orders if x.is_buy]
+
         if self._hanging_orders_enabled:
             # If the filled order is a hanging order, do nothing
             if order_id in self.hanging_order_ids:
@@ -1286,6 +1348,11 @@ cdef class PureMarketMakingStrategy(StrategyBase):
                     f"{limit_order_record.price} {limit_order_record.quote_currency} is filled."
                 )
                 return
+        if not self._hanging_orders_enabled and self._hanging_orders_enabled_other:
+            self.c_cancel_all_orders()
+            self._sell_order_fill = True
+            self._last_sell_order_price = limit_order_record.price
+
 
         # delay order creation by filled_order_dalay (in seconds)
         self._create_timestamp = self._current_timestamp + self._filled_order_delay
@@ -1377,6 +1444,14 @@ cdef class PureMarketMakingStrategy(StrategyBase):
                                    f" Cancelling Order: ({'Buy' if order.is_buy else 'Sell'}) "
                                    f"ID - {order.client_order_id}")
                 self.c_cancel_order(self._market_info, order.client_order_id)
+    cdef c_cancel_all_orders(self):
+          cdef:
+              list active_orders = self.market_info_to_active_orders.get(self._market_info, [])
+              object price = self.get_price()
+          active_orders = [order for order in active_orders
+                           if order.client_order_id not in self.hanging_order_ids]
+          for order in active_orders:
+                  self.c_cancel_order(self._market_info, order.client_order_id)
 
     cdef bint c_to_create_orders(self, object proposal):
         non_hanging_orders_non_cancelled = [o for o in self.active_non_hanging_orders if not

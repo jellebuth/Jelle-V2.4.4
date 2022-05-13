@@ -264,4 +264,42 @@ avellaneda_market_making_config_map = {
                   type_str="bool",
                   default=True,
                   validator=validate_bool),
+    "use_micro_price":
+    ConfigVar(key="use_micro_price",
+              prompt="do you want to use the micro-price instead of the other price sources >>> ",
+              type_str="bool",
+              default=True,
+              prompt_on_new=True),
+
+    "micro_price_percentage_depth":
+    ConfigVar(key="micro_price_percentage_depth",
+              prompt="for the micro-price volume calculation, how much depth in % would you like to use on the bid and ask side (e.g. 0.2% = 0.002) >>> ",
+              type_str="decimal",
+              validator=lambda v: validate_decimal(v),
+              prompt_on_new=True,
+              default=0.003),
+
+    "micro_price_effect":
+    ConfigVar(key="micro_price_effect",
+              prompt="Do you want to fully use the micro-price 0.9 = 90% micro-price usage >>> ",
+              type_str="decimal",
+              validator=lambda v: validate_decimal(v),
+              prompt_on_new=True,
+              default=0.9),
+
+    "max_deviation":
+    ConfigVar(key="max_deviation",
+              prompt="what is the max deviation for the target base balance >>> ",
+              type_str="decimal",
+              validator=lambda v: validate_decimal(v),
+              prompt_on_new=True,
+              default=0),
+
+    "target_balance_spread_reducer":
+    ConfigVar(key="target_balance_spread_reducer",
+              prompt="To restore balance, how much in percentage do you want to decrease your spread(e.g. 0.99 = 99%) >>> ",
+              type_str="decimal",
+              validator=lambda v: validate_decimal(v),
+              prompt_on_new=True,
+              default=0),
 }

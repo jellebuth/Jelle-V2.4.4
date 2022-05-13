@@ -21,6 +21,9 @@ cdef class AvellanedaMarketMakingStrategy(StrategyBase):
         object _inventory_target_base_pct
         object _normal_target_calculation
         object _target_base_balance
+        object _use_micro_price 
+        object _micro_price_percentage_depth
+        object _micro_price_effect
         bint _order_optimization_enabled
         bint _add_transaction_costs_to_orders
         bint _hb_app_notification
@@ -28,6 +31,7 @@ cdef class AvellanedaMarketMakingStrategy(StrategyBase):
 
         double _cancel_timestamp
         double _create_timestamp
+
         object _limit_order_type
         bint _all_markets_ready
         int _filled_buys_balance
@@ -57,6 +61,8 @@ cdef class AvellanedaMarketMakingStrategy(StrategyBase):
         str _debug_csv_path
         object _avg_vol
         object _trading_intensity
+        object _target_balance_spread_reducer
+        object _max_deviation
         bint _should_wait_order_cancel_confirmation
 
     cdef object c_get_mid_price(self)
@@ -86,3 +92,5 @@ cdef class AvellanedaMarketMakingStrategy(StrategyBase):
     cdef object c_calculate_target_inventory(self)
     cdef object c_calculate_inventory(self)
     cdef c_did_complete_order(self, object order_completed_event)
+    cdef c_weighted_mid_price(self)
+    cdef c_check_imbalance(self)

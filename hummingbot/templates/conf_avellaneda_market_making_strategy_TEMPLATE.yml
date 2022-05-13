@@ -88,3 +88,10 @@ should_wait_order_cancel_confirmation: True
 normal_target_calculation: null
 
 target_base_balance: null
+
+
+use_micro_price: null
+max_deviation: null
+micro_price_percentage_depth: null
+micro_price_effect: null
+target_balance_spread_reducer: null

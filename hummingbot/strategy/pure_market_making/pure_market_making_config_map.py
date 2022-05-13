@@ -52,7 +52,8 @@ def on_validate_price_source(value: str):
 
 
 def price_source_market_prompt() -> str:
-    external_market = pure_market_making_config_map.get("price_source_exchange").value
+    external_market = pure_market_making_config_map.get(
+        "price_source_exchange").value
     return f'Enter the token trading pair on {external_market} >>> '
 
 
@@ -112,7 +113,8 @@ def validate_decimal_list(value: str) -> Optional[str]:
     decimal_list = list(value.split(","))
     for number in decimal_list:
         try:
-            validate_result = validate_decimal(Decimal(number), 0, 100, inclusive=False)
+            validate_result = validate_decimal(
+                Decimal(number), 0, 100, inclusive=False)
         except decimal.InvalidOperation:
             return "Please enter valid decimal numbers"
         if validate_result is not None:
@@ -140,14 +142,16 @@ pure_market_making_config_map = {
                   prompt="How far away from the mid price do you want to place the "
                          "first bid order? (Enter 1 to indicate 1%) >>> ",
                   type_str="decimal",
-                  validator=lambda v: validate_decimal(v, 0, 100, inclusive=False),
+                  validator=lambda v: validate_decimal(
+                      v, 0, 100, inclusive=False),
                   prompt_on_new=True),
     "ask_spread":
         ConfigVar(key="ask_spread",
                   prompt="How far away from the mid price do you want to place the "
                          "first ask order? (Enter 1 to indicate 1%) >>> ",
                   type_str="decimal",
-                  validator=lambda v: validate_decimal(v, 0, 100, inclusive=False),
+                  validator=lambda v: validate_decimal(
+                      v, 0, 100, inclusive=False),
                   prompt_on_new=True),
     "minimum_spread":
         ConfigVar(key="minimum_spread",
@@ -181,7 +185,8 @@ pure_market_making_config_map = {
         ConfigVar(key="order_amount",
                   prompt=order_amount_prompt,
                   type_str="decimal",
-                  validator=lambda v: validate_decimal(v, min_value=Decimal("0"), inclusive=False),
+                  validator=lambda v: validate_decimal(
+                      v, min_value=Decimal("0"), inclusive=False),
                   prompt_on_new=True),
     "price_ceiling":
         ConfigVar(key="price_ceiling",
@@ -208,21 +213,24 @@ pure_market_making_config_map = {
                   prompt="Enter a percentage to the current price that sets the price ceiling. Above this price, only sell orders will be placed >>> ",
                   type_str="decimal",
                   default=Decimal("1.25"),
-                  required_if=lambda: pure_market_making_config_map.get("moving_price_band_enabled").value,
+                  required_if=lambda: pure_market_making_config_map.get(
+                      "moving_price_band_enabled").value,
                   validator=validate_decimal),
     "price_floor_pct":
         ConfigVar(key="price_floor_pct",
                   prompt="Enter a percentage to the current price that sets the price floor. Below this price, only buy orders will be placed >>> ",
                   type_str="decimal",
                   default=Decimal("-1.25"),
-                  required_if=lambda: pure_market_making_config_map.get("moving_price_band_enabled").value,
+                  required_if=lambda: pure_market_making_config_map.get(
+                      "moving_price_band_enabled").value,
                   validator=validate_decimal),
     "price_band_refresh_time":
         ConfigVar(key="price_band_refresh_time",
                   prompt="After this amount of time (in seconds), the price bands are reset based on the current price >>> ",
                   type_str="float",
                   default=120,
-                  required_if=lambda: pure_market_making_config_map.get("moving_price_band_enabled").value,
+                  required_if=lambda: pure_market_making_config_map.get(
+                      "moving_price_band_enabled").value,
                   validator=validate_decimal),
     "ping_pong_enabled":
         ConfigVar(key="ping_pong_enabled",
@@ -235,13 +243,15 @@ pure_market_making_config_map = {
         ConfigVar(key="order_levels",
                   prompt="How many orders do you want to place on both sides? >>> ",
                   type_str="int",
-                  validator=lambda v: validate_int(v, min_value=-1, inclusive=False),
+                  validator=lambda v: validate_int(
+                      v, min_value=-1, inclusive=False),
                   default=1),
     "order_level_amount":
         ConfigVar(key="order_level_amount",
                   prompt="How much do you want to increase or decrease the order size for each "
                          "additional order? (decrease < 0 > increase) >>> ",
-                  required_if=lambda: pure_market_making_config_map.get("order_levels").value > 1,
+                  required_if=lambda: pure_market_making_config_map.get(
+                      "order_levels").value > 1,
                   type_str="decimal",
                   validator=lambda v: validate_decimal(v),
                   default=0),
@@ -249,9 +259,11 @@ pure_market_making_config_map = {
         ConfigVar(key="order_level_spread",
                   prompt="Enter the price increments (as percentage) for subsequent "
                          "orders? (Enter 1 to indicate 1%) >>> ",
-                  required_if=lambda: pure_market_making_config_map.get("order_levels").value > 1,
+                  required_if=lambda: pure_market_making_config_map.get(
+                      "order_levels").value > 1,
                   type_str="decimal",
-                  validator=lambda v: validate_decimal(v, 0, 100, inclusive=False),
+                  validator=lambda v: validate_decimal(
+                      v, 0, 100, inclusive=False),
                   default=Decimal("1")),
     "inventory_skew_enabled":
         ConfigVar(key="inventory_skew_enabled",
@@ -262,7 +274,8 @@ pure_market_making_config_map = {
     "inventory_target_base_pct":
         ConfigVar(key="inventory_target_base_pct",
                   prompt="What is your target base asset percentage? Enter 50 for 50% >>> ",
-                  required_if=lambda: pure_market_making_config_map.get("inventory_skew_enabled").value,
+                  required_if=lambda: pure_market_making_config_map.get(
+                      "inventory_skew_enabled").value,
                   type_str="decimal",
                   validator=lambda v: validate_decimal(v, 0, 100),
                   default=Decimal("50")),
@@ -270,16 +283,20 @@ pure_market_making_config_map = {
         ConfigVar(key="inventory_range_multiplier",
                   prompt="What is your tolerable range of inventory around the target, "
                          "expressed in multiples of your total order size? ",
-                  required_if=lambda: pure_market_making_config_map.get("inventory_skew_enabled").value,
+                  required_if=lambda: pure_market_making_config_map.get(
+                      "inventory_skew_enabled").value,
                   type_str="decimal",
-                  validator=lambda v: validate_decimal(v, min_value=0, inclusive=False),
+                  validator=lambda v: validate_decimal(
+                      v, min_value=0, inclusive=False),
                   default=Decimal("1")),
     "inventory_price":
         ConfigVar(key="inventory_price",
                   prompt="What is the price of your base asset inventory? ",
                   type_str="decimal",
-                  validator=lambda v: validate_decimal(v, min_value=Decimal("0"), inclusive=True),
-                  required_if=lambda: pure_market_making_config_map.get("price_type").value == "inventory_cost",
+                  validator=lambda v: validate_decimal(
+                      v, min_value=Decimal("0"), inclusive=True),
+                  required_if=lambda: pure_market_making_config_map.get(
+                      "price_type").value == "inventory_cost",
                   default=Decimal("1"),
                   ),
     "filled_order_delay":
@@ -287,7 +304,8 @@ pure_market_making_config_map = {
                   prompt="How long do you want to wait before placing the next order "
                          "if your order gets filled (in seconds)? >>> ",
                   type_str="float",
-                  validator=lambda v: validate_decimal(v, min_value=0, inclusive=False),
+                  validator=lambda v: validate_decimal(
+                      v, min_value=0, inclusive=False),
                   default=60),
     "hanging_orders_enabled":
         ConfigVar(key="hanging_orders_enabled",
@@ -299,10 +317,30 @@ pure_market_making_config_map = {
         ConfigVar(key="hanging_orders_cancel_pct",
                   prompt="At what spread percentage (from mid price) will hanging orders be canceled? "
                          "(Enter 1 to indicate 1%) >>> ",
-                  required_if=lambda: pure_market_making_config_map.get("hanging_orders_enabled").value,
+                  required_if=lambda: pure_market_making_config_map.get(
+                      "hanging_orders_enabled").value,
                   type_str="decimal",
                   default=Decimal("10"),
                   validator=lambda v: validate_decimal(v, 0, 100, inclusive=False)),
+    "hanging_orders_enabled_other":
+        ConfigVar(key="hanging_orders_enabled_other",
+                  prompt="hanging_orders_enabled_other (Yes/No) >>> ",
+                  type_str="bool",
+                  default=False,
+                  validator=validate_bool),
+
+    "target_balance_spread_reducer_temp":
+    ConfigVar(key="target_balance_spread_reducer_temp",
+              prompt="target_balance_spread_reducer_temp(e.g. 0.99 = 99%) >>> ",
+              type_str="decimal",
+              validator=lambda v: validate_decimal(v),
+              prompt_on_new=True,
+              default=0),
+
+
+
+
+
     "order_optimization_enabled":
         ConfigVar(key="order_optimization_enabled",
                   prompt="Do you want to enable best bid ask jumping? (Yes/No) >>> ",
@@ -314,7 +352,8 @@ pure_market_making_config_map = {
                   prompt="How deep do you want to go into the order book for calculating "
                          "the top ask, ignoring dust orders on the top "
                          "(expressed in base asset amount)? >>> ",
-                  required_if=lambda: pure_market_making_config_map.get("order_optimization_enabled").value,
+                  required_if=lambda: pure_market_making_config_map.get(
+                      "order_optimization_enabled").value,
                   type_str="decimal",
                   validator=lambda v: validate_decimal(v, min_value=0),
                   default=0),
@@ -323,7 +362,8 @@ pure_market_making_config_map = {
                   prompt="How deep do you want to go into the order book for calculating "
                          "the top bid, ignoring dust orders on the top "
                          "(expressed in base asset amount)? >>> ",
-                  required_if=lambda: pure_market_making_config_map.get("order_optimization_enabled").value,
+                  required_if=lambda: pure_market_making_config_map.get(
+                      "order_optimization_enabled").value,
                   type_str="decimal",
                   validator=lambda v: validate_decimal(v, min_value=0),
                   default=0),
@@ -352,21 +392,24 @@ pure_market_making_config_map = {
                   prompt="Which price type to use? ("
                          "mid_price/last_price/last_own_trade_price/best_bid/best_ask/inventory_cost) >>> ",
                   type_str="str",
-                  required_if=lambda: pure_market_making_config_map.get("price_source").value != "custom_api",
+                  required_if=lambda: pure_market_making_config_map.get(
+                      "price_source").value != "custom_api",
                   default="mid_price",
                   on_validated=on_validated_price_type,
                   validator=validate_price_type),
     "price_source_exchange":
         ConfigVar(key="price_source_exchange",
                   prompt="Enter external price source exchange name >>> ",
-                  required_if=lambda: pure_market_making_config_map.get("price_source").value == "external_market",
+                  required_if=lambda: pure_market_making_config_map.get(
+                      "price_source").value == "external_market",
                   type_str="str",
                   validator=validate_price_source_exchange,
                   on_validated=on_validated_price_source_exchange),
     "price_source_market":
         ConfigVar(key="price_source_market",
                   prompt=price_source_market_prompt,
-                  required_if=lambda: pure_market_making_config_map.get("price_source").value == "external_market",
+                  required_if=lambda: pure_market_making_config_map.get(
+                      "price_source").value == "external_market",
                   type_str="str",
                   validator=validate_price_source_market),
     "take_if_crossed":
@@ -379,7 +422,8 @@ pure_market_making_config_map = {
     "price_source_custom_api":
         ConfigVar(key="price_source_custom_api",
                   prompt="Enter pricing API URL >>> ",
-                  required_if=lambda: pure_market_making_config_map.get("price_source").value == "custom_api",
+                  required_if=lambda: pure_market_making_config_map.get(
+                      "price_source").value == "custom_api",
                   type_str="str"),
     "custom_api_update_interval":
         ConfigVar(key="custom_api_update_interval",

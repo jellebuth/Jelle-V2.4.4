@@ -45,6 +45,10 @@ cdef class PureMarketMakingStrategy(StrategyBase):
         object _asset_price_delegate
         object _inventory_cost_price_delegate
         object _price_type
+        object _target_balance_spread_reducer_temp
+        object _buy_order_fill
+        object _sell_order_fill
+        object _hanging_orders_enabled_other
         object _target_balance_spread_reducer
         bint _take_if_crossed
         object _price_ceiling
@@ -65,6 +69,8 @@ cdef class PureMarketMakingStrategy(StrategyBase):
         double _status_report_interval
         int64_t _logging_options
         object _last_own_trade_price
+        object _last_buy_order_price
+        object _last_sell_order_price
         bint _should_wait_order_cancel_confirmation
 
         object _moving_price_band
@@ -81,6 +87,7 @@ cdef class PureMarketMakingStrategy(StrategyBase):
     cdef c_apply_budget_constraint(self, object proposal)
 
     cdef c_filter_out_takers(self, object proposal)
+    cdef c_cancel_all_orders(self)
     cdef c_check_imbalance(self)
     cdef c_weighted_mid_price(self)
     cdef c_apply_order_optimization(self, object proposal)
