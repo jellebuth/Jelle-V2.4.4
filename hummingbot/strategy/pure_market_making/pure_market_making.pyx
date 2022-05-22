@@ -797,9 +797,6 @@ cdef class PureMarketMakingStrategy(StrategyBase):
               #if there is an imbalance do create orders but only the fixing orders
               if self.c_to_create_orders(proposal):
                     self.c_execute_orders_proposal(proposal)
-
-
-
               self._buy_order_fill = False
               self._sell_order_fill = False
 
@@ -814,6 +811,8 @@ cdef class PureMarketMakingStrategy(StrategyBase):
               self.c_apply_budget_constraint(proposal)
               if self.c_to_create_orders(proposal):
                 self.c_execute_orders_proposal(proposal)
+              self._buy_order_fill = False
+              self._sell_order_fill = False
 
 
             if self._create_timestamp <= self._current_timestamp and self.c_check_imbalance():
@@ -843,8 +842,6 @@ cdef class PureMarketMakingStrategy(StrategyBase):
                 self.c_cancel_active_orders(proposal)
 
             self._hanging_orders_tracker.process_tick()
-            
-
 
 
 
@@ -1303,8 +1300,11 @@ cdef class PureMarketMakingStrategy(StrategyBase):
                 )
                 return
         if not self._hanging_orders_enabled and self._hanging_orders_enabled_other:
-          self.c_cancel_all_orders()
-          self._buy_order_fill = True
+          if self._buy_order_fill and self.current_timestamp >= self._balance_fixer_timestamp:
+            self._buy_order_fill = False
+          else:
+            self._buy_order_fill = True
+            self.c_cancel_all_orders()
           self._last_buy_order_price = limit_order_record.price
 
 
@@ -1350,8 +1350,11 @@ cdef class PureMarketMakingStrategy(StrategyBase):
                 )
                 return
         if not self._hanging_orders_enabled and self._hanging_orders_enabled_other:
-            self.c_cancel_all_orders()
-            self._sell_order_fill = True
+            if self._sell_order_fill and self.current_timestamp >= self._balance_fixer_timestamp: #if it is already true, set it to false. second argument for if two orders are filled at the same time, if this happens, the timer is just reset
+              self._sell_order_fill = False
+            else:
+              self._sell_order_fill = True
+              self.c_cancel_all_orders()
             self._last_sell_order_price = limit_order_record.price
 
 

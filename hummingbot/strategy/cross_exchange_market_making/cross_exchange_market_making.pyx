@@ -938,6 +938,7 @@ cdef class CrossExchangeMarketMakingStrategy(StrategyBase):
                 self.c_check_and_hedge_orders(market_pair)
             except Exception:
                 self.log_with_clock(logging.ERROR, "Unexpected error.", exc_info=True)
+        #add logic here that also adds the order_id to a variable so the avg_filled_price of the taker order can be calculated
 
     cdef c_did_complete_buy_order(self, object order_completed_event):
         """
@@ -970,6 +971,7 @@ cdef class CrossExchangeMarketMakingStrategy(StrategyBase):
             else:
                 limit_order_record = self._sb_order_tracker.c_get_limit_order(market_pair.taker, order_id)
                 taker_top = taker_market.c_get_price(taker_trading_pair, True)
+                #add average fill price of taker order here like in lines 1114 
                 self.log_with_clock(
                     logging.INFO,
                     f"({market_pair.taker.trading_pair}) Taker buy order {order_id} for "
