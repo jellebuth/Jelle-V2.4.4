@@ -452,7 +452,7 @@ pure_market_making_config_map = {
     "conversion_exchange":
         ConfigVar(key="conversion_exchange",
                   prompt="Enter conversion_exchange exchange name >>> ",
-                  default = 'binance',
+                  default='binance',
                   type_str="str"),
 
     "conversion_trading_pair":
@@ -642,5 +642,12 @@ pure_market_making_config_map = {
                       "split_order_levels_enabled").value,
                   type_str="str",
                   validator=validate_decimal_list),
+    "dump_variables":
+    ConfigVar(key="dump_variables",
+              prompt="dump_variables >>> ",
+              type_str="bool",
+              default=False
+              ),
+
 
 }

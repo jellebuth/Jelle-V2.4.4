@@ -5,6 +5,7 @@ from typing import Dict, List, Optional
 
 import numpy as np
 import pandas as pd
+import os
 
 from hummingbot.connector.exchange_base import ExchangeBase
 from hummingbot.connector.exchange_base cimport ExchangeBase
@@ -110,7 +111,8 @@ cdef class PureMarketMakingStrategy(StrategyBase):
                     inventory_management: bool = False,
                     inventory_management_multiplier: Decimal = Decimal(1),
                     conversion_market: [MarketTradingPairTuple] = Decimal(1),
-                    conversion_data_source: bool = False
+                    conversion_data_source: bool = False,
+                    dump_variables: bool = False,
 
 
                     ):
@@ -198,6 +200,8 @@ cdef class PureMarketMakingStrategy(StrategyBase):
         self._inventory_management_multiplier = inventory_management_multiplier
         self._conversion_market = conversion_market
         self._conversion_data_source = conversion_data_source
+        self._hanging_order_list = []
+        self._dump_variables = dump_variables
 
 
         self.c_add_markets([market_info.market])
@@ -915,6 +919,10 @@ cdef class PureMarketMakingStrategy(StrategyBase):
 
             self._hanging_orders_tracker.process_tick()
 
+            if self._dump_variables:
+              self.c_dump_debug_variables()
+
+
 
 
         finally:
@@ -1533,19 +1541,21 @@ cdef class PureMarketMakingStrategy(StrategyBase):
           else:
             self._buy_order_fill = True
             if self.get_inventory_management() >= Decimal(-0.075): #positive = you need to sell
-              bid_order_id = self.c_sell_with_specific_market(
+              order_id = self.c_sell_with_specific_market(
                   self._market_info,
                   limit_order_record.quantity,
                   order_type=self._limit_order_type,
                   price=(limit_order_record.price * (Decimal(1) + self._bid_spread)),
                   expiration_seconds=expiration_seconds)
+              self._hanging_order_list.append(order_id)
+              self.c_cancel_all_orders()
 
 
-            self.c_cancel_all_orders()
+
           self._last_buy_order_price = limit_order_record.price
           self.log_with_clock(
               logging.INFO,
-              f"self._buy_order_fill: {self._sell_order_fill}) self._buy_order_fill: {self._buy_order_fill} self._last_buy_order_price : {self._last_buy_order_price} inventory_management {self.get_inventory_management()} "
+              f"self._buy_order_fill: order_id {order_id} - {self._sell_order_fill}) self._buy_order_fill: {self._buy_order_fill} self._last_buy_order_price : {self._last_buy_order_price} inventory_management {self.get_inventory_management()} "
           )
 
 
@@ -1596,19 +1606,22 @@ cdef class PureMarketMakingStrategy(StrategyBase):
               self._sell_order_fill = False
             else:
               self._sell_order_fill = True
-
               if self.get_inventory_management() <= Decimal(0.075):  # add that it should only be done when balance is skewed a specific way
-                bid_order_id = self.c_buy_with_specific_market(
+                order_id = self.c_buy_with_specific_market(
                     self._market_info,
                     limit_order_record.quantity,
                     order_type=self._limit_order_type,
                     price=(limit_order_record.price / (Decimal(1) + self._ask_spread)),
                     expiration_seconds=expiration_seconds)
+                self._hanging_order_list.append(order_id)
+                self.c_cancel_all_orders()
 
 
-              self.c_cancel_all_orders()
             self._last_sell_order_price = limit_order_record.price
-
+            self.log_with_clock(
+                logging.INFO,
+                f"self._buy_order_fill: order_id {order_id} - {self._sell_order_fill}) self._buy_order_fill: {self._buy_order_fill} self._last_buy_order_price : {self._last_buy_order_price} inventory_management {self.get_inventory_management()} "
+            )
 
         # delay order creation by filled_order_dalay (in seconds)
         self._create_timestamp = self._current_timestamp + self._filled_order_delay
@@ -1708,6 +1721,9 @@ cdef class PureMarketMakingStrategy(StrategyBase):
           active_orders = [order for order in active_orders
                            if order.client_order_id not in self.hanging_order_ids]
           for order in active_orders:
+            if order.client_order_id in self._hanging_order_list:
+              pass
+            else:
                   self.c_cancel_order(self._market_info, order.client_order_id)
 
     cdef bint c_to_create_orders(self, object proposal):
@@ -1802,3 +1818,33 @@ cdef class PureMarketMakingStrategy(StrategyBase):
             return PriceType.Custom
         else:
             raise ValueError(f"Unrecognized price type string {price_type_str}.")
+
+
+    cdef c_dump_debug_variables(self):
+        cdef:
+          ExchangeBase market = self._market_info.market
+          str trading_pair = self._market_info.trading_pair
+
+        timestamp = self._current_timestamp
+        price = self.get_price()
+        pair = self._market_info.trading_pair
+        exchange = self._market_info.market
+
+        volatility = self.get_volatility()
+        vol_percentage = volatility/price
+
+
+        if not os.path.exists('/Users/jellebuth/Documents/test3.csv'):
+            df_header = pd.DataFrame([(
+            'timestamp',
+            'price',
+            'volatility'
+                )])
+            df_header.to_csv('/Users/jellebuth/Documents/test3.csv', mode='a', header=False, index=False)
+
+        df = pd.DataFrame([(timestamp,
+        price,
+        volatility,
+        vol_percentage
+        )])
+        df.to_csv('/Users/jellebuth/Documents/test3.csv', mode='a', header=False, index=False)

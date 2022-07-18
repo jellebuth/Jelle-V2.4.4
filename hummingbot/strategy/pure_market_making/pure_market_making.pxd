@@ -84,6 +84,8 @@ cdef class PureMarketMakingStrategy(StrategyBase):
         object _conversion_market
         object _conversion_data_source
         object _max_inventory_management_spread
+        object _hanging_order_list
+        object _dump_variables
 
 
         object _moving_price_band
@@ -116,3 +118,4 @@ cdef class PureMarketMakingStrategy(StrategyBase):
     cdef c_collect_market_variables(self, double timestamp)
     cdef c_apply_vol_adjustment_multiplier(self, object proposal)
     cdef c_apply_inventory_spread_management(self, object proposal)
+    cdef c_dump_debug_variables(self)

@@ -106,6 +106,7 @@ def start(self):
         conversion_data_source = c_map.get("conversion_data_source").value
         conversion_exchange = c_map.get("conversion_exchange").value
         conversion_trading_pair = c_map.get("conversion_trading_pair").value
+        dump_variables = c_map.get("dump_variables").value
 
         moving_price_band = MovingPriceBand(
             enabled=c_map.get("moving_price_band_enabled").value,
@@ -257,7 +258,8 @@ def start(self):
             max_inventory_management_spread=max_inventory_management_spread,
             inventory_management=inventory_management,
             inventory_management_multiplier=inventory_management_multiplier,
-            conversion_data_source=conversion_data_source
+            conversion_data_source=conversion_data_source,
+            dump_variables=dump_variables
         )
     except Exception as e:
         self.notify(str(e))
