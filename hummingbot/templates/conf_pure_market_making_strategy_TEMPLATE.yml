@@ -158,5 +158,21 @@ should_wait_order_cancel_confirmation: True
 target_balance_spread_reducer_temp: null
 hanging_orders_enabled_other : null
 
+
+# Settings for volatility  adjustment
+volatility_adjustment: null
+max_volatility_spread: null
+volatility_adjustment_multiplier: null
+volatility_buffer_size: null
+volatility_processing_length: null
+
+
+inventory_management: null
+inventory_management_multiplier: null
+max_inventory_management_spread: null
+conversion_data_source: null
+conversion_exchange: null
+conversion_trading_pair: null
+
 # For more detailed information, see:
 # https://docs.hummingbot.io/strategies/pure-market-making/#configuration-parameters

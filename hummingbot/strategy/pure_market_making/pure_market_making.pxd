@@ -13,6 +13,7 @@ cdef class PureMarketMakingStrategy(StrategyBase):
         object _ask_spread
         object _minimum_spread
         object _order_amount
+        object _avg_vol
         int _order_levels
         int _buy_levels
         int _sell_levels
@@ -72,6 +73,18 @@ cdef class PureMarketMakingStrategy(StrategyBase):
         object _last_buy_order_price
         object _last_sell_order_price
         bint _should_wait_order_cancel_confirmation
+        object _volatility_adjustment
+
+        object _volatility_buffer_size
+        object _volatility_processing_length
+        object _max_volatility_spread
+        object _volatility_adjustment_multiplier
+        object _inventory_management_multiplier
+        object _inventory_management
+        object _conversion_market
+        object _conversion_data_source
+        object _max_inventory_management_spread
+
 
         object _moving_price_band
 
@@ -100,3 +113,6 @@ cdef class PureMarketMakingStrategy(StrategyBase):
     cdef c_execute_orders_proposal(self, object proposal)
     cdef set_timers(self)
     cdef c_apply_moving_price_band(self, object proposal)
+    cdef c_collect_market_variables(self, double timestamp)
+    cdef c_apply_vol_adjustment_multiplier(self, object proposal)
+    cdef c_apply_inventory_spread_management(self, object proposal)

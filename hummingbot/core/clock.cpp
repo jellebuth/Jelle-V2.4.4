@@ -3304,7 +3304,7 @@ static PyObject *__pyx_pf_10hummingbot_4core_5clock_5Clock_logger(CYTHON_UNUSED 
  *             s_logger = logging.getLogger(__name__)
  *         return s_logger             # <<<<<<<<<<<<<<
  * 
- *     def __init__(self, clock_mode: ClockMode, tick_size: float = 0.5, start_time: float = 0.0, end_time: float = 0.0):
+ *     def __init__(self, clock_mode: ClockMode, tick_size: float = 1.0, start_time: float = 0.0, end_time: float = 0.0):
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_s_logger); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 22, __pyx_L1_error)
@@ -3338,7 +3338,7 @@ static PyObject *__pyx_pf_10hummingbot_4core_5clock_5Clock_logger(CYTHON_UNUSED 
 /* "hummingbot/core/clock.pyx":24
  *         return s_logger
  * 
- *     def __init__(self, clock_mode: ClockMode, tick_size: float = 0.5, start_time: float = 0.0, end_time: float = 0.0):             # <<<<<<<<<<<<<<
+ *     def __init__(self, clock_mode: ClockMode, tick_size: float = 1.0, start_time: float = 0.0, end_time: float = 0.0):             # <<<<<<<<<<<<<<
  *         """
  *         :param clock_mode: either real time mode or back testing mode
  */
@@ -3432,7 +3432,7 @@ static int __pyx_pw_10hummingbot_4core_5clock_5Clock_3__init__(PyObject *__pyx_v
     if (values[1]) {
       __pyx_v_tick_size = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_tick_size == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 24, __pyx_L3_error)
     } else {
-      __pyx_v_tick_size = ((double)0.5);
+      __pyx_v_tick_size = ((double)1.0);
     }
     if (values[2]) {
       __pyx_v_start_time = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_start_time == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 24, __pyx_L3_error)
@@ -3615,7 +3615,7 @@ static int __pyx_pf_10hummingbot_4core_5clock_5Clock_2__init__(struct __pyx_obj_
   /* "hummingbot/core/clock.pyx":24
  *         return s_logger
  * 
- *     def __init__(self, clock_mode: ClockMode, tick_size: float = 0.5, start_time: float = 0.0, end_time: float = 0.0):             # <<<<<<<<<<<<<<
+ *     def __init__(self, clock_mode: ClockMode, tick_size: float = 1.0, start_time: float = 0.0, end_time: float = 0.0):             # <<<<<<<<<<<<<<
  *         """
  *         :param clock_mode: either real time mode or back testing mode
  */

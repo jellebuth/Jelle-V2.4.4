@@ -15,6 +15,7 @@ cdef class RingBuffer:
     cdef bint c_is_full(self)
     cdef bint c_is_empty(self)
     cdef double c_mean_value(self)
+    cdef double c_median_value(self)
     cdef double c_variance(self)
     cdef double c_std_dev(self)
     cdef np.ndarray[np.double_t, ndim=1] c_get_as_numpy_array(self)

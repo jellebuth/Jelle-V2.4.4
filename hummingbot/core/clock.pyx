@@ -21,7 +21,7 @@ cdef class Clock:
             s_logger = logging.getLogger(__name__)
         return s_logger
 
-    def __init__(self, clock_mode: ClockMode, tick_size: float = 0.5, start_time: float = 0.0, end_time: float = 0.0):
+    def __init__(self, clock_mode: ClockMode, tick_size: float = 1.0, start_time: float = 0.0, end_time: float = 0.0):
         """
         :param clock_mode: either real time mode or back testing mode
         :param tick_size: time interval of each tick

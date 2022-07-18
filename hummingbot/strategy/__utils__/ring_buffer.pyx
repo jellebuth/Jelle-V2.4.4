@@ -1,6 +1,7 @@
 import numpy as np
 import logging
 cimport numpy as np
+from decimal import Decimal
 
 
 pmm_logger = None
@@ -46,7 +47,21 @@ cdef class RingBuffer:
         result = np.nan
         if self._is_full:
             result=np.mean(self.c_get_as_numpy_array())
-        return result
+        if np.isnan(result):
+          result=Decimal(0)
+          return result
+        else:
+          return result
+
+    cdef double c_median_value(self):
+        result = np.nan
+        if self._is_full:
+            result=np.median(self.c_get_as_numpy_array())
+        if np.isnan(result):
+          result=Decimal(0)
+          return result
+        else:
+          return result
 
     cdef double c_variance(self):
         result = np.nan
@@ -92,6 +107,10 @@ cdef class RingBuffer:
     @property
     def mean_value(self):
         return self.c_mean_value()
+
+    @property
+    def median_value(self):
+        return self.c_median_value()
 
     @property
     def std_dev(self):

@@ -307,12 +307,75 @@ pure_market_making_config_map = {
                   validator=lambda v: validate_decimal(
                       v, min_value=0, inclusive=False),
                   default=60),
+
+    "volatility_adjustment":
+        ConfigVar(key="volatility_adjustment",
+                  prompt="Do you want to adjust your bid_ask spread based on volatility? True/False >>> ",
+                  type_str="bool",
+                  default=False,
+                  validator=validate_bool,
+                  prompt_on_new=True),
+
+    "volatility_adjustment_multiplier":
+        ConfigVar(key="volatility_adjustment_multiplier",
+                  prompt="By what factor do you want to adjust for volatility. Generally, volatility ranges between 0.01%-0.07%. A factor of 2 means that the order would be placed 2 times volatility% further from the mid-price >>> ",
+                  type_str="decimal",
+                  default=Decimal(1),
+                  prompt_on_new=True),
+
+    "max_volatility_spread":
+        ConfigVar(key="max_volatility_spread",
+                  prompt="What is the maximum spread of the first bid and ask after volatility adjustment (e.g. 0.2, max spread is 0.2%) >>> ",
+                  type_str="decimal",
+                  default=Decimal(2.0),
+                  prompt_on_new=True
+                  ),
+
+    #create a validate that promots this question when the volatility_adjustment is true
+    "volatility_buffer_size":
+        ConfigVar(key="volatility_buffer_size",
+                  prompt="Enter amount of ticks that will be stored to calculate volatility average >>> ",
+                  type_str="int",
+                  default=200
+                  ),
+
+    "volatility_processing_length":
+        ConfigVar(key="volatility_processing_length",
+                  prompt="Enter amount of periods to smooth the slow volatility indicator >>> ",
+                  type_str="int",
+                  default=15),
+
+    "inventory_management":
+        ConfigVar(key="inventory_management",
+                  prompt="Do you want to adjust your bid_ask spread on invenroy skew? True/False >>> ",
+                  type_str="bool",
+                  default=False,
+                  validator=validate_bool,
+                  prompt_on_new=True),
+
+    "inventory_management_multiplier":
+        ConfigVar(key="inventory_management_multiplier",
+                  prompt="What multiplier do you want to use to adjust bid/ask spread based on inventory skew? genarlly invenory skew ranges between -0.5 and 0.5 >>> ",
+                  type_str="decimal",
+                  default=Decimal(1.0),
+                  prompt_on_new=True
+                  ),
+
+    "max_inventory_management_spread":
+        ConfigVar(key="max_inventory_management_spread",
+                  prompt="What is the maximum spread of the first bid and ask after inventory management adjustment (e.g. 0.2, max spread is 0.2%) >>> ",
+                  type_str="decimal",
+                  default=Decimal(2.0),
+                  prompt_on_new=True
+                  ),
+
     "hanging_orders_enabled":
         ConfigVar(key="hanging_orders_enabled",
                   prompt="Do you want to enable hanging orders? (Yes/No) >>> ",
                   type_str="bool",
                   default=False,
                   validator=validate_bool),
+
     "hanging_orders_cancel_pct":
         ConfigVar(key="hanging_orders_cancel_pct",
                   prompt="At what spread percentage (from mid price) will hanging orders be canceled? "
@@ -322,12 +385,14 @@ pure_market_making_config_map = {
                   type_str="decimal",
                   default=Decimal("10"),
                   validator=lambda v: validate_decimal(v, 0, 100, inclusive=False)),
+
     "hanging_orders_enabled_other":
         ConfigVar(key="hanging_orders_enabled_other",
                   prompt="hanging_orders_enabled_other (Yes/No) >>> ",
                   type_str="bool",
                   default=False,
-                  validator=validate_bool),
+                  validator=validate_bool,
+                  prompt_on_new=True),
 
     "target_balance_spread_reducer_temp":
     ConfigVar(key="target_balance_spread_reducer_temp",
@@ -335,11 +400,7 @@ pure_market_making_config_map = {
               type_str="decimal",
               validator=lambda v: validate_decimal(v),
               prompt_on_new=True,
-              default=0),
-
-
-
-
+              default=0.9),
 
     "order_optimization_enabled":
         ConfigVar(key="order_optimization_enabled",
@@ -380,6 +441,26 @@ pure_market_making_config_map = {
                   default="current_market",
                   validator=validate_price_source,
                   on_validated=on_validate_price_source),
+
+    "conversion_data_source":
+        ConfigVar(key="conversion_data_source",
+                  prompt="conversion_data_source use (Yes/No) >>> ",
+                  type_str="bool",
+                  default=False,
+                  validator=validate_bool),
+
+    "conversion_exchange":
+        ConfigVar(key="conversion_exchange",
+                  prompt="Enter conversion_exchange exchange name >>> ",
+                  default = 'binance',
+                  type_str="str"),
+
+    "conversion_trading_pair":
+        ConfigVar(key="conversion_trading_pair",
+                  prompt="Enter conversion_trading_pair name >>> ",
+                  required_if=lambda: pure_market_making_config_map.get(
+                      "price_source").value == "external_market",
+                  type_str="str"),
 
     "micro_price_price_source":
         ConfigVar(key="micro_price_price_source",
@@ -509,7 +590,7 @@ pure_market_making_config_map = {
               type_str="decimal",
               validator=lambda v: validate_decimal(v),
               prompt_on_new=True,
-              default=0),
+              default=0.9),
 
     "use_micro_price":
     ConfigVar(key="use_micro_price",
@@ -524,7 +605,7 @@ pure_market_making_config_map = {
               type_str="decimal",
               validator=lambda v: validate_decimal(v),
               prompt_on_new=True,
-              default=0.003),
+              default=0.0035),
 
     "micro_price_effect":
     ConfigVar(key="micro_price_effect",
@@ -548,7 +629,7 @@ pure_market_making_config_map = {
               type_str="float",
               validator=lambda v: validate_decimal(v),
               prompt_on_new=True,
-              default=30),
+              default=60),
 
     "ask_order_level_amounts":
         ConfigVar(key="ask_order_level_amounts",
@@ -561,4 +642,5 @@ pure_market_making_config_map = {
                       "split_order_levels_enabled").value,
                   type_str="str",
                   validator=validate_decimal_list),
+
 }

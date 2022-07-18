@@ -90,6 +90,23 @@ def start(self):
         target_balance_spread_reducer_temp = c_map.get(
             "target_balance_spread_reducer_temp").value
 
+        volatility_adjustment = c_map.get("volatility_adjustment").value
+        volatility_buffer_size = c_map.get("volatility_buffer_size").value
+        volatility_processing_length = c_map.get(
+            "volatility_processing_length").value
+        volatility_adjustment_multiplier = c_map.get(
+            "volatility_adjustment_multiplier").value
+        max_volatility_spread = c_map.get(
+            "max_volatility_spread").value / Decimal('100')
+        max_inventory_management_spread = c_map.get(
+            "max_inventory_management_spread").value / Decimal('100')
+        inventory_management = c_map.get("inventory_management").value
+        inventory_management_multiplier = c_map.get(
+            "inventory_management_multiplier").value
+        conversion_data_source = c_map.get("conversion_data_source").value
+        conversion_exchange = c_map.get("conversion_exchange").value
+        conversion_trading_pair = c_map.get("conversion_trading_pair").value
+
         moving_price_band = MovingPriceBand(
             enabled=c_map.get("moving_price_band_enabled").value,
             price_floor_pct=c_map.get("price_floor_pct").value,
@@ -113,17 +130,48 @@ def start(self):
             order_override = {
                 f'split_level_{i}': order for i, order in enumerate(both_list)
             }
+
         trading_pair: str = raw_trading_pair
         maker_assets: Tuple[str, str] = self._initialize_market_assets(exchange, [
                                                                        trading_pair])[0]
-        market_names: List[Tuple[str, List[str]]] = [
-            (exchange, [trading_pair])]
-        self._initialize_markets(market_names)
-        maker_data = [self.markets[exchange],
-                      trading_pair] + list(maker_assets)
-        maker_trading_pair_tuple = [MarketTradingPairTuple(*maker_data)]
-        self.market_trading_pair_tuples = [MarketTradingPairTuple(*maker_data)]
-        second_trading_pair_tuple = None
+
+        if conversion_data_source:
+            conversion_assets: Tuple[str, str] = self._initialize_market_assets(
+                conversion_exchange, [conversion_trading_pair])[0]
+
+            market_names: List[Tuple[str, List[str]]] = [
+                (exchange, [trading_pair]),
+                (conversion_exchange, [conversion_trading_pair]),
+            ]
+
+            self._initialize_markets(market_names)
+
+            maker_data = [self.markets[exchange],
+                          trading_pair] + list(maker_assets)
+            maker_market_trading_pair_tuple = [
+                MarketTradingPairTuple(*maker_data)]
+
+            conversion_market_data = [
+                self.markets[conversion_exchange], conversion_trading_pair] + list(conversion_assets)
+            conversion_market_trading_pair_tuple = MarketTradingPairTuple(
+                *conversion_market_data)
+
+            self.market_trading_pair_tuples = [
+                conversion_market_trading_pair_tuple, maker_market_trading_pair_tuple]
+
+        else:
+            trading_pair: str = raw_trading_pair
+            maker_assets: Tuple[str, str] = self._initialize_market_assets(exchange, [
+                                                                           trading_pair])[0]
+            market_names: List[Tuple[str, List[str]]] = [
+                (exchange, [trading_pair])]
+            self._initialize_markets(market_names)
+            maker_data = [self.markets[exchange],
+                          trading_pair] + list(maker_assets)
+            self.market_trading_pair_tuples = [
+                MarketTradingPairTuple(*maker_data)]
+
+            conversion_market_trading_pair_tuple = None
 
         asset_price_delegate = None
         if price_source == "external_market":
@@ -133,17 +181,6 @@ def start(self):
             self.markets[price_source_exchange]: ExchangeBase = ext_market
             asset_price_delegate = OrderBookAssetPriceDelegate(
                 ext_market, asset_trading_pair)
-            if micro_price_price_source:
-                second_trading_pair: str = price_source_market
-                second_assets: Tuple[str, str] = self._initialize_market_assets(
-                    price_source_exchange, [second_trading_pair])[0]
-                second_names: List[Tuple[str, List[str]]] = [
-                    (price_source_exchange, [second_trading_pair])]
-                self._initialize_markets(second_names)
-                second_data = [self.markets[price_source_exchange],
-                               second_trading_pair] + list(second_assets)
-                second_trading_pair_tuple = [
-                    MarketTradingPairTuple(*second_data)]
 
         elif price_source == "custom_api":
             ext_market = create_paper_trade_market(
@@ -164,7 +201,7 @@ def start(self):
         self.strategy = PureMarketMakingStrategy()
         self.strategy.init_params(
             market_info=MarketTradingPairTuple(*maker_data),
-            second_market=second_trading_pair_tuple,
+            conversion_market=conversion_market_trading_pair_tuple,
             bid_spread=bid_spread,
             ask_spread=ask_spread,
             order_levels=order_levels,
@@ -210,7 +247,17 @@ def start(self):
             filled_order_delay_target_balance=filled_order_delay_target_balance,
             hanging_orders_enabled_other=hanging_orders_enabled_other,
             target_balance_spread_reducer_temp=target_balance_spread_reducer_temp,
-            moving_price_band=moving_price_band
+            moving_price_band=moving_price_band,
+
+            volatility_adjustment=volatility_adjustment,
+            volatility_buffer_size=volatility_buffer_size,
+            volatility_processing_length=volatility_processing_length,
+            volatility_adjustment_multiplier=volatility_adjustment_multiplier,
+            max_volatility_spread=max_volatility_spread,
+            max_inventory_management_spread=max_inventory_management_spread,
+            inventory_management=inventory_management,
+            inventory_management_multiplier=inventory_management_multiplier,
+            conversion_data_source=conversion_data_source
         )
     except Exception as e:
         self.notify(str(e))

@@ -1559,7 +1559,7 @@ struct __pyx_memoryviewslice_obj {
 
 
 
-/* "hummingbot/strategy/__utils__/ring_buffer.pyx":8
+/* "hummingbot/strategy/__utils__/ring_buffer.pyx":9
  * pmm_logger = None
  * 
  * cdef class RingBuffer:             # <<<<<<<<<<<<<<
@@ -1574,6 +1574,7 @@ struct __pyx_vtabstruct_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuff
   int (*c_is_full)(struct __pyx_obj_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *);
   int (*c_is_empty)(struct __pyx_obj_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *);
   double (*c_mean_value)(struct __pyx_obj_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *);
+  double (*c_median_value)(struct __pyx_obj_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *);
   double (*c_variance)(struct __pyx_obj_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *);
   double (*c_std_dev)(struct __pyx_obj_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *);
   PyArrayObject *(*c_get_as_numpy_array)(struct __pyx_obj_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *);
@@ -2591,6 +2592,7 @@ static int __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_
 static double __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_c_get_last_value(struct __pyx_obj_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *__pyx_v_self); /* proto*/
 static int __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_c_is_full(struct __pyx_obj_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *__pyx_v_self); /* proto*/
 static double __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_c_mean_value(struct __pyx_obj_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *__pyx_v_self); /* proto*/
+static double __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_c_median_value(struct __pyx_obj_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *__pyx_v_self); /* proto*/
 static double __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_c_variance(struct __pyx_obj_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *__pyx_v_self); /* proto*/
 static double __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_c_std_dev(struct __pyx_obj_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *__pyx_v_self); /* proto*/
 static PyArrayObject *__pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_c_get_as_numpy_array(struct __pyx_obj_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *__pyx_v_self); /* proto*/
@@ -2781,6 +2783,7 @@ static const char __pyx_k_dtype[] = "dtype";
 static const char __pyx_k_error[] = "error";
 static const char __pyx_k_flags[] = "flags";
 static const char __pyx_k_int16[] = "int16";
+static const char __pyx_k_isnan[] = "isnan";
 static const char __pyx_k_numpy[] = "numpy";
 static const char __pyx_k_range[] = "range";
 static const char __pyx_k_shape[] = "shape";
@@ -2794,13 +2797,16 @@ static const char __pyx_k_format[] = "format";
 static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_length[] = "length";
 static const char __pyx_k_logger[] = "logger";
+static const char __pyx_k_median[] = "median";
 static const char __pyx_k_name_2[] = "name";
 static const char __pyx_k_pickle[] = "pickle";
 static const char __pyx_k_reduce[] = "__reduce__";
 static const char __pyx_k_struct[] = "struct";
 static const char __pyx_k_unpack[] = "unpack";
 static const char __pyx_k_update[] = "update";
+static const char __pyx_k_Decimal[] = "Decimal";
 static const char __pyx_k_asarray[] = "asarray";
+static const char __pyx_k_decimal[] = "decimal";
 static const char __pyx_k_disable[] = "disable";
 static const char __pyx_k_float64[] = "float64";
 static const char __pyx_k_fortran[] = "fortran";
@@ -2894,6 +2900,7 @@ static PyObject *__pyx_kp_s_Cannot_assign_to_read_only_memor;
 static PyObject *__pyx_kp_s_Cannot_create_writable_memory_vi;
 static PyObject *__pyx_kp_u_Cannot_index_with_type;
 static PyObject *__pyx_kp_s_Cannot_transpose_memoryview_with;
+static PyObject *__pyx_n_s_Decimal;
 static PyObject *__pyx_kp_s_Dimension_d_is_not_direct;
 static PyObject *__pyx_n_s_Ellipsis;
 static PyObject *__pyx_kp_s_Empty_shape_tuple_for_cython_arr;
@@ -2943,6 +2950,7 @@ static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_cls;
 static PyObject *__pyx_kp_s_contiguous_and_direct;
 static PyObject *__pyx_kp_s_contiguous_and_indirect;
+static PyObject *__pyx_n_s_decimal;
 static PyObject *__pyx_n_s_dict;
 static PyObject *__pyx_kp_u_disable;
 static PyObject *__pyx_n_s_double;
@@ -2972,6 +2980,7 @@ static PyObject *__pyx_n_s_initializing;
 static PyObject *__pyx_n_s_int16;
 static PyObject *__pyx_n_s_is_coroutine;
 static PyObject *__pyx_kp_u_isenabled;
+static PyObject *__pyx_n_s_isnan;
 static PyObject *__pyx_n_s_itemsize;
 static PyObject *__pyx_kp_s_itemsize_0_for_cython_array;
 static PyObject *__pyx_n_s_length;
@@ -2979,6 +2988,7 @@ static PyObject *__pyx_n_s_logger;
 static PyObject *__pyx_n_s_logging;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_mean;
+static PyObject *__pyx_n_s_median;
 static PyObject *__pyx_n_s_memview;
 static PyObject *__pyx_n_s_mode;
 static PyObject *__pyx_n_s_name;
@@ -3041,6 +3051,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10Ring
 static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_12get_last_value(struct __pyx_obj_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_7is_full___get__(struct __pyx_obj_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_10mean_value___get__(struct __pyx_obj_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_12median_value___get__(struct __pyx_obj_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_7std_dev___get__(struct __pyx_obj_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_8variance___get__(struct __pyx_obj_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_14__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *__pyx_v_self); /* proto */
@@ -3174,6 +3185,7 @@ typedef struct {
   PyObject *__pyx_kp_s_Cannot_create_writable_memory_vi;
   PyObject *__pyx_kp_u_Cannot_index_with_type;
   PyObject *__pyx_kp_s_Cannot_transpose_memoryview_with;
+  PyObject *__pyx_n_s_Decimal;
   PyObject *__pyx_kp_s_Dimension_d_is_not_direct;
   PyObject *__pyx_n_s_Ellipsis;
   PyObject *__pyx_kp_s_Empty_shape_tuple_for_cython_arr;
@@ -3223,6 +3235,7 @@ typedef struct {
   PyObject *__pyx_n_s_cls;
   PyObject *__pyx_kp_s_contiguous_and_direct;
   PyObject *__pyx_kp_s_contiguous_and_indirect;
+  PyObject *__pyx_n_s_decimal;
   PyObject *__pyx_n_s_dict;
   PyObject *__pyx_kp_u_disable;
   PyObject *__pyx_n_s_double;
@@ -3252,6 +3265,7 @@ typedef struct {
   PyObject *__pyx_n_s_int16;
   PyObject *__pyx_n_s_is_coroutine;
   PyObject *__pyx_kp_u_isenabled;
+  PyObject *__pyx_n_s_isnan;
   PyObject *__pyx_n_s_itemsize;
   PyObject *__pyx_kp_s_itemsize_0_for_cython_array;
   PyObject *__pyx_n_s_length;
@@ -3259,6 +3273,7 @@ typedef struct {
   PyObject *__pyx_n_s_logging;
   PyObject *__pyx_n_s_main;
   PyObject *__pyx_n_s_mean;
+  PyObject *__pyx_n_s_median;
   PyObject *__pyx_n_s_memview;
   PyObject *__pyx_n_s_mode;
   PyObject *__pyx_n_s_name;
@@ -3406,6 +3421,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_kp_s_Cannot_create_writable_memory_vi);
   Py_CLEAR(clear_module_state->__pyx_kp_u_Cannot_index_with_type);
   Py_CLEAR(clear_module_state->__pyx_kp_s_Cannot_transpose_memoryview_with);
+  Py_CLEAR(clear_module_state->__pyx_n_s_Decimal);
   Py_CLEAR(clear_module_state->__pyx_kp_s_Dimension_d_is_not_direct);
   Py_CLEAR(clear_module_state->__pyx_n_s_Ellipsis);
   Py_CLEAR(clear_module_state->__pyx_kp_s_Empty_shape_tuple_for_cython_arr);
@@ -3455,6 +3471,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_cls);
   Py_CLEAR(clear_module_state->__pyx_kp_s_contiguous_and_direct);
   Py_CLEAR(clear_module_state->__pyx_kp_s_contiguous_and_indirect);
+  Py_CLEAR(clear_module_state->__pyx_n_s_decimal);
   Py_CLEAR(clear_module_state->__pyx_n_s_dict);
   Py_CLEAR(clear_module_state->__pyx_kp_u_disable);
   Py_CLEAR(clear_module_state->__pyx_n_s_double);
@@ -3484,6 +3501,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_int16);
   Py_CLEAR(clear_module_state->__pyx_n_s_is_coroutine);
   Py_CLEAR(clear_module_state->__pyx_kp_u_isenabled);
+  Py_CLEAR(clear_module_state->__pyx_n_s_isnan);
   Py_CLEAR(clear_module_state->__pyx_n_s_itemsize);
   Py_CLEAR(clear_module_state->__pyx_kp_s_itemsize_0_for_cython_array);
   Py_CLEAR(clear_module_state->__pyx_n_s_length);
@@ -3491,6 +3509,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_logging);
   Py_CLEAR(clear_module_state->__pyx_n_s_main);
   Py_CLEAR(clear_module_state->__pyx_n_s_mean);
+  Py_CLEAR(clear_module_state->__pyx_n_s_median);
   Py_CLEAR(clear_module_state->__pyx_n_s_memview);
   Py_CLEAR(clear_module_state->__pyx_n_s_mode);
   Py_CLEAR(clear_module_state->__pyx_n_s_name);
@@ -3625,6 +3644,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_kp_s_Cannot_create_writable_memory_vi);
   Py_VISIT(traverse_module_state->__pyx_kp_u_Cannot_index_with_type);
   Py_VISIT(traverse_module_state->__pyx_kp_s_Cannot_transpose_memoryview_with);
+  Py_VISIT(traverse_module_state->__pyx_n_s_Decimal);
   Py_VISIT(traverse_module_state->__pyx_kp_s_Dimension_d_is_not_direct);
   Py_VISIT(traverse_module_state->__pyx_n_s_Ellipsis);
   Py_VISIT(traverse_module_state->__pyx_kp_s_Empty_shape_tuple_for_cython_arr);
@@ -3674,6 +3694,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_cls);
   Py_VISIT(traverse_module_state->__pyx_kp_s_contiguous_and_direct);
   Py_VISIT(traverse_module_state->__pyx_kp_s_contiguous_and_indirect);
+  Py_VISIT(traverse_module_state->__pyx_n_s_decimal);
   Py_VISIT(traverse_module_state->__pyx_n_s_dict);
   Py_VISIT(traverse_module_state->__pyx_kp_u_disable);
   Py_VISIT(traverse_module_state->__pyx_n_s_double);
@@ -3703,6 +3724,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_int16);
   Py_VISIT(traverse_module_state->__pyx_n_s_is_coroutine);
   Py_VISIT(traverse_module_state->__pyx_kp_u_isenabled);
+  Py_VISIT(traverse_module_state->__pyx_n_s_isnan);
   Py_VISIT(traverse_module_state->__pyx_n_s_itemsize);
   Py_VISIT(traverse_module_state->__pyx_kp_s_itemsize_0_for_cython_array);
   Py_VISIT(traverse_module_state->__pyx_n_s_length);
@@ -3710,6 +3732,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_logging);
   Py_VISIT(traverse_module_state->__pyx_n_s_main);
   Py_VISIT(traverse_module_state->__pyx_n_s_mean);
+  Py_VISIT(traverse_module_state->__pyx_n_s_median);
   Py_VISIT(traverse_module_state->__pyx_n_s_memview);
   Py_VISIT(traverse_module_state->__pyx_n_s_mode);
   Py_VISIT(traverse_module_state->__pyx_n_s_name);
@@ -3841,6 +3864,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_kp_s_Cannot_create_writable_memory_vi __pyx_mstate_global->__pyx_kp_s_Cannot_create_writable_memory_vi
 #define __pyx_kp_u_Cannot_index_with_type __pyx_mstate_global->__pyx_kp_u_Cannot_index_with_type
 #define __pyx_kp_s_Cannot_transpose_memoryview_with __pyx_mstate_global->__pyx_kp_s_Cannot_transpose_memoryview_with
+#define __pyx_n_s_Decimal __pyx_mstate_global->__pyx_n_s_Decimal
 #define __pyx_kp_s_Dimension_d_is_not_direct __pyx_mstate_global->__pyx_kp_s_Dimension_d_is_not_direct
 #define __pyx_n_s_Ellipsis __pyx_mstate_global->__pyx_n_s_Ellipsis
 #define __pyx_kp_s_Empty_shape_tuple_for_cython_arr __pyx_mstate_global->__pyx_kp_s_Empty_shape_tuple_for_cython_arr
@@ -3890,6 +3914,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_cls __pyx_mstate_global->__pyx_n_s_cls
 #define __pyx_kp_s_contiguous_and_direct __pyx_mstate_global->__pyx_kp_s_contiguous_and_direct
 #define __pyx_kp_s_contiguous_and_indirect __pyx_mstate_global->__pyx_kp_s_contiguous_and_indirect
+#define __pyx_n_s_decimal __pyx_mstate_global->__pyx_n_s_decimal
 #define __pyx_n_s_dict __pyx_mstate_global->__pyx_n_s_dict
 #define __pyx_kp_u_disable __pyx_mstate_global->__pyx_kp_u_disable
 #define __pyx_n_s_double __pyx_mstate_global->__pyx_n_s_double
@@ -3919,6 +3944,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_int16 __pyx_mstate_global->__pyx_n_s_int16
 #define __pyx_n_s_is_coroutine __pyx_mstate_global->__pyx_n_s_is_coroutine
 #define __pyx_kp_u_isenabled __pyx_mstate_global->__pyx_kp_u_isenabled
+#define __pyx_n_s_isnan __pyx_mstate_global->__pyx_n_s_isnan
 #define __pyx_n_s_itemsize __pyx_mstate_global->__pyx_n_s_itemsize
 #define __pyx_kp_s_itemsize_0_for_cython_array __pyx_mstate_global->__pyx_kp_s_itemsize_0_for_cython_array
 #define __pyx_n_s_length __pyx_mstate_global->__pyx_n_s_length
@@ -3926,6 +3952,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_logging __pyx_mstate_global->__pyx_n_s_logging
 #define __pyx_n_s_main __pyx_mstate_global->__pyx_n_s_main
 #define __pyx_n_s_mean __pyx_mstate_global->__pyx_n_s_mean
+#define __pyx_n_s_median __pyx_mstate_global->__pyx_n_s_median
 #define __pyx_n_s_memview __pyx_mstate_global->__pyx_n_s_memview
 #define __pyx_n_s_mode __pyx_mstate_global->__pyx_n_s_mode
 #define __pyx_n_s_name __pyx_mstate_global->__pyx_n_s_name
@@ -4008,7 +4035,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #endif
 /* #### Code section: module_code ### */
 
-/* "hummingbot/strategy/__utils__/ring_buffer.pyx":9
+/* "hummingbot/strategy/__utils__/ring_buffer.pyx":10
  * 
  * cdef class RingBuffer:
  *     @classmethod             # <<<<<<<<<<<<<<
@@ -4064,33 +4091,33 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10Ring
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("logger", 0);
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":12
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":13
  *     def logger(cls):
  *         global pmm_logger
  *         if pmm_logger is None:             # <<<<<<<<<<<<<<
  *             pmm_logger = logging.getLogger(__name__)
  *         return pmm_logger
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_pmm_logger); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 12, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_pmm_logger); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 13, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = (__pyx_t_1 == Py_None);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_3 = (__pyx_t_2 != 0);
   if (__pyx_t_3) {
 
-    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":13
+    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":14
  *         global pmm_logger
  *         if pmm_logger is None:
  *             pmm_logger = logging.getLogger(__name__)             # <<<<<<<<<<<<<<
  *         return pmm_logger
  * 
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_logging); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 13, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_logging); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 14, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_getLogger); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 13, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_getLogger); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 14, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 13, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 14, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_6 = NULL;
     __pyx_t_7 = 0;
@@ -4109,14 +4136,14 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10Ring
       __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_5, __pyx_callargs+1-__pyx_t_7, 1+__pyx_t_7);
       __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 13, __pyx_L1_error)
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 14, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     }
-    if (PyDict_SetItem(__pyx_d, __pyx_n_s_pmm_logger, __pyx_t_1) < 0) __PYX_ERR(1, 13, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_d, __pyx_n_s_pmm_logger, __pyx_t_1) < 0) __PYX_ERR(1, 14, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":12
+    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":13
  *     def logger(cls):
  *         global pmm_logger
  *         if pmm_logger is None:             # <<<<<<<<<<<<<<
@@ -4125,7 +4152,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10Ring
  */
   }
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":14
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":15
  *         if pmm_logger is None:
  *             pmm_logger = logging.getLogger(__name__)
  *         return pmm_logger             # <<<<<<<<<<<<<<
@@ -4133,13 +4160,13 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10Ring
  *     def __cinit__(self, int length):
  */
   __Pyx_XDECREF(__pyx_r);
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_pmm_logger); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 14, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_pmm_logger); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 15, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":9
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":10
  * 
  * cdef class RingBuffer:
  *     @classmethod             # <<<<<<<<<<<<<<
@@ -4161,7 +4188,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10Ring
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/__utils__/ring_buffer.pyx":16
+/* "hummingbot/strategy/__utils__/ring_buffer.pyx":17
  *         return pmm_logger
  * 
  *     def __cinit__(self, int length):             # <<<<<<<<<<<<<<
@@ -4200,23 +4227,23 @@ static int __pyx_pw_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer
       switch (__pyx_nargs) {
         case  0:
         if (likely((values[0] = __Pyx_GetKwValue_VARARGS(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_length)) != 0)) kw_args--;
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 16, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 17, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__cinit__") < 0)) __PYX_ERR(1, 16, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__cinit__") < 0)) __PYX_ERR(1, 17, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = __Pyx_Arg_VARARGS(__pyx_args, 0);
     }
-    __pyx_v_length = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_length == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 16, __pyx_L3_error)
+    __pyx_v_length = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_length == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 17, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 1, 1, __pyx_nargs); __PYX_ERR(1, 16, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 1, 1, __pyx_nargs); __PYX_ERR(1, 17, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("hummingbot.strategy.__utils__.ring_buffer.RingBuffer.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -4243,7 +4270,7 @@ static int __pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":17
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":18
  * 
  *     def __cinit__(self, int length):
  *         self._length = length             # <<<<<<<<<<<<<<
@@ -4252,47 +4279,47 @@ static int __pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer
  */
   __pyx_v_self->_length = __pyx_v_length;
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":18
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":19
  *     def __cinit__(self, int length):
  *         self._length = length
  *         self._buffer = np.zeros(length, dtype=np.float64)             # <<<<<<<<<<<<<<
  *         self._delimiter = 0
  *         self._is_full = False
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 18, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 18, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_length); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 18, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_length); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 18, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 18, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 18, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_float64); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 18, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_float64); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_5) < 0) __PYX_ERR(1, 18, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_5) < 0) __PYX_ERR(1, 19, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 18, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_5numpy_float64_t(__pyx_t_5, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(1, 18, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_5numpy_float64_t(__pyx_t_5, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(1, 19, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __PYX_XCLEAR_MEMVIEW(&__pyx_v_self->_buffer, 0);
   __pyx_v_self->_buffer = __pyx_t_6;
   __pyx_t_6.memview = NULL;
   __pyx_t_6.data = NULL;
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":19
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":20
  *         self._length = length
  *         self._buffer = np.zeros(length, dtype=np.float64)
  *         self._delimiter = 0             # <<<<<<<<<<<<<<
@@ -4301,7 +4328,7 @@ static int __pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer
  */
   __pyx_v_self->_delimiter = 0;
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":20
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":21
  *         self._buffer = np.zeros(length, dtype=np.float64)
  *         self._delimiter = 0
  *         self._is_full = False             # <<<<<<<<<<<<<<
@@ -4310,7 +4337,7 @@ static int __pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer
  */
   __pyx_v_self->_is_full = 0;
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":16
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":17
  *         return pmm_logger
  * 
  *     def __cinit__(self, int length):             # <<<<<<<<<<<<<<
@@ -4335,7 +4362,7 @@ static int __pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/__utils__/ring_buffer.pyx":22
+/* "hummingbot/strategy/__utils__/ring_buffer.pyx":23
  *         self._is_full = False
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -4363,20 +4390,20 @@ static void __pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffe
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__dealloc__", 0);
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":23
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":24
  * 
  *     def __dealloc__(self):
  *         self._buffer = None             # <<<<<<<<<<<<<<
  * 
  *     cdef void c_add_value(self, float val):
  */
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_5numpy_float64_t(Py_None, PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(1, 23, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_5numpy_float64_t(Py_None, PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(1, 24, __pyx_L1_error)
   __PYX_XCLEAR_MEMVIEW(&__pyx_v_self->_buffer, 0);
   __pyx_v_self->_buffer = __pyx_t_1;
   __pyx_t_1.memview = NULL;
   __pyx_t_1.data = NULL;
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":22
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":23
  *         self._is_full = False
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -4393,7 +4420,7 @@ static void __pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffe
   __Pyx_RefNannyFinishContext();
 }
 
-/* "hummingbot/strategy/__utils__/ring_buffer.pyx":25
+/* "hummingbot/strategy/__utils__/ring_buffer.pyx":26
  *         self._buffer = None
  * 
  *     cdef void c_add_value(self, float val):             # <<<<<<<<<<<<<<
@@ -4410,14 +4437,14 @@ static void __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("c_add_value", 0);
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":26
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":27
  * 
  *     cdef void c_add_value(self, float val):
  *         self._buffer[self._delimiter] = val             # <<<<<<<<<<<<<<
  *         self.c_increment_delimiter()
  * 
  */
-  if (unlikely(!__pyx_v_self->_buffer.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(1, 26, __pyx_L1_error)}
+  if (unlikely(!__pyx_v_self->_buffer.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(1, 27, __pyx_L1_error)}
   __pyx_t_1 = __pyx_v_self->_delimiter;
   __pyx_t_2 = -1;
   if (__pyx_t_1 < 0) {
@@ -4426,11 +4453,11 @@ static void __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer
   } else if (unlikely(__pyx_t_1 >= __pyx_v_self->_buffer.shape[0])) __pyx_t_2 = 0;
   if (unlikely(__pyx_t_2 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_2);
-    __PYX_ERR(1, 26, __pyx_L1_error)
+    __PYX_ERR(1, 27, __pyx_L1_error)
   }
   *((__pyx_t_5numpy_float64_t *) ( /* dim=0 */ (__pyx_v_self->_buffer.data + __pyx_t_1 * __pyx_v_self->_buffer.strides[0]) )) = __pyx_v_val;
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":27
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":28
  *     cdef void c_add_value(self, float val):
  *         self._buffer[self._delimiter] = val
  *         self.c_increment_delimiter()             # <<<<<<<<<<<<<<
@@ -4439,7 +4466,7 @@ static void __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer
  */
   ((struct __pyx_vtabstruct_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *)__pyx_v_self->__pyx_vtab)->c_increment_delimiter(__pyx_v_self);
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":25
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":26
  *         self._buffer = None
  * 
  *     cdef void c_add_value(self, float val):             # <<<<<<<<<<<<<<
@@ -4455,7 +4482,7 @@ static void __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer
   __Pyx_RefNannyFinishContext();
 }
 
-/* "hummingbot/strategy/__utils__/ring_buffer.pyx":29
+/* "hummingbot/strategy/__utils__/ring_buffer.pyx":30
  *         self.c_increment_delimiter()
  * 
  *     cdef void c_increment_delimiter(self):             # <<<<<<<<<<<<<<
@@ -4473,7 +4500,7 @@ static void __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("c_increment_delimiter", 0);
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":30
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":31
  * 
  *     cdef void c_increment_delimiter(self):
  *         self._delimiter = (self._delimiter + 1) % self._length             # <<<<<<<<<<<<<<
@@ -4483,11 +4510,11 @@ static void __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer
   __pyx_t_1 = (__pyx_v_self->_delimiter + 1);
   if (unlikely(__pyx_v_self->_length == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "integer division or modulo by zero");
-    __PYX_ERR(1, 30, __pyx_L1_error)
+    __PYX_ERR(1, 31, __pyx_L1_error)
   }
   __pyx_v_self->_delimiter = __Pyx_mod_int64_t(__pyx_t_1, __pyx_v_self->_length);
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":31
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":32
  *     cdef void c_increment_delimiter(self):
  *         self._delimiter = (self._delimiter + 1) % self._length
  *         if not self._is_full and self._delimiter == 0:             # <<<<<<<<<<<<<<
@@ -4505,7 +4532,7 @@ static void __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer
   __pyx_L4_bool_binop_done:;
   if (__pyx_t_2) {
 
-    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":32
+    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":33
  *         self._delimiter = (self._delimiter + 1) % self._length
  *         if not self._is_full and self._delimiter == 0:
  *             self._is_full = True             # <<<<<<<<<<<<<<
@@ -4514,7 +4541,7 @@ static void __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer
  */
     __pyx_v_self->_is_full = 1;
 
-    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":31
+    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":32
  *     cdef void c_increment_delimiter(self):
  *         self._delimiter = (self._delimiter + 1) % self._length
  *         if not self._is_full and self._delimiter == 0:             # <<<<<<<<<<<<<<
@@ -4523,7 +4550,7 @@ static void __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer
  */
   }
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":29
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":30
  *         self.c_increment_delimiter()
  * 
  *     cdef void c_increment_delimiter(self):             # <<<<<<<<<<<<<<
@@ -4539,7 +4566,7 @@ static void __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer
   __Pyx_RefNannyFinishContext();
 }
 
-/* "hummingbot/strategy/__utils__/ring_buffer.pyx":34
+/* "hummingbot/strategy/__utils__/ring_buffer.pyx":35
  *             self._is_full = True
  * 
  *     cdef bint c_is_empty(self):             # <<<<<<<<<<<<<<
@@ -4554,7 +4581,7 @@ static int __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_
   int __pyx_t_2;
   __Pyx_RefNannySetupContext("c_is_empty", 0);
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":35
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":36
  * 
  *     cdef bint c_is_empty(self):
  *         return (not self._is_full) and (0==self._delimiter)             # <<<<<<<<<<<<<<
@@ -4573,7 +4600,7 @@ static int __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_
   __pyx_r = __pyx_t_1;
   goto __pyx_L0;
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":34
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":35
  *             self._is_full = True
  * 
  *     cdef bint c_is_empty(self):             # <<<<<<<<<<<<<<
@@ -4587,7 +4614,7 @@ static int __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/__utils__/ring_buffer.pyx":37
+/* "hummingbot/strategy/__utils__/ring_buffer.pyx":38
  *         return (not self._is_full) and (0==self._delimiter)
  * 
  *     cdef double c_get_last_value(self):             # <<<<<<<<<<<<<<
@@ -4609,7 +4636,7 @@ static double __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuff
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("c_get_last_value", 0);
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":38
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":39
  * 
  *     cdef double c_get_last_value(self):
  *         if self.c_is_empty():             # <<<<<<<<<<<<<<
@@ -4619,24 +4646,24 @@ static double __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuff
   __pyx_t_1 = (((struct __pyx_vtabstruct_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *)__pyx_v_self->__pyx_vtab)->c_is_empty(__pyx_v_self) != 0);
   if (__pyx_t_1) {
 
-    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":39
+    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":40
  *     cdef double c_get_last_value(self):
  *         if self.c_is_empty():
  *             return np.nan             # <<<<<<<<<<<<<<
  *         return self._buffer[self._delimiter-1]
  * 
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 39, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 40, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_nan); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 39, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_nan); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 40, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_4 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_4 == (double)-1) && PyErr_Occurred())) __PYX_ERR(1, 39, __pyx_L1_error)
+    __pyx_t_4 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_4 == (double)-1) && PyErr_Occurred())) __PYX_ERR(1, 40, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_r = __pyx_t_4;
     goto __pyx_L0;
 
-    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":38
+    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":39
  * 
  *     cdef double c_get_last_value(self):
  *         if self.c_is_empty():             # <<<<<<<<<<<<<<
@@ -4645,14 +4672,14 @@ static double __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuff
  */
   }
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":40
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":41
  *         if self.c_is_empty():
  *             return np.nan
  *         return self._buffer[self._delimiter-1]             # <<<<<<<<<<<<<<
  * 
  *     cdef bint c_is_full(self):
  */
-  if (unlikely(!__pyx_v_self->_buffer.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(1, 40, __pyx_L1_error)}
+  if (unlikely(!__pyx_v_self->_buffer.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(1, 41, __pyx_L1_error)}
   __pyx_t_5 = (__pyx_v_self->_delimiter - 1);
   __pyx_t_6 = -1;
   if (__pyx_t_5 < 0) {
@@ -4661,12 +4688,12 @@ static double __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuff
   } else if (unlikely(__pyx_t_5 >= __pyx_v_self->_buffer.shape[0])) __pyx_t_6 = 0;
   if (unlikely(__pyx_t_6 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_6);
-    __PYX_ERR(1, 40, __pyx_L1_error)
+    __PYX_ERR(1, 41, __pyx_L1_error)
   }
   __pyx_r = (*((__pyx_t_5numpy_float64_t *) ( /* dim=0 */ (__pyx_v_self->_buffer.data + __pyx_t_5 * __pyx_v_self->_buffer.strides[0]) )));
   goto __pyx_L0;
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":37
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":38
  *         return (not self._is_full) and (0==self._delimiter)
  * 
  *     cdef double c_get_last_value(self):             # <<<<<<<<<<<<<<
@@ -4685,7 +4712,7 @@ static double __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuff
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/__utils__/ring_buffer.pyx":42
+/* "hummingbot/strategy/__utils__/ring_buffer.pyx":43
  *         return self._buffer[self._delimiter-1]
  * 
  *     cdef bint c_is_full(self):             # <<<<<<<<<<<<<<
@@ -4698,7 +4725,7 @@ static int __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("c_is_full", 0);
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":43
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":44
  * 
  *     cdef bint c_is_full(self):
  *         return self._is_full             # <<<<<<<<<<<<<<
@@ -4708,7 +4735,7 @@ static int __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_
   __pyx_r = __pyx_v_self->_is_full;
   goto __pyx_L0;
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":42
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":43
  *         return self._buffer[self._delimiter-1]
  * 
  *     cdef bint c_is_full(self):             # <<<<<<<<<<<<<<
@@ -4722,7 +4749,7 @@ static int __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/__utils__/ring_buffer.pyx":45
+/* "hummingbot/strategy/__utils__/ring_buffer.pyx":46
  *         return self._is_full
  * 
  *     cdef double c_mean_value(self):             # <<<<<<<<<<<<<<
@@ -4746,44 +4773,44 @@ static double __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuff
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("c_mean_value", 0);
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":46
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":47
  * 
  *     cdef double c_mean_value(self):
  *         result = np.nan             # <<<<<<<<<<<<<<
  *         if self._is_full:
  *             result=np.mean(self.c_get_as_numpy_array())
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 46, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 47, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_nan); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 46, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_nan); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 47, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_result = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":47
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":48
  *     cdef double c_mean_value(self):
  *         result = np.nan
  *         if self._is_full:             # <<<<<<<<<<<<<<
  *             result=np.mean(self.c_get_as_numpy_array())
- *         return result
+ *         if np.isnan(result):
  */
   __pyx_t_3 = (__pyx_v_self->_is_full != 0);
   if (__pyx_t_3) {
 
-    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":48
+    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":49
  *         result = np.nan
  *         if self._is_full:
  *             result=np.mean(self.c_get_as_numpy_array())             # <<<<<<<<<<<<<<
- *         return result
- * 
+ *         if np.isnan(result):
+ *           result=Decimal(0)
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 48, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 49, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_mean); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 48, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_mean); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 49, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *)__pyx_v_self->__pyx_vtab)->c_get_as_numpy_array(__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 48, __pyx_L1_error)
+    __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *)__pyx_v_self->__pyx_vtab)->c_get_as_numpy_array(__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 49, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_t_5 = NULL;
     __pyx_t_6 = 0;
@@ -4802,34 +4829,124 @@ static double __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuff
       __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_4, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 48, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 49, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     }
     __Pyx_DECREF_SET(__pyx_v_result, __pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":47
+    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":48
  *     cdef double c_mean_value(self):
  *         result = np.nan
  *         if self._is_full:             # <<<<<<<<<<<<<<
  *             result=np.mean(self.c_get_as_numpy_array())
- *         return result
+ *         if np.isnan(result):
  */
   }
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":49
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":50
  *         if self._is_full:
  *             result=np.mean(self.c_get_as_numpy_array())
- *         return result             # <<<<<<<<<<<<<<
- * 
- *     cdef double c_variance(self):
+ *         if np.isnan(result):             # <<<<<<<<<<<<<<
+ *           result=Decimal(0)
+ *           return result
  */
-  __pyx_t_7 = __pyx_PyFloat_AsDouble(__pyx_v_result); if (unlikely((__pyx_t_7 == (double)-1) && PyErr_Occurred())) __PYX_ERR(1, 49, __pyx_L1_error)
-  __pyx_r = __pyx_t_7;
-  goto __pyx_L0;
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 50, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_isnan); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 50, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_4 = NULL;
+  __pyx_t_6 = 0;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_1);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_1, function);
+      __pyx_t_6 = 1;
+    }
+  }
+  {
+    PyObject *__pyx_callargs[2] = {__pyx_t_4, __pyx_v_result};
+    __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_1, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
+    __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 50, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  }
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_3 < 0))) __PYX_ERR(1, 50, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (__pyx_t_3) {
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":45
+    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":51
+ *             result=np.mean(self.c_get_as_numpy_array())
+ *         if np.isnan(result):
+ *           result=Decimal(0)             # <<<<<<<<<<<<<<
+ *           return result
+ *         else:
+ */
+    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_Decimal); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 51, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_4 = NULL;
+    __pyx_t_6 = 0;
+    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
+      __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_1);
+      if (likely(__pyx_t_4)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+        __Pyx_INCREF(__pyx_t_4);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_1, function);
+        __pyx_t_6 = 1;
+      }
+    }
+    {
+      PyObject *__pyx_callargs[2] = {__pyx_t_4, __pyx_int_0};
+      __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_1, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
+      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 51, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    }
+    __Pyx_DECREF_SET(__pyx_v_result, __pyx_t_2);
+    __pyx_t_2 = 0;
+
+    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":52
+ *         if np.isnan(result):
+ *           result=Decimal(0)
+ *           return result             # <<<<<<<<<<<<<<
+ *         else:
+ *           return result
+ */
+    __pyx_t_7 = __pyx_PyFloat_AsDouble(__pyx_v_result); if (unlikely((__pyx_t_7 == (double)-1) && PyErr_Occurred())) __PYX_ERR(1, 52, __pyx_L1_error)
+    __pyx_r = __pyx_t_7;
+    goto __pyx_L0;
+
+    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":50
+ *         if self._is_full:
+ *             result=np.mean(self.c_get_as_numpy_array())
+ *         if np.isnan(result):             # <<<<<<<<<<<<<<
+ *           result=Decimal(0)
+ *           return result
+ */
+  }
+
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":54
+ *           return result
+ *         else:
+ *           return result             # <<<<<<<<<<<<<<
+ * 
+ *     cdef double c_median_value(self):
+ */
+  /*else*/ {
+    __pyx_t_7 = __pyx_PyFloat_AsDouble(__pyx_v_result); if (unlikely((__pyx_t_7 == (double)-1) && PyErr_Occurred())) __PYX_ERR(1, 54, __pyx_L1_error)
+    __pyx_r = __pyx_t_7;
+    goto __pyx_L0;
+  }
+
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":46
  *         return self._is_full
  * 
  *     cdef double c_mean_value(self):             # <<<<<<<<<<<<<<
@@ -4851,8 +4968,227 @@ static double __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuff
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/__utils__/ring_buffer.pyx":51
- *         return result
+/* "hummingbot/strategy/__utils__/ring_buffer.pyx":56
+ *           return result
+ * 
+ *     cdef double c_median_value(self):             # <<<<<<<<<<<<<<
+ *         result = np.nan
+ *         if self._is_full:
+ */
+
+static double __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_c_median_value(struct __pyx_obj_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *__pyx_v_self) {
+  PyObject *__pyx_v_result = NULL;
+  double __pyx_r;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  int __pyx_t_3;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  int __pyx_t_6;
+  double __pyx_t_7;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("c_median_value", 0);
+
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":57
+ * 
+ *     cdef double c_median_value(self):
+ *         result = np.nan             # <<<<<<<<<<<<<<
+ *         if self._is_full:
+ *             result=np.median(self.c_get_as_numpy_array())
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 57, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_nan); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 57, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_v_result = __pyx_t_2;
+  __pyx_t_2 = 0;
+
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":58
+ *     cdef double c_median_value(self):
+ *         result = np.nan
+ *         if self._is_full:             # <<<<<<<<<<<<<<
+ *             result=np.median(self.c_get_as_numpy_array())
+ *         if np.isnan(result):
+ */
+  __pyx_t_3 = (__pyx_v_self->_is_full != 0);
+  if (__pyx_t_3) {
+
+    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":59
+ *         result = np.nan
+ *         if self._is_full:
+ *             result=np.median(self.c_get_as_numpy_array())             # <<<<<<<<<<<<<<
+ *         if np.isnan(result):
+ *           result=Decimal(0)
+ */
+    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 59, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_median); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 59, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *)__pyx_v_self->__pyx_vtab)->c_get_as_numpy_array(__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 59, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_5 = NULL;
+    __pyx_t_6 = 0;
+    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
+      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_4);
+      if (likely(__pyx_t_5)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
+        __Pyx_INCREF(__pyx_t_5);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_4, function);
+        __pyx_t_6 = 1;
+      }
+    }
+    {
+      PyObject *__pyx_callargs[2] = {__pyx_t_5, __pyx_t_1};
+      __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_4, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
+      __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 59, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    }
+    __Pyx_DECREF_SET(__pyx_v_result, __pyx_t_2);
+    __pyx_t_2 = 0;
+
+    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":58
+ *     cdef double c_median_value(self):
+ *         result = np.nan
+ *         if self._is_full:             # <<<<<<<<<<<<<<
+ *             result=np.median(self.c_get_as_numpy_array())
+ *         if np.isnan(result):
+ */
+  }
+
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":60
+ *         if self._is_full:
+ *             result=np.median(self.c_get_as_numpy_array())
+ *         if np.isnan(result):             # <<<<<<<<<<<<<<
+ *           result=Decimal(0)
+ *           return result
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 60, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_isnan); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 60, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_4 = NULL;
+  __pyx_t_6 = 0;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_1);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_1, function);
+      __pyx_t_6 = 1;
+    }
+  }
+  {
+    PyObject *__pyx_callargs[2] = {__pyx_t_4, __pyx_v_result};
+    __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_1, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
+    __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 60, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  }
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_3 < 0))) __PYX_ERR(1, 60, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (__pyx_t_3) {
+
+    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":61
+ *             result=np.median(self.c_get_as_numpy_array())
+ *         if np.isnan(result):
+ *           result=Decimal(0)             # <<<<<<<<<<<<<<
+ *           return result
+ *         else:
+ */
+    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_Decimal); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 61, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_4 = NULL;
+    __pyx_t_6 = 0;
+    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
+      __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_1);
+      if (likely(__pyx_t_4)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+        __Pyx_INCREF(__pyx_t_4);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_1, function);
+        __pyx_t_6 = 1;
+      }
+    }
+    {
+      PyObject *__pyx_callargs[2] = {__pyx_t_4, __pyx_int_0};
+      __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_1, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
+      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 61, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    }
+    __Pyx_DECREF_SET(__pyx_v_result, __pyx_t_2);
+    __pyx_t_2 = 0;
+
+    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":62
+ *         if np.isnan(result):
+ *           result=Decimal(0)
+ *           return result             # <<<<<<<<<<<<<<
+ *         else:
+ *           return result
+ */
+    __pyx_t_7 = __pyx_PyFloat_AsDouble(__pyx_v_result); if (unlikely((__pyx_t_7 == (double)-1) && PyErr_Occurred())) __PYX_ERR(1, 62, __pyx_L1_error)
+    __pyx_r = __pyx_t_7;
+    goto __pyx_L0;
+
+    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":60
+ *         if self._is_full:
+ *             result=np.median(self.c_get_as_numpy_array())
+ *         if np.isnan(result):             # <<<<<<<<<<<<<<
+ *           result=Decimal(0)
+ *           return result
+ */
+  }
+
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":64
+ *           return result
+ *         else:
+ *           return result             # <<<<<<<<<<<<<<
+ * 
+ *     cdef double c_variance(self):
+ */
+  /*else*/ {
+    __pyx_t_7 = __pyx_PyFloat_AsDouble(__pyx_v_result); if (unlikely((__pyx_t_7 == (double)-1) && PyErr_Occurred())) __PYX_ERR(1, 64, __pyx_L1_error)
+    __pyx_r = __pyx_t_7;
+    goto __pyx_L0;
+  }
+
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":56
+ *           return result
+ * 
+ *     cdef double c_median_value(self):             # <<<<<<<<<<<<<<
+ *         result = np.nan
+ *         if self._is_full:
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_WriteUnraisable("hummingbot.strategy.__utils__.ring_buffer.RingBuffer.c_median_value", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_result);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "hummingbot/strategy/__utils__/ring_buffer.pyx":66
+ *           return result
  * 
  *     cdef double c_variance(self):             # <<<<<<<<<<<<<<
  *         result = np.nan
@@ -4875,22 +5211,22 @@ static double __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuff
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("c_variance", 0);
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":52
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":67
  * 
  *     cdef double c_variance(self):
  *         result = np.nan             # <<<<<<<<<<<<<<
  *         if self._is_full:
  *             result = np.var(self.c_get_as_numpy_array())
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 52, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 67, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_nan); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 52, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_nan); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 67, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_result = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":53
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":68
  *     cdef double c_variance(self):
  *         result = np.nan
  *         if self._is_full:             # <<<<<<<<<<<<<<
@@ -4900,19 +5236,19 @@ static double __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuff
   __pyx_t_3 = (__pyx_v_self->_is_full != 0);
   if (__pyx_t_3) {
 
-    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":54
+    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":69
  *         result = np.nan
  *         if self._is_full:
  *             result = np.var(self.c_get_as_numpy_array())             # <<<<<<<<<<<<<<
  *         return result
  * 
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 54, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 69, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_var); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 54, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_var); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 69, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *)__pyx_v_self->__pyx_vtab)->c_get_as_numpy_array(__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 54, __pyx_L1_error)
+    __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *)__pyx_v_self->__pyx_vtab)->c_get_as_numpy_array(__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 69, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_t_5 = NULL;
     __pyx_t_6 = 0;
@@ -4931,14 +5267,14 @@ static double __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuff
       __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_4, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 54, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 69, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     }
     __Pyx_DECREF_SET(__pyx_v_result, __pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":53
+    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":68
  *     cdef double c_variance(self):
  *         result = np.nan
  *         if self._is_full:             # <<<<<<<<<<<<<<
@@ -4947,19 +5283,19 @@ static double __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuff
  */
   }
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":55
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":70
  *         if self._is_full:
  *             result = np.var(self.c_get_as_numpy_array())
  *         return result             # <<<<<<<<<<<<<<
  * 
  *     cdef double c_std_dev(self):
  */
-  __pyx_t_7 = __pyx_PyFloat_AsDouble(__pyx_v_result); if (unlikely((__pyx_t_7 == (double)-1) && PyErr_Occurred())) __PYX_ERR(1, 55, __pyx_L1_error)
+  __pyx_t_7 = __pyx_PyFloat_AsDouble(__pyx_v_result); if (unlikely((__pyx_t_7 == (double)-1) && PyErr_Occurred())) __PYX_ERR(1, 70, __pyx_L1_error)
   __pyx_r = __pyx_t_7;
   goto __pyx_L0;
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":51
- *         return result
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":66
+ *           return result
  * 
  *     cdef double c_variance(self):             # <<<<<<<<<<<<<<
  *         result = np.nan
@@ -4980,7 +5316,7 @@ static double __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuff
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/__utils__/ring_buffer.pyx":57
+/* "hummingbot/strategy/__utils__/ring_buffer.pyx":72
  *         return result
  * 
  *     cdef double c_std_dev(self):             # <<<<<<<<<<<<<<
@@ -5004,22 +5340,22 @@ static double __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuff
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("c_std_dev", 0);
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":58
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":73
  * 
  *     cdef double c_std_dev(self):
  *         result = np.nan             # <<<<<<<<<<<<<<
  *         if self._is_full:
  *             result = np.std(self.c_get_as_numpy_array())
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 58, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 73, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_nan); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 58, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_nan); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 73, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_result = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":59
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":74
  *     cdef double c_std_dev(self):
  *         result = np.nan
  *         if self._is_full:             # <<<<<<<<<<<<<<
@@ -5029,19 +5365,19 @@ static double __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuff
   __pyx_t_3 = (__pyx_v_self->_is_full != 0);
   if (__pyx_t_3) {
 
-    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":60
+    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":75
  *         result = np.nan
  *         if self._is_full:
  *             result = np.std(self.c_get_as_numpy_array())             # <<<<<<<<<<<<<<
  *         return result
  * 
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 60, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 75, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_std); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 60, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_std); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 75, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *)__pyx_v_self->__pyx_vtab)->c_get_as_numpy_array(__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 60, __pyx_L1_error)
+    __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *)__pyx_v_self->__pyx_vtab)->c_get_as_numpy_array(__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 75, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_t_5 = NULL;
     __pyx_t_6 = 0;
@@ -5060,14 +5396,14 @@ static double __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuff
       __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_4, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 60, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 75, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     }
     __Pyx_DECREF_SET(__pyx_v_result, __pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":59
+    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":74
  *     cdef double c_std_dev(self):
  *         result = np.nan
  *         if self._is_full:             # <<<<<<<<<<<<<<
@@ -5076,18 +5412,18 @@ static double __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuff
  */
   }
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":61
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":76
  *         if self._is_full:
  *             result = np.std(self.c_get_as_numpy_array())
  *         return result             # <<<<<<<<<<<<<<
  * 
  *     cdef np.ndarray[np.double_t, ndim=1] c_get_as_numpy_array(self):
  */
-  __pyx_t_7 = __pyx_PyFloat_AsDouble(__pyx_v_result); if (unlikely((__pyx_t_7 == (double)-1) && PyErr_Occurred())) __PYX_ERR(1, 61, __pyx_L1_error)
+  __pyx_t_7 = __pyx_PyFloat_AsDouble(__pyx_v_result); if (unlikely((__pyx_t_7 == (double)-1) && PyErr_Occurred())) __PYX_ERR(1, 76, __pyx_L1_error)
   __pyx_r = __pyx_t_7;
   goto __pyx_L0;
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":57
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":72
  *         return result
  * 
  *     cdef double c_std_dev(self):             # <<<<<<<<<<<<<<
@@ -5109,7 +5445,7 @@ static double __pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuff
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/__utils__/ring_buffer.pyx":63
+/* "hummingbot/strategy/__utils__/ring_buffer.pyx":78
  *         return result
  * 
  *     cdef np.ndarray[np.double_t, ndim=1] c_get_as_numpy_array(self):             # <<<<<<<<<<<<<<
@@ -5143,7 +5479,7 @@ static PyArrayObject *__pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10
   __pyx_pybuffernd_indexes.data = NULL;
   __pyx_pybuffernd_indexes.rcbuffer = &__pyx_pybuffer_indexes;
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":66
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":81
  *         cdef np.ndarray[np.int16_t, ndim=1] indexes
  * 
  *         if not self._is_full:             # <<<<<<<<<<<<<<
@@ -5153,36 +5489,36 @@ static PyArrayObject *__pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10
   __pyx_t_1 = ((!(__pyx_v_self->_is_full != 0)) != 0);
   if (__pyx_t_1) {
 
-    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":67
+    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":82
  * 
  *         if not self._is_full:
  *             indexes = np.arange(0, stop=self._delimiter, dtype=np.int16)             # <<<<<<<<<<<<<<
  *         else:
  *             indexes = np.arange(self._delimiter, stop=self._delimiter + self._length,
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 67, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 82, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_arange); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 67, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_arange); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 82, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 67, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 82, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_4 = __Pyx_PyInt_From_int64_t(__pyx_v_self->_delimiter); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 67, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyInt_From_int64_t(__pyx_v_self->_delimiter); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 82, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_stop, __pyx_t_4) < 0) __PYX_ERR(1, 67, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_stop, __pyx_t_4) < 0) __PYX_ERR(1, 82, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 67, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 82, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_int16); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 67, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_int16); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 82, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_5) < 0) __PYX_ERR(1, 67, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_5) < 0) __PYX_ERR(1, 82, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_tuple_, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 67, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_tuple_, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 82, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (!(likely(((__pyx_t_5) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_5, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 67, __pyx_L1_error)
+    if (!(likely(((__pyx_t_5) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_5, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 82, __pyx_L1_error)
     __pyx_t_6 = ((PyArrayObject *)__pyx_t_5);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -5199,13 +5535,13 @@ static PyArrayObject *__pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10
         __pyx_t_8 = __pyx_t_9 = __pyx_t_10 = 0;
       }
       __pyx_pybuffernd_indexes.diminfo[0].strides = __pyx_pybuffernd_indexes.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_indexes.diminfo[0].shape = __pyx_pybuffernd_indexes.rcbuffer->pybuffer.shape[0];
-      if (unlikely((__pyx_t_7 < 0))) __PYX_ERR(1, 67, __pyx_L1_error)
+      if (unlikely((__pyx_t_7 < 0))) __PYX_ERR(1, 82, __pyx_L1_error)
     }
     __pyx_t_6 = 0;
     __pyx_v_indexes = ((PyArrayObject *)__pyx_t_5);
     __pyx_t_5 = 0;
 
-    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":66
+    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":81
  *         cdef np.ndarray[np.int16_t, ndim=1] indexes
  * 
  *         if not self._is_full:             # <<<<<<<<<<<<<<
@@ -5215,7 +5551,7 @@ static PyArrayObject *__pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10
     goto __pyx_L3;
   }
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":70
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":85
  *         else:
  *             indexes = np.arange(self._delimiter, stop=self._delimiter + self._length,
  *                                 dtype=np.int16) % self._length             # <<<<<<<<<<<<<<
@@ -5224,74 +5560,74 @@ static PyArrayObject *__pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10
  */
   /*else*/ {
 
-    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":69
+    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":84
  *             indexes = np.arange(0, stop=self._delimiter, dtype=np.int16)
  *         else:
  *             indexes = np.arange(self._delimiter, stop=self._delimiter + self._length,             # <<<<<<<<<<<<<<
  *                                 dtype=np.int16) % self._length
  *         return np.asarray(self._buffer)[indexes]
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 69, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 84, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_arange); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 69, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_arange); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 84, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_5 = __Pyx_PyInt_From_int64_t(__pyx_v_self->_delimiter); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 69, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyInt_From_int64_t(__pyx_v_self->_delimiter); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 84, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 69, __pyx_L1_error)
+    __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 84, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_GIVEREF(__pyx_t_5);
     PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_5);
     __pyx_t_5 = 0;
-    __pyx_t_5 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 69, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 84, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_4 = __Pyx_PyInt_From_int64_t((__pyx_v_self->_delimiter + __pyx_v_self->_length)); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 69, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyInt_From_int64_t((__pyx_v_self->_delimiter + __pyx_v_self->_length)); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 84, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_stop, __pyx_t_4) < 0) __PYX_ERR(1, 69, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_stop, __pyx_t_4) < 0) __PYX_ERR(1, 84, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":70
+    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":85
  *         else:
  *             indexes = np.arange(self._delimiter, stop=self._delimiter + self._length,
  *                                 dtype=np.int16) % self._length             # <<<<<<<<<<<<<<
  *         return np.asarray(self._buffer)[indexes]
  * 
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 70, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 85, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_int16); if (unlikely(!__pyx_t_11)) __PYX_ERR(1, 70, __pyx_L1_error)
+    __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_int16); if (unlikely(!__pyx_t_11)) __PYX_ERR(1, 85, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_11);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dtype, __pyx_t_11) < 0) __PYX_ERR(1, 69, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dtype, __pyx_t_11) < 0) __PYX_ERR(1, 84, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":69
+    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":84
  *             indexes = np.arange(0, stop=self._delimiter, dtype=np.int16)
  *         else:
  *             indexes = np.arange(self._delimiter, stop=self._delimiter + self._length,             # <<<<<<<<<<<<<<
  *                                 dtype=np.int16) % self._length
  *         return np.asarray(self._buffer)[indexes]
  */
-    __pyx_t_11 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, __pyx_t_5); if (unlikely(!__pyx_t_11)) __PYX_ERR(1, 69, __pyx_L1_error)
+    __pyx_t_11 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, __pyx_t_5); if (unlikely(!__pyx_t_11)) __PYX_ERR(1, 84, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_11);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":70
+    /* "hummingbot/strategy/__utils__/ring_buffer.pyx":85
  *         else:
  *             indexes = np.arange(self._delimiter, stop=self._delimiter + self._length,
  *                                 dtype=np.int16) % self._length             # <<<<<<<<<<<<<<
  *         return np.asarray(self._buffer)[indexes]
  * 
  */
-    __pyx_t_5 = __Pyx_PyInt_From_int64_t(__pyx_v_self->_length); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 70, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyInt_From_int64_t(__pyx_v_self->_length); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 85, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_3 = PyNumber_Remainder(__pyx_t_11, __pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 70, __pyx_L1_error)
+    __pyx_t_3 = PyNumber_Remainder(__pyx_t_11, __pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 85, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 70, __pyx_L1_error)
+    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 85, __pyx_L1_error)
     __pyx_t_6 = ((PyArrayObject *)__pyx_t_3);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -5308,7 +5644,7 @@ static PyArrayObject *__pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10
         __pyx_t_10 = __pyx_t_9 = __pyx_t_8 = 0;
       }
       __pyx_pybuffernd_indexes.diminfo[0].strides = __pyx_pybuffernd_indexes.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_indexes.diminfo[0].shape = __pyx_pybuffernd_indexes.rcbuffer->pybuffer.shape[0];
-      if (unlikely((__pyx_t_7 < 0))) __PYX_ERR(1, 69, __pyx_L1_error)
+      if (unlikely((__pyx_t_7 < 0))) __PYX_ERR(1, 84, __pyx_L1_error)
     }
     __pyx_t_6 = 0;
     __pyx_v_indexes = ((PyArrayObject *)__pyx_t_3);
@@ -5316,7 +5652,7 @@ static PyArrayObject *__pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10
   }
   __pyx_L3:;
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":71
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":86
  *             indexes = np.arange(self._delimiter, stop=self._delimiter + self._length,
  *                                 dtype=np.int16) % self._length
  *         return np.asarray(self._buffer)[indexes]             # <<<<<<<<<<<<<<
@@ -5324,13 +5660,13 @@ static PyArrayObject *__pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10
  *     def __init__(self, length):
  */
   __Pyx_XDECREF((PyObject *)__pyx_r);
-  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 71, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 86, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_asarray); if (unlikely(!__pyx_t_11)) __PYX_ERR(1, 71, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_asarray); if (unlikely(!__pyx_t_11)) __PYX_ERR(1, 86, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (unlikely(!__pyx_v_self->_buffer.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(1, 71, __pyx_L1_error)}
-  __pyx_t_5 = __pyx_memoryview_fromslice(__pyx_v_self->_buffer, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_float64_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_float64_t, 0);; if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 71, __pyx_L1_error)
+  if (unlikely(!__pyx_v_self->_buffer.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(1, 86, __pyx_L1_error)}
+  __pyx_t_5 = __pyx_memoryview_fromslice(__pyx_v_self->_buffer, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_float64_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_float64_t, 0);; if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 86, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __pyx_t_2 = NULL;
   __pyx_t_7 = 0;
@@ -5349,19 +5685,19 @@ static PyArrayObject *__pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10
     __pyx_t_3 = __Pyx_PyObject_FastCall(__pyx_t_11, __pyx_callargs+1-__pyx_t_7, 1+__pyx_t_7);
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 71, __pyx_L1_error)
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 86, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
   }
-  __pyx_t_11 = __Pyx_PyObject_GetItem(__pyx_t_3, ((PyObject *)__pyx_v_indexes)); if (unlikely(!__pyx_t_11)) __PYX_ERR(1, 71, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_PyObject_GetItem(__pyx_t_3, ((PyObject *)__pyx_v_indexes)); if (unlikely(!__pyx_t_11)) __PYX_ERR(1, 86, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (!(likely(((__pyx_t_11) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_11, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 71, __pyx_L1_error)
+  if (!(likely(((__pyx_t_11) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_11, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 86, __pyx_L1_error)
   __pyx_r = ((PyArrayObject *)__pyx_t_11);
   __pyx_t_11 = 0;
   goto __pyx_L0;
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":63
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":78
  *         return result
  * 
  *     cdef np.ndarray[np.double_t, ndim=1] c_get_as_numpy_array(self):             # <<<<<<<<<<<<<<
@@ -5394,7 +5730,7 @@ static PyArrayObject *__pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/__utils__/ring_buffer.pyx":73
+/* "hummingbot/strategy/__utils__/ring_buffer.pyx":88
  *         return np.asarray(self._buffer)[indexes]
  * 
  *     def __init__(self, length):             # <<<<<<<<<<<<<<
@@ -5433,12 +5769,12 @@ static int __pyx_pw_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer
       switch (__pyx_nargs) {
         case  0:
         if (likely((values[0] = __Pyx_GetKwValue_VARARGS(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_length)) != 0)) kw_args--;
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 73, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 88, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__init__") < 0)) __PYX_ERR(1, 73, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__init__") < 0)) __PYX_ERR(1, 88, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -5449,7 +5785,7 @@ static int __pyx_pw_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 1, 1, 1, __pyx_nargs); __PYX_ERR(1, 73, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 1, 1, 1, __pyx_nargs); __PYX_ERR(1, 88, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("hummingbot.strategy.__utils__.ring_buffer.RingBuffer.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -5477,55 +5813,55 @@ static int __pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":74
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":89
  * 
  *     def __init__(self, length):
  *         self._length = length             # <<<<<<<<<<<<<<
  *         self._buffer = np.zeros(length, dtype=np.double)
  *         self._delimiter = 0
  */
-  __pyx_t_1 = __Pyx_PyInt_As_int64_t(__pyx_v_length); if (unlikely((__pyx_t_1 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(1, 74, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_As_int64_t(__pyx_v_length); if (unlikely((__pyx_t_1 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(1, 89, __pyx_L1_error)
   __pyx_v_self->_length = __pyx_t_1;
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":75
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":90
  *     def __init__(self, length):
  *         self._length = length
  *         self._buffer = np.zeros(length, dtype=np.double)             # <<<<<<<<<<<<<<
  *         self._delimiter = 0
  *         self._is_full = False
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 75, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 90, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 75, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 90, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 75, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 90, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_v_length);
   __Pyx_GIVEREF(__pyx_v_length);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_length);
-  __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 75, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 90, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 75, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 90, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_double); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 75, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_double); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 90, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_dtype, __pyx_t_6) < 0) __PYX_ERR(1, 75, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_dtype, __pyx_t_6) < 0) __PYX_ERR(1, 90, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 75, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 90, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_7 = __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_5numpy_float64_t(__pyx_t_6, PyBUF_WRITABLE); if (unlikely(!__pyx_t_7.memview)) __PYX_ERR(1, 75, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_5numpy_float64_t(__pyx_t_6, PyBUF_WRITABLE); if (unlikely(!__pyx_t_7.memview)) __PYX_ERR(1, 90, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __PYX_XCLEAR_MEMVIEW(&__pyx_v_self->_buffer, 0);
   __pyx_v_self->_buffer = __pyx_t_7;
   __pyx_t_7.memview = NULL;
   __pyx_t_7.data = NULL;
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":76
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":91
  *         self._length = length
  *         self._buffer = np.zeros(length, dtype=np.double)
  *         self._delimiter = 0             # <<<<<<<<<<<<<<
@@ -5534,7 +5870,7 @@ static int __pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer
  */
   __pyx_v_self->_delimiter = 0;
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":77
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":92
  *         self._buffer = np.zeros(length, dtype=np.double)
  *         self._delimiter = 0
  *         self._is_full = False             # <<<<<<<<<<<<<<
@@ -5543,7 +5879,7 @@ static int __pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer
  */
   __pyx_v_self->_is_full = 0;
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":73
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":88
  *         return np.asarray(self._buffer)[indexes]
  * 
  *     def __init__(self, length):             # <<<<<<<<<<<<<<
@@ -5568,7 +5904,7 @@ static int __pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/__utils__/ring_buffer.pyx":79
+/* "hummingbot/strategy/__utils__/ring_buffer.pyx":94
  *         self._is_full = False
  * 
  *     def add_value(self, val):             # <<<<<<<<<<<<<<
@@ -5622,12 +5958,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       switch (__pyx_nargs) {
         case  0:
         if (likely((values[0] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_val)) != 0)) kw_args--;
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 79, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 94, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "add_value") < 0)) __PYX_ERR(1, 79, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "add_value") < 0)) __PYX_ERR(1, 94, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -5638,7 +5974,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("add_value", 1, 1, 1, __pyx_nargs); __PYX_ERR(1, 79, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("add_value", 1, 1, 1, __pyx_nargs); __PYX_ERR(1, 94, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("hummingbot.strategy.__utils__.ring_buffer.RingBuffer.add_value", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -5660,17 +5996,17 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10Ring
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("add_value", 0);
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":80
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":95
  * 
  *     def add_value(self, val):
  *         self.c_add_value(val)             # <<<<<<<<<<<<<<
  * 
  *     def get_as_numpy_array(self):
  */
-  __pyx_t_1 = __pyx_PyFloat_AsFloat(__pyx_v_val); if (unlikely((__pyx_t_1 == (float)-1) && PyErr_Occurred())) __PYX_ERR(1, 80, __pyx_L1_error)
+  __pyx_t_1 = __pyx_PyFloat_AsFloat(__pyx_v_val); if (unlikely((__pyx_t_1 == (float)-1) && PyErr_Occurred())) __PYX_ERR(1, 95, __pyx_L1_error)
   ((struct __pyx_vtabstruct_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *)__pyx_v_self->__pyx_vtab)->c_add_value(__pyx_v_self, __pyx_t_1);
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":79
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":94
  *         self._is_full = False
  * 
  *     def add_value(self, val):             # <<<<<<<<<<<<<<
@@ -5690,7 +6026,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10Ring
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/__utils__/ring_buffer.pyx":82
+/* "hummingbot/strategy/__utils__/ring_buffer.pyx":97
  *         self.c_add_value(val)
  * 
  *     def get_as_numpy_array(self):             # <<<<<<<<<<<<<<
@@ -5740,7 +6076,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10Ring
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_as_numpy_array", 0);
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":83
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":98
  * 
  *     def get_as_numpy_array(self):
  *         return self.c_get_as_numpy_array()             # <<<<<<<<<<<<<<
@@ -5748,13 +6084,13 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10Ring
  *     def get_last_value(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *)__pyx_v_self->__pyx_vtab)->c_get_as_numpy_array(__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 83, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *)__pyx_v_self->__pyx_vtab)->c_get_as_numpy_array(__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 98, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":82
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":97
  *         self.c_add_value(val)
  * 
  *     def get_as_numpy_array(self):             # <<<<<<<<<<<<<<
@@ -5773,7 +6109,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10Ring
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/__utils__/ring_buffer.pyx":85
+/* "hummingbot/strategy/__utils__/ring_buffer.pyx":100
  *         return self.c_get_as_numpy_array()
  * 
  *     def get_last_value(self):             # <<<<<<<<<<<<<<
@@ -5823,7 +6159,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10Ring
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_last_value", 0);
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":86
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":101
  * 
  *     def get_last_value(self):
  *         return self.c_get_last_value()             # <<<<<<<<<<<<<<
@@ -5831,13 +6167,13 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10Ring
  *     @property
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(((struct __pyx_vtabstruct_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *)__pyx_v_self->__pyx_vtab)->c_get_last_value(__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 86, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(((struct __pyx_vtabstruct_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *)__pyx_v_self->__pyx_vtab)->c_get_last_value(__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 101, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":85
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":100
  *         return self.c_get_as_numpy_array()
  * 
  *     def get_last_value(self):             # <<<<<<<<<<<<<<
@@ -5856,7 +6192,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10Ring
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/__utils__/ring_buffer.pyx":88
+/* "hummingbot/strategy/__utils__/ring_buffer.pyx":103
  *         return self.c_get_last_value()
  * 
  *     @property             # <<<<<<<<<<<<<<
@@ -5887,7 +6223,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10Ring
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":90
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":105
  *     @property
  *     def is_full(self):
  *         return self.c_is_full()             # <<<<<<<<<<<<<<
@@ -5895,13 +6231,13 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10Ring
  *     @property
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(((struct __pyx_vtabstruct_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *)__pyx_v_self->__pyx_vtab)->c_is_full(__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 90, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(((struct __pyx_vtabstruct_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *)__pyx_v_self->__pyx_vtab)->c_is_full(__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 105, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":88
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":103
  *         return self.c_get_last_value()
  * 
  *     @property             # <<<<<<<<<<<<<<
@@ -5920,7 +6256,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10Ring
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/__utils__/ring_buffer.pyx":92
+/* "hummingbot/strategy/__utils__/ring_buffer.pyx":107
  *         return self.c_is_full()
  * 
  *     @property             # <<<<<<<<<<<<<<
@@ -5951,7 +6287,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10Ring
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":94
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":109
  *     @property
  *     def mean_value(self):
  *         return self.c_mean_value()             # <<<<<<<<<<<<<<
@@ -5959,13 +6295,13 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10Ring
  *     @property
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(((struct __pyx_vtabstruct_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *)__pyx_v_self->__pyx_vtab)->c_mean_value(__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 94, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(((struct __pyx_vtabstruct_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *)__pyx_v_self->__pyx_vtab)->c_mean_value(__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 109, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":92
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":107
  *         return self.c_is_full()
  * 
  *     @property             # <<<<<<<<<<<<<<
@@ -5984,8 +6320,72 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10Ring
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/__utils__/ring_buffer.pyx":96
+/* "hummingbot/strategy/__utils__/ring_buffer.pyx":111
  *         return self.c_mean_value()
+ * 
+ *     @property             # <<<<<<<<<<<<<<
+ *     def median_value(self):
+ *         return self.c_median_value()
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_12median_value_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_12median_value_1__get__(PyObject *__pyx_v_self) {
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_12median_value___get__(((struct __pyx_obj_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_12median_value___get__(struct __pyx_obj_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__get__", 0);
+
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":113
+ *     @property
+ *     def median_value(self):
+ *         return self.c_median_value()             # <<<<<<<<<<<<<<
+ * 
+ *     @property
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = PyFloat_FromDouble(((struct __pyx_vtabstruct_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *)__pyx_v_self->__pyx_vtab)->c_median_value(__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 113, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":111
+ *         return self.c_mean_value()
+ * 
+ *     @property             # <<<<<<<<<<<<<<
+ *     def median_value(self):
+ *         return self.c_median_value()
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("hummingbot.strategy.__utils__.ring_buffer.RingBuffer.median_value.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "hummingbot/strategy/__utils__/ring_buffer.pyx":115
+ *         return self.c_median_value()
  * 
  *     @property             # <<<<<<<<<<<<<<
  *     def std_dev(self):
@@ -6015,7 +6415,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10Ring
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":98
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":117
  *     @property
  *     def std_dev(self):
  *         return self.c_std_dev()             # <<<<<<<<<<<<<<
@@ -6023,14 +6423,14 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10Ring
  *     @property
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(((struct __pyx_vtabstruct_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *)__pyx_v_self->__pyx_vtab)->c_std_dev(__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 98, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(((struct __pyx_vtabstruct_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *)__pyx_v_self->__pyx_vtab)->c_std_dev(__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 117, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":96
- *         return self.c_mean_value()
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":115
+ *         return self.c_median_value()
  * 
  *     @property             # <<<<<<<<<<<<<<
  *     def std_dev(self):
@@ -6048,7 +6448,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10Ring
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/__utils__/ring_buffer.pyx":100
+/* "hummingbot/strategy/__utils__/ring_buffer.pyx":119
  *         return self.c_std_dev()
  * 
  *     @property             # <<<<<<<<<<<<<<
@@ -6079,19 +6479,19 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_9__utils___11ring_buffer_10Ring
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":102
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":121
  *     @property
  *     def variance(self):
  *         return self.c_variance()             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(((struct __pyx_vtabstruct_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *)__pyx_v_self->__pyx_vtab)->c_variance(__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 102, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(((struct __pyx_vtabstruct_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *)__pyx_v_self->__pyx_vtab)->c_variance(__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 121, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":100
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":119
  *         return self.c_std_dev()
  * 
  *     @property             # <<<<<<<<<<<<<<
@@ -21041,6 +21441,10 @@ static PyObject *__pyx_getprop_10hummingbot_8strategy_9__utils___11ring_buffer_1
   return __pyx_pw_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_10mean_value_1__get__(o);
 }
 
+static PyObject *__pyx_getprop_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_median_value(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_12median_value_1__get__(o);
+}
+
 static PyObject *__pyx_getprop_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_std_dev(PyObject *o, CYTHON_UNUSED void *x) {
   return __pyx_pw_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_7std_dev_1__get__(o);
 }
@@ -21062,6 +21466,7 @@ static PyMethodDef __pyx_methods_10hummingbot_8strategy_9__utils___11ring_buffer
 static struct PyGetSetDef __pyx_getsets_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer[] = {
   {(char *)"is_full", __pyx_getprop_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_is_full, 0, (char *)0, 0},
   {(char *)"mean_value", __pyx_getprop_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_mean_value, 0, (char *)0, 0},
+  {(char *)"median_value", __pyx_getprop_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_median_value, 0, (char *)0, 0},
   {(char *)"std_dev", __pyx_getprop_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_std_dev, 0, (char *)0, 0},
   {(char *)"variance", __pyx_getprop_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_variance, 0, (char *)0, 0},
   {0, 0, 0, 0, 0}
@@ -22021,6 +22426,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, __pyx_k_Cannot_create_writable_memory_vi, sizeof(__pyx_k_Cannot_create_writable_memory_vi), 0, 0, 1, 0},
   {0, __pyx_k_Cannot_index_with_type, sizeof(__pyx_k_Cannot_index_with_type), 0, 1, 0, 0},
   {0, __pyx_k_Cannot_transpose_memoryview_with, sizeof(__pyx_k_Cannot_transpose_memoryview_with), 0, 0, 1, 0},
+  {0, __pyx_k_Decimal, sizeof(__pyx_k_Decimal), 0, 0, 1, 1},
   {0, __pyx_k_Dimension_d_is_not_direct, sizeof(__pyx_k_Dimension_d_is_not_direct), 0, 0, 1, 0},
   {0, __pyx_k_Ellipsis, sizeof(__pyx_k_Ellipsis), 0, 0, 1, 1},
   {0, __pyx_k_Empty_shape_tuple_for_cython_arr, sizeof(__pyx_k_Empty_shape_tuple_for_cython_arr), 0, 0, 1, 0},
@@ -22070,6 +22476,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, __pyx_k_cls, sizeof(__pyx_k_cls), 0, 0, 1, 1},
   {0, __pyx_k_contiguous_and_direct, sizeof(__pyx_k_contiguous_and_direct), 0, 0, 1, 0},
   {0, __pyx_k_contiguous_and_indirect, sizeof(__pyx_k_contiguous_and_indirect), 0, 0, 1, 0},
+  {0, __pyx_k_decimal, sizeof(__pyx_k_decimal), 0, 0, 1, 1},
   {0, __pyx_k_dict, sizeof(__pyx_k_dict), 0, 0, 1, 1},
   {0, __pyx_k_disable, sizeof(__pyx_k_disable), 0, 1, 0, 0},
   {0, __pyx_k_double, sizeof(__pyx_k_double), 0, 0, 1, 1},
@@ -22099,6 +22506,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, __pyx_k_int16, sizeof(__pyx_k_int16), 0, 0, 1, 1},
   {0, __pyx_k_is_coroutine, sizeof(__pyx_k_is_coroutine), 0, 0, 1, 1},
   {0, __pyx_k_isenabled, sizeof(__pyx_k_isenabled), 0, 1, 0, 0},
+  {0, __pyx_k_isnan, sizeof(__pyx_k_isnan), 0, 0, 1, 1},
   {0, __pyx_k_itemsize, sizeof(__pyx_k_itemsize), 0, 0, 1, 1},
   {0, __pyx_k_itemsize_0_for_cython_array, sizeof(__pyx_k_itemsize_0_for_cython_array), 0, 0, 1, 0},
   {0, __pyx_k_length, sizeof(__pyx_k_length), 0, 0, 1, 1},
@@ -22106,6 +22514,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, __pyx_k_logging, sizeof(__pyx_k_logging), 0, 0, 1, 1},
   {0, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {0, __pyx_k_mean, sizeof(__pyx_k_mean), 0, 0, 1, 1},
+  {0, __pyx_k_median, sizeof(__pyx_k_median), 0, 0, 1, 1},
   {0, __pyx_k_memview, sizeof(__pyx_k_memview), 0, 0, 1, 1},
   {0, __pyx_k_mode, sizeof(__pyx_k_mode), 0, 0, 1, 1},
   {0, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
@@ -22167,6 +22576,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_Cannot_create_writable_memory_vi, __pyx_k_Cannot_create_writable_memory_vi, sizeof(__pyx_k_Cannot_create_writable_memory_vi), 0, 0, 1, 0},
   {&__pyx_kp_u_Cannot_index_with_type, __pyx_k_Cannot_index_with_type, sizeof(__pyx_k_Cannot_index_with_type), 0, 1, 0, 0},
   {&__pyx_kp_s_Cannot_transpose_memoryview_with, __pyx_k_Cannot_transpose_memoryview_with, sizeof(__pyx_k_Cannot_transpose_memoryview_with), 0, 0, 1, 0},
+  {&__pyx_n_s_Decimal, __pyx_k_Decimal, sizeof(__pyx_k_Decimal), 0, 0, 1, 1},
   {&__pyx_kp_s_Dimension_d_is_not_direct, __pyx_k_Dimension_d_is_not_direct, sizeof(__pyx_k_Dimension_d_is_not_direct), 0, 0, 1, 0},
   {&__pyx_n_s_Ellipsis, __pyx_k_Ellipsis, sizeof(__pyx_k_Ellipsis), 0, 0, 1, 1},
   {&__pyx_kp_s_Empty_shape_tuple_for_cython_arr, __pyx_k_Empty_shape_tuple_for_cython_arr, sizeof(__pyx_k_Empty_shape_tuple_for_cython_arr), 0, 0, 1, 0},
@@ -22216,6 +22626,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_cls, __pyx_k_cls, sizeof(__pyx_k_cls), 0, 0, 1, 1},
   {&__pyx_kp_s_contiguous_and_direct, __pyx_k_contiguous_and_direct, sizeof(__pyx_k_contiguous_and_direct), 0, 0, 1, 0},
   {&__pyx_kp_s_contiguous_and_indirect, __pyx_k_contiguous_and_indirect, sizeof(__pyx_k_contiguous_and_indirect), 0, 0, 1, 0},
+  {&__pyx_n_s_decimal, __pyx_k_decimal, sizeof(__pyx_k_decimal), 0, 0, 1, 1},
   {&__pyx_n_s_dict, __pyx_k_dict, sizeof(__pyx_k_dict), 0, 0, 1, 1},
   {&__pyx_kp_u_disable, __pyx_k_disable, sizeof(__pyx_k_disable), 0, 1, 0, 0},
   {&__pyx_n_s_double, __pyx_k_double, sizeof(__pyx_k_double), 0, 0, 1, 1},
@@ -22245,6 +22656,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_int16, __pyx_k_int16, sizeof(__pyx_k_int16), 0, 0, 1, 1},
   {&__pyx_n_s_is_coroutine, __pyx_k_is_coroutine, sizeof(__pyx_k_is_coroutine), 0, 0, 1, 1},
   {&__pyx_kp_u_isenabled, __pyx_k_isenabled, sizeof(__pyx_k_isenabled), 0, 1, 0, 0},
+  {&__pyx_n_s_isnan, __pyx_k_isnan, sizeof(__pyx_k_isnan), 0, 0, 1, 1},
   {&__pyx_n_s_itemsize, __pyx_k_itemsize, sizeof(__pyx_k_itemsize), 0, 0, 1, 1},
   {&__pyx_kp_s_itemsize_0_for_cython_array, __pyx_k_itemsize_0_for_cython_array, sizeof(__pyx_k_itemsize_0_for_cython_array), 0, 0, 1, 0},
   {&__pyx_n_s_length, __pyx_k_length, sizeof(__pyx_k_length), 0, 0, 1, 1},
@@ -22252,6 +22664,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_logging, __pyx_k_logging, sizeof(__pyx_k_logging), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_mean, __pyx_k_mean, sizeof(__pyx_k_mean), 0, 0, 1, 1},
+  {&__pyx_n_s_median, __pyx_k_median, sizeof(__pyx_k_median), 0, 0, 1, 1},
   {&__pyx_n_s_memview, __pyx_k_memview, sizeof(__pyx_k_memview), 0, 0, 1, 1},
   {&__pyx_n_s_mode, __pyx_k_mode, sizeof(__pyx_k_mode), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
@@ -22328,14 +22741,14 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":67
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":82
  * 
  *         if not self._is_full:
  *             indexes = np.arange(0, stop=self._delimiter, dtype=np.int16)             # <<<<<<<<<<<<<<
  *         else:
  *             indexes = np.arange(self._delimiter, stop=self._delimiter + self._length,
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_int_0); if (unlikely(!__pyx_tuple_)) __PYX_ERR(1, 67, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_int_0); if (unlikely(!__pyx_tuple_)) __PYX_ERR(1, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
@@ -22386,53 +22799,53 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_slice__8);
   __Pyx_GIVEREF(__pyx_slice__8);
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":9
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":10
  * 
  * cdef class RingBuffer:
  *     @classmethod             # <<<<<<<<<<<<<<
  *     def logger(cls):
  *         global pmm_logger
  */
-  __pyx_tuple__11 = PyTuple_Pack(1, __pyx_n_s_cls); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(1, 9, __pyx_L1_error)
+  __pyx_tuple__11 = PyTuple_Pack(1, __pyx_n_s_cls); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(1, 10, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__11);
   __Pyx_GIVEREF(__pyx_tuple__11);
-  __pyx_codeobj__12 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hummingbot_strategy___utils___ri, __pyx_n_s_logger, 9, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__12)) __PYX_ERR(1, 9, __pyx_L1_error)
+  __pyx_codeobj__12 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hummingbot_strategy___utils___ri, __pyx_n_s_logger, 10, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__12)) __PYX_ERR(1, 10, __pyx_L1_error)
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":79
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":94
  *         self._is_full = False
  * 
  *     def add_value(self, val):             # <<<<<<<<<<<<<<
  *         self.c_add_value(val)
  * 
  */
-  __pyx_tuple__13 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_val); if (unlikely(!__pyx_tuple__13)) __PYX_ERR(1, 79, __pyx_L1_error)
+  __pyx_tuple__13 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_val); if (unlikely(!__pyx_tuple__13)) __PYX_ERR(1, 94, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__13);
   __Pyx_GIVEREF(__pyx_tuple__13);
-  __pyx_codeobj__14 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__13, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hummingbot_strategy___utils___ri, __pyx_n_s_add_value, 79, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__14)) __PYX_ERR(1, 79, __pyx_L1_error)
+  __pyx_codeobj__14 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__13, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hummingbot_strategy___utils___ri, __pyx_n_s_add_value, 94, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__14)) __PYX_ERR(1, 94, __pyx_L1_error)
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":82
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":97
  *         self.c_add_value(val)
  * 
  *     def get_as_numpy_array(self):             # <<<<<<<<<<<<<<
  *         return self.c_get_as_numpy_array()
  * 
  */
-  __pyx_tuple__15 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__15)) __PYX_ERR(1, 82, __pyx_L1_error)
+  __pyx_tuple__15 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__15)) __PYX_ERR(1, 97, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__15);
   __Pyx_GIVEREF(__pyx_tuple__15);
-  __pyx_codeobj__16 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__15, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hummingbot_strategy___utils___ri, __pyx_n_s_get_as_numpy_array, 82, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__16)) __PYX_ERR(1, 82, __pyx_L1_error)
+  __pyx_codeobj__16 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__15, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hummingbot_strategy___utils___ri, __pyx_n_s_get_as_numpy_array, 97, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__16)) __PYX_ERR(1, 97, __pyx_L1_error)
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":85
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":100
  *         return self.c_get_as_numpy_array()
  * 
  *     def get_last_value(self):             # <<<<<<<<<<<<<<
  *         return self.c_get_last_value()
  * 
  */
-  __pyx_tuple__17 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__17)) __PYX_ERR(1, 85, __pyx_L1_error)
+  __pyx_tuple__17 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__17)) __PYX_ERR(1, 100, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__17);
   __Pyx_GIVEREF(__pyx_tuple__17);
-  __pyx_codeobj__18 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__17, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hummingbot_strategy___utils___ri, __pyx_n_s_get_last_value, 85, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__18)) __PYX_ERR(1, 85, __pyx_L1_error)
+  __pyx_codeobj__18 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__17, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hummingbot_strategy___utils___ri, __pyx_n_s_get_last_value, 100, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__18)) __PYX_ERR(1, 100, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
@@ -22558,142 +22971,146 @@ if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 1, __pyx_L1_error)
   if (__Pyx_InitString(__pyx_string_tab[6], &__pyx_kp_s_Cannot_create_writable_memory_vi) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
   if (__Pyx_InitString(__pyx_string_tab[7], &__pyx_kp_u_Cannot_index_with_type) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
   if (__Pyx_InitString(__pyx_string_tab[8], &__pyx_kp_s_Cannot_transpose_memoryview_with) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[9], &__pyx_kp_s_Dimension_d_is_not_direct) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[10], &__pyx_n_s_Ellipsis) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[11], &__pyx_kp_s_Empty_shape_tuple_for_cython_arr) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[12], &__pyx_n_s_ImportError) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[13], &__pyx_kp_s_Incompatible_checksums_s_vs_0x6a) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[14], &__pyx_n_s_IndexError) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[15], &__pyx_kp_s_Index_out_of_bounds_axis_d) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[16], &__pyx_kp_s_Indirect_dimensions_not_supporte) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[17], &__pyx_kp_u_Invalid_mode_expected_c_or_fortr) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[18], &__pyx_kp_u_Invalid_shape_in_axis) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[19], &__pyx_n_s_MemoryError) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[20], &__pyx_kp_s_MemoryView_of_r_at_0x_x) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[21], &__pyx_kp_s_MemoryView_of_r_object) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[22], &__pyx_n_b_O) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[23], &__pyx_kp_u_Out_of_bounds_on_buffer_access_a) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[24], &__pyx_n_s_PickleError) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[25], &__pyx_n_s_RingBuffer) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[26], &__pyx_n_s_RingBuffer___reduce_cython) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[27], &__pyx_n_s_RingBuffer___setstate_cython) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[28], &__pyx_n_s_RingBuffer_add_value) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[29], &__pyx_n_s_RingBuffer_get_as_numpy_array) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[30], &__pyx_n_s_RingBuffer_get_last_value) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[31], &__pyx_n_s_RingBuffer_logger) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[32], &__pyx_kp_s_Step_may_not_be_zero_axis_d) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[33], &__pyx_n_s_TypeError) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[34], &__pyx_kp_s_Unable_to_convert_item_to_object) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[35], &__pyx_n_s_ValueError) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[36], &__pyx_n_s_View_MemoryView) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[37], &__pyx_kp_u__10) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[38], &__pyx_n_s__30) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[39], &__pyx_kp_u__4) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[40], &__pyx_kp_u__5) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[41], &__pyx_n_s__6) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[42], &__pyx_kp_u__9) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[43], &__pyx_n_s_add_value) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[44], &__pyx_n_s_allocate_buffer) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[45], &__pyx_kp_u_and) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[46], &__pyx_n_s_arange) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[47], &__pyx_n_s_asarray) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[48], &__pyx_n_s_asyncio_coroutines) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[49], &__pyx_n_s_base) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[50], &__pyx_n_s_c) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[51], &__pyx_n_u_c) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[52], &__pyx_n_s_class) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[53], &__pyx_n_s_class_getitem) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[54], &__pyx_n_s_cline_in_traceback) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[55], &__pyx_n_s_cls) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[56], &__pyx_kp_s_contiguous_and_direct) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[57], &__pyx_kp_s_contiguous_and_indirect) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[58], &__pyx_n_s_dict) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[59], &__pyx_kp_u_disable) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[60], &__pyx_n_s_double) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[61], &__pyx_n_s_dtype) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[62], &__pyx_n_s_dtype_is_object) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[63], &__pyx_kp_u_enable) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[64], &__pyx_n_s_encode) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[65], &__pyx_n_s_enumerate) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[66], &__pyx_n_s_error) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[67], &__pyx_n_s_flags) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[68], &__pyx_n_s_float64) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[69], &__pyx_n_s_format) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[70], &__pyx_n_s_fortran) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[71], &__pyx_n_u_fortran) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[72], &__pyx_kp_u_gc) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[73], &__pyx_n_s_getLogger) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[74], &__pyx_n_s_get_as_numpy_array) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[75], &__pyx_n_s_get_last_value) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[76], &__pyx_n_s_getstate) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[77], &__pyx_kp_u_got) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[78], &__pyx_kp_u_got_differing_extents_in_dimensi) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[79], &__pyx_kp_s_hummingbot_strategy___utils___ri) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[80], &__pyx_n_s_hummingbot_strategy___utils___ri_2) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[81], &__pyx_n_s_id) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[82], &__pyx_n_s_import) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[83], &__pyx_n_s_initializing) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[84], &__pyx_n_s_int16) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[85], &__pyx_n_s_is_coroutine) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[86], &__pyx_kp_u_isenabled) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[87], &__pyx_n_s_itemsize) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[88], &__pyx_kp_s_itemsize_0_for_cython_array) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[89], &__pyx_n_s_length) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[90], &__pyx_n_s_logger) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[91], &__pyx_n_s_logging) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[92], &__pyx_n_s_main) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[93], &__pyx_n_s_mean) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[94], &__pyx_n_s_memview) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[95], &__pyx_n_s_mode) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[96], &__pyx_n_s_name) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[97], &__pyx_n_s_name_2) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[98], &__pyx_n_s_nan) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[99], &__pyx_n_s_ndim) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[100], &__pyx_n_s_new) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[101], &__pyx_kp_s_no_default___reduce___due_to_non) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[102], &__pyx_n_s_np) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[103], &__pyx_n_s_numpy) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[104], &__pyx_kp_u_numpy_core_multiarray_failed_to) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[105], &__pyx_kp_u_numpy_core_umath_failed_to_impor) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[106], &__pyx_n_s_obj) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[107], &__pyx_n_s_pack) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[108], &__pyx_n_s_pickle) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[109], &__pyx_n_s_pmm_logger) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[110], &__pyx_n_s_pyx_PickleError) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[111], &__pyx_n_s_pyx_checksum) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[112], &__pyx_n_s_pyx_getbuffer) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[113], &__pyx_n_s_pyx_result) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[114], &__pyx_n_s_pyx_state) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[115], &__pyx_n_s_pyx_type) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[116], &__pyx_n_s_pyx_unpickle_Enum) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[117], &__pyx_n_s_pyx_vtable) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[118], &__pyx_n_s_range) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[119], &__pyx_n_s_reduce) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[120], &__pyx_n_s_reduce_cython) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[121], &__pyx_n_s_reduce_ex) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[122], &__pyx_n_s_self) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[123], &__pyx_n_s_setstate) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[124], &__pyx_n_s_setstate_cython) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[125], &__pyx_n_s_shape) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[126], &__pyx_n_s_size) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[127], &__pyx_n_s_spec) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[128], &__pyx_n_s_start) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[129], &__pyx_n_s_std) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[130], &__pyx_n_s_step) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[131], &__pyx_n_s_stop) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[132], &__pyx_kp_s_strided_and_direct) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[133], &__pyx_kp_s_strided_and_direct_or_indirect) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[134], &__pyx_kp_s_strided_and_indirect) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[135], &__pyx_kp_s_stringsource) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[136], &__pyx_n_s_struct) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[137], &__pyx_n_s_test) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[138], &__pyx_kp_s_unable_to_allocate_array_data) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[139], &__pyx_kp_s_unable_to_allocate_shape_and_str) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[140], &__pyx_n_s_unpack) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[141], &__pyx_n_s_update) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[142], &__pyx_n_s_val) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[143], &__pyx_n_s_var) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[144], &__pyx_n_s_zeros) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[9], &__pyx_n_s_Decimal) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[10], &__pyx_kp_s_Dimension_d_is_not_direct) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[11], &__pyx_n_s_Ellipsis) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[12], &__pyx_kp_s_Empty_shape_tuple_for_cython_arr) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[13], &__pyx_n_s_ImportError) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[14], &__pyx_kp_s_Incompatible_checksums_s_vs_0x6a) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[15], &__pyx_n_s_IndexError) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[16], &__pyx_kp_s_Index_out_of_bounds_axis_d) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[17], &__pyx_kp_s_Indirect_dimensions_not_supporte) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[18], &__pyx_kp_u_Invalid_mode_expected_c_or_fortr) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[19], &__pyx_kp_u_Invalid_shape_in_axis) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[20], &__pyx_n_s_MemoryError) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[21], &__pyx_kp_s_MemoryView_of_r_at_0x_x) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[22], &__pyx_kp_s_MemoryView_of_r_object) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[23], &__pyx_n_b_O) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[24], &__pyx_kp_u_Out_of_bounds_on_buffer_access_a) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[25], &__pyx_n_s_PickleError) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[26], &__pyx_n_s_RingBuffer) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[27], &__pyx_n_s_RingBuffer___reduce_cython) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[28], &__pyx_n_s_RingBuffer___setstate_cython) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[29], &__pyx_n_s_RingBuffer_add_value) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[30], &__pyx_n_s_RingBuffer_get_as_numpy_array) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[31], &__pyx_n_s_RingBuffer_get_last_value) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[32], &__pyx_n_s_RingBuffer_logger) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[33], &__pyx_kp_s_Step_may_not_be_zero_axis_d) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[34], &__pyx_n_s_TypeError) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[35], &__pyx_kp_s_Unable_to_convert_item_to_object) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[36], &__pyx_n_s_ValueError) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[37], &__pyx_n_s_View_MemoryView) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[38], &__pyx_kp_u__10) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[39], &__pyx_n_s__30) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[40], &__pyx_kp_u__4) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[41], &__pyx_kp_u__5) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[42], &__pyx_n_s__6) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[43], &__pyx_kp_u__9) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[44], &__pyx_n_s_add_value) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[45], &__pyx_n_s_allocate_buffer) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[46], &__pyx_kp_u_and) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[47], &__pyx_n_s_arange) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[48], &__pyx_n_s_asarray) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[49], &__pyx_n_s_asyncio_coroutines) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[50], &__pyx_n_s_base) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[51], &__pyx_n_s_c) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[52], &__pyx_n_u_c) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[53], &__pyx_n_s_class) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[54], &__pyx_n_s_class_getitem) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[55], &__pyx_n_s_cline_in_traceback) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[56], &__pyx_n_s_cls) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[57], &__pyx_kp_s_contiguous_and_direct) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[58], &__pyx_kp_s_contiguous_and_indirect) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[59], &__pyx_n_s_decimal) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[60], &__pyx_n_s_dict) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[61], &__pyx_kp_u_disable) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[62], &__pyx_n_s_double) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[63], &__pyx_n_s_dtype) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[64], &__pyx_n_s_dtype_is_object) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[65], &__pyx_kp_u_enable) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[66], &__pyx_n_s_encode) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[67], &__pyx_n_s_enumerate) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[68], &__pyx_n_s_error) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[69], &__pyx_n_s_flags) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[70], &__pyx_n_s_float64) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[71], &__pyx_n_s_format) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[72], &__pyx_n_s_fortran) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[73], &__pyx_n_u_fortran) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[74], &__pyx_kp_u_gc) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[75], &__pyx_n_s_getLogger) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[76], &__pyx_n_s_get_as_numpy_array) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[77], &__pyx_n_s_get_last_value) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[78], &__pyx_n_s_getstate) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[79], &__pyx_kp_u_got) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[80], &__pyx_kp_u_got_differing_extents_in_dimensi) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[81], &__pyx_kp_s_hummingbot_strategy___utils___ri) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[82], &__pyx_n_s_hummingbot_strategy___utils___ri_2) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[83], &__pyx_n_s_id) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[84], &__pyx_n_s_import) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[85], &__pyx_n_s_initializing) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[86], &__pyx_n_s_int16) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[87], &__pyx_n_s_is_coroutine) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[88], &__pyx_kp_u_isenabled) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[89], &__pyx_n_s_isnan) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[90], &__pyx_n_s_itemsize) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[91], &__pyx_kp_s_itemsize_0_for_cython_array) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[92], &__pyx_n_s_length) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[93], &__pyx_n_s_logger) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[94], &__pyx_n_s_logging) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[95], &__pyx_n_s_main) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[96], &__pyx_n_s_mean) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[97], &__pyx_n_s_median) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[98], &__pyx_n_s_memview) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[99], &__pyx_n_s_mode) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[100], &__pyx_n_s_name) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[101], &__pyx_n_s_name_2) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[102], &__pyx_n_s_nan) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[103], &__pyx_n_s_ndim) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[104], &__pyx_n_s_new) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[105], &__pyx_kp_s_no_default___reduce___due_to_non) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[106], &__pyx_n_s_np) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[107], &__pyx_n_s_numpy) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[108], &__pyx_kp_u_numpy_core_multiarray_failed_to) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[109], &__pyx_kp_u_numpy_core_umath_failed_to_impor) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[110], &__pyx_n_s_obj) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[111], &__pyx_n_s_pack) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[112], &__pyx_n_s_pickle) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[113], &__pyx_n_s_pmm_logger) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[114], &__pyx_n_s_pyx_PickleError) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[115], &__pyx_n_s_pyx_checksum) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[116], &__pyx_n_s_pyx_getbuffer) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[117], &__pyx_n_s_pyx_result) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[118], &__pyx_n_s_pyx_state) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[119], &__pyx_n_s_pyx_type) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[120], &__pyx_n_s_pyx_unpickle_Enum) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[121], &__pyx_n_s_pyx_vtable) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[122], &__pyx_n_s_range) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[123], &__pyx_n_s_reduce) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[124], &__pyx_n_s_reduce_cython) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[125], &__pyx_n_s_reduce_ex) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[126], &__pyx_n_s_self) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[127], &__pyx_n_s_setstate) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[128], &__pyx_n_s_setstate_cython) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[129], &__pyx_n_s_shape) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[130], &__pyx_n_s_size) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[131], &__pyx_n_s_spec) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[132], &__pyx_n_s_start) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[133], &__pyx_n_s_std) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[134], &__pyx_n_s_step) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[135], &__pyx_n_s_stop) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[136], &__pyx_kp_s_strided_and_direct) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[137], &__pyx_kp_s_strided_and_direct_or_indirect) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[138], &__pyx_kp_s_strided_and_indirect) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[139], &__pyx_kp_s_stringsource) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[140], &__pyx_n_s_struct) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[141], &__pyx_n_s_test) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[142], &__pyx_kp_s_unable_to_allocate_array_data) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[143], &__pyx_kp_s_unable_to_allocate_shape_and_str) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[144], &__pyx_n_s_unpack) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[145], &__pyx_n_s_update) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[146], &__pyx_n_s_val) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[147], &__pyx_n_s_var) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[148], &__pyx_n_s_zeros) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
   if (__Pyx_InitStrings(__pyx_string_tab) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
@@ -22760,13 +23177,14 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_vtable_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer.c_is_full = (int (*)(struct __pyx_obj_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *))__pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_c_is_full;
   __pyx_vtable_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer.c_is_empty = (int (*)(struct __pyx_obj_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *))__pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_c_is_empty;
   __pyx_vtable_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer.c_mean_value = (double (*)(struct __pyx_obj_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *))__pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_c_mean_value;
+  __pyx_vtable_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer.c_median_value = (double (*)(struct __pyx_obj_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *))__pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_c_median_value;
   __pyx_vtable_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer.c_variance = (double (*)(struct __pyx_obj_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *))__pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_c_variance;
   __pyx_vtable_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer.c_std_dev = (double (*)(struct __pyx_obj_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *))__pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_c_std_dev;
   __pyx_vtable_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer.c_get_as_numpy_array = (PyArrayObject *(*)(struct __pyx_obj_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer *))__pyx_f_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_c_get_as_numpy_array;
   #if CYTHON_COMPILING_IN_LIMITED_API
-  __pyx_type_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer = PyType_FromSpec(&__pyx_type_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer_spec); if (unlikely(!__pyx_type_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer)) __PYX_ERR(1, 8, __pyx_L1_error)
+  __pyx_type_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer = PyType_FromSpec(&__pyx_type_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer_spec); if (unlikely(!__pyx_type_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer)) __PYX_ERR(1, 9, __pyx_L1_error)
   #else
-  if (__Pyx_PyType_Ready(&__pyx_type_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer) < 0) __PYX_ERR(1, 8, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(&__pyx_type_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer) < 0) __PYX_ERR(1, 9, __pyx_L1_error)
   #if PY_MAJOR_VERSION < 3
   __pyx_type_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer.tp_print = 0;
   #endif
@@ -22775,18 +23193,18 @@ static int __Pyx_modinit_type_init_code(void) {
   }
   #endif
   #if CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_SetVtable(__pyx_type_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer, __pyx_vtabptr_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer) < 0) __PYX_ERR(1, 8, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer, __pyx_vtabptr_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer) < 0) __PYX_ERR(1, 9, __pyx_L1_error)
   #else
-  if (__Pyx_SetVtable(__pyx_type_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer.tp_dict, __pyx_vtabptr_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer) < 0) __PYX_ERR(1, 8, __pyx_L1_error)
-  if (__Pyx_MergeVtables(&__pyx_type_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer) < 0) __PYX_ERR(1, 8, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer.tp_dict, __pyx_vtabptr_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer) < 0) __PYX_ERR(1, 9, __pyx_L1_error)
+  if (__Pyx_MergeVtables(&__pyx_type_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer) < 0) __PYX_ERR(1, 9, __pyx_L1_error)
   #endif
   #if CYTHON_COMPILING_IN_LIMITED_API
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_RingBuffer, __pyx_type_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer) < 0) __PYX_ERR(1, 8, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_RingBuffer, __pyx_type_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer) < 0) __PYX_ERR(1, 9, __pyx_L1_error)
   #else
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_RingBuffer, (PyObject *)&__pyx_type_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer) < 0) __PYX_ERR(1, 8, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_RingBuffer, (PyObject *)&__pyx_type_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer) < 0) __PYX_ERR(1, 9, __pyx_L1_error)
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer) < 0) __PYX_ERR(1, 8, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer) < 0) __PYX_ERR(1, 9, __pyx_L1_error)
   #endif
   #if CYTHON_COMPILING_IN_LIMITED_API
   __pyx_ptype_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer = (PyTypeObject *)__pyx_type_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer;
@@ -23275,80 +23693,101 @@ if (!__Pyx_RefNanny) {
  * import numpy as np
  * import logging             # <<<<<<<<<<<<<<
  * cimport numpy as np
- * 
+ * from decimal import Decimal
  */
   __pyx_t_1 = __Pyx_ImportDottedModule(__pyx_n_s_logging, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_logging, __pyx_t_1) < 0) __PYX_ERR(1, 2, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":6
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":4
+ * import logging
+ * cimport numpy as np
+ * from decimal import Decimal             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_INCREF(__pyx_n_s_Decimal);
+  __Pyx_GIVEREF(__pyx_n_s_Decimal);
+  PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_Decimal);
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_decimal, __pyx_t_1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_Decimal); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_Decimal, __pyx_t_1) < 0) __PYX_ERR(1, 4, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":7
  * 
  * 
  * pmm_logger = None             # <<<<<<<<<<<<<<
  * 
  * cdef class RingBuffer:
  */
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_pmm_logger, Py_None) < 0) __PYX_ERR(1, 6, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_pmm_logger, Py_None) < 0) __PYX_ERR(1, 7, __pyx_L1_error)
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":9
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":10
  * 
  * cdef class RingBuffer:
  *     @classmethod             # <<<<<<<<<<<<<<
  *     def logger(cls):
  *         global pmm_logger
  */
-  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_1logger, __Pyx_CYFUNCTION_CLASSMETHOD | __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_RingBuffer_logger, NULL, __pyx_n_s_hummingbot_strategy___utils___ri_2, __pyx_d, ((PyObject *)__pyx_codeobj__12)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 9, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer->tp_dict, __pyx_n_s_logger, __pyx_t_1) < 0) __PYX_ERR(1, 9, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  PyType_Modified(__pyx_ptype_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer);
-  __Pyx_GetNameInClass(__pyx_t_1, (PyObject *)__pyx_ptype_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer, __pyx_n_s_logger); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 9, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_Method_ClassMethod(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 9, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_1logger, __Pyx_CYFUNCTION_CLASSMETHOD | __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_RingBuffer_logger, NULL, __pyx_n_s_hummingbot_strategy___utils___ri_2, __pyx_d, ((PyObject *)__pyx_codeobj__12)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 10, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer->tp_dict, __pyx_n_s_logger, __pyx_t_2) < 0) __PYX_ERR(1, 9, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer->tp_dict, __pyx_n_s_logger, __pyx_t_2) < 0) __PYX_ERR(1, 10, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer);
+  __Pyx_GetNameInClass(__pyx_t_2, (PyObject *)__pyx_ptype_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer, __pyx_n_s_logger); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 10, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_1 = __Pyx_Method_ClassMethod(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 10, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer->tp_dict, __pyx_n_s_logger, __pyx_t_1) < 0) __PYX_ERR(1, 10, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  PyType_Modified(__pyx_ptype_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer);
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":79
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":94
  *         self._is_full = False
  * 
  *     def add_value(self, val):             # <<<<<<<<<<<<<<
  *         self.c_add_value(val)
  * 
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_9add_value, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_RingBuffer_add_value, NULL, __pyx_n_s_hummingbot_strategy___utils___ri_2, __pyx_d, ((PyObject *)__pyx_codeobj__14)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 79, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer->tp_dict, __pyx_n_s_add_value, __pyx_t_2) < 0) __PYX_ERR(1, 79, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_9add_value, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_RingBuffer_add_value, NULL, __pyx_n_s_hummingbot_strategy___utils___ri_2, __pyx_d, ((PyObject *)__pyx_codeobj__14)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 94, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer->tp_dict, __pyx_n_s_add_value, __pyx_t_1) < 0) __PYX_ERR(1, 94, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer);
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":82
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":97
  *         self.c_add_value(val)
  * 
  *     def get_as_numpy_array(self):             # <<<<<<<<<<<<<<
  *         return self.c_get_as_numpy_array()
  * 
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_11get_as_numpy_array, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_RingBuffer_get_as_numpy_array, NULL, __pyx_n_s_hummingbot_strategy___utils___ri_2, __pyx_d, ((PyObject *)__pyx_codeobj__16)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 82, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer->tp_dict, __pyx_n_s_get_as_numpy_array, __pyx_t_2) < 0) __PYX_ERR(1, 82, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_11get_as_numpy_array, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_RingBuffer_get_as_numpy_array, NULL, __pyx_n_s_hummingbot_strategy___utils___ri_2, __pyx_d, ((PyObject *)__pyx_codeobj__16)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 97, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer->tp_dict, __pyx_n_s_get_as_numpy_array, __pyx_t_1) < 0) __PYX_ERR(1, 97, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer);
 
-  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":85
+  /* "hummingbot/strategy/__utils__/ring_buffer.pyx":100
  *         return self.c_get_as_numpy_array()
  * 
  *     def get_last_value(self):             # <<<<<<<<<<<<<<
  *         return self.c_get_last_value()
  * 
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_13get_last_value, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_RingBuffer_get_last_value, NULL, __pyx_n_s_hummingbot_strategy___utils___ri_2, __pyx_d, ((PyObject *)__pyx_codeobj__18)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 85, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer->tp_dict, __pyx_n_s_get_last_value, __pyx_t_2) < 0) __PYX_ERR(1, 85, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_13get_last_value, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_RingBuffer_get_last_value, NULL, __pyx_n_s_hummingbot_strategy___utils___ri_2, __pyx_d, ((PyObject *)__pyx_codeobj__18)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 100, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer->tp_dict, __pyx_n_s_get_last_value, __pyx_t_1) < 0) __PYX_ERR(1, 100, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_10hummingbot_8strategy_9__utils___11ring_buffer_RingBuffer);
 
   /* "(tree fragment)":1
@@ -23356,10 +23795,10 @@ if (!__Pyx_RefNanny) {
  *     raise TypeError, "no default __reduce__ due to non-trivial __cinit__"
  * def __setstate_cython__(self, __pyx_state):
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_15__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_RingBuffer___reduce_cython, NULL, __pyx_n_s_hummingbot_strategy___utils___ri_2, __pyx_d, ((PyObject *)__pyx_codeobj__20)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_reduce_cython, __pyx_t_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_15__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_RingBuffer___reduce_cython, NULL, __pyx_n_s_hummingbot_strategy___utils___ri_2, __pyx_d, ((PyObject *)__pyx_codeobj__20)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_reduce_cython, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "(tree fragment)":3
  * def __reduce_cython__(self):
@@ -23367,20 +23806,20 @@ if (!__Pyx_RefNanny) {
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     raise TypeError, "no default __reduce__ due to non-trivial __cinit__"
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_17__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_RingBuffer___setstate_cython, NULL, __pyx_n_s_hummingbot_strategy___utils___ri_2, __pyx_d, ((PyObject *)__pyx_codeobj__22)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 3, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_setstate_cython, __pyx_t_2) < 0) __PYX_ERR(0, 3, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_10hummingbot_8strategy_9__utils___11ring_buffer_10RingBuffer_17__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_RingBuffer___setstate_cython, NULL, __pyx_n_s_hummingbot_strategy___utils___ri_2, __pyx_d, ((PyObject *)__pyx_codeobj__22)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 3, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_setstate_cython, __pyx_t_1) < 0) __PYX_ERR(0, 3, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "hummingbot/strategy/__utils__/ring_buffer.pyx":1
  * import numpy as np             # <<<<<<<<<<<<<<
  * import logging
  * cimport numpy as np
  */
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_2) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_1) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "View.MemoryView":205
  *         info.obj = self
@@ -23389,10 +23828,10 @@ if (!__Pyx_RefNanny) {
  * 
  *     def __dealloc__(array self):
  */
-  __pyx_t_2 = __pyx_capsule_create(((void *)(&__pyx_array_getbuffer)), ((char *)"getbuffer(obj, view, flags)")); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 205, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem((PyObject *)__pyx_array_type->tp_dict, __pyx_n_s_pyx_getbuffer, __pyx_t_2) < 0) __PYX_ERR(0, 205, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_1 = __pyx_capsule_create(((void *)(&__pyx_array_getbuffer)), ((char *)"getbuffer(obj, view, flags)")); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 205, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem((PyObject *)__pyx_array_type->tp_dict, __pyx_n_s_pyx_getbuffer, __pyx_t_1) < 0) __PYX_ERR(0, 205, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_array_type);
 
   /* "View.MemoryView":300
@@ -23402,12 +23841,12 @@ if (!__Pyx_RefNanny) {
  * cdef strided = Enum("<strided and direct>") # default
  * cdef indirect = Enum("<strided and indirect>")
  */
-  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__23, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 300, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__23, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 300, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_XGOTREF(generic);
-  __Pyx_DECREF_SET(generic, __pyx_t_2);
-  __Pyx_GIVEREF(__pyx_t_2);
-  __pyx_t_2 = 0;
+  __Pyx_DECREF_SET(generic, __pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_1);
+  __pyx_t_1 = 0;
 
   /* "View.MemoryView":301
  * 
@@ -23416,12 +23855,12 @@ if (!__Pyx_RefNanny) {
  * cdef indirect = Enum("<strided and indirect>")
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__24, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 301, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__24, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 301, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_XGOTREF(strided);
-  __Pyx_DECREF_SET(strided, __pyx_t_2);
-  __Pyx_GIVEREF(__pyx_t_2);
-  __pyx_t_2 = 0;
+  __Pyx_DECREF_SET(strided, __pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_1);
+  __pyx_t_1 = 0;
 
   /* "View.MemoryView":302
  * cdef generic = Enum("<strided and direct or indirect>")
@@ -23430,12 +23869,12 @@ if (!__Pyx_RefNanny) {
  * 
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__25, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 302, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__25, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 302, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_XGOTREF(indirect);
-  __Pyx_DECREF_SET(indirect, __pyx_t_2);
-  __Pyx_GIVEREF(__pyx_t_2);
-  __pyx_t_2 = 0;
+  __Pyx_DECREF_SET(indirect, __pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_1);
+  __pyx_t_1 = 0;
 
   /* "View.MemoryView":305
  * 
@@ -23444,12 +23883,12 @@ if (!__Pyx_RefNanny) {
  * cdef indirect_contiguous = Enum("<contiguous and indirect>")
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__26, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 305, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__26, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 305, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_XGOTREF(contiguous);
-  __Pyx_DECREF_SET(contiguous, __pyx_t_2);
-  __Pyx_GIVEREF(__pyx_t_2);
-  __pyx_t_2 = 0;
+  __Pyx_DECREF_SET(contiguous, __pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_1);
+  __pyx_t_1 = 0;
 
   /* "View.MemoryView":306
  * 
@@ -23458,12 +23897,12 @@ if (!__Pyx_RefNanny) {
  * 
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__27, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 306, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__27, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 306, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_XGOTREF(indirect_contiguous);
-  __Pyx_DECREF_SET(indirect_contiguous, __pyx_t_2);
-  __Pyx_GIVEREF(__pyx_t_2);
-  __pyx_t_2 = 0;
+  __Pyx_DECREF_SET(indirect_contiguous, __pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_1);
+  __pyx_t_1 = 0;
 
   /* "View.MemoryView":330
  * 
@@ -23498,10 +23937,10 @@ if (!__Pyx_RefNanny) {
  * 
  * 
  */
-  __pyx_t_2 = __pyx_capsule_create(((void *)(&__pyx_memoryview_getbuffer)), ((char *)"getbuffer(obj, view, flags)")); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 563, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem((PyObject *)__pyx_memoryview_type->tp_dict, __pyx_n_s_pyx_getbuffer, __pyx_t_2) < 0) __PYX_ERR(0, 563, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_1 = __pyx_capsule_create(((void *)(&__pyx_memoryview_getbuffer)), ((char *)"getbuffer(obj, view, flags)")); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 563, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem((PyObject *)__pyx_memoryview_type->tp_dict, __pyx_n_s_pyx_getbuffer, __pyx_t_1) < 0) __PYX_ERR(0, 563, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_memoryview_type);
 
   /* "View.MemoryView":1007
@@ -23511,10 +23950,10 @@ if (!__Pyx_RefNanny) {
  * 
  * 
  */
-  __pyx_t_2 = __pyx_capsule_create(((void *)(&__pyx_memoryview_getbuffer)), ((char *)"getbuffer(obj, view, flags)")); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1007, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem((PyObject *)__pyx_memoryviewslice_type->tp_dict, __pyx_n_s_pyx_getbuffer, __pyx_t_2) < 0) __PYX_ERR(0, 1007, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_1 = __pyx_capsule_create(((void *)(&__pyx_memoryview_getbuffer)), ((char *)"getbuffer(obj, view, flags)")); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1007, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem((PyObject *)__pyx_memoryviewslice_type->tp_dict, __pyx_n_s_pyx_getbuffer, __pyx_t_1) < 0) __PYX_ERR(0, 1007, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_memoryviewslice_type);
 
   /* "(tree fragment)":1
@@ -23522,10 +23961,10 @@ if (!__Pyx_RefNanny) {
  *     cdef object __pyx_PickleError
  *     cdef object __pyx_result
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_15View_dot_MemoryView_1__pyx_unpickle_Enum, NULL, __pyx_n_s_View_MemoryView); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_pyx_unpickle_Enum, __pyx_t_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_15View_dot_MemoryView_1__pyx_unpickle_Enum, NULL, __pyx_n_s_View_MemoryView); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_pyx_unpickle_Enum, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "(tree fragment)":11
  *         __pyx_unpickle_Enum__set_state(<Enum> __pyx_result, __pyx_state)
