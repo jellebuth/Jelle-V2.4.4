@@ -1993,7 +1993,7 @@ struct __pyx_obj_10hummingbot_8strategy_18pure_market_making_18pure_market_makin
 };
 
 
-/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1631
+/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1636
  *         return True
  * 
  *     cdef c_cancel_active_orders_on_max_age_limit(self):             # <<<<<<<<<<<<<<
@@ -2007,7 +2007,7 @@ struct __pyx_obj_10hummingbot_8strategy_18pure_market_making_18pure_market_makin
 };
 
 
-/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1638
+/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1643
  *             list active_orders = self.active_non_hanging_orders
  * 
  *         if active_orders and any(order_age(o, self._current_timestamp) > self._max_order_age for o in active_orders):             # <<<<<<<<<<<<<<
@@ -2021,7 +2021,7 @@ struct __pyx_obj_10hummingbot_8strategy_18pure_market_making_18pure_market_makin
 };
 
 
-/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1717
+/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1722
  *                 and len(non_hanging_orders_non_cancelled) == 0)
  * 
  *     cdef c_execute_orders_proposal(self, object proposal):             # <<<<<<<<<<<<<<
@@ -2036,7 +2036,7 @@ struct __pyx_obj_10hummingbot_8strategy_18pure_market_making_18pure_market_makin
 };
 
 
-/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1744
+/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1749
  *                 orders_created = True
  *                 if idx < number_of_pairs:
  *                     order = next((o for o in self.active_orders if o.client_order_id == bid_order_id))             # <<<<<<<<<<<<<<
@@ -2053,7 +2053,7 @@ struct __pyx_obj_10hummingbot_8strategy_18pure_market_making_18pure_market_makin
 };
 
 
-/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1767
+/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1772
  *                 orders_created = True
  *                 if idx < number_of_pairs:
  *                     order = next((o for o in self.active_orders if o.client_order_id == ask_order_id))             # <<<<<<<<<<<<<<
@@ -35788,7 +35788,9 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   PyObject *__pyx_v_order_id = 0;
   PyObject *__pyx_v_limit_order_record = 0;
   double __pyx_v_expiration_seconds;
+  struct __pyx_obj_10hummingbot_9connector_13exchange_base_ExchangeBase *__pyx_v_market = 0;
   CYTHON_UNUSED PyObject *__pyx_v_active_sell_ids = NULL;
+  PyObject *__pyx_v_top_ask = NULL;
   PyObject *__pyx_9genexpr18__pyx_v_x = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -35806,10 +35808,11 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   PyObject *__pyx_t_12 = NULL;
   int __pyx_t_13;
   PyObject *__pyx_t_14 = NULL;
-  struct __pyx_opt_args_10hummingbot_8strategy_13strategy_base_12StrategyBase_c_sell_with_specific_market __pyx_t_15;
-  int __pyx_t_16;
-  double __pyx_t_17;
+  PyObject *__pyx_t_15 = NULL;
+  struct __pyx_opt_args_10hummingbot_8strategy_13strategy_base_12StrategyBase_c_sell_with_specific_market __pyx_t_16;
+  int __pyx_t_17;
   double __pyx_t_18;
+  double __pyx_t_19;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -35833,7 +35836,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  *             str order_id = order_completed_event.order_id
  *             limit_order_record = self._sb_order_tracker.c_get_limit_order(self._market_info, order_id)             # <<<<<<<<<<<<<<
  *             double expiration_seconds = NaN
- *         if limit_order_record is None:
+ *             ExchangeBase market = self._market_info.market
  */
   __pyx_t_1 = __pyx_v_self->_market_info;
   __Pyx_INCREF(__pyx_t_1);
@@ -35847,8 +35850,8 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  *             str order_id = order_completed_event.order_id
  *             limit_order_record = self._sb_order_tracker.c_get_limit_order(self._market_info, order_id)
  *             double expiration_seconds = NaN             # <<<<<<<<<<<<<<
+ *             ExchangeBase market = self._market_info.market
  *         if limit_order_record is None:
- *             return
  */
   __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_NaN); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1493, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -35859,6 +35862,19 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1494
  *             limit_order_record = self._sb_order_tracker.c_get_limit_order(self._market_info, order_id)
  *             double expiration_seconds = NaN
+ *             ExchangeBase market = self._market_info.market             # <<<<<<<<<<<<<<
+ *         if limit_order_record is None:
+ *             return
+ */
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_market_info, __pyx_n_s_market); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1494, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_10hummingbot_9connector_13exchange_base_ExchangeBase))))) __PYX_ERR(0, 1494, __pyx_L1_error)
+  __pyx_v_market = ((struct __pyx_obj_10hummingbot_9connector_13exchange_base_ExchangeBase *)__pyx_t_2);
+  __pyx_t_2 = 0;
+
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1495
+ *             double expiration_seconds = NaN
+ *             ExchangeBase market = self._market_info.market
  *         if limit_order_record is None:             # <<<<<<<<<<<<<<
  *             return
  *         active_sell_ids = [x.client_order_id for x in self.active_orders if not x.is_buy]
@@ -35867,8 +35883,8 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   __pyx_t_5 = (__pyx_t_4 != 0);
   if (__pyx_t_5) {
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1495
- *             double expiration_seconds = NaN
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1496
+ *             ExchangeBase market = self._market_info.market
  *         if limit_order_record is None:
  *             return             # <<<<<<<<<<<<<<
  *         active_sell_ids = [x.client_order_id for x in self.active_orders if not x.is_buy]
@@ -35878,16 +35894,16 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1494
- *             limit_order_record = self._sb_order_tracker.c_get_limit_order(self._market_info, order_id)
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1495
  *             double expiration_seconds = NaN
+ *             ExchangeBase market = self._market_info.market
  *         if limit_order_record is None:             # <<<<<<<<<<<<<<
  *             return
  *         active_sell_ids = [x.client_order_id for x in self.active_orders if not x.is_buy]
  */
   }
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1496
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1497
  *         if limit_order_record is None:
  *             return
  *         active_sell_ids = [x.client_order_id for x in self.active_orders if not x.is_buy]             # <<<<<<<<<<<<<<
@@ -35895,17 +35911,17 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  * 
  */
   { /* enter inner scope */
-    __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1496, __pyx_L6_error)
+    __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1497, __pyx_L6_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_active_orders); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1496, __pyx_L6_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_active_orders); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1497, __pyx_L6_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
       __pyx_t_6 = __pyx_t_1; __Pyx_INCREF(__pyx_t_6); __pyx_t_7 = 0;
       __pyx_t_8 = NULL;
     } else {
-      __pyx_t_7 = -1; __pyx_t_6 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1496, __pyx_L6_error)
+      __pyx_t_7 = -1; __pyx_t_6 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1497, __pyx_L6_error)
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_8 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_6); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1496, __pyx_L6_error)
+      __pyx_t_8 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_6); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1497, __pyx_L6_error)
     }
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     for (;;) {
@@ -35913,17 +35929,17 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
         if (likely(PyList_CheckExact(__pyx_t_6))) {
           if (__pyx_t_7 >= PyList_GET_SIZE(__pyx_t_6)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_1 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_7); __Pyx_INCREF(__pyx_t_1); __pyx_t_7++; if (unlikely((0 < 0))) __PYX_ERR(0, 1496, __pyx_L6_error)
+          __pyx_t_1 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_7); __Pyx_INCREF(__pyx_t_1); __pyx_t_7++; if (unlikely((0 < 0))) __PYX_ERR(0, 1497, __pyx_L6_error)
           #else
-          __pyx_t_1 = PySequence_ITEM(__pyx_t_6, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1496, __pyx_L6_error)
+          __pyx_t_1 = PySequence_ITEM(__pyx_t_6, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1497, __pyx_L6_error)
           __Pyx_GOTREF(__pyx_t_1);
           #endif
         } else {
           if (__pyx_t_7 >= PyTuple_GET_SIZE(__pyx_t_6)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_6, __pyx_t_7); __Pyx_INCREF(__pyx_t_1); __pyx_t_7++; if (unlikely((0 < 0))) __PYX_ERR(0, 1496, __pyx_L6_error)
+          __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_6, __pyx_t_7); __Pyx_INCREF(__pyx_t_1); __pyx_t_7++; if (unlikely((0 < 0))) __PYX_ERR(0, 1497, __pyx_L6_error)
           #else
-          __pyx_t_1 = PySequence_ITEM(__pyx_t_6, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1496, __pyx_L6_error)
+          __pyx_t_1 = PySequence_ITEM(__pyx_t_6, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1497, __pyx_L6_error)
           __Pyx_GOTREF(__pyx_t_1);
           #endif
         }
@@ -35933,7 +35949,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 1496, __pyx_L6_error)
+            else __PYX_ERR(0, 1497, __pyx_L6_error)
           }
           break;
         }
@@ -35941,15 +35957,15 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       }
       __Pyx_XDECREF_SET(__pyx_9genexpr18__pyx_v_x, __pyx_t_1);
       __pyx_t_1 = 0;
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr18__pyx_v_x, __pyx_n_s_is_buy); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1496, __pyx_L6_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr18__pyx_v_x, __pyx_n_s_is_buy); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1497, __pyx_L6_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 1496, __pyx_L6_error)
+      __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 1497, __pyx_L6_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_t_4 = ((!__pyx_t_5) != 0);
       if (__pyx_t_4) {
-        __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr18__pyx_v_x, __pyx_n_s_client_order_id); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1496, __pyx_L6_error)
+        __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr18__pyx_v_x, __pyx_n_s_client_order_id); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1497, __pyx_L6_error)
         __Pyx_GOTREF(__pyx_t_1);
-        if (unlikely(__Pyx_ListComp_Append(__pyx_t_2, (PyObject*)__pyx_t_1))) __PYX_ERR(0, 1496, __pyx_L6_error)
+        if (unlikely(__Pyx_ListComp_Append(__pyx_t_2, (PyObject*)__pyx_t_1))) __PYX_ERR(0, 1497, __pyx_L6_error)
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       }
     }
@@ -35964,7 +35980,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   __pyx_v_active_sell_ids = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1499
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1500
  * 
  * 
  *         if self._hanging_orders_enabled:             # <<<<<<<<<<<<<<
@@ -35974,51 +35990,51 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   __pyx_t_4 = (__pyx_v_self->_hanging_orders_enabled != 0);
   if (__pyx_t_4) {
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1501
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1502
  *         if self._hanging_orders_enabled:
  *             # If the filled order is a hanging order, do nothing
  *             if order_id in self.hanging_order_ids:             # <<<<<<<<<<<<<<
  *                 self.log_with_clock(
  *                     logging.INFO,
  */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_hanging_order_ids); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1501, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_hanging_order_ids); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1502, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_4 = (__Pyx_PySequence_ContainsTF(__pyx_v_order_id, __pyx_t_2, Py_EQ)); if (unlikely((__pyx_t_4 < 0))) __PYX_ERR(0, 1501, __pyx_L1_error)
+    __pyx_t_4 = (__Pyx_PySequence_ContainsTF(__pyx_v_order_id, __pyx_t_2, Py_EQ)); if (unlikely((__pyx_t_4 < 0))) __PYX_ERR(0, 1502, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_t_5 = (__pyx_t_4 != 0);
     if (__pyx_t_5) {
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1502
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1503
  *             # If the filled order is a hanging order, do nothing
  *             if order_id in self.hanging_order_ids:
  *                 self.log_with_clock(             # <<<<<<<<<<<<<<
  *                     logging.INFO,
  *                     f"({self.trading_pair}) Hanging maker buy order {order_id} "
  */
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_log_with_clock); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1502, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_log_with_clock); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1503, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1503
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1504
  *             if order_id in self.hanging_order_ids:
  *                 self.log_with_clock(
  *                     logging.INFO,             # <<<<<<<<<<<<<<
  *                     f"({self.trading_pair}) Hanging maker buy order {order_id} "
  *                     f"({limit_order_record.quantity} {limit_order_record.base_currency} @ "
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_logging); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1503, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_logging); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1504, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_INFO); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1503, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_INFO); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1504, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1504
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1505
  *                 self.log_with_clock(
  *                     logging.INFO,
  *                     f"({self.trading_pair}) Hanging maker buy order {order_id} "             # <<<<<<<<<<<<<<
  *                     f"({limit_order_record.quantity} {limit_order_record.base_currency} @ "
  *                     f"{limit_order_record.price} {limit_order_record.quote_currency}) has been completely filled."
  */
-      __pyx_t_1 = PyTuple_New(13); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1504, __pyx_L1_error)
+      __pyx_t_1 = PyTuple_New(13); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1505, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __pyx_t_7 = 0;
       __pyx_t_10 = 127;
@@ -36026,9 +36042,9 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __pyx_t_7 += 1;
       __Pyx_GIVEREF(__pyx_kp_u__34);
       PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_kp_u__34);
-      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_trading_pair); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1504, __pyx_L1_error)
+      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_trading_pair); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1505, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
-      __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_t_11, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1504, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_t_11, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1505, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
       __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) : __pyx_t_10;
@@ -36040,7 +36056,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __pyx_t_7 += 26;
       __Pyx_GIVEREF(__pyx_kp_u_Hanging_maker_buy_order);
       PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_kp_u_Hanging_maker_buy_order);
-      __pyx_t_12 = __Pyx_PyUnicode_Unicode(__pyx_v_order_id); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1504, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyUnicode_Unicode(__pyx_v_order_id); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1505, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) : __pyx_t_10;
       __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_12);
@@ -36052,16 +36068,16 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __Pyx_GIVEREF(__pyx_kp_u__36);
       PyTuple_SET_ITEM(__pyx_t_1, 4, __pyx_kp_u__36);
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1505
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1506
  *                     logging.INFO,
  *                     f"({self.trading_pair}) Hanging maker buy order {order_id} "
  *                     f"({limit_order_record.quantity} {limit_order_record.base_currency} @ "             # <<<<<<<<<<<<<<
  *                     f"{limit_order_record.price} {limit_order_record.quote_currency}) has been completely filled."
  *                 )
  */
-      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_quantity); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1505, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_quantity); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1506, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
-      __pyx_t_11 = __Pyx_PyObject_FormatSimple(__pyx_t_12, __pyx_empty_unicode); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1505, __pyx_L1_error)
+      __pyx_t_11 = __Pyx_PyObject_FormatSimple(__pyx_t_12, __pyx_empty_unicode); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1506, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
       __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_11) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_11) : __pyx_t_10;
@@ -36073,9 +36089,9 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __pyx_t_7 += 1;
       __Pyx_GIVEREF(__pyx_kp_u__35);
       PyTuple_SET_ITEM(__pyx_t_1, 6, __pyx_kp_u__35);
-      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_base_currency); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1505, __pyx_L1_error)
+      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_base_currency); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1506, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
-      __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_t_11, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1505, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_t_11, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1506, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
       __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) : __pyx_t_10;
@@ -36088,16 +36104,16 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __Pyx_GIVEREF(__pyx_kp_u__37);
       PyTuple_SET_ITEM(__pyx_t_1, 8, __pyx_kp_u__37);
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1506
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1507
  *                     f"({self.trading_pair}) Hanging maker buy order {order_id} "
  *                     f"({limit_order_record.quantity} {limit_order_record.base_currency} @ "
  *                     f"{limit_order_record.price} {limit_order_record.quote_currency}) has been completely filled."             # <<<<<<<<<<<<<<
  *                 )
  *                 self.notify_hb_app_with_timestamp(
  */
-      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_price); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1506, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_price); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1507, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
-      __pyx_t_11 = __Pyx_PyObject_FormatSimple(__pyx_t_12, __pyx_empty_unicode); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1506, __pyx_L1_error)
+      __pyx_t_11 = __Pyx_PyObject_FormatSimple(__pyx_t_12, __pyx_empty_unicode); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1507, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
       __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_11) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_11) : __pyx_t_10;
@@ -36109,9 +36125,9 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __pyx_t_7 += 1;
       __Pyx_GIVEREF(__pyx_kp_u__35);
       PyTuple_SET_ITEM(__pyx_t_1, 10, __pyx_kp_u__35);
-      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_quote_currency); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1506, __pyx_L1_error)
+      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_quote_currency); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1507, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
-      __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_t_11, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1506, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_t_11, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1507, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
       __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) : __pyx_t_10;
@@ -36124,14 +36140,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __Pyx_GIVEREF(__pyx_kp_u_has_been_completely_filled);
       PyTuple_SET_ITEM(__pyx_t_1, 12, __pyx_kp_u_has_been_completely_filled);
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1504
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1505
  *                 self.log_with_clock(
  *                     logging.INFO,
  *                     f"({self.trading_pair}) Hanging maker buy order {order_id} "             # <<<<<<<<<<<<<<
  *                     f"({limit_order_record.quantity} {limit_order_record.base_currency} @ "
  *                     f"{limit_order_record.price} {limit_order_record.quote_currency}) has been completely filled."
  */
-      __pyx_t_12 = __Pyx_PyUnicode_Join(__pyx_t_1, 13, __pyx_t_7, __pyx_t_10); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1504, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyUnicode_Join(__pyx_t_1, 13, __pyx_t_7, __pyx_t_10); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1505, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_t_1 = NULL;
@@ -36152,30 +36168,30 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
         __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
         __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1502, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1503, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       }
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1508
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1509
  *                     f"{limit_order_record.price} {limit_order_record.quote_currency}) has been completely filled."
  *                 )
  *                 self.notify_hb_app_with_timestamp(             # <<<<<<<<<<<<<<
  *                     f"Hanging maker BUY order {limit_order_record.quantity} {limit_order_record.base_currency} @ "
  *                     f"{limit_order_record.price} {limit_order_record.quote_currency} is filled."
  */
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_notify_hb_app_with_timestamp); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1508, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_notify_hb_app_with_timestamp); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1509, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1509
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1510
  *                 )
  *                 self.notify_hb_app_with_timestamp(
  *                     f"Hanging maker BUY order {limit_order_record.quantity} {limit_order_record.base_currency} @ "             # <<<<<<<<<<<<<<
  *                     f"{limit_order_record.price} {limit_order_record.quote_currency} is filled."
  *                 )
  */
-      __pyx_t_12 = PyTuple_New(9); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1509, __pyx_L1_error)
+      __pyx_t_12 = PyTuple_New(9); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1510, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       __pyx_t_7 = 0;
       __pyx_t_10 = 127;
@@ -36183,9 +36199,9 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __pyx_t_7 += 24;
       __Pyx_GIVEREF(__pyx_kp_u_Hanging_maker_BUY_order);
       PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_kp_u_Hanging_maker_BUY_order);
-      __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_quantity); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1509, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_quantity); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1510, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
-      __pyx_t_1 = __Pyx_PyObject_FormatSimple(__pyx_t_9, __pyx_empty_unicode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1509, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_FormatSimple(__pyx_t_9, __pyx_empty_unicode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1510, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_1) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_1) : __pyx_t_10;
@@ -36197,9 +36213,9 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __pyx_t_7 += 1;
       __Pyx_GIVEREF(__pyx_kp_u__35);
       PyTuple_SET_ITEM(__pyx_t_12, 2, __pyx_kp_u__35);
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_base_currency); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1509, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_base_currency); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1510, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_t_1, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1509, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_t_1, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1510, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_10;
@@ -36212,16 +36228,16 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __Pyx_GIVEREF(__pyx_kp_u__37);
       PyTuple_SET_ITEM(__pyx_t_12, 4, __pyx_kp_u__37);
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1510
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1511
  *                 self.notify_hb_app_with_timestamp(
  *                     f"Hanging maker BUY order {limit_order_record.quantity} {limit_order_record.base_currency} @ "
  *                     f"{limit_order_record.price} {limit_order_record.quote_currency} is filled."             # <<<<<<<<<<<<<<
  *                 )
  *                 return
  */
-      __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_price); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1510, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_price); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1511, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
-      __pyx_t_1 = __Pyx_PyObject_FormatSimple(__pyx_t_9, __pyx_empty_unicode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1510, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_FormatSimple(__pyx_t_9, __pyx_empty_unicode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1511, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_1) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_1) : __pyx_t_10;
@@ -36233,9 +36249,9 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __pyx_t_7 += 1;
       __Pyx_GIVEREF(__pyx_kp_u__35);
       PyTuple_SET_ITEM(__pyx_t_12, 6, __pyx_kp_u__35);
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_quote_currency); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1510, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_quote_currency); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1511, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_t_1, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1510, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_t_1, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1511, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_10;
@@ -36248,14 +36264,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __Pyx_GIVEREF(__pyx_kp_u_is_filled);
       PyTuple_SET_ITEM(__pyx_t_12, 8, __pyx_kp_u_is_filled);
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1509
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1510
  *                 )
  *                 self.notify_hb_app_with_timestamp(
  *                     f"Hanging maker BUY order {limit_order_record.quantity} {limit_order_record.base_currency} @ "             # <<<<<<<<<<<<<<
  *                     f"{limit_order_record.price} {limit_order_record.quote_currency} is filled."
  *                 )
  */
-      __pyx_t_9 = __Pyx_PyUnicode_Join(__pyx_t_12, 9, __pyx_t_7, __pyx_t_10); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1509, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyUnicode_Join(__pyx_t_12, 9, __pyx_t_7, __pyx_t_10); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1510, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
       __pyx_t_12 = NULL;
@@ -36275,13 +36291,13 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
         __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_6, __pyx_callargs+1-__pyx_t_13, 1+__pyx_t_13);
         __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1508, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1509, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       }
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1512
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1513
  *                     f"{limit_order_record.price} {limit_order_record.quote_currency} is filled."
  *                 )
  *                 return             # <<<<<<<<<<<<<<
@@ -36292,7 +36308,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __pyx_r = Py_None; __Pyx_INCREF(Py_None);
       goto __pyx_L0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1501
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1502
  *         if self._hanging_orders_enabled:
  *             # If the filled order is a hanging order, do nothing
  *             if order_id in self.hanging_order_ids:             # <<<<<<<<<<<<<<
@@ -36301,7 +36317,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
     }
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1499
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1500
  * 
  * 
  *         if self._hanging_orders_enabled:             # <<<<<<<<<<<<<<
@@ -36310,7 +36326,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
   }
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1513
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1514
  *                 )
  *                 return
  *         if not self._hanging_orders_enabled and self._hanging_orders_enabled_other:             # <<<<<<<<<<<<<<
@@ -36323,35 +36339,35 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     __pyx_t_5 = __pyx_t_4;
     goto __pyx_L14_bool_binop_done;
   }
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_self->_hanging_orders_enabled_other); if (unlikely((__pyx_t_4 < 0))) __PYX_ERR(0, 1513, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_self->_hanging_orders_enabled_other); if (unlikely((__pyx_t_4 < 0))) __PYX_ERR(0, 1514, __pyx_L1_error)
   __pyx_t_5 = __pyx_t_4;
   __pyx_L14_bool_binop_done:;
   if (__pyx_t_5) {
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1514
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1515
  *                 return
  *         if not self._hanging_orders_enabled and self._hanging_orders_enabled_other:
  *           if self._buy_order_fill and self.current_timestamp >= self._balance_fixer_timestamp:             # <<<<<<<<<<<<<<
  *             self._buy_order_fill = False
  *           else:
  */
-    __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_self->_buy_order_fill); if (unlikely((__pyx_t_4 < 0))) __PYX_ERR(0, 1514, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_self->_buy_order_fill); if (unlikely((__pyx_t_4 < 0))) __PYX_ERR(0, 1515, __pyx_L1_error)
     if (__pyx_t_4) {
     } else {
       __pyx_t_5 = __pyx_t_4;
       goto __pyx_L17_bool_binop_done;
     }
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_current_timestamp); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1514, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_current_timestamp); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1515, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_6 = PyObject_RichCompare(__pyx_t_2, __pyx_v_self->_balance_fixer_timestamp, Py_GE); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1514, __pyx_L1_error)
+    __pyx_t_6 = PyObject_RichCompare(__pyx_t_2, __pyx_v_self->_balance_fixer_timestamp, Py_GE); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1515, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely((__pyx_t_4 < 0))) __PYX_ERR(0, 1514, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely((__pyx_t_4 < 0))) __PYX_ERR(0, 1515, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __pyx_t_5 = __pyx_t_4;
     __pyx_L17_bool_binop_done:;
     if (__pyx_t_5) {
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1515
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1516
  *         if not self._hanging_orders_enabled and self._hanging_orders_enabled_other:
  *           if self._buy_order_fill and self.current_timestamp >= self._balance_fixer_timestamp:
  *             self._buy_order_fill = False             # <<<<<<<<<<<<<<
@@ -36364,7 +36380,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __Pyx_DECREF(__pyx_v_self->_buy_order_fill);
       __pyx_v_self->_buy_order_fill = Py_False;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1514
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1515
  *                 return
  *         if not self._hanging_orders_enabled and self._hanging_orders_enabled_other:
  *           if self._buy_order_fill and self.current_timestamp >= self._balance_fixer_timestamp:             # <<<<<<<<<<<<<<
@@ -36374,12 +36390,12 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       goto __pyx_L16;
     }
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1517
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1518
  *             self._buy_order_fill = False
  *           else:
  *             self._buy_order_fill = True             # <<<<<<<<<<<<<<
  *             if self.get_inventory_management() >= Decimal(-0.075): #positive = you need to sell
- *               order_id = self.c_sell_with_specific_market(
+ *               top_ask = market.c_get_price(self.trading_pair, True)
  */
     /*else*/ {
       __Pyx_INCREF(Py_True);
@@ -36388,14 +36404,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __Pyx_DECREF(__pyx_v_self->_buy_order_fill);
       __pyx_v_self->_buy_order_fill = Py_True;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1518
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1519
  *           else:
  *             self._buy_order_fill = True
  *             if self.get_inventory_management() >= Decimal(-0.075): #positive = you need to sell             # <<<<<<<<<<<<<<
+ *               top_ask = market.c_get_price(self.trading_pair, True)
  *               order_id = self.c_sell_with_specific_market(
- *                   self._market_info,
  */
-      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_inventory_management); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1518, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_inventory_management); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1519, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __pyx_t_9 = NULL;
       __pyx_t_13 = 0;
@@ -36413,11 +36429,11 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
         PyObject *__pyx_callargs[1] = {__pyx_t_9, };
         __pyx_t_6 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_13, 0+__pyx_t_13);
         __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
-        if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1518, __pyx_L1_error)
+        if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1519, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       }
-      __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_Decimal); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1518, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_Decimal); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1519, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __pyx_t_12 = NULL;
       __pyx_t_13 = 0;
@@ -36435,183 +36451,216 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
         PyObject *__pyx_callargs[2] = {__pyx_t_12, __pyx_float_neg_0_075};
         __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_9, __pyx_callargs+1-__pyx_t_13, 1+__pyx_t_13);
         __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1518, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1519, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       }
-      __pyx_t_9 = PyObject_RichCompare(__pyx_t_6, __pyx_t_2, Py_GE); __Pyx_XGOTREF(__pyx_t_9); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1518, __pyx_L1_error)
+      __pyx_t_9 = PyObject_RichCompare(__pyx_t_6, __pyx_t_2, Py_GE); __Pyx_XGOTREF(__pyx_t_9); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1519, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_9); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 1518, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_9); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 1519, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       if (__pyx_t_5) {
 
         /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1520
+ *             self._buy_order_fill = True
  *             if self.get_inventory_management() >= Decimal(-0.075): #positive = you need to sell
+ *               top_ask = market.c_get_price(self.trading_pair, True)             # <<<<<<<<<<<<<<
+ *               order_id = self.c_sell_with_specific_market(
+ *                   self._market_info,
+ */
+        __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_trading_pair); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1520, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_9);
+        if (!(likely(PyUnicode_CheckExact(__pyx_t_9))||((__pyx_t_9) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_9))) __PYX_ERR(0, 1520, __pyx_L1_error)
+        __pyx_t_2 = ((struct __pyx_vtabstruct_10hummingbot_9connector_13exchange_base_ExchangeBase *)__pyx_v_market->__pyx_base.__pyx_base.__pyx_base.__pyx_base.__pyx_vtab)->__pyx_base.c_get_price(((struct __pyx_obj_10hummingbot_9connector_14connector_base_ConnectorBase *)__pyx_v_market), ((PyObject*)__pyx_t_9), 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1520, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+        __pyx_v_top_ask = __pyx_t_2;
+        __pyx_t_2 = 0;
+
+        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1522
+ *               top_ask = market.c_get_price(self.trading_pair, True)
  *               order_id = self.c_sell_with_specific_market(
  *                   self._market_info,             # <<<<<<<<<<<<<<
  *                   limit_order_record.quantity,
  *                   order_type=self._limit_order_type,
  */
-        __pyx_t_9 = __pyx_v_self->_market_info;
-        __Pyx_INCREF(__pyx_t_9);
+        __pyx_t_2 = __pyx_v_self->_market_info;
+        __Pyx_INCREF(__pyx_t_2);
 
-        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1521
+        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1523
  *               order_id = self.c_sell_with_specific_market(
  *                   self._market_info,
  *                   limit_order_record.quantity,             # <<<<<<<<<<<<<<
  *                   order_type=self._limit_order_type,
- *                   price=(limit_order_record.price * (Decimal(1) + self._bid_spread)),
+ *                   price=max((limit_order_record.price * (Decimal(1) + self._bid_spread)),top_ask),
  */
-        __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_quantity); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1521, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_2);
+        __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_quantity); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1523, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_9);
 
-        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1522
+        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1524
  *                   self._market_info,
  *                   limit_order_record.quantity,
  *                   order_type=self._limit_order_type,             # <<<<<<<<<<<<<<
- *                   price=(limit_order_record.price * (Decimal(1) + self._bid_spread)),
+ *                   price=max((limit_order_record.price * (Decimal(1) + self._bid_spread)),top_ask),
  *                   expiration_seconds=expiration_seconds)
  */
         __pyx_t_6 = __pyx_v_self->_limit_order_type;
         __Pyx_INCREF(__pyx_t_6);
 
-        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1523
+        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1525
  *                   limit_order_record.quantity,
  *                   order_type=self._limit_order_type,
- *                   price=(limit_order_record.price * (Decimal(1) + self._bid_spread)),             # <<<<<<<<<<<<<<
+ *                   price=max((limit_order_record.price * (Decimal(1) + self._bid_spread)),top_ask),             # <<<<<<<<<<<<<<
  *                   expiration_seconds=expiration_seconds)
  *               self._hanging_order_list.append(order_id)
  */
-        __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_price); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1523, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_12);
-        __Pyx_GetModuleGlobalName(__pyx_t_11, __pyx_n_s_Decimal); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1523, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_11);
-        __pyx_t_14 = NULL;
+        __Pyx_INCREF(__pyx_v_top_ask);
+        __pyx_t_12 = __pyx_v_top_ask;
+        __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_price); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1525, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
+        __Pyx_GetModuleGlobalName(__pyx_t_14, __pyx_n_s_Decimal); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1525, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_14);
+        __pyx_t_15 = NULL;
         __pyx_t_13 = 0;
-        if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_11))) {
-          __pyx_t_14 = PyMethod_GET_SELF(__pyx_t_11);
-          if (likely(__pyx_t_14)) {
-            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_11);
-            __Pyx_INCREF(__pyx_t_14);
+        if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_14))) {
+          __pyx_t_15 = PyMethod_GET_SELF(__pyx_t_14);
+          if (likely(__pyx_t_15)) {
+            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_14);
+            __Pyx_INCREF(__pyx_t_15);
             __Pyx_INCREF(function);
-            __Pyx_DECREF_SET(__pyx_t_11, function);
+            __Pyx_DECREF_SET(__pyx_t_14, function);
             __pyx_t_13 = 1;
           }
         }
         {
-          PyObject *__pyx_callargs[2] = {__pyx_t_14, __pyx_int_1};
-          __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_11, __pyx_callargs+1-__pyx_t_13, 1+__pyx_t_13);
-          __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
-          if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1523, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_1);
-          __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+          PyObject *__pyx_callargs[2] = {__pyx_t_15, __pyx_int_1};
+          __pyx_t_11 = __Pyx_PyObject_FastCall(__pyx_t_14, __pyx_callargs+1-__pyx_t_13, 1+__pyx_t_13);
+          __Pyx_XDECREF(__pyx_t_15); __pyx_t_15 = 0;
+          if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1525, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_11);
+          __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
         }
-        __pyx_t_11 = PyNumber_Add(__pyx_t_1, __pyx_v_self->_bid_spread); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1523, __pyx_L1_error)
+        __pyx_t_14 = PyNumber_Add(__pyx_t_11, __pyx_v_self->_bid_spread); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1525, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_14);
+        __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+        __pyx_t_11 = PyNumber_Multiply(__pyx_t_1, __pyx_t_14); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1525, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_11);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_t_1 = PyNumber_Multiply(__pyx_t_12, __pyx_t_11); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1523, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+        __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
+        __pyx_t_1 = PyObject_RichCompare(__pyx_t_12, __pyx_t_11, Py_GT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1525, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 1525, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        if (__pyx_t_5) {
+          __Pyx_INCREF(__pyx_t_12);
+          __pyx_t_14 = __pyx_t_12;
+        } else {
+          __Pyx_INCREF(__pyx_t_11);
+          __pyx_t_14 = __pyx_t_11;
+        }
         __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+        __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+        __pyx_t_12 = __pyx_t_14;
+        __Pyx_INCREF(__pyx_t_12);
+        __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
 
-        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1519
- *             self._buy_order_fill = True
+        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1521
  *             if self.get_inventory_management() >= Decimal(-0.075): #positive = you need to sell
+ *               top_ask = market.c_get_price(self.trading_pair, True)
  *               order_id = self.c_sell_with_specific_market(             # <<<<<<<<<<<<<<
  *                   self._market_info,
  *                   limit_order_record.quantity,
  */
-        __pyx_t_15.__pyx_n = 3;
-        __pyx_t_15.order_type = __pyx_t_6;
-        __pyx_t_15.price = __pyx_t_1;
-        __pyx_t_15.expiration_seconds = __pyx_v_expiration_seconds;
-        __pyx_t_11 = ((struct __pyx_vtabstruct_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy *)__pyx_v_self->__pyx_base.__pyx_base.__pyx_base.__pyx_vtab)->__pyx_base.c_sell_with_specific_market(((struct __pyx_obj_10hummingbot_8strategy_13strategy_base_StrategyBase *)__pyx_v_self), __pyx_t_9, __pyx_t_2, &__pyx_t_15); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1519, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_11);
-        __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+        __pyx_t_16.__pyx_n = 3;
+        __pyx_t_16.order_type = __pyx_t_6;
+        __pyx_t_16.price = __pyx_t_12;
+        __pyx_t_16.expiration_seconds = __pyx_v_expiration_seconds;
+        __pyx_t_14 = ((struct __pyx_vtabstruct_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy *)__pyx_v_self->__pyx_base.__pyx_base.__pyx_base.__pyx_vtab)->__pyx_base.c_sell_with_specific_market(((struct __pyx_obj_10hummingbot_8strategy_13strategy_base_StrategyBase *)__pyx_v_self), __pyx_t_2, __pyx_t_9, &__pyx_t_16); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1521, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_14);
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __Pyx_DECREF_SET(__pyx_v_order_id, ((PyObject*)__pyx_t_11));
-        __pyx_t_11 = 0;
+        __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+        __Pyx_DECREF_SET(__pyx_v_order_id, ((PyObject*)__pyx_t_14));
+        __pyx_t_14 = 0;
 
-        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1525
- *                   price=(limit_order_record.price * (Decimal(1) + self._bid_spread)),
+        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1527
+ *                   price=max((limit_order_record.price * (Decimal(1) + self._bid_spread)),top_ask),
  *                   expiration_seconds=expiration_seconds)
  *               self._hanging_order_list.append(order_id)             # <<<<<<<<<<<<<<
  *               self.c_cancel_all_orders()
  * 
  */
-        __pyx_t_16 = __Pyx_PyObject_Append(__pyx_v_self->_hanging_order_list, __pyx_v_order_id); if (unlikely(__pyx_t_16 == ((int)-1))) __PYX_ERR(0, 1525, __pyx_L1_error)
+        __pyx_t_17 = __Pyx_PyObject_Append(__pyx_v_self->_hanging_order_list, __pyx_v_order_id); if (unlikely(__pyx_t_17 == ((int)-1))) __PYX_ERR(0, 1527, __pyx_L1_error)
 
-        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1526
+        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1528
  *                   expiration_seconds=expiration_seconds)
  *               self._hanging_order_list.append(order_id)
  *               self.c_cancel_all_orders()             # <<<<<<<<<<<<<<
  * 
  * 
  */
-        __pyx_t_11 = ((struct __pyx_vtabstruct_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy *)__pyx_v_self->__pyx_base.__pyx_base.__pyx_base.__pyx_vtab)->c_cancel_all_orders(__pyx_v_self); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1526, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_11);
-        __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+        __pyx_t_14 = ((struct __pyx_vtabstruct_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy *)__pyx_v_self->__pyx_base.__pyx_base.__pyx_base.__pyx_vtab)->c_cancel_all_orders(__pyx_v_self); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1528, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_14);
+        __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
 
-        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1518
+        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1519
  *           else:
  *             self._buy_order_fill = True
  *             if self.get_inventory_management() >= Decimal(-0.075): #positive = you need to sell             # <<<<<<<<<<<<<<
+ *               top_ask = market.c_get_price(self.trading_pair, True)
  *               order_id = self.c_sell_with_specific_market(
- *                   self._market_info,
  */
       }
     }
     __pyx_L16:;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1530
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1533
  * 
  * 
  *           self._last_buy_order_price = limit_order_record.price             # <<<<<<<<<<<<<<
  *           self.log_with_clock(
  *               logging.INFO,
  */
-    __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_price); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1530, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_11);
-    __Pyx_GIVEREF(__pyx_t_11);
+    __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_price); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1533, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_14);
+    __Pyx_GIVEREF(__pyx_t_14);
     __Pyx_GOTREF(__pyx_v_self->_last_buy_order_price);
     __Pyx_DECREF(__pyx_v_self->_last_buy_order_price);
-    __pyx_v_self->_last_buy_order_price = __pyx_t_11;
-    __pyx_t_11 = 0;
+    __pyx_v_self->_last_buy_order_price = __pyx_t_14;
+    __pyx_t_14 = 0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1531
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1534
  * 
  *           self._last_buy_order_price = limit_order_record.price
  *           self.log_with_clock(             # <<<<<<<<<<<<<<
  *               logging.INFO,
  *               f"self._buy_order_fill: order_id {order_id} - {self._sell_order_fill}) self._buy_order_fill: {self._buy_order_fill} self._last_buy_order_price : {self._last_buy_order_price} inventory_management {self.get_inventory_management()} "
  */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_log_with_clock); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1531, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_12 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_log_with_clock); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1534, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_12);
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1532
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1535
  *           self._last_buy_order_price = limit_order_record.price
  *           self.log_with_clock(
  *               logging.INFO,             # <<<<<<<<<<<<<<
  *               f"self._buy_order_fill: order_id {order_id} - {self._sell_order_fill}) self._buy_order_fill: {self._buy_order_fill} self._last_buy_order_price : {self._last_buy_order_price} inventory_management {self.get_inventory_management()} "
  *           )
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_logging); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1532, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_logging); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1535, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_INFO); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1532, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_INFO); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1535, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_9);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1533
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1536
  *           self.log_with_clock(
  *               logging.INFO,
  *               f"self._buy_order_fill: order_id {order_id} - {self._sell_order_fill}) self._buy_order_fill: {self._buy_order_fill} self._last_buy_order_price : {self._last_buy_order_price} inventory_management {self.get_inventory_management()} "             # <<<<<<<<<<<<<<
  *           )
  * 
  */
-    __pyx_t_6 = PyTuple_New(11); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1533, __pyx_L1_error)
+    __pyx_t_6 = PyTuple_New(11); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1536, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __pyx_t_7 = 0;
     __pyx_t_10 = 127;
@@ -36619,112 +36668,112 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     __pyx_t_7 += 31;
     __Pyx_GIVEREF(__pyx_kp_u_self__buy_order_fill_order_id);
     PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_kp_u_self__buy_order_fill_order_id);
-    __pyx_t_9 = __Pyx_PyUnicode_Unicode(__pyx_v_order_id); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1533, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_10;
-    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_9);
-    __Pyx_GIVEREF(__pyx_t_9);
-    PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_9);
-    __pyx_t_9 = 0;
+    __pyx_t_2 = __Pyx_PyUnicode_Unicode(__pyx_v_order_id); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1536, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_10;
+    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
+    __Pyx_GIVEREF(__pyx_t_2);
+    PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_2);
+    __pyx_t_2 = 0;
     __Pyx_INCREF(__pyx_kp_u__26);
     __pyx_t_7 += 3;
     __Pyx_GIVEREF(__pyx_kp_u__26);
     PyTuple_SET_ITEM(__pyx_t_6, 2, __pyx_kp_u__26);
-    __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_v_self->_sell_order_fill, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1533, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_10;
-    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_9);
-    __Pyx_GIVEREF(__pyx_t_9);
-    PyTuple_SET_ITEM(__pyx_t_6, 3, __pyx_t_9);
-    __pyx_t_9 = 0;
+    __pyx_t_2 = __Pyx_PyObject_FormatSimple(__pyx_v_self->_sell_order_fill, __pyx_empty_unicode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1536, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_10;
+    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
+    __Pyx_GIVEREF(__pyx_t_2);
+    PyTuple_SET_ITEM(__pyx_t_6, 3, __pyx_t_2);
+    __pyx_t_2 = 0;
     __Pyx_INCREF(__pyx_kp_u_self__buy_order_fill);
     __pyx_t_7 += 24;
     __Pyx_GIVEREF(__pyx_kp_u_self__buy_order_fill);
     PyTuple_SET_ITEM(__pyx_t_6, 4, __pyx_kp_u_self__buy_order_fill);
-    __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_v_self->_buy_order_fill, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1533, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_10;
-    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_9);
-    __Pyx_GIVEREF(__pyx_t_9);
-    PyTuple_SET_ITEM(__pyx_t_6, 5, __pyx_t_9);
-    __pyx_t_9 = 0;
+    __pyx_t_2 = __Pyx_PyObject_FormatSimple(__pyx_v_self->_buy_order_fill, __pyx_empty_unicode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1536, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_10;
+    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
+    __Pyx_GIVEREF(__pyx_t_2);
+    PyTuple_SET_ITEM(__pyx_t_6, 5, __pyx_t_2);
+    __pyx_t_2 = 0;
     __Pyx_INCREF(__pyx_kp_u_self__last_buy_order_price);
     __pyx_t_7 += 30;
     __Pyx_GIVEREF(__pyx_kp_u_self__last_buy_order_price);
     PyTuple_SET_ITEM(__pyx_t_6, 6, __pyx_kp_u_self__last_buy_order_price);
-    __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_v_self->_last_buy_order_price, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1533, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_10;
-    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_9);
-    __Pyx_GIVEREF(__pyx_t_9);
-    PyTuple_SET_ITEM(__pyx_t_6, 7, __pyx_t_9);
-    __pyx_t_9 = 0;
+    __pyx_t_2 = __Pyx_PyObject_FormatSimple(__pyx_v_self->_last_buy_order_price, __pyx_empty_unicode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1536, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_10;
+    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
+    __Pyx_GIVEREF(__pyx_t_2);
+    PyTuple_SET_ITEM(__pyx_t_6, 7, __pyx_t_2);
+    __pyx_t_2 = 0;
     __Pyx_INCREF(__pyx_kp_u_inventory_management_2);
     __pyx_t_7 += 22;
     __Pyx_GIVEREF(__pyx_kp_u_inventory_management_2);
     PyTuple_SET_ITEM(__pyx_t_6, 8, __pyx_kp_u_inventory_management_2);
-    __pyx_t_12 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_inventory_management); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1533, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
-    __pyx_t_14 = NULL;
+    __pyx_t_11 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_inventory_management); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1536, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_11);
+    __pyx_t_1 = NULL;
+    __pyx_t_13 = 0;
+    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_11))) {
+      __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_11);
+      if (likely(__pyx_t_1)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_11);
+        __Pyx_INCREF(__pyx_t_1);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_11, function);
+        __pyx_t_13 = 1;
+      }
+    }
+    {
+      PyObject *__pyx_callargs[1] = {__pyx_t_1, };
+      __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_11, __pyx_callargs+1-__pyx_t_13, 0+__pyx_t_13);
+      __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1536, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+    }
+    __pyx_t_11 = __Pyx_PyObject_FormatSimple(__pyx_t_2, __pyx_empty_unicode); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1536, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_11);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_11) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_11) : __pyx_t_10;
+    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_11);
+    __Pyx_GIVEREF(__pyx_t_11);
+    PyTuple_SET_ITEM(__pyx_t_6, 9, __pyx_t_11);
+    __pyx_t_11 = 0;
+    __Pyx_INCREF(__pyx_kp_u__35);
+    __pyx_t_7 += 1;
+    __Pyx_GIVEREF(__pyx_kp_u__35);
+    PyTuple_SET_ITEM(__pyx_t_6, 10, __pyx_kp_u__35);
+    __pyx_t_11 = __Pyx_PyUnicode_Join(__pyx_t_6, 11, __pyx_t_7, __pyx_t_10); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1536, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_11);
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    __pyx_t_6 = NULL;
     __pyx_t_13 = 0;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_12))) {
-      __pyx_t_14 = PyMethod_GET_SELF(__pyx_t_12);
-      if (likely(__pyx_t_14)) {
+      __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_12);
+      if (likely(__pyx_t_6)) {
         PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_12);
-        __Pyx_INCREF(__pyx_t_14);
+        __Pyx_INCREF(__pyx_t_6);
         __Pyx_INCREF(function);
         __Pyx_DECREF_SET(__pyx_t_12, function);
         __pyx_t_13 = 1;
       }
     }
     {
-      PyObject *__pyx_callargs[1] = {__pyx_t_14, };
-      __pyx_t_9 = __Pyx_PyObject_FastCall(__pyx_t_12, __pyx_callargs+1-__pyx_t_13, 0+__pyx_t_13);
-      __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
-      if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1533, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_9);
-      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-    }
-    __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_t_9, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1533, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
-    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) : __pyx_t_10;
-    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_12);
-    __Pyx_GIVEREF(__pyx_t_12);
-    PyTuple_SET_ITEM(__pyx_t_6, 9, __pyx_t_12);
-    __pyx_t_12 = 0;
-    __Pyx_INCREF(__pyx_kp_u__35);
-    __pyx_t_7 += 1;
-    __Pyx_GIVEREF(__pyx_kp_u__35);
-    PyTuple_SET_ITEM(__pyx_t_6, 10, __pyx_kp_u__35);
-    __pyx_t_12 = __Pyx_PyUnicode_Join(__pyx_t_6, 11, __pyx_t_7, __pyx_t_10); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1533, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_6 = NULL;
-    __pyx_t_13 = 0;
-    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
-      __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_1);
-      if (likely(__pyx_t_6)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
-        __Pyx_INCREF(__pyx_t_6);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_1, function);
-        __pyx_t_13 = 1;
-      }
-    }
-    {
-      PyObject *__pyx_callargs[3] = {__pyx_t_6, __pyx_t_2, __pyx_t_12};
-      __pyx_t_11 = __Pyx_PyObject_FastCall(__pyx_t_1, __pyx_callargs+1-__pyx_t_13, 2+__pyx_t_13);
+      PyObject *__pyx_callargs[3] = {__pyx_t_6, __pyx_t_9, __pyx_t_11};
+      __pyx_t_14 = __Pyx_PyObject_FastCall(__pyx_t_12, __pyx_callargs+1-__pyx_t_13, 2+__pyx_t_13);
       __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+      if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1534, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_14);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1531, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_11);
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     }
-    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+    __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1513
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1514
  *                 )
  *                 return
  *         if not self._hanging_orders_enabled and self._hanging_orders_enabled_other:             # <<<<<<<<<<<<<<
@@ -36733,7 +36782,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
   }
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1538
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1541
  * 
  *         # delay order creation by filled_order_dalay (in seconds)
  *         self._create_timestamp = self._current_timestamp + self._filled_order_delay             # <<<<<<<<<<<<<<
@@ -36742,7 +36791,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
   __pyx_v_self->_create_timestamp = (__pyx_v_self->__pyx_base.__pyx_base._current_timestamp + __pyx_v_self->_filled_order_delay);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1539
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1542
  *         # delay order creation by filled_order_dalay (in seconds)
  *         self._create_timestamp = self._current_timestamp + self._filled_order_delay
  *         self._cancel_timestamp = min(self._cancel_timestamp, self._create_timestamp)             # <<<<<<<<<<<<<<
@@ -36750,33 +36799,33 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  * 
  */
   __pyx_t_3 = __pyx_v_self->_create_timestamp;
-  __pyx_t_17 = __pyx_v_self->_cancel_timestamp;
-  if (((__pyx_t_3 < __pyx_t_17) != 0)) {
-    __pyx_t_18 = __pyx_t_3;
+  __pyx_t_18 = __pyx_v_self->_cancel_timestamp;
+  if (((__pyx_t_3 < __pyx_t_18) != 0)) {
+    __pyx_t_19 = __pyx_t_3;
   } else {
-    __pyx_t_18 = __pyx_t_17;
+    __pyx_t_19 = __pyx_t_18;
   }
-  __pyx_v_self->_cancel_timestamp = __pyx_t_18;
+  __pyx_v_self->_cancel_timestamp = __pyx_t_19;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1540
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1543
  *         self._create_timestamp = self._current_timestamp + self._filled_order_delay
  *         self._cancel_timestamp = min(self._cancel_timestamp, self._create_timestamp)
  *         self._balance_fixer_timestamp = self._filled_order_delay_target_balance + self._current_timestamp             # <<<<<<<<<<<<<<
  * 
  *         self._filled_buys_balance += 1
  */
-  __pyx_t_11 = PyFloat_FromDouble(__pyx_v_self->__pyx_base.__pyx_base._current_timestamp); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1540, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_11);
-  __pyx_t_1 = PyNumber_Add(__pyx_v_self->_filled_order_delay_target_balance, __pyx_t_11); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1540, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  __Pyx_GIVEREF(__pyx_t_1);
+  __pyx_t_14 = PyFloat_FromDouble(__pyx_v_self->__pyx_base.__pyx_base._current_timestamp); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1543, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_14);
+  __pyx_t_12 = PyNumber_Add(__pyx_v_self->_filled_order_delay_target_balance, __pyx_t_14); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1543, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_12);
+  __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
+  __Pyx_GIVEREF(__pyx_t_12);
   __Pyx_GOTREF(__pyx_v_self->_balance_fixer_timestamp);
   __Pyx_DECREF(__pyx_v_self->_balance_fixer_timestamp);
-  __pyx_v_self->_balance_fixer_timestamp = __pyx_t_1;
-  __pyx_t_1 = 0;
+  __pyx_v_self->_balance_fixer_timestamp = __pyx_t_12;
+  __pyx_t_12 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1542
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1545
  *         self._balance_fixer_timestamp = self._filled_order_delay_target_balance + self._current_timestamp
  * 
  *         self._filled_buys_balance += 1             # <<<<<<<<<<<<<<
@@ -36785,313 +36834,313 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
   __pyx_v_self->_filled_buys_balance = (__pyx_v_self->_filled_buys_balance + 1);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1543
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1546
  * 
  *         self._filled_buys_balance += 1
  *         self._last_own_trade_price = limit_order_record.price             # <<<<<<<<<<<<<<
  * 
  *         self.log_with_clock(
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_price); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1543, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_GIVEREF(__pyx_t_1);
+  __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_price); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1546, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_12);
+  __Pyx_GIVEREF(__pyx_t_12);
   __Pyx_GOTREF(__pyx_v_self->_last_own_trade_price);
   __Pyx_DECREF(__pyx_v_self->_last_own_trade_price);
-  __pyx_v_self->_last_own_trade_price = __pyx_t_1;
-  __pyx_t_1 = 0;
+  __pyx_v_self->_last_own_trade_price = __pyx_t_12;
+  __pyx_t_12 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1545
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1548
  *         self._last_own_trade_price = limit_order_record.price
  * 
  *         self.log_with_clock(             # <<<<<<<<<<<<<<
  *             logging.INFO,
  *             f"({self.trading_pair}) Maker buy order {order_id} "
  */
-  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_log_with_clock); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1545, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_11);
+  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_log_with_clock); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1548, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_14);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1546
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1549
  * 
  *         self.log_with_clock(
  *             logging.INFO,             # <<<<<<<<<<<<<<
  *             f"({self.trading_pair}) Maker buy order {order_id} "
  *             f"({limit_order_record.quantity} {limit_order_record.base_currency} @ "
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_12, __pyx_n_s_logging); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1546, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_12);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_INFO); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1546, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+  __Pyx_GetModuleGlobalName(__pyx_t_11, __pyx_n_s_logging); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1549, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_11);
+  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_INFO); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1549, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_9);
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1547
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1550
  *         self.log_with_clock(
  *             logging.INFO,
  *             f"({self.trading_pair}) Maker buy order {order_id} "             # <<<<<<<<<<<<<<
  *             f"({limit_order_record.quantity} {limit_order_record.base_currency} @ "
  *             f"{limit_order_record.price} {limit_order_record.quote_currency}) has been completely filled."
  */
-  __pyx_t_12 = PyTuple_New(13); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1547, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_12);
+  __pyx_t_11 = PyTuple_New(13); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1550, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_11);
   __pyx_t_7 = 0;
   __pyx_t_10 = 127;
   __Pyx_INCREF(__pyx_kp_u__34);
   __pyx_t_7 += 1;
   __Pyx_GIVEREF(__pyx_kp_u__34);
-  PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_kp_u__34);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_trading_pair); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1547, __pyx_L1_error)
+  PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_kp_u__34);
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_trading_pair); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1550, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_t_6, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1547, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
+  __pyx_t_2 = __Pyx_PyObject_FormatSimple(__pyx_t_6, __pyx_empty_unicode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1550, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_10;
-  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_9);
-  __Pyx_GIVEREF(__pyx_t_9);
-  PyTuple_SET_ITEM(__pyx_t_12, 1, __pyx_t_9);
-  __pyx_t_9 = 0;
+  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_10;
+  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
+  __Pyx_GIVEREF(__pyx_t_2);
+  PyTuple_SET_ITEM(__pyx_t_11, 1, __pyx_t_2);
+  __pyx_t_2 = 0;
   __Pyx_INCREF(__pyx_kp_u_Maker_buy_order);
   __pyx_t_7 += 18;
   __Pyx_GIVEREF(__pyx_kp_u_Maker_buy_order);
-  PyTuple_SET_ITEM(__pyx_t_12, 2, __pyx_kp_u_Maker_buy_order);
-  __pyx_t_9 = __Pyx_PyUnicode_Unicode(__pyx_v_order_id); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1547, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_10;
-  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_9);
-  __Pyx_GIVEREF(__pyx_t_9);
-  PyTuple_SET_ITEM(__pyx_t_12, 3, __pyx_t_9);
-  __pyx_t_9 = 0;
+  PyTuple_SET_ITEM(__pyx_t_11, 2, __pyx_kp_u_Maker_buy_order);
+  __pyx_t_2 = __Pyx_PyUnicode_Unicode(__pyx_v_order_id); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1550, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_10;
+  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
+  __Pyx_GIVEREF(__pyx_t_2);
+  PyTuple_SET_ITEM(__pyx_t_11, 3, __pyx_t_2);
+  __pyx_t_2 = 0;
   __Pyx_INCREF(__pyx_kp_u__36);
   __pyx_t_7 += 2;
   __Pyx_GIVEREF(__pyx_kp_u__36);
-  PyTuple_SET_ITEM(__pyx_t_12, 4, __pyx_kp_u__36);
+  PyTuple_SET_ITEM(__pyx_t_11, 4, __pyx_kp_u__36);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1548
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1551
  *             logging.INFO,
  *             f"({self.trading_pair}) Maker buy order {order_id} "
  *             f"({limit_order_record.quantity} {limit_order_record.base_currency} @ "             # <<<<<<<<<<<<<<
  *             f"{limit_order_record.price} {limit_order_record.quote_currency}) has been completely filled."
  *         )
  */
-  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_quantity); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1548, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_t_9, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1548, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_quantity); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1551, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_t_2, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1551, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_6) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_6) : __pyx_t_10;
   __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_6);
   __Pyx_GIVEREF(__pyx_t_6);
-  PyTuple_SET_ITEM(__pyx_t_12, 5, __pyx_t_6);
+  PyTuple_SET_ITEM(__pyx_t_11, 5, __pyx_t_6);
   __pyx_t_6 = 0;
   __Pyx_INCREF(__pyx_kp_u__35);
   __pyx_t_7 += 1;
   __Pyx_GIVEREF(__pyx_kp_u__35);
-  PyTuple_SET_ITEM(__pyx_t_12, 6, __pyx_kp_u__35);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_base_currency); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1548, __pyx_L1_error)
+  PyTuple_SET_ITEM(__pyx_t_11, 6, __pyx_kp_u__35);
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_base_currency); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1551, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_t_6, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1548, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
+  __pyx_t_2 = __Pyx_PyObject_FormatSimple(__pyx_t_6, __pyx_empty_unicode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1551, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_10;
-  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_9);
-  __Pyx_GIVEREF(__pyx_t_9);
-  PyTuple_SET_ITEM(__pyx_t_12, 7, __pyx_t_9);
-  __pyx_t_9 = 0;
+  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_10;
+  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
+  __Pyx_GIVEREF(__pyx_t_2);
+  PyTuple_SET_ITEM(__pyx_t_11, 7, __pyx_t_2);
+  __pyx_t_2 = 0;
   __Pyx_INCREF(__pyx_kp_u__37);
   __pyx_t_7 += 3;
   __Pyx_GIVEREF(__pyx_kp_u__37);
-  PyTuple_SET_ITEM(__pyx_t_12, 8, __pyx_kp_u__37);
+  PyTuple_SET_ITEM(__pyx_t_11, 8, __pyx_kp_u__37);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1549
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1552
  *             f"({self.trading_pair}) Maker buy order {order_id} "
  *             f"({limit_order_record.quantity} {limit_order_record.base_currency} @ "
  *             f"{limit_order_record.price} {limit_order_record.quote_currency}) has been completely filled."             # <<<<<<<<<<<<<<
  *         )
  *         self.notify_hb_app_with_timestamp(
  */
-  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_price); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1549, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_t_9, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1549, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_price); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1552, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_t_2, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1552, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_6) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_6) : __pyx_t_10;
   __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_6);
   __Pyx_GIVEREF(__pyx_t_6);
-  PyTuple_SET_ITEM(__pyx_t_12, 9, __pyx_t_6);
+  PyTuple_SET_ITEM(__pyx_t_11, 9, __pyx_t_6);
   __pyx_t_6 = 0;
   __Pyx_INCREF(__pyx_kp_u__35);
   __pyx_t_7 += 1;
   __Pyx_GIVEREF(__pyx_kp_u__35);
-  PyTuple_SET_ITEM(__pyx_t_12, 10, __pyx_kp_u__35);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_quote_currency); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1549, __pyx_L1_error)
+  PyTuple_SET_ITEM(__pyx_t_11, 10, __pyx_kp_u__35);
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_quote_currency); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1552, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_t_6, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1549, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
+  __pyx_t_2 = __Pyx_PyObject_FormatSimple(__pyx_t_6, __pyx_empty_unicode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1552, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_10;
-  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_9);
-  __Pyx_GIVEREF(__pyx_t_9);
-  PyTuple_SET_ITEM(__pyx_t_12, 11, __pyx_t_9);
-  __pyx_t_9 = 0;
+  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_10;
+  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
+  __Pyx_GIVEREF(__pyx_t_2);
+  PyTuple_SET_ITEM(__pyx_t_11, 11, __pyx_t_2);
+  __pyx_t_2 = 0;
   __Pyx_INCREF(__pyx_kp_u_has_been_completely_filled);
   __pyx_t_7 += 29;
   __Pyx_GIVEREF(__pyx_kp_u_has_been_completely_filled);
-  PyTuple_SET_ITEM(__pyx_t_12, 12, __pyx_kp_u_has_been_completely_filled);
+  PyTuple_SET_ITEM(__pyx_t_11, 12, __pyx_kp_u_has_been_completely_filled);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1547
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1550
  *         self.log_with_clock(
  *             logging.INFO,
  *             f"({self.trading_pair}) Maker buy order {order_id} "             # <<<<<<<<<<<<<<
  *             f"({limit_order_record.quantity} {limit_order_record.base_currency} @ "
  *             f"{limit_order_record.price} {limit_order_record.quote_currency}) has been completely filled."
  */
-  __pyx_t_9 = __Pyx_PyUnicode_Join(__pyx_t_12, 13, __pyx_t_7, __pyx_t_10); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1547, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
-  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  __pyx_t_12 = NULL;
+  __pyx_t_2 = __Pyx_PyUnicode_Join(__pyx_t_11, 13, __pyx_t_7, __pyx_t_10); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1550, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  __pyx_t_11 = NULL;
   __pyx_t_13 = 0;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_11))) {
-    __pyx_t_12 = PyMethod_GET_SELF(__pyx_t_11);
-    if (likely(__pyx_t_12)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_11);
-      __Pyx_INCREF(__pyx_t_12);
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_14))) {
+    __pyx_t_11 = PyMethod_GET_SELF(__pyx_t_14);
+    if (likely(__pyx_t_11)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_14);
+      __Pyx_INCREF(__pyx_t_11);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_11, function);
+      __Pyx_DECREF_SET(__pyx_t_14, function);
       __pyx_t_13 = 1;
     }
   }
   {
-    PyObject *__pyx_callargs[3] = {__pyx_t_12, __pyx_t_2, __pyx_t_9};
-    __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_11, __pyx_callargs+1-__pyx_t_13, 2+__pyx_t_13);
-    __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    PyObject *__pyx_callargs[3] = {__pyx_t_11, __pyx_t_9, __pyx_t_2};
+    __pyx_t_12 = __Pyx_PyObject_FastCall(__pyx_t_14, __pyx_callargs+1-__pyx_t_13, 2+__pyx_t_13);
+    __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1545, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1548, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_12);
+    __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
   }
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1551
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1554
  *             f"{limit_order_record.price} {limit_order_record.quote_currency}) has been completely filled."
  *         )
  *         self.notify_hb_app_with_timestamp(             # <<<<<<<<<<<<<<
  *             f"Maker BUY order {limit_order_record.quantity} {limit_order_record.base_currency} @ "
  *             f"{limit_order_record.price} {limit_order_record.quote_currency} is filled."
  */
-  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_notify_hb_app_with_timestamp); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1551, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_11);
+  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_notify_hb_app_with_timestamp); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1554, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_14);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1552
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1555
  *         )
  *         self.notify_hb_app_with_timestamp(
  *             f"Maker BUY order {limit_order_record.quantity} {limit_order_record.base_currency} @ "             # <<<<<<<<<<<<<<
  *             f"{limit_order_record.price} {limit_order_record.quote_currency} is filled."
  *         )
  */
-  __pyx_t_9 = PyTuple_New(9); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1552, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
+  __pyx_t_2 = PyTuple_New(9); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1555, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_7 = 0;
   __pyx_t_10 = 127;
   __Pyx_INCREF(__pyx_kp_u_Maker_BUY_order);
   __pyx_t_7 += 16;
   __Pyx_GIVEREF(__pyx_kp_u_Maker_BUY_order);
-  PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_kp_u_Maker_BUY_order);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_quantity); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1552, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_t_2, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1552, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_12);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) : __pyx_t_10;
-  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_12);
-  __Pyx_GIVEREF(__pyx_t_12);
-  PyTuple_SET_ITEM(__pyx_t_9, 1, __pyx_t_12);
-  __pyx_t_12 = 0;
+  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_kp_u_Maker_BUY_order);
+  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_quantity); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1555, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_9);
+  __pyx_t_11 = __Pyx_PyObject_FormatSimple(__pyx_t_9, __pyx_empty_unicode); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1555, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_11);
+  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_11) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_11) : __pyx_t_10;
+  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_11);
+  __Pyx_GIVEREF(__pyx_t_11);
+  PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_t_11);
+  __pyx_t_11 = 0;
   __Pyx_INCREF(__pyx_kp_u__35);
   __pyx_t_7 += 1;
   __Pyx_GIVEREF(__pyx_kp_u__35);
-  PyTuple_SET_ITEM(__pyx_t_9, 2, __pyx_kp_u__35);
-  __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_base_currency); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1552, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_12);
-  __pyx_t_2 = __Pyx_PyObject_FormatSimple(__pyx_t_12, __pyx_empty_unicode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1552, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_10;
-  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
-  __Pyx_GIVEREF(__pyx_t_2);
-  PyTuple_SET_ITEM(__pyx_t_9, 3, __pyx_t_2);
-  __pyx_t_2 = 0;
+  PyTuple_SET_ITEM(__pyx_t_2, 2, __pyx_kp_u__35);
+  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_base_currency); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1555, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_11);
+  __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_t_11, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1555, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_9);
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_10;
+  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_9);
+  __Pyx_GIVEREF(__pyx_t_9);
+  PyTuple_SET_ITEM(__pyx_t_2, 3, __pyx_t_9);
+  __pyx_t_9 = 0;
   __Pyx_INCREF(__pyx_kp_u__37);
   __pyx_t_7 += 3;
   __Pyx_GIVEREF(__pyx_kp_u__37);
-  PyTuple_SET_ITEM(__pyx_t_9, 4, __pyx_kp_u__37);
+  PyTuple_SET_ITEM(__pyx_t_2, 4, __pyx_kp_u__37);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1553
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1556
  *         self.notify_hb_app_with_timestamp(
  *             f"Maker BUY order {limit_order_record.quantity} {limit_order_record.base_currency} @ "
  *             f"{limit_order_record.price} {limit_order_record.quote_currency} is filled."             # <<<<<<<<<<<<<<
  *         )
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_price); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1553, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_t_2, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1553, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_12);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) : __pyx_t_10;
-  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_12);
-  __Pyx_GIVEREF(__pyx_t_12);
-  PyTuple_SET_ITEM(__pyx_t_9, 5, __pyx_t_12);
-  __pyx_t_12 = 0;
+  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_price); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1556, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_9);
+  __pyx_t_11 = __Pyx_PyObject_FormatSimple(__pyx_t_9, __pyx_empty_unicode); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1556, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_11);
+  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_11) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_11) : __pyx_t_10;
+  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_11);
+  __Pyx_GIVEREF(__pyx_t_11);
+  PyTuple_SET_ITEM(__pyx_t_2, 5, __pyx_t_11);
+  __pyx_t_11 = 0;
   __Pyx_INCREF(__pyx_kp_u__35);
   __pyx_t_7 += 1;
   __Pyx_GIVEREF(__pyx_kp_u__35);
-  PyTuple_SET_ITEM(__pyx_t_9, 6, __pyx_kp_u__35);
-  __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_quote_currency); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1553, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_12);
-  __pyx_t_2 = __Pyx_PyObject_FormatSimple(__pyx_t_12, __pyx_empty_unicode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1553, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_10;
-  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
-  __Pyx_GIVEREF(__pyx_t_2);
-  PyTuple_SET_ITEM(__pyx_t_9, 7, __pyx_t_2);
-  __pyx_t_2 = 0;
+  PyTuple_SET_ITEM(__pyx_t_2, 6, __pyx_kp_u__35);
+  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_v_limit_order_record, __pyx_n_s_quote_currency); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1556, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_11);
+  __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_t_11, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1556, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_9);
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_10;
+  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_9);
+  __Pyx_GIVEREF(__pyx_t_9);
+  PyTuple_SET_ITEM(__pyx_t_2, 7, __pyx_t_9);
+  __pyx_t_9 = 0;
   __Pyx_INCREF(__pyx_kp_u_is_filled);
   __pyx_t_7 += 11;
   __Pyx_GIVEREF(__pyx_kp_u_is_filled);
-  PyTuple_SET_ITEM(__pyx_t_9, 8, __pyx_kp_u_is_filled);
+  PyTuple_SET_ITEM(__pyx_t_2, 8, __pyx_kp_u_is_filled);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1552
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1555
  *         )
  *         self.notify_hb_app_with_timestamp(
  *             f"Maker BUY order {limit_order_record.quantity} {limit_order_record.base_currency} @ "             # <<<<<<<<<<<<<<
  *             f"{limit_order_record.price} {limit_order_record.quote_currency} is filled."
  *         )
  */
-  __pyx_t_2 = __Pyx_PyUnicode_Join(__pyx_t_9, 9, __pyx_t_7, __pyx_t_10); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1552, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  __pyx_t_9 = NULL;
+  __pyx_t_9 = __Pyx_PyUnicode_Join(__pyx_t_2, 9, __pyx_t_7, __pyx_t_10); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1555, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_9);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = NULL;
   __pyx_t_13 = 0;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_11))) {
-    __pyx_t_9 = PyMethod_GET_SELF(__pyx_t_11);
-    if (likely(__pyx_t_9)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_11);
-      __Pyx_INCREF(__pyx_t_9);
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_14))) {
+    __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_14);
+    if (likely(__pyx_t_2)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_14);
+      __Pyx_INCREF(__pyx_t_2);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_11, function);
+      __Pyx_DECREF_SET(__pyx_t_14, function);
       __pyx_t_13 = 1;
     }
   }
   {
-    PyObject *__pyx_callargs[2] = {__pyx_t_9, __pyx_t_2};
-    __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_11, __pyx_callargs+1-__pyx_t_13, 1+__pyx_t_13);
-    __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1551, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+    PyObject *__pyx_callargs[2] = {__pyx_t_2, __pyx_t_9};
+    __pyx_t_12 = __Pyx_PyObject_FastCall(__pyx_t_14, __pyx_callargs+1-__pyx_t_13, 1+__pyx_t_13);
+    __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+    if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1554, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_12);
+    __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
   }
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
 
   /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1489
  *                 self._inventory_cost_price_delegate.process_order_fill_event(order_filled_event)
@@ -37112,19 +37161,22 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   __Pyx_XDECREF(__pyx_t_11);
   __Pyx_XDECREF(__pyx_t_12);
   __Pyx_XDECREF(__pyx_t_14);
+  __Pyx_XDECREF(__pyx_t_15);
   __Pyx_AddTraceback("hummingbot.strategy.pure_market_making.pure_market_making.PureMarketMakingStrategy.c_did_complete_buy_order", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_order_id);
   __Pyx_XDECREF(__pyx_v_limit_order_record);
+  __Pyx_XDECREF((PyObject *)__pyx_v_market);
   __Pyx_XDECREF(__pyx_v_active_sell_ids);
+  __Pyx_XDECREF(__pyx_v_top_ask);
   __Pyx_XDECREF(__pyx_9genexpr18__pyx_v_x);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1556
+/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1559
  *         )
  * 
  *     cdef c_did_complete_sell_order(self, object order_completed_event):             # <<<<<<<<<<<<<<
@@ -37136,7 +37188,9 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   PyObject *__pyx_v_order_id = 0;
   struct __pyx_obj_10hummingbot_4core_9data_type_11limit_order_LimitOrder *__pyx_v_limit_order_record = 0;
   double __pyx_v_expiration_seconds;
+  struct __pyx_obj_10hummingbot_9connector_13exchange_base_ExchangeBase *__pyx_v_market = 0;
   CYTHON_UNUSED PyObject *__pyx_v_active_buy_ids = NULL;
+  PyObject *__pyx_v_top_bid = NULL;
   PyObject *__pyx_9genexpr19__pyx_v_x = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -37154,59 +37208,73 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   PyObject *__pyx_t_12 = NULL;
   int __pyx_t_13;
   PyObject *__pyx_t_14 = NULL;
-  struct __pyx_opt_args_10hummingbot_8strategy_13strategy_base_12StrategyBase_c_buy_with_specific_market __pyx_t_15;
-  int __pyx_t_16;
-  double __pyx_t_17;
+  PyObject *__pyx_t_15 = NULL;
+  struct __pyx_opt_args_10hummingbot_8strategy_13strategy_base_12StrategyBase_c_buy_with_specific_market __pyx_t_16;
+  int __pyx_t_17;
   double __pyx_t_18;
+  double __pyx_t_19;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("c_did_complete_sell_order", 0);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1558
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1561
  *     cdef c_did_complete_sell_order(self, object order_completed_event):
  *         cdef:
  *             str order_id = order_completed_event.order_id             # <<<<<<<<<<<<<<
  *             LimitOrder limit_order_record = self._sb_order_tracker.c_get_limit_order(self._market_info, order_id)
  *             double expiration_seconds = NaN
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_completed_event, __pyx_n_s_order_id); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1558, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_order_completed_event, __pyx_n_s_order_id); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1561, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_1))) __PYX_ERR(0, 1558, __pyx_L1_error)
+  if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_1))) __PYX_ERR(0, 1561, __pyx_L1_error)
   __pyx_v_order_id = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1559
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1562
  *         cdef:
  *             str order_id = order_completed_event.order_id
  *             LimitOrder limit_order_record = self._sb_order_tracker.c_get_limit_order(self._market_info, order_id)             # <<<<<<<<<<<<<<
  *             double expiration_seconds = NaN
- *         if limit_order_record is None:
+ *             ExchangeBase market = self._market_info.market
  */
   __pyx_t_1 = __pyx_v_self->_market_info;
   __Pyx_INCREF(__pyx_t_1);
-  __pyx_t_2 = ((PyObject *)((struct __pyx_vtabstruct_10hummingbot_8strategy_13order_tracker_OrderTracker *)__pyx_v_self->__pyx_base._sb_order_tracker->__pyx_base.__pyx_base.__pyx_vtab)->c_get_limit_order(__pyx_v_self->__pyx_base._sb_order_tracker, __pyx_t_1, __pyx_v_order_id)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1559, __pyx_L1_error)
+  __pyx_t_2 = ((PyObject *)((struct __pyx_vtabstruct_10hummingbot_8strategy_13order_tracker_OrderTracker *)__pyx_v_self->__pyx_base._sb_order_tracker->__pyx_base.__pyx_base.__pyx_vtab)->c_get_limit_order(__pyx_v_self->__pyx_base._sb_order_tracker, __pyx_t_1, __pyx_v_order_id)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1562, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_limit_order_record = ((struct __pyx_obj_10hummingbot_4core_9data_type_11limit_order_LimitOrder *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1560
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1563
  *             str order_id = order_completed_event.order_id
  *             LimitOrder limit_order_record = self._sb_order_tracker.c_get_limit_order(self._market_info, order_id)
  *             double expiration_seconds = NaN             # <<<<<<<<<<<<<<
+ *             ExchangeBase market = self._market_info.market
  *         if limit_order_record is None:
- *             return
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_NaN); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1560, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_NaN); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1563, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_3 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 1560, __pyx_L1_error)
+  __pyx_t_3 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_3 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 1563, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_expiration_seconds = __pyx_t_3;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1561
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1564
  *             LimitOrder limit_order_record = self._sb_order_tracker.c_get_limit_order(self._market_info, order_id)
  *             double expiration_seconds = NaN
+ *             ExchangeBase market = self._market_info.market             # <<<<<<<<<<<<<<
+ *         if limit_order_record is None:
+ *             return
+ */
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_market_info, __pyx_n_s_market); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1564, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_10hummingbot_9connector_13exchange_base_ExchangeBase))))) __PYX_ERR(0, 1564, __pyx_L1_error)
+  __pyx_v_market = ((struct __pyx_obj_10hummingbot_9connector_13exchange_base_ExchangeBase *)__pyx_t_2);
+  __pyx_t_2 = 0;
+
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1565
+ *             double expiration_seconds = NaN
+ *             ExchangeBase market = self._market_info.market
  *         if limit_order_record is None:             # <<<<<<<<<<<<<<
  *             return
  *         active_buy_ids = [x.client_order_id for x in self.active_orders if x.is_buy]
@@ -37215,8 +37283,8 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   __pyx_t_5 = (__pyx_t_4 != 0);
   if (__pyx_t_5) {
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1562
- *             double expiration_seconds = NaN
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1566
+ *             ExchangeBase market = self._market_info.market
  *         if limit_order_record is None:
  *             return             # <<<<<<<<<<<<<<
  *         active_buy_ids = [x.client_order_id for x in self.active_orders if x.is_buy]
@@ -37226,16 +37294,16 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1561
- *             LimitOrder limit_order_record = self._sb_order_tracker.c_get_limit_order(self._market_info, order_id)
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1565
  *             double expiration_seconds = NaN
+ *             ExchangeBase market = self._market_info.market
  *         if limit_order_record is None:             # <<<<<<<<<<<<<<
  *             return
  *         active_buy_ids = [x.client_order_id for x in self.active_orders if x.is_buy]
  */
   }
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1563
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1567
  *         if limit_order_record is None:
  *             return
  *         active_buy_ids = [x.client_order_id for x in self.active_orders if x.is_buy]             # <<<<<<<<<<<<<<
@@ -37243,17 +37311,17 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  *         if self._hanging_orders_enabled:
  */
   { /* enter inner scope */
-    __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1563, __pyx_L6_error)
+    __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1567, __pyx_L6_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_active_orders); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1563, __pyx_L6_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_active_orders); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1567, __pyx_L6_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
       __pyx_t_6 = __pyx_t_1; __Pyx_INCREF(__pyx_t_6); __pyx_t_7 = 0;
       __pyx_t_8 = NULL;
     } else {
-      __pyx_t_7 = -1; __pyx_t_6 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1563, __pyx_L6_error)
+      __pyx_t_7 = -1; __pyx_t_6 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1567, __pyx_L6_error)
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_8 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_6); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1563, __pyx_L6_error)
+      __pyx_t_8 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_6); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1567, __pyx_L6_error)
     }
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     for (;;) {
@@ -37261,17 +37329,17 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
         if (likely(PyList_CheckExact(__pyx_t_6))) {
           if (__pyx_t_7 >= PyList_GET_SIZE(__pyx_t_6)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_1 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_7); __Pyx_INCREF(__pyx_t_1); __pyx_t_7++; if (unlikely((0 < 0))) __PYX_ERR(0, 1563, __pyx_L6_error)
+          __pyx_t_1 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_7); __Pyx_INCREF(__pyx_t_1); __pyx_t_7++; if (unlikely((0 < 0))) __PYX_ERR(0, 1567, __pyx_L6_error)
           #else
-          __pyx_t_1 = PySequence_ITEM(__pyx_t_6, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1563, __pyx_L6_error)
+          __pyx_t_1 = PySequence_ITEM(__pyx_t_6, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1567, __pyx_L6_error)
           __Pyx_GOTREF(__pyx_t_1);
           #endif
         } else {
           if (__pyx_t_7 >= PyTuple_GET_SIZE(__pyx_t_6)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_6, __pyx_t_7); __Pyx_INCREF(__pyx_t_1); __pyx_t_7++; if (unlikely((0 < 0))) __PYX_ERR(0, 1563, __pyx_L6_error)
+          __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_6, __pyx_t_7); __Pyx_INCREF(__pyx_t_1); __pyx_t_7++; if (unlikely((0 < 0))) __PYX_ERR(0, 1567, __pyx_L6_error)
           #else
-          __pyx_t_1 = PySequence_ITEM(__pyx_t_6, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1563, __pyx_L6_error)
+          __pyx_t_1 = PySequence_ITEM(__pyx_t_6, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1567, __pyx_L6_error)
           __Pyx_GOTREF(__pyx_t_1);
           #endif
         }
@@ -37281,7 +37349,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 1563, __pyx_L6_error)
+            else __PYX_ERR(0, 1567, __pyx_L6_error)
           }
           break;
         }
@@ -37289,14 +37357,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       }
       __Pyx_XDECREF_SET(__pyx_9genexpr19__pyx_v_x, __pyx_t_1);
       __pyx_t_1 = 0;
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr19__pyx_v_x, __pyx_n_s_is_buy); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1563, __pyx_L6_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr19__pyx_v_x, __pyx_n_s_is_buy); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1567, __pyx_L6_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 1563, __pyx_L6_error)
+      __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 1567, __pyx_L6_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       if (__pyx_t_5) {
-        __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr19__pyx_v_x, __pyx_n_s_client_order_id); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1563, __pyx_L6_error)
+        __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr19__pyx_v_x, __pyx_n_s_client_order_id); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1567, __pyx_L6_error)
         __Pyx_GOTREF(__pyx_t_1);
-        if (unlikely(__Pyx_ListComp_Append(__pyx_t_2, (PyObject*)__pyx_t_1))) __PYX_ERR(0, 1563, __pyx_L6_error)
+        if (unlikely(__Pyx_ListComp_Append(__pyx_t_2, (PyObject*)__pyx_t_1))) __PYX_ERR(0, 1567, __pyx_L6_error)
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       }
     }
@@ -37311,7 +37379,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   __pyx_v_active_buy_ids = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1565
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1569
  *         active_buy_ids = [x.client_order_id for x in self.active_orders if x.is_buy]
  * 
  *         if self._hanging_orders_enabled:             # <<<<<<<<<<<<<<
@@ -37321,51 +37389,51 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   __pyx_t_5 = (__pyx_v_self->_hanging_orders_enabled != 0);
   if (__pyx_t_5) {
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1567
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1571
  *         if self._hanging_orders_enabled:
  *             # If the filled order is a hanging order, do nothing
  *             if order_id in self.hanging_order_ids:             # <<<<<<<<<<<<<<
  *                 self.log_with_clock(
  *                     logging.INFO,
  */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_hanging_order_ids); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1567, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_hanging_order_ids); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1571, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_5 = (__Pyx_PySequence_ContainsTF(__pyx_v_order_id, __pyx_t_2, Py_EQ)); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 1567, __pyx_L1_error)
+    __pyx_t_5 = (__Pyx_PySequence_ContainsTF(__pyx_v_order_id, __pyx_t_2, Py_EQ)); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 1571, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_t_4 = (__pyx_t_5 != 0);
     if (__pyx_t_4) {
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1568
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1572
  *             # If the filled order is a hanging order, do nothing
  *             if order_id in self.hanging_order_ids:
  *                 self.log_with_clock(             # <<<<<<<<<<<<<<
  *                     logging.INFO,
  *                     f"({self.trading_pair}) Hanging maker sell order {order_id} "
  */
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_log_with_clock); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1568, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_log_with_clock); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1572, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1569
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1573
  *             if order_id in self.hanging_order_ids:
  *                 self.log_with_clock(
  *                     logging.INFO,             # <<<<<<<<<<<<<<
  *                     f"({self.trading_pair}) Hanging maker sell order {order_id} "
  *                     f"({limit_order_record.quantity} {limit_order_record.base_currency} @ "
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_logging); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1569, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_logging); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1573, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_INFO); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1569, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_INFO); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1573, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1570
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1574
  *                 self.log_with_clock(
  *                     logging.INFO,
  *                     f"({self.trading_pair}) Hanging maker sell order {order_id} "             # <<<<<<<<<<<<<<
  *                     f"({limit_order_record.quantity} {limit_order_record.base_currency} @ "
  *                     f"{limit_order_record.price} {limit_order_record.quote_currency}) has been completely filled."
  */
-      __pyx_t_1 = PyTuple_New(13); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1570, __pyx_L1_error)
+      __pyx_t_1 = PyTuple_New(13); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1574, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __pyx_t_7 = 0;
       __pyx_t_10 = 127;
@@ -37373,9 +37441,9 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __pyx_t_7 += 1;
       __Pyx_GIVEREF(__pyx_kp_u__34);
       PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_kp_u__34);
-      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_trading_pair); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1570, __pyx_L1_error)
+      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_trading_pair); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1574, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
-      __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_t_11, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1570, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_t_11, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1574, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
       __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) : __pyx_t_10;
@@ -37387,7 +37455,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __pyx_t_7 += 27;
       __Pyx_GIVEREF(__pyx_kp_u_Hanging_maker_sell_order);
       PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_kp_u_Hanging_maker_sell_order);
-      __pyx_t_12 = __Pyx_PyUnicode_Unicode(__pyx_v_order_id); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1570, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyUnicode_Unicode(__pyx_v_order_id); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1574, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) : __pyx_t_10;
       __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_12);
@@ -37399,16 +37467,16 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __Pyx_GIVEREF(__pyx_kp_u__36);
       PyTuple_SET_ITEM(__pyx_t_1, 4, __pyx_kp_u__36);
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1571
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1575
  *                     logging.INFO,
  *                     f"({self.trading_pair}) Hanging maker sell order {order_id} "
  *                     f"({limit_order_record.quantity} {limit_order_record.base_currency} @ "             # <<<<<<<<<<<<<<
  *                     f"{limit_order_record.price} {limit_order_record.quote_currency}) has been completely filled."
  *                 )
  */
-      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_quantity); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1571, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_quantity); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1575, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
-      __pyx_t_11 = __Pyx_PyObject_FormatSimple(__pyx_t_12, __pyx_empty_unicode); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1571, __pyx_L1_error)
+      __pyx_t_11 = __Pyx_PyObject_FormatSimple(__pyx_t_12, __pyx_empty_unicode); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1575, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
       __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_11) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_11) : __pyx_t_10;
@@ -37420,9 +37488,9 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __pyx_t_7 += 1;
       __Pyx_GIVEREF(__pyx_kp_u__35);
       PyTuple_SET_ITEM(__pyx_t_1, 6, __pyx_kp_u__35);
-      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_base_currency); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1571, __pyx_L1_error)
+      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_base_currency); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1575, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
-      __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_t_11, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1571, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_t_11, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1575, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
       __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) : __pyx_t_10;
@@ -37435,16 +37503,16 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __Pyx_GIVEREF(__pyx_kp_u__37);
       PyTuple_SET_ITEM(__pyx_t_1, 8, __pyx_kp_u__37);
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1572
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1576
  *                     f"({self.trading_pair}) Hanging maker sell order {order_id} "
  *                     f"({limit_order_record.quantity} {limit_order_record.base_currency} @ "
  *                     f"{limit_order_record.price} {limit_order_record.quote_currency}) has been completely filled."             # <<<<<<<<<<<<<<
  *                 )
  *                 self.notify_hb_app_with_timestamp(
  */
-      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_price); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1572, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_price); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1576, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
-      __pyx_t_11 = __Pyx_PyObject_FormatSimple(__pyx_t_12, __pyx_empty_unicode); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1572, __pyx_L1_error)
+      __pyx_t_11 = __Pyx_PyObject_FormatSimple(__pyx_t_12, __pyx_empty_unicode); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1576, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
       __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_11) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_11) : __pyx_t_10;
@@ -37456,9 +37524,9 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __pyx_t_7 += 1;
       __Pyx_GIVEREF(__pyx_kp_u__35);
       PyTuple_SET_ITEM(__pyx_t_1, 10, __pyx_kp_u__35);
-      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_quote_currency); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1572, __pyx_L1_error)
+      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_quote_currency); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1576, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
-      __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_t_11, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1572, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_t_11, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1576, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
       __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) : __pyx_t_10;
@@ -37471,14 +37539,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __Pyx_GIVEREF(__pyx_kp_u_has_been_completely_filled);
       PyTuple_SET_ITEM(__pyx_t_1, 12, __pyx_kp_u_has_been_completely_filled);
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1570
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1574
  *                 self.log_with_clock(
  *                     logging.INFO,
  *                     f"({self.trading_pair}) Hanging maker sell order {order_id} "             # <<<<<<<<<<<<<<
  *                     f"({limit_order_record.quantity} {limit_order_record.base_currency} @ "
  *                     f"{limit_order_record.price} {limit_order_record.quote_currency}) has been completely filled."
  */
-      __pyx_t_12 = __Pyx_PyUnicode_Join(__pyx_t_1, 13, __pyx_t_7, __pyx_t_10); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1570, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyUnicode_Join(__pyx_t_1, 13, __pyx_t_7, __pyx_t_10); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1574, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_t_1 = NULL;
@@ -37499,30 +37567,30 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
         __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
         __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1568, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1572, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       }
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1574
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1578
  *                     f"{limit_order_record.price} {limit_order_record.quote_currency}) has been completely filled."
  *                 )
  *                 self.notify_hb_app_with_timestamp(             # <<<<<<<<<<<<<<
  *                     f"Hanging maker SELL order {limit_order_record.quantity} {limit_order_record.base_currency} @ "
  *                     f"{limit_order_record.price} {limit_order_record.quote_currency} is filled."
  */
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_notify_hb_app_with_timestamp); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1574, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_notify_hb_app_with_timestamp); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1578, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1575
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1579
  *                 )
  *                 self.notify_hb_app_with_timestamp(
  *                     f"Hanging maker SELL order {limit_order_record.quantity} {limit_order_record.base_currency} @ "             # <<<<<<<<<<<<<<
  *                     f"{limit_order_record.price} {limit_order_record.quote_currency} is filled."
  *                 )
  */
-      __pyx_t_12 = PyTuple_New(9); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1575, __pyx_L1_error)
+      __pyx_t_12 = PyTuple_New(9); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1579, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       __pyx_t_7 = 0;
       __pyx_t_10 = 127;
@@ -37530,9 +37598,9 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __pyx_t_7 += 25;
       __Pyx_GIVEREF(__pyx_kp_u_Hanging_maker_SELL_order);
       PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_kp_u_Hanging_maker_SELL_order);
-      __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_quantity); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1575, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_quantity); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1579, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
-      __pyx_t_1 = __Pyx_PyObject_FormatSimple(__pyx_t_9, __pyx_empty_unicode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1575, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_FormatSimple(__pyx_t_9, __pyx_empty_unicode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1579, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_1) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_1) : __pyx_t_10;
@@ -37544,9 +37612,9 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __pyx_t_7 += 1;
       __Pyx_GIVEREF(__pyx_kp_u__35);
       PyTuple_SET_ITEM(__pyx_t_12, 2, __pyx_kp_u__35);
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_base_currency); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1575, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_base_currency); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1579, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_t_1, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1575, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_t_1, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1579, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_10;
@@ -37559,16 +37627,16 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __Pyx_GIVEREF(__pyx_kp_u__37);
       PyTuple_SET_ITEM(__pyx_t_12, 4, __pyx_kp_u__37);
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1576
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1580
  *                 self.notify_hb_app_with_timestamp(
  *                     f"Hanging maker SELL order {limit_order_record.quantity} {limit_order_record.base_currency} @ "
  *                     f"{limit_order_record.price} {limit_order_record.quote_currency} is filled."             # <<<<<<<<<<<<<<
  *                 )
  *                 return
  */
-      __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_price); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1576, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_price); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1580, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
-      __pyx_t_1 = __Pyx_PyObject_FormatSimple(__pyx_t_9, __pyx_empty_unicode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1576, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_FormatSimple(__pyx_t_9, __pyx_empty_unicode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1580, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_1) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_1) : __pyx_t_10;
@@ -37580,9 +37648,9 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __pyx_t_7 += 1;
       __Pyx_GIVEREF(__pyx_kp_u__35);
       PyTuple_SET_ITEM(__pyx_t_12, 6, __pyx_kp_u__35);
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_quote_currency); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1576, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_quote_currency); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1580, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_t_1, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1576, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_t_1, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1580, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_10;
@@ -37595,14 +37663,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __Pyx_GIVEREF(__pyx_kp_u_is_filled);
       PyTuple_SET_ITEM(__pyx_t_12, 8, __pyx_kp_u_is_filled);
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1575
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1579
  *                 )
  *                 self.notify_hb_app_with_timestamp(
  *                     f"Hanging maker SELL order {limit_order_record.quantity} {limit_order_record.base_currency} @ "             # <<<<<<<<<<<<<<
  *                     f"{limit_order_record.price} {limit_order_record.quote_currency} is filled."
  *                 )
  */
-      __pyx_t_9 = __Pyx_PyUnicode_Join(__pyx_t_12, 9, __pyx_t_7, __pyx_t_10); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1575, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyUnicode_Join(__pyx_t_12, 9, __pyx_t_7, __pyx_t_10); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1579, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
       __pyx_t_12 = NULL;
@@ -37622,13 +37690,13 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
         __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_6, __pyx_callargs+1-__pyx_t_13, 1+__pyx_t_13);
         __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1574, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1578, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       }
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1578
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1582
  *                     f"{limit_order_record.price} {limit_order_record.quote_currency} is filled."
  *                 )
  *                 return             # <<<<<<<<<<<<<<
@@ -37639,7 +37707,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __pyx_r = Py_None; __Pyx_INCREF(Py_None);
       goto __pyx_L0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1567
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1571
  *         if self._hanging_orders_enabled:
  *             # If the filled order is a hanging order, do nothing
  *             if order_id in self.hanging_order_ids:             # <<<<<<<<<<<<<<
@@ -37648,7 +37716,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
     }
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1565
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1569
  *         active_buy_ids = [x.client_order_id for x in self.active_orders if x.is_buy]
  * 
  *         if self._hanging_orders_enabled:             # <<<<<<<<<<<<<<
@@ -37657,7 +37725,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
   }
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1579
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1583
  *                 )
  *                 return
  *         if not self._hanging_orders_enabled and self._hanging_orders_enabled_other:             # <<<<<<<<<<<<<<
@@ -37670,35 +37738,35 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     __pyx_t_4 = __pyx_t_5;
     goto __pyx_L14_bool_binop_done;
   }
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_v_self->_hanging_orders_enabled_other); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 1579, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_v_self->_hanging_orders_enabled_other); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 1583, __pyx_L1_error)
   __pyx_t_4 = __pyx_t_5;
   __pyx_L14_bool_binop_done:;
   if (__pyx_t_4) {
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1580
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1584
  *                 return
  *         if not self._hanging_orders_enabled and self._hanging_orders_enabled_other:
  *             if self._sell_order_fill and self.current_timestamp >= self._balance_fixer_timestamp: #if it is already true, set it to false. second argument for if two orders are filled at the same time, if this happens, the timer is just reset             # <<<<<<<<<<<<<<
  *               self._sell_order_fill = False
  *             else:
  */
-    __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_v_self->_sell_order_fill); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 1580, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_v_self->_sell_order_fill); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 1584, __pyx_L1_error)
     if (__pyx_t_5) {
     } else {
       __pyx_t_4 = __pyx_t_5;
       goto __pyx_L17_bool_binop_done;
     }
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_current_timestamp); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1580, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_current_timestamp); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1584, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_6 = PyObject_RichCompare(__pyx_t_2, __pyx_v_self->_balance_fixer_timestamp, Py_GE); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1580, __pyx_L1_error)
+    __pyx_t_6 = PyObject_RichCompare(__pyx_t_2, __pyx_v_self->_balance_fixer_timestamp, Py_GE); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1584, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 1580, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 1584, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __pyx_t_4 = __pyx_t_5;
     __pyx_L17_bool_binop_done:;
     if (__pyx_t_4) {
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1581
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1585
  *         if not self._hanging_orders_enabled and self._hanging_orders_enabled_other:
  *             if self._sell_order_fill and self.current_timestamp >= self._balance_fixer_timestamp: #if it is already true, set it to false. second argument for if two orders are filled at the same time, if this happens, the timer is just reset
  *               self._sell_order_fill = False             # <<<<<<<<<<<<<<
@@ -37711,7 +37779,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __Pyx_DECREF(__pyx_v_self->_sell_order_fill);
       __pyx_v_self->_sell_order_fill = Py_False;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1580
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1584
  *                 return
  *         if not self._hanging_orders_enabled and self._hanging_orders_enabled_other:
  *             if self._sell_order_fill and self.current_timestamp >= self._balance_fixer_timestamp: #if it is already true, set it to false. second argument for if two orders are filled at the same time, if this happens, the timer is just reset             # <<<<<<<<<<<<<<
@@ -37721,12 +37789,12 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       goto __pyx_L16;
     }
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1583
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1587
  *               self._sell_order_fill = False
  *             else:
  *               self._sell_order_fill = True             # <<<<<<<<<<<<<<
  *               if self.get_inventory_management() <= Decimal(0.075):  # add that it should only be done when balance is skewed a specific way
- *                 order_id = self.c_buy_with_specific_market(
+ *                 top_bid = market.c_get_price(self.trading_pair, False)
  */
     /*else*/ {
       __Pyx_INCREF(Py_True);
@@ -37735,14 +37803,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __Pyx_DECREF(__pyx_v_self->_sell_order_fill);
       __pyx_v_self->_sell_order_fill = Py_True;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1584
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1588
  *             else:
  *               self._sell_order_fill = True
  *               if self.get_inventory_management() <= Decimal(0.075):  # add that it should only be done when balance is skewed a specific way             # <<<<<<<<<<<<<<
+ *                 top_bid = market.c_get_price(self.trading_pair, False)
  *                 order_id = self.c_buy_with_specific_market(
- *                     self._market_info,
  */
-      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_inventory_management); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1584, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_inventory_management); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1588, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __pyx_t_9 = NULL;
       __pyx_t_13 = 0;
@@ -37760,11 +37828,11 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
         PyObject *__pyx_callargs[1] = {__pyx_t_9, };
         __pyx_t_6 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_13, 0+__pyx_t_13);
         __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
-        if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1584, __pyx_L1_error)
+        if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1588, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       }
-      __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_Decimal); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1584, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_Decimal); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1588, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __pyx_t_12 = NULL;
       __pyx_t_13 = 0;
@@ -37782,183 +37850,216 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
         PyObject *__pyx_callargs[2] = {__pyx_t_12, __pyx_float_0_075};
         __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_9, __pyx_callargs+1-__pyx_t_13, 1+__pyx_t_13);
         __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1584, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1588, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       }
-      __pyx_t_9 = PyObject_RichCompare(__pyx_t_6, __pyx_t_2, Py_LE); __Pyx_XGOTREF(__pyx_t_9); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1584, __pyx_L1_error)
+      __pyx_t_9 = PyObject_RichCompare(__pyx_t_6, __pyx_t_2, Py_LE); __Pyx_XGOTREF(__pyx_t_9); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1588, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_9); if (unlikely((__pyx_t_4 < 0))) __PYX_ERR(0, 1584, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_9); if (unlikely((__pyx_t_4 < 0))) __PYX_ERR(0, 1588, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       if (__pyx_t_4) {
 
-        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1586
+        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1589
+ *               self._sell_order_fill = True
  *               if self.get_inventory_management() <= Decimal(0.075):  # add that it should only be done when balance is skewed a specific way
+ *                 top_bid = market.c_get_price(self.trading_pair, False)             # <<<<<<<<<<<<<<
+ *                 order_id = self.c_buy_with_specific_market(
+ *                     self._market_info,
+ */
+        __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_trading_pair); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1589, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_9);
+        if (!(likely(PyUnicode_CheckExact(__pyx_t_9))||((__pyx_t_9) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_9))) __PYX_ERR(0, 1589, __pyx_L1_error)
+        __pyx_t_2 = ((struct __pyx_vtabstruct_10hummingbot_9connector_13exchange_base_ExchangeBase *)__pyx_v_market->__pyx_base.__pyx_base.__pyx_base.__pyx_base.__pyx_vtab)->__pyx_base.c_get_price(((struct __pyx_obj_10hummingbot_9connector_14connector_base_ConnectorBase *)__pyx_v_market), ((PyObject*)__pyx_t_9), 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1589, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+        __pyx_v_top_bid = __pyx_t_2;
+        __pyx_t_2 = 0;
+
+        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1591
+ *                 top_bid = market.c_get_price(self.trading_pair, False)
  *                 order_id = self.c_buy_with_specific_market(
  *                     self._market_info,             # <<<<<<<<<<<<<<
  *                     limit_order_record.quantity,
  *                     order_type=self._limit_order_type,
  */
-        __pyx_t_9 = __pyx_v_self->_market_info;
-        __Pyx_INCREF(__pyx_t_9);
+        __pyx_t_2 = __pyx_v_self->_market_info;
+        __Pyx_INCREF(__pyx_t_2);
 
-        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1587
+        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1592
  *                 order_id = self.c_buy_with_specific_market(
  *                     self._market_info,
  *                     limit_order_record.quantity,             # <<<<<<<<<<<<<<
  *                     order_type=self._limit_order_type,
- *                     price=(limit_order_record.price / (Decimal(1) + self._ask_spread)),
+ *                     price=min((limit_order_record.price / (Decimal(1) + self._ask_spread)), top_bid),
  */
-        __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_quantity); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1587, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_2);
+        __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_quantity); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1592, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_9);
 
-        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1588
+        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1593
  *                     self._market_info,
  *                     limit_order_record.quantity,
  *                     order_type=self._limit_order_type,             # <<<<<<<<<<<<<<
- *                     price=(limit_order_record.price / (Decimal(1) + self._ask_spread)),
+ *                     price=min((limit_order_record.price / (Decimal(1) + self._ask_spread)), top_bid),
  *                     expiration_seconds=expiration_seconds)
  */
         __pyx_t_6 = __pyx_v_self->_limit_order_type;
         __Pyx_INCREF(__pyx_t_6);
 
-        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1589
+        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1594
  *                     limit_order_record.quantity,
  *                     order_type=self._limit_order_type,
- *                     price=(limit_order_record.price / (Decimal(1) + self._ask_spread)),             # <<<<<<<<<<<<<<
+ *                     price=min((limit_order_record.price / (Decimal(1) + self._ask_spread)), top_bid),             # <<<<<<<<<<<<<<
  *                     expiration_seconds=expiration_seconds)
  *                 self._hanging_order_list.append(order_id)
  */
-        __pyx_t_12 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_price); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1589, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_12);
-        __Pyx_GetModuleGlobalName(__pyx_t_11, __pyx_n_s_Decimal); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1589, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_11);
-        __pyx_t_14 = NULL;
+        __Pyx_INCREF(__pyx_v_top_bid);
+        __pyx_t_12 = __pyx_v_top_bid;
+        __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_price); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1594, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
+        __Pyx_GetModuleGlobalName(__pyx_t_14, __pyx_n_s_Decimal); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1594, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_14);
+        __pyx_t_15 = NULL;
         __pyx_t_13 = 0;
-        if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_11))) {
-          __pyx_t_14 = PyMethod_GET_SELF(__pyx_t_11);
-          if (likely(__pyx_t_14)) {
-            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_11);
-            __Pyx_INCREF(__pyx_t_14);
+        if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_14))) {
+          __pyx_t_15 = PyMethod_GET_SELF(__pyx_t_14);
+          if (likely(__pyx_t_15)) {
+            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_14);
+            __Pyx_INCREF(__pyx_t_15);
             __Pyx_INCREF(function);
-            __Pyx_DECREF_SET(__pyx_t_11, function);
+            __Pyx_DECREF_SET(__pyx_t_14, function);
             __pyx_t_13 = 1;
           }
         }
         {
-          PyObject *__pyx_callargs[2] = {__pyx_t_14, __pyx_int_1};
-          __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_11, __pyx_callargs+1-__pyx_t_13, 1+__pyx_t_13);
-          __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
-          if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1589, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_1);
-          __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+          PyObject *__pyx_callargs[2] = {__pyx_t_15, __pyx_int_1};
+          __pyx_t_11 = __Pyx_PyObject_FastCall(__pyx_t_14, __pyx_callargs+1-__pyx_t_13, 1+__pyx_t_13);
+          __Pyx_XDECREF(__pyx_t_15); __pyx_t_15 = 0;
+          if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1594, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_11);
+          __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
         }
-        __pyx_t_11 = PyNumber_Add(__pyx_t_1, __pyx_v_self->_ask_spread); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1589, __pyx_L1_error)
+        __pyx_t_14 = PyNumber_Add(__pyx_t_11, __pyx_v_self->_ask_spread); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1594, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_14);
+        __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+        __pyx_t_11 = __Pyx_PyNumber_Divide(__pyx_t_1, __pyx_t_14); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1594, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_11);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_t_1 = __Pyx_PyNumber_Divide(__pyx_t_12, __pyx_t_11); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1589, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+        __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
+        __pyx_t_1 = PyObject_RichCompare(__pyx_t_12, __pyx_t_11, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1594, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_4 < 0))) __PYX_ERR(0, 1594, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        if (__pyx_t_4) {
+          __Pyx_INCREF(__pyx_t_12);
+          __pyx_t_14 = __pyx_t_12;
+        } else {
+          __Pyx_INCREF(__pyx_t_11);
+          __pyx_t_14 = __pyx_t_11;
+        }
         __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+        __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+        __pyx_t_12 = __pyx_t_14;
+        __Pyx_INCREF(__pyx_t_12);
+        __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
 
-        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1585
- *               self._sell_order_fill = True
+        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1590
  *               if self.get_inventory_management() <= Decimal(0.075):  # add that it should only be done when balance is skewed a specific way
+ *                 top_bid = market.c_get_price(self.trading_pair, False)
  *                 order_id = self.c_buy_with_specific_market(             # <<<<<<<<<<<<<<
  *                     self._market_info,
  *                     limit_order_record.quantity,
  */
-        __pyx_t_15.__pyx_n = 3;
-        __pyx_t_15.order_type = __pyx_t_6;
-        __pyx_t_15.price = __pyx_t_1;
-        __pyx_t_15.expiration_seconds = __pyx_v_expiration_seconds;
-        __pyx_t_11 = ((struct __pyx_vtabstruct_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy *)__pyx_v_self->__pyx_base.__pyx_base.__pyx_base.__pyx_vtab)->__pyx_base.c_buy_with_specific_market(((struct __pyx_obj_10hummingbot_8strategy_13strategy_base_StrategyBase *)__pyx_v_self), __pyx_t_9, __pyx_t_2, &__pyx_t_15); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1585, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_11);
-        __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+        __pyx_t_16.__pyx_n = 3;
+        __pyx_t_16.order_type = __pyx_t_6;
+        __pyx_t_16.price = __pyx_t_12;
+        __pyx_t_16.expiration_seconds = __pyx_v_expiration_seconds;
+        __pyx_t_14 = ((struct __pyx_vtabstruct_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy *)__pyx_v_self->__pyx_base.__pyx_base.__pyx_base.__pyx_vtab)->__pyx_base.c_buy_with_specific_market(((struct __pyx_obj_10hummingbot_8strategy_13strategy_base_StrategyBase *)__pyx_v_self), __pyx_t_2, __pyx_t_9, &__pyx_t_16); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1590, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_14);
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __Pyx_DECREF_SET(__pyx_v_order_id, ((PyObject*)__pyx_t_11));
-        __pyx_t_11 = 0;
+        __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+        __Pyx_DECREF_SET(__pyx_v_order_id, ((PyObject*)__pyx_t_14));
+        __pyx_t_14 = 0;
 
-        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1591
- *                     price=(limit_order_record.price / (Decimal(1) + self._ask_spread)),
+        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1596
+ *                     price=min((limit_order_record.price / (Decimal(1) + self._ask_spread)), top_bid),
  *                     expiration_seconds=expiration_seconds)
  *                 self._hanging_order_list.append(order_id)             # <<<<<<<<<<<<<<
  *                 self.c_cancel_all_orders()
  * 
  */
-        __pyx_t_16 = __Pyx_PyObject_Append(__pyx_v_self->_hanging_order_list, __pyx_v_order_id); if (unlikely(__pyx_t_16 == ((int)-1))) __PYX_ERR(0, 1591, __pyx_L1_error)
+        __pyx_t_17 = __Pyx_PyObject_Append(__pyx_v_self->_hanging_order_list, __pyx_v_order_id); if (unlikely(__pyx_t_17 == ((int)-1))) __PYX_ERR(0, 1596, __pyx_L1_error)
 
-        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1592
+        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1597
  *                     expiration_seconds=expiration_seconds)
  *                 self._hanging_order_list.append(order_id)
  *                 self.c_cancel_all_orders()             # <<<<<<<<<<<<<<
  * 
  * 
  */
-        __pyx_t_11 = ((struct __pyx_vtabstruct_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy *)__pyx_v_self->__pyx_base.__pyx_base.__pyx_base.__pyx_vtab)->c_cancel_all_orders(__pyx_v_self); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1592, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_11);
-        __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+        __pyx_t_14 = ((struct __pyx_vtabstruct_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy *)__pyx_v_self->__pyx_base.__pyx_base.__pyx_base.__pyx_vtab)->c_cancel_all_orders(__pyx_v_self); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1597, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_14);
+        __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
 
-        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1584
+        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1588
  *             else:
  *               self._sell_order_fill = True
  *               if self.get_inventory_management() <= Decimal(0.075):  # add that it should only be done when balance is skewed a specific way             # <<<<<<<<<<<<<<
+ *                 top_bid = market.c_get_price(self.trading_pair, False)
  *                 order_id = self.c_buy_with_specific_market(
- *                     self._market_info,
  */
       }
     }
     __pyx_L16:;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1595
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1600
  * 
  * 
  *             self._last_sell_order_price = limit_order_record.price             # <<<<<<<<<<<<<<
  *             self.log_with_clock(
  *                 logging.INFO,
  */
-    __pyx_t_11 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_price); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1595, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_11);
-    __Pyx_GIVEREF(__pyx_t_11);
+    __pyx_t_14 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_price); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1600, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_14);
+    __Pyx_GIVEREF(__pyx_t_14);
     __Pyx_GOTREF(__pyx_v_self->_last_sell_order_price);
     __Pyx_DECREF(__pyx_v_self->_last_sell_order_price);
-    __pyx_v_self->_last_sell_order_price = __pyx_t_11;
-    __pyx_t_11 = 0;
+    __pyx_v_self->_last_sell_order_price = __pyx_t_14;
+    __pyx_t_14 = 0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1596
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1601
  * 
  *             self._last_sell_order_price = limit_order_record.price
  *             self.log_with_clock(             # <<<<<<<<<<<<<<
  *                 logging.INFO,
  *                 f"self._buy_order_fill: order_id {order_id} - {self._sell_order_fill}) self._buy_order_fill: {self._buy_order_fill} self._last_buy_order_price : {self._last_buy_order_price} inventory_management {self.get_inventory_management()} "
  */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_log_with_clock); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1596, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_12 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_log_with_clock); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1601, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_12);
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1597
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1602
  *             self._last_sell_order_price = limit_order_record.price
  *             self.log_with_clock(
  *                 logging.INFO,             # <<<<<<<<<<<<<<
  *                 f"self._buy_order_fill: order_id {order_id} - {self._sell_order_fill}) self._buy_order_fill: {self._buy_order_fill} self._last_buy_order_price : {self._last_buy_order_price} inventory_management {self.get_inventory_management()} "
  *             )
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_logging); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1597, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_logging); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1602, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_INFO); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1597, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_INFO); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1602, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_9);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1598
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1603
  *             self.log_with_clock(
  *                 logging.INFO,
  *                 f"self._buy_order_fill: order_id {order_id} - {self._sell_order_fill}) self._buy_order_fill: {self._buy_order_fill} self._last_buy_order_price : {self._last_buy_order_price} inventory_management {self.get_inventory_management()} "             # <<<<<<<<<<<<<<
  *             )
  * 
  */
-    __pyx_t_6 = PyTuple_New(11); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1598, __pyx_L1_error)
+    __pyx_t_6 = PyTuple_New(11); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1603, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __pyx_t_7 = 0;
     __pyx_t_10 = 127;
@@ -37966,112 +38067,112 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     __pyx_t_7 += 31;
     __Pyx_GIVEREF(__pyx_kp_u_self__buy_order_fill_order_id);
     PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_kp_u_self__buy_order_fill_order_id);
-    __pyx_t_9 = __Pyx_PyUnicode_Unicode(__pyx_v_order_id); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1598, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_10;
-    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_9);
-    __Pyx_GIVEREF(__pyx_t_9);
-    PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_9);
-    __pyx_t_9 = 0;
+    __pyx_t_2 = __Pyx_PyUnicode_Unicode(__pyx_v_order_id); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1603, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_10;
+    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
+    __Pyx_GIVEREF(__pyx_t_2);
+    PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_2);
+    __pyx_t_2 = 0;
     __Pyx_INCREF(__pyx_kp_u__26);
     __pyx_t_7 += 3;
     __Pyx_GIVEREF(__pyx_kp_u__26);
     PyTuple_SET_ITEM(__pyx_t_6, 2, __pyx_kp_u__26);
-    __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_v_self->_sell_order_fill, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1598, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_10;
-    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_9);
-    __Pyx_GIVEREF(__pyx_t_9);
-    PyTuple_SET_ITEM(__pyx_t_6, 3, __pyx_t_9);
-    __pyx_t_9 = 0;
+    __pyx_t_2 = __Pyx_PyObject_FormatSimple(__pyx_v_self->_sell_order_fill, __pyx_empty_unicode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1603, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_10;
+    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
+    __Pyx_GIVEREF(__pyx_t_2);
+    PyTuple_SET_ITEM(__pyx_t_6, 3, __pyx_t_2);
+    __pyx_t_2 = 0;
     __Pyx_INCREF(__pyx_kp_u_self__buy_order_fill);
     __pyx_t_7 += 24;
     __Pyx_GIVEREF(__pyx_kp_u_self__buy_order_fill);
     PyTuple_SET_ITEM(__pyx_t_6, 4, __pyx_kp_u_self__buy_order_fill);
-    __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_v_self->_buy_order_fill, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1598, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_10;
-    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_9);
-    __Pyx_GIVEREF(__pyx_t_9);
-    PyTuple_SET_ITEM(__pyx_t_6, 5, __pyx_t_9);
-    __pyx_t_9 = 0;
+    __pyx_t_2 = __Pyx_PyObject_FormatSimple(__pyx_v_self->_buy_order_fill, __pyx_empty_unicode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1603, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_10;
+    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
+    __Pyx_GIVEREF(__pyx_t_2);
+    PyTuple_SET_ITEM(__pyx_t_6, 5, __pyx_t_2);
+    __pyx_t_2 = 0;
     __Pyx_INCREF(__pyx_kp_u_self__last_buy_order_price);
     __pyx_t_7 += 30;
     __Pyx_GIVEREF(__pyx_kp_u_self__last_buy_order_price);
     PyTuple_SET_ITEM(__pyx_t_6, 6, __pyx_kp_u_self__last_buy_order_price);
-    __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_v_self->_last_buy_order_price, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1598, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_10;
-    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_9);
-    __Pyx_GIVEREF(__pyx_t_9);
-    PyTuple_SET_ITEM(__pyx_t_6, 7, __pyx_t_9);
-    __pyx_t_9 = 0;
+    __pyx_t_2 = __Pyx_PyObject_FormatSimple(__pyx_v_self->_last_buy_order_price, __pyx_empty_unicode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1603, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_10;
+    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
+    __Pyx_GIVEREF(__pyx_t_2);
+    PyTuple_SET_ITEM(__pyx_t_6, 7, __pyx_t_2);
+    __pyx_t_2 = 0;
     __Pyx_INCREF(__pyx_kp_u_inventory_management_2);
     __pyx_t_7 += 22;
     __Pyx_GIVEREF(__pyx_kp_u_inventory_management_2);
     PyTuple_SET_ITEM(__pyx_t_6, 8, __pyx_kp_u_inventory_management_2);
-    __pyx_t_12 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_inventory_management); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1598, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
-    __pyx_t_14 = NULL;
+    __pyx_t_11 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_inventory_management); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1603, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_11);
+    __pyx_t_1 = NULL;
+    __pyx_t_13 = 0;
+    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_11))) {
+      __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_11);
+      if (likely(__pyx_t_1)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_11);
+        __Pyx_INCREF(__pyx_t_1);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_11, function);
+        __pyx_t_13 = 1;
+      }
+    }
+    {
+      PyObject *__pyx_callargs[1] = {__pyx_t_1, };
+      __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_11, __pyx_callargs+1-__pyx_t_13, 0+__pyx_t_13);
+      __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1603, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+    }
+    __pyx_t_11 = __Pyx_PyObject_FormatSimple(__pyx_t_2, __pyx_empty_unicode); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1603, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_11);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_11) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_11) : __pyx_t_10;
+    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_11);
+    __Pyx_GIVEREF(__pyx_t_11);
+    PyTuple_SET_ITEM(__pyx_t_6, 9, __pyx_t_11);
+    __pyx_t_11 = 0;
+    __Pyx_INCREF(__pyx_kp_u__35);
+    __pyx_t_7 += 1;
+    __Pyx_GIVEREF(__pyx_kp_u__35);
+    PyTuple_SET_ITEM(__pyx_t_6, 10, __pyx_kp_u__35);
+    __pyx_t_11 = __Pyx_PyUnicode_Join(__pyx_t_6, 11, __pyx_t_7, __pyx_t_10); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1603, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_11);
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    __pyx_t_6 = NULL;
     __pyx_t_13 = 0;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_12))) {
-      __pyx_t_14 = PyMethod_GET_SELF(__pyx_t_12);
-      if (likely(__pyx_t_14)) {
+      __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_12);
+      if (likely(__pyx_t_6)) {
         PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_12);
-        __Pyx_INCREF(__pyx_t_14);
+        __Pyx_INCREF(__pyx_t_6);
         __Pyx_INCREF(function);
         __Pyx_DECREF_SET(__pyx_t_12, function);
         __pyx_t_13 = 1;
       }
     }
     {
-      PyObject *__pyx_callargs[1] = {__pyx_t_14, };
-      __pyx_t_9 = __Pyx_PyObject_FastCall(__pyx_t_12, __pyx_callargs+1-__pyx_t_13, 0+__pyx_t_13);
-      __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
-      if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1598, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_9);
-      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-    }
-    __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_t_9, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1598, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
-    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) : __pyx_t_10;
-    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_12);
-    __Pyx_GIVEREF(__pyx_t_12);
-    PyTuple_SET_ITEM(__pyx_t_6, 9, __pyx_t_12);
-    __pyx_t_12 = 0;
-    __Pyx_INCREF(__pyx_kp_u__35);
-    __pyx_t_7 += 1;
-    __Pyx_GIVEREF(__pyx_kp_u__35);
-    PyTuple_SET_ITEM(__pyx_t_6, 10, __pyx_kp_u__35);
-    __pyx_t_12 = __Pyx_PyUnicode_Join(__pyx_t_6, 11, __pyx_t_7, __pyx_t_10); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1598, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_6 = NULL;
-    __pyx_t_13 = 0;
-    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
-      __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_1);
-      if (likely(__pyx_t_6)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
-        __Pyx_INCREF(__pyx_t_6);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_1, function);
-        __pyx_t_13 = 1;
-      }
-    }
-    {
-      PyObject *__pyx_callargs[3] = {__pyx_t_6, __pyx_t_2, __pyx_t_12};
-      __pyx_t_11 = __Pyx_PyObject_FastCall(__pyx_t_1, __pyx_callargs+1-__pyx_t_13, 2+__pyx_t_13);
+      PyObject *__pyx_callargs[3] = {__pyx_t_6, __pyx_t_9, __pyx_t_11};
+      __pyx_t_14 = __Pyx_PyObject_FastCall(__pyx_t_12, __pyx_callargs+1-__pyx_t_13, 2+__pyx_t_13);
       __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+      if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1601, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_14);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1596, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_11);
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     }
-    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+    __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1579
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1583
  *                 )
  *                 return
  *         if not self._hanging_orders_enabled and self._hanging_orders_enabled_other:             # <<<<<<<<<<<<<<
@@ -38080,7 +38181,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
   }
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1602
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1607
  * 
  *         # delay order creation by filled_order_dalay (in seconds)
  *         self._create_timestamp = self._current_timestamp + self._filled_order_delay             # <<<<<<<<<<<<<<
@@ -38089,7 +38190,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
   __pyx_v_self->_create_timestamp = (__pyx_v_self->__pyx_base.__pyx_base._current_timestamp + __pyx_v_self->_filled_order_delay);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1603
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1608
  *         # delay order creation by filled_order_dalay (in seconds)
  *         self._create_timestamp = self._current_timestamp + self._filled_order_delay
  *         self._cancel_timestamp = min(self._cancel_timestamp, self._create_timestamp)             # <<<<<<<<<<<<<<
@@ -38097,33 +38198,33 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  * 
  */
   __pyx_t_3 = __pyx_v_self->_create_timestamp;
-  __pyx_t_17 = __pyx_v_self->_cancel_timestamp;
-  if (((__pyx_t_3 < __pyx_t_17) != 0)) {
-    __pyx_t_18 = __pyx_t_3;
+  __pyx_t_18 = __pyx_v_self->_cancel_timestamp;
+  if (((__pyx_t_3 < __pyx_t_18) != 0)) {
+    __pyx_t_19 = __pyx_t_3;
   } else {
-    __pyx_t_18 = __pyx_t_17;
+    __pyx_t_19 = __pyx_t_18;
   }
-  __pyx_v_self->_cancel_timestamp = __pyx_t_18;
+  __pyx_v_self->_cancel_timestamp = __pyx_t_19;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1604
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1609
  *         self._create_timestamp = self._current_timestamp + self._filled_order_delay
  *         self._cancel_timestamp = min(self._cancel_timestamp, self._create_timestamp)
  *         self._balance_fixer_timestamp = self._filled_order_delay_target_balance + self._current_timestamp             # <<<<<<<<<<<<<<
  * 
  *         self._filled_sells_balance += 1
  */
-  __pyx_t_11 = PyFloat_FromDouble(__pyx_v_self->__pyx_base.__pyx_base._current_timestamp); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1604, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_11);
-  __pyx_t_1 = PyNumber_Add(__pyx_v_self->_filled_order_delay_target_balance, __pyx_t_11); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1604, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  __Pyx_GIVEREF(__pyx_t_1);
+  __pyx_t_14 = PyFloat_FromDouble(__pyx_v_self->__pyx_base.__pyx_base._current_timestamp); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1609, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_14);
+  __pyx_t_12 = PyNumber_Add(__pyx_v_self->_filled_order_delay_target_balance, __pyx_t_14); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1609, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_12);
+  __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
+  __Pyx_GIVEREF(__pyx_t_12);
   __Pyx_GOTREF(__pyx_v_self->_balance_fixer_timestamp);
   __Pyx_DECREF(__pyx_v_self->_balance_fixer_timestamp);
-  __pyx_v_self->_balance_fixer_timestamp = __pyx_t_1;
-  __pyx_t_1 = 0;
+  __pyx_v_self->_balance_fixer_timestamp = __pyx_t_12;
+  __pyx_t_12 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1606
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1611
  *         self._balance_fixer_timestamp = self._filled_order_delay_target_balance + self._current_timestamp
  * 
  *         self._filled_sells_balance += 1             # <<<<<<<<<<<<<<
@@ -38132,315 +38233,315 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
   __pyx_v_self->_filled_sells_balance = (__pyx_v_self->_filled_sells_balance + 1);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1607
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1612
  * 
  *         self._filled_sells_balance += 1
  *         self._last_own_trade_price = limit_order_record.price             # <<<<<<<<<<<<<<
  * 
  *         self.log_with_clock(
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_price); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1607, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_GIVEREF(__pyx_t_1);
+  __pyx_t_12 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_price); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1612, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_12);
+  __Pyx_GIVEREF(__pyx_t_12);
   __Pyx_GOTREF(__pyx_v_self->_last_own_trade_price);
   __Pyx_DECREF(__pyx_v_self->_last_own_trade_price);
-  __pyx_v_self->_last_own_trade_price = __pyx_t_1;
-  __pyx_t_1 = 0;
+  __pyx_v_self->_last_own_trade_price = __pyx_t_12;
+  __pyx_t_12 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1609
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1614
  *         self._last_own_trade_price = limit_order_record.price
  * 
  *         self.log_with_clock(             # <<<<<<<<<<<<<<
  *             logging.INFO,
  *             f"({self.trading_pair}) Maker sell order {order_id} "
  */
-  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_log_with_clock); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1609, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_11);
+  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_log_with_clock); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1614, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_14);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1610
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1615
  * 
  *         self.log_with_clock(
  *             logging.INFO,             # <<<<<<<<<<<<<<
  *             f"({self.trading_pair}) Maker sell order {order_id} "
  *             f"({limit_order_record.quantity} {limit_order_record.base_currency} @ "
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_12, __pyx_n_s_logging); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1610, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_12);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_INFO); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1610, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+  __Pyx_GetModuleGlobalName(__pyx_t_11, __pyx_n_s_logging); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1615, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_11);
+  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_INFO); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1615, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_9);
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1611
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1616
  *         self.log_with_clock(
  *             logging.INFO,
  *             f"({self.trading_pair}) Maker sell order {order_id} "             # <<<<<<<<<<<<<<
  *             f"({limit_order_record.quantity} {limit_order_record.base_currency} @ "
  *             f"{limit_order_record.price} {limit_order_record.quote_currency}) has been completely filled."
  */
-  __pyx_t_12 = PyTuple_New(13); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1611, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_12);
+  __pyx_t_11 = PyTuple_New(13); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1616, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_11);
   __pyx_t_7 = 0;
   __pyx_t_10 = 127;
   __Pyx_INCREF(__pyx_kp_u__34);
   __pyx_t_7 += 1;
   __Pyx_GIVEREF(__pyx_kp_u__34);
-  PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_kp_u__34);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_trading_pair); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1611, __pyx_L1_error)
+  PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_kp_u__34);
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_trading_pair); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1616, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_t_6, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1611, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
+  __pyx_t_2 = __Pyx_PyObject_FormatSimple(__pyx_t_6, __pyx_empty_unicode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1616, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_10;
-  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_9);
-  __Pyx_GIVEREF(__pyx_t_9);
-  PyTuple_SET_ITEM(__pyx_t_12, 1, __pyx_t_9);
-  __pyx_t_9 = 0;
+  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_10;
+  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
+  __Pyx_GIVEREF(__pyx_t_2);
+  PyTuple_SET_ITEM(__pyx_t_11, 1, __pyx_t_2);
+  __pyx_t_2 = 0;
   __Pyx_INCREF(__pyx_kp_u_Maker_sell_order);
   __pyx_t_7 += 19;
   __Pyx_GIVEREF(__pyx_kp_u_Maker_sell_order);
-  PyTuple_SET_ITEM(__pyx_t_12, 2, __pyx_kp_u_Maker_sell_order);
-  __pyx_t_9 = __Pyx_PyUnicode_Unicode(__pyx_v_order_id); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1611, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_10;
-  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_9);
-  __Pyx_GIVEREF(__pyx_t_9);
-  PyTuple_SET_ITEM(__pyx_t_12, 3, __pyx_t_9);
-  __pyx_t_9 = 0;
+  PyTuple_SET_ITEM(__pyx_t_11, 2, __pyx_kp_u_Maker_sell_order);
+  __pyx_t_2 = __Pyx_PyUnicode_Unicode(__pyx_v_order_id); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1616, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_10;
+  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
+  __Pyx_GIVEREF(__pyx_t_2);
+  PyTuple_SET_ITEM(__pyx_t_11, 3, __pyx_t_2);
+  __pyx_t_2 = 0;
   __Pyx_INCREF(__pyx_kp_u__36);
   __pyx_t_7 += 2;
   __Pyx_GIVEREF(__pyx_kp_u__36);
-  PyTuple_SET_ITEM(__pyx_t_12, 4, __pyx_kp_u__36);
+  PyTuple_SET_ITEM(__pyx_t_11, 4, __pyx_kp_u__36);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1612
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1617
  *             logging.INFO,
  *             f"({self.trading_pair}) Maker sell order {order_id} "
  *             f"({limit_order_record.quantity} {limit_order_record.base_currency} @ "             # <<<<<<<<<<<<<<
  *             f"{limit_order_record.price} {limit_order_record.quote_currency}) has been completely filled."
  *         )
  */
-  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_quantity); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1612, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_t_9, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1612, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_quantity); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1617, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_t_2, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1617, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_6) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_6) : __pyx_t_10;
   __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_6);
   __Pyx_GIVEREF(__pyx_t_6);
-  PyTuple_SET_ITEM(__pyx_t_12, 5, __pyx_t_6);
+  PyTuple_SET_ITEM(__pyx_t_11, 5, __pyx_t_6);
   __pyx_t_6 = 0;
   __Pyx_INCREF(__pyx_kp_u__35);
   __pyx_t_7 += 1;
   __Pyx_GIVEREF(__pyx_kp_u__35);
-  PyTuple_SET_ITEM(__pyx_t_12, 6, __pyx_kp_u__35);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_base_currency); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1612, __pyx_L1_error)
+  PyTuple_SET_ITEM(__pyx_t_11, 6, __pyx_kp_u__35);
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_base_currency); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1617, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_t_6, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1612, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
+  __pyx_t_2 = __Pyx_PyObject_FormatSimple(__pyx_t_6, __pyx_empty_unicode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1617, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_10;
-  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_9);
-  __Pyx_GIVEREF(__pyx_t_9);
-  PyTuple_SET_ITEM(__pyx_t_12, 7, __pyx_t_9);
-  __pyx_t_9 = 0;
+  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_10;
+  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
+  __Pyx_GIVEREF(__pyx_t_2);
+  PyTuple_SET_ITEM(__pyx_t_11, 7, __pyx_t_2);
+  __pyx_t_2 = 0;
   __Pyx_INCREF(__pyx_kp_u__37);
   __pyx_t_7 += 3;
   __Pyx_GIVEREF(__pyx_kp_u__37);
-  PyTuple_SET_ITEM(__pyx_t_12, 8, __pyx_kp_u__37);
+  PyTuple_SET_ITEM(__pyx_t_11, 8, __pyx_kp_u__37);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1613
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1618
  *             f"({self.trading_pair}) Maker sell order {order_id} "
  *             f"({limit_order_record.quantity} {limit_order_record.base_currency} @ "
  *             f"{limit_order_record.price} {limit_order_record.quote_currency}) has been completely filled."             # <<<<<<<<<<<<<<
  *         )
  *         self.notify_hb_app_with_timestamp(
  */
-  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_price); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1613, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_t_9, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1613, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_price); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1618, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_t_2, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1618, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_6) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_6) : __pyx_t_10;
   __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_6);
   __Pyx_GIVEREF(__pyx_t_6);
-  PyTuple_SET_ITEM(__pyx_t_12, 9, __pyx_t_6);
+  PyTuple_SET_ITEM(__pyx_t_11, 9, __pyx_t_6);
   __pyx_t_6 = 0;
   __Pyx_INCREF(__pyx_kp_u__35);
   __pyx_t_7 += 1;
   __Pyx_GIVEREF(__pyx_kp_u__35);
-  PyTuple_SET_ITEM(__pyx_t_12, 10, __pyx_kp_u__35);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_quote_currency); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1613, __pyx_L1_error)
+  PyTuple_SET_ITEM(__pyx_t_11, 10, __pyx_kp_u__35);
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_quote_currency); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1618, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_t_6, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1613, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
+  __pyx_t_2 = __Pyx_PyObject_FormatSimple(__pyx_t_6, __pyx_empty_unicode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1618, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_10;
-  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_9);
-  __Pyx_GIVEREF(__pyx_t_9);
-  PyTuple_SET_ITEM(__pyx_t_12, 11, __pyx_t_9);
-  __pyx_t_9 = 0;
+  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_10;
+  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
+  __Pyx_GIVEREF(__pyx_t_2);
+  PyTuple_SET_ITEM(__pyx_t_11, 11, __pyx_t_2);
+  __pyx_t_2 = 0;
   __Pyx_INCREF(__pyx_kp_u_has_been_completely_filled);
   __pyx_t_7 += 29;
   __Pyx_GIVEREF(__pyx_kp_u_has_been_completely_filled);
-  PyTuple_SET_ITEM(__pyx_t_12, 12, __pyx_kp_u_has_been_completely_filled);
+  PyTuple_SET_ITEM(__pyx_t_11, 12, __pyx_kp_u_has_been_completely_filled);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1611
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1616
  *         self.log_with_clock(
  *             logging.INFO,
  *             f"({self.trading_pair}) Maker sell order {order_id} "             # <<<<<<<<<<<<<<
  *             f"({limit_order_record.quantity} {limit_order_record.base_currency} @ "
  *             f"{limit_order_record.price} {limit_order_record.quote_currency}) has been completely filled."
  */
-  __pyx_t_9 = __Pyx_PyUnicode_Join(__pyx_t_12, 13, __pyx_t_7, __pyx_t_10); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1611, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
-  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  __pyx_t_12 = NULL;
+  __pyx_t_2 = __Pyx_PyUnicode_Join(__pyx_t_11, 13, __pyx_t_7, __pyx_t_10); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1616, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  __pyx_t_11 = NULL;
   __pyx_t_13 = 0;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_11))) {
-    __pyx_t_12 = PyMethod_GET_SELF(__pyx_t_11);
-    if (likely(__pyx_t_12)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_11);
-      __Pyx_INCREF(__pyx_t_12);
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_14))) {
+    __pyx_t_11 = PyMethod_GET_SELF(__pyx_t_14);
+    if (likely(__pyx_t_11)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_14);
+      __Pyx_INCREF(__pyx_t_11);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_11, function);
+      __Pyx_DECREF_SET(__pyx_t_14, function);
       __pyx_t_13 = 1;
     }
   }
   {
-    PyObject *__pyx_callargs[3] = {__pyx_t_12, __pyx_t_2, __pyx_t_9};
-    __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_11, __pyx_callargs+1-__pyx_t_13, 2+__pyx_t_13);
-    __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    PyObject *__pyx_callargs[3] = {__pyx_t_11, __pyx_t_9, __pyx_t_2};
+    __pyx_t_12 = __Pyx_PyObject_FastCall(__pyx_t_14, __pyx_callargs+1-__pyx_t_13, 2+__pyx_t_13);
+    __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1609, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1614, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_12);
+    __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
   }
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1615
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1620
  *             f"{limit_order_record.price} {limit_order_record.quote_currency}) has been completely filled."
  *         )
  *         self.notify_hb_app_with_timestamp(             # <<<<<<<<<<<<<<
  *             f"Maker SELL order {limit_order_record.quantity} {limit_order_record.base_currency} @ "
  *             f"{limit_order_record.price} {limit_order_record.quote_currency} is filled."
  */
-  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_notify_hb_app_with_timestamp); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1615, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_11);
+  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_notify_hb_app_with_timestamp); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1620, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_14);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1616
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1621
  *         )
  *         self.notify_hb_app_with_timestamp(
  *             f"Maker SELL order {limit_order_record.quantity} {limit_order_record.base_currency} @ "             # <<<<<<<<<<<<<<
  *             f"{limit_order_record.price} {limit_order_record.quote_currency} is filled."
  *         )
  */
-  __pyx_t_9 = PyTuple_New(9); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1616, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
+  __pyx_t_2 = PyTuple_New(9); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1621, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_7 = 0;
   __pyx_t_10 = 127;
   __Pyx_INCREF(__pyx_kp_u_Maker_SELL_order);
   __pyx_t_7 += 17;
   __Pyx_GIVEREF(__pyx_kp_u_Maker_SELL_order);
-  PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_kp_u_Maker_SELL_order);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_quantity); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1616, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_t_2, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1616, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_12);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) : __pyx_t_10;
-  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_12);
-  __Pyx_GIVEREF(__pyx_t_12);
-  PyTuple_SET_ITEM(__pyx_t_9, 1, __pyx_t_12);
-  __pyx_t_12 = 0;
+  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_kp_u_Maker_SELL_order);
+  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_quantity); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1621, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_9);
+  __pyx_t_11 = __Pyx_PyObject_FormatSimple(__pyx_t_9, __pyx_empty_unicode); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1621, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_11);
+  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_11) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_11) : __pyx_t_10;
+  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_11);
+  __Pyx_GIVEREF(__pyx_t_11);
+  PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_t_11);
+  __pyx_t_11 = 0;
   __Pyx_INCREF(__pyx_kp_u__35);
   __pyx_t_7 += 1;
   __Pyx_GIVEREF(__pyx_kp_u__35);
-  PyTuple_SET_ITEM(__pyx_t_9, 2, __pyx_kp_u__35);
-  __pyx_t_12 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_base_currency); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1616, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_12);
-  __pyx_t_2 = __Pyx_PyObject_FormatSimple(__pyx_t_12, __pyx_empty_unicode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1616, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_10;
-  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
-  __Pyx_GIVEREF(__pyx_t_2);
-  PyTuple_SET_ITEM(__pyx_t_9, 3, __pyx_t_2);
-  __pyx_t_2 = 0;
+  PyTuple_SET_ITEM(__pyx_t_2, 2, __pyx_kp_u__35);
+  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_base_currency); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1621, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_11);
+  __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_t_11, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1621, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_9);
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_10;
+  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_9);
+  __Pyx_GIVEREF(__pyx_t_9);
+  PyTuple_SET_ITEM(__pyx_t_2, 3, __pyx_t_9);
+  __pyx_t_9 = 0;
   __Pyx_INCREF(__pyx_kp_u__37);
   __pyx_t_7 += 3;
   __Pyx_GIVEREF(__pyx_kp_u__37);
-  PyTuple_SET_ITEM(__pyx_t_9, 4, __pyx_kp_u__37);
+  PyTuple_SET_ITEM(__pyx_t_2, 4, __pyx_kp_u__37);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1617
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1622
  *         self.notify_hb_app_with_timestamp(
  *             f"Maker SELL order {limit_order_record.quantity} {limit_order_record.base_currency} @ "
  *             f"{limit_order_record.price} {limit_order_record.quote_currency} is filled."             # <<<<<<<<<<<<<<
  *         )
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_price); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1617, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_t_2, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1617, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_12);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) : __pyx_t_10;
-  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_12);
-  __Pyx_GIVEREF(__pyx_t_12);
-  PyTuple_SET_ITEM(__pyx_t_9, 5, __pyx_t_12);
-  __pyx_t_12 = 0;
+  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_price); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1622, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_9);
+  __pyx_t_11 = __Pyx_PyObject_FormatSimple(__pyx_t_9, __pyx_empty_unicode); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1622, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_11);
+  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_11) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_11) : __pyx_t_10;
+  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_11);
+  __Pyx_GIVEREF(__pyx_t_11);
+  PyTuple_SET_ITEM(__pyx_t_2, 5, __pyx_t_11);
+  __pyx_t_11 = 0;
   __Pyx_INCREF(__pyx_kp_u__35);
   __pyx_t_7 += 1;
   __Pyx_GIVEREF(__pyx_kp_u__35);
-  PyTuple_SET_ITEM(__pyx_t_9, 6, __pyx_kp_u__35);
-  __pyx_t_12 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_quote_currency); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1617, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_12);
-  __pyx_t_2 = __Pyx_PyObject_FormatSimple(__pyx_t_12, __pyx_empty_unicode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1617, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_10;
-  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
-  __Pyx_GIVEREF(__pyx_t_2);
-  PyTuple_SET_ITEM(__pyx_t_9, 7, __pyx_t_2);
-  __pyx_t_2 = 0;
+  PyTuple_SET_ITEM(__pyx_t_2, 6, __pyx_kp_u__35);
+  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_limit_order_record), __pyx_n_s_quote_currency); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1622, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_11);
+  __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_t_11, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1622, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_9);
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_10;
+  __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_9);
+  __Pyx_GIVEREF(__pyx_t_9);
+  PyTuple_SET_ITEM(__pyx_t_2, 7, __pyx_t_9);
+  __pyx_t_9 = 0;
   __Pyx_INCREF(__pyx_kp_u_is_filled);
   __pyx_t_7 += 11;
   __Pyx_GIVEREF(__pyx_kp_u_is_filled);
-  PyTuple_SET_ITEM(__pyx_t_9, 8, __pyx_kp_u_is_filled);
+  PyTuple_SET_ITEM(__pyx_t_2, 8, __pyx_kp_u_is_filled);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1616
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1621
  *         )
  *         self.notify_hb_app_with_timestamp(
  *             f"Maker SELL order {limit_order_record.quantity} {limit_order_record.base_currency} @ "             # <<<<<<<<<<<<<<
  *             f"{limit_order_record.price} {limit_order_record.quote_currency} is filled."
  *         )
  */
-  __pyx_t_2 = __Pyx_PyUnicode_Join(__pyx_t_9, 9, __pyx_t_7, __pyx_t_10); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1616, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  __pyx_t_9 = NULL;
+  __pyx_t_9 = __Pyx_PyUnicode_Join(__pyx_t_2, 9, __pyx_t_7, __pyx_t_10); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1621, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_9);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = NULL;
   __pyx_t_13 = 0;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_11))) {
-    __pyx_t_9 = PyMethod_GET_SELF(__pyx_t_11);
-    if (likely(__pyx_t_9)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_11);
-      __Pyx_INCREF(__pyx_t_9);
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_14))) {
+    __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_14);
+    if (likely(__pyx_t_2)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_14);
+      __Pyx_INCREF(__pyx_t_2);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_11, function);
+      __Pyx_DECREF_SET(__pyx_t_14, function);
       __pyx_t_13 = 1;
     }
   }
   {
-    PyObject *__pyx_callargs[2] = {__pyx_t_9, __pyx_t_2};
-    __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_11, __pyx_callargs+1-__pyx_t_13, 1+__pyx_t_13);
-    __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1615, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+    PyObject *__pyx_callargs[2] = {__pyx_t_2, __pyx_t_9};
+    __pyx_t_12 = __Pyx_PyObject_FastCall(__pyx_t_14, __pyx_callargs+1-__pyx_t_13, 1+__pyx_t_13);
+    __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+    if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1620, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_12);
+    __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
   }
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1556
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1559
  *         )
  * 
  *     cdef c_did_complete_sell_order(self, object order_completed_event):             # <<<<<<<<<<<<<<
@@ -38459,19 +38560,22 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   __Pyx_XDECREF(__pyx_t_11);
   __Pyx_XDECREF(__pyx_t_12);
   __Pyx_XDECREF(__pyx_t_14);
+  __Pyx_XDECREF(__pyx_t_15);
   __Pyx_AddTraceback("hummingbot.strategy.pure_market_making.pure_market_making.PureMarketMakingStrategy.c_did_complete_sell_order", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_order_id);
   __Pyx_XDECREF((PyObject *)__pyx_v_limit_order_record);
+  __Pyx_XDECREF((PyObject *)__pyx_v_market);
   __Pyx_XDECREF(__pyx_v_active_buy_ids);
+  __Pyx_XDECREF(__pyx_v_top_bid);
   __Pyx_XDECREF(__pyx_9genexpr19__pyx_v_x);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1620
+/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1625
  *         )
  * 
  *     cdef bint c_is_within_tolerance(self, list current_prices, list proposal_prices):             # <<<<<<<<<<<<<<
@@ -38502,7 +38606,7 @@ static int __pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_market_mak
   __Pyx_INCREF(__pyx_v_current_prices);
   __Pyx_INCREF(__pyx_v_proposal_prices);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1621
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1626
  * 
  *     cdef bint c_is_within_tolerance(self, list current_prices, list proposal_prices):
  *         if len(current_prices) != len(proposal_prices):             # <<<<<<<<<<<<<<
@@ -38511,18 +38615,18 @@ static int __pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_market_mak
  */
   if (unlikely(__pyx_v_current_prices == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 1621, __pyx_L1_error)
+    __PYX_ERR(0, 1626, __pyx_L1_error)
   }
-  __pyx_t_1 = PyList_GET_SIZE(__pyx_v_current_prices); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 1621, __pyx_L1_error)
+  __pyx_t_1 = PyList_GET_SIZE(__pyx_v_current_prices); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 1626, __pyx_L1_error)
   if (unlikely(__pyx_v_proposal_prices == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 1621, __pyx_L1_error)
+    __PYX_ERR(0, 1626, __pyx_L1_error)
   }
-  __pyx_t_2 = PyList_GET_SIZE(__pyx_v_proposal_prices); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 1621, __pyx_L1_error)
+  __pyx_t_2 = PyList_GET_SIZE(__pyx_v_proposal_prices); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 1626, __pyx_L1_error)
   __pyx_t_3 = ((__pyx_t_1 != __pyx_t_2) != 0);
   if (__pyx_t_3) {
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1622
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1627
  *     cdef bint c_is_within_tolerance(self, list current_prices, list proposal_prices):
  *         if len(current_prices) != len(proposal_prices):
  *             return False             # <<<<<<<<<<<<<<
@@ -38532,7 +38636,7 @@ static int __pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_market_mak
     __pyx_r = 0;
     goto __pyx_L0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1621
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1626
  * 
  *     cdef bint c_is_within_tolerance(self, list current_prices, list proposal_prices):
  *         if len(current_prices) != len(proposal_prices):             # <<<<<<<<<<<<<<
@@ -38541,44 +38645,44 @@ static int __pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_market_mak
  */
   }
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1623
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1628
  *         if len(current_prices) != len(proposal_prices):
  *             return False
  *         current_prices = sorted(current_prices)             # <<<<<<<<<<<<<<
  *         proposal_prices = sorted(proposal_prices)
  *         for current, proposal in zip(current_prices, proposal_prices):
  */
-  __pyx_t_5 = PySequence_List(__pyx_v_current_prices); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1623, __pyx_L1_error)
+  __pyx_t_5 = PySequence_List(__pyx_v_current_prices); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1628, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __pyx_t_4 = ((PyObject*)__pyx_t_5);
   __pyx_t_5 = 0;
-  __pyx_t_6 = PyList_Sort(__pyx_t_4); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(0, 1623, __pyx_L1_error)
+  __pyx_t_6 = PyList_Sort(__pyx_t_4); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(0, 1628, __pyx_L1_error)
   __Pyx_DECREF_SET(__pyx_v_current_prices, ((PyObject*)__pyx_t_4));
   __pyx_t_4 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1624
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1629
  *             return False
  *         current_prices = sorted(current_prices)
  *         proposal_prices = sorted(proposal_prices)             # <<<<<<<<<<<<<<
  *         for current, proposal in zip(current_prices, proposal_prices):
  *             # if spread diff is more than the tolerance or order quantities are different, return false.
  */
-  __pyx_t_5 = PySequence_List(__pyx_v_proposal_prices); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1624, __pyx_L1_error)
+  __pyx_t_5 = PySequence_List(__pyx_v_proposal_prices); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1629, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __pyx_t_4 = ((PyObject*)__pyx_t_5);
   __pyx_t_5 = 0;
-  __pyx_t_6 = PyList_Sort(__pyx_t_4); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(0, 1624, __pyx_L1_error)
+  __pyx_t_6 = PyList_Sort(__pyx_t_4); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(0, 1629, __pyx_L1_error)
   __Pyx_DECREF_SET(__pyx_v_proposal_prices, ((PyObject*)__pyx_t_4));
   __pyx_t_4 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1625
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1630
  *         current_prices = sorted(current_prices)
  *         proposal_prices = sorted(proposal_prices)
  *         for current, proposal in zip(current_prices, proposal_prices):             # <<<<<<<<<<<<<<
  *             # if spread diff is more than the tolerance or order quantities are different, return false.
  *             if abs(proposal - current)/current > self._order_refresh_tolerance_pct:
  */
-  __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1625, __pyx_L1_error)
+  __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1630, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_INCREF(__pyx_v_current_prices);
   __Pyx_GIVEREF(__pyx_v_current_prices);
@@ -38586,16 +38690,16 @@ static int __pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_market_mak
   __Pyx_INCREF(__pyx_v_proposal_prices);
   __Pyx_GIVEREF(__pyx_v_proposal_prices);
   PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_v_proposal_prices);
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_zip, __pyx_t_4, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1625, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_zip, __pyx_t_4, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1630, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   if (likely(PyList_CheckExact(__pyx_t_5)) || PyTuple_CheckExact(__pyx_t_5)) {
     __pyx_t_4 = __pyx_t_5; __Pyx_INCREF(__pyx_t_4); __pyx_t_2 = 0;
     __pyx_t_7 = NULL;
   } else {
-    __pyx_t_2 = -1; __pyx_t_4 = PyObject_GetIter(__pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1625, __pyx_L1_error)
+    __pyx_t_2 = -1; __pyx_t_4 = PyObject_GetIter(__pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1630, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_7 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1625, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1630, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   for (;;) {
@@ -38603,17 +38707,17 @@ static int __pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_market_mak
       if (likely(PyList_CheckExact(__pyx_t_4))) {
         if (__pyx_t_2 >= PyList_GET_SIZE(__pyx_t_4)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_5 = PyList_GET_ITEM(__pyx_t_4, __pyx_t_2); __Pyx_INCREF(__pyx_t_5); __pyx_t_2++; if (unlikely((0 < 0))) __PYX_ERR(0, 1625, __pyx_L1_error)
+        __pyx_t_5 = PyList_GET_ITEM(__pyx_t_4, __pyx_t_2); __Pyx_INCREF(__pyx_t_5); __pyx_t_2++; if (unlikely((0 < 0))) __PYX_ERR(0, 1630, __pyx_L1_error)
         #else
-        __pyx_t_5 = PySequence_ITEM(__pyx_t_4, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1625, __pyx_L1_error)
+        __pyx_t_5 = PySequence_ITEM(__pyx_t_4, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1630, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         #endif
       } else {
         if (__pyx_t_2 >= PyTuple_GET_SIZE(__pyx_t_4)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_4, __pyx_t_2); __Pyx_INCREF(__pyx_t_5); __pyx_t_2++; if (unlikely((0 < 0))) __PYX_ERR(0, 1625, __pyx_L1_error)
+        __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_4, __pyx_t_2); __Pyx_INCREF(__pyx_t_5); __pyx_t_2++; if (unlikely((0 < 0))) __PYX_ERR(0, 1630, __pyx_L1_error)
         #else
-        __pyx_t_5 = PySequence_ITEM(__pyx_t_4, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1625, __pyx_L1_error)
+        __pyx_t_5 = PySequence_ITEM(__pyx_t_4, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1630, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         #endif
       }
@@ -38623,7 +38727,7 @@ static int __pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_market_mak
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 1625, __pyx_L1_error)
+          else __PYX_ERR(0, 1630, __pyx_L1_error)
         }
         break;
       }
@@ -38635,7 +38739,7 @@ static int __pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_market_mak
       if (unlikely(size != 2)) {
         if (size > 2) __Pyx_RaiseTooManyValuesError(2);
         else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(0, 1625, __pyx_L1_error)
+        __PYX_ERR(0, 1630, __pyx_L1_error)
       }
       #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
       if (likely(PyTuple_CheckExact(sequence))) {
@@ -38648,15 +38752,15 @@ static int __pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_market_mak
       __Pyx_INCREF(__pyx_t_8);
       __Pyx_INCREF(__pyx_t_9);
       #else
-      __pyx_t_8 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1625, __pyx_L1_error)
+      __pyx_t_8 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1630, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
-      __pyx_t_9 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1625, __pyx_L1_error)
+      __pyx_t_9 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1630, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       #endif
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     } else {
       Py_ssize_t index = -1;
-      __pyx_t_10 = PyObject_GetIter(__pyx_t_5); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1625, __pyx_L1_error)
+      __pyx_t_10 = PyObject_GetIter(__pyx_t_5); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1630, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __pyx_t_11 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_10);
@@ -38664,7 +38768,7 @@ static int __pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_market_mak
       __Pyx_GOTREF(__pyx_t_8);
       index = 1; __pyx_t_9 = __pyx_t_11(__pyx_t_10); if (unlikely(!__pyx_t_9)) goto __pyx_L6_unpacking_failed;
       __Pyx_GOTREF(__pyx_t_9);
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_11(__pyx_t_10), 2) < 0) __PYX_ERR(0, 1625, __pyx_L1_error)
+      if (__Pyx_IternextUnpackEndCheck(__pyx_t_11(__pyx_t_10), 2) < 0) __PYX_ERR(0, 1630, __pyx_L1_error)
       __pyx_t_11 = NULL;
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
       goto __pyx_L7_unpacking_done;
@@ -38672,7 +38776,7 @@ static int __pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_market_mak
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
       __pyx_t_11 = NULL;
       if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      __PYX_ERR(0, 1625, __pyx_L1_error)
+      __PYX_ERR(0, 1630, __pyx_L1_error)
       __pyx_L7_unpacking_done:;
     }
     __Pyx_XDECREF_SET(__pyx_v_current, __pyx_t_8);
@@ -38680,28 +38784,28 @@ static int __pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_market_mak
     __Pyx_XDECREF_SET(__pyx_v_proposal, __pyx_t_9);
     __pyx_t_9 = 0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1627
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1632
  *         for current, proposal in zip(current_prices, proposal_prices):
  *             # if spread diff is more than the tolerance or order quantities are different, return false.
  *             if abs(proposal - current)/current > self._order_refresh_tolerance_pct:             # <<<<<<<<<<<<<<
  *                 return False
  *         return True
  */
-    __pyx_t_5 = PyNumber_Subtract(__pyx_v_proposal, __pyx_v_current); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1627, __pyx_L1_error)
+    __pyx_t_5 = PyNumber_Subtract(__pyx_v_proposal, __pyx_v_current); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1632, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_9 = __Pyx_PyNumber_Absolute(__pyx_t_5); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1627, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyNumber_Absolute(__pyx_t_5); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1632, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_5 = __Pyx_PyNumber_Divide(__pyx_t_9, __pyx_v_current); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1627, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyNumber_Divide(__pyx_t_9, __pyx_v_current); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1632, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __pyx_t_9 = PyObject_RichCompare(__pyx_t_5, __pyx_v_self->_order_refresh_tolerance_pct, Py_GT); __Pyx_XGOTREF(__pyx_t_9); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1627, __pyx_L1_error)
+    __pyx_t_9 = PyObject_RichCompare(__pyx_t_5, __pyx_v_self->_order_refresh_tolerance_pct, Py_GT); __Pyx_XGOTREF(__pyx_t_9); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1632, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_9); if (unlikely((__pyx_t_3 < 0))) __PYX_ERR(0, 1627, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_9); if (unlikely((__pyx_t_3 < 0))) __PYX_ERR(0, 1632, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     if (__pyx_t_3) {
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1628
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1633
  *             # if spread diff is more than the tolerance or order quantities are different, return false.
  *             if abs(proposal - current)/current > self._order_refresh_tolerance_pct:
  *                 return False             # <<<<<<<<<<<<<<
@@ -38712,7 +38816,7 @@ static int __pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_market_mak
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       goto __pyx_L0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1627
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1632
  *         for current, proposal in zip(current_prices, proposal_prices):
  *             # if spread diff is more than the tolerance or order quantities are different, return false.
  *             if abs(proposal - current)/current > self._order_refresh_tolerance_pct:             # <<<<<<<<<<<<<<
@@ -38721,7 +38825,7 @@ static int __pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_market_mak
  */
     }
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1625
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1630
  *         current_prices = sorted(current_prices)
  *         proposal_prices = sorted(proposal_prices)
  *         for current, proposal in zip(current_prices, proposal_prices):             # <<<<<<<<<<<<<<
@@ -38731,7 +38835,7 @@ static int __pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_market_mak
   }
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1629
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1634
  *             if abs(proposal - current)/current > self._order_refresh_tolerance_pct:
  *                 return False
  *         return True             # <<<<<<<<<<<<<<
@@ -38741,7 +38845,7 @@ static int __pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_market_mak
   __pyx_r = 1;
   goto __pyx_L0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1620
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1625
  *         )
  * 
  *     cdef bint c_is_within_tolerance(self, list current_prices, list proposal_prices):             # <<<<<<<<<<<<<<
@@ -38768,7 +38872,7 @@ static int __pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_market_mak
 }
 static PyObject *__pyx_gb_10hummingbot_8strategy_18pure_market_making_18pure_market_making_24PureMarketMakingStrategy_39c_cancel_active_orders_on_max_age_limit_2generator1(__pyx_CoroutineObject *__pyx_generator, CYTHON_UNUSED PyThreadState *__pyx_tstate, PyObject *__pyx_sent_value); /* proto */
 
-/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1638
+/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1643
  *             list active_orders = self.active_non_hanging_orders
  * 
  *         if active_orders and any(order_age(o, self._current_timestamp) > self._max_order_age for o in active_orders):             # <<<<<<<<<<<<<<
@@ -38788,7 +38892,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
   if (unlikely(!__pyx_cur_scope)) {
     __pyx_cur_scope = ((struct __pyx_obj_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_3_genexpr *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(0, 1638, __pyx_L1_error)
+    __PYX_ERR(0, 1643, __pyx_L1_error)
   } else {
     __Pyx_GOTREF((PyObject *)__pyx_cur_scope);
   }
@@ -38796,7 +38900,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
   __Pyx_INCREF((PyObject *)__pyx_cur_scope->__pyx_outer_scope);
   __Pyx_GIVEREF((PyObject *)__pyx_cur_scope->__pyx_outer_scope);
   {
-    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_10hummingbot_8strategy_18pure_market_making_18pure_market_making_24PureMarketMakingStrategy_39c_cancel_active_orders_on_max_age_limit_2generator1, NULL, (PyObject *) __pyx_cur_scope, __pyx_n_s_genexpr, __pyx_n_s_PureMarketMakingStrategy_c_cance, __pyx_n_s_hummingbot_strategy_pure_market); if (unlikely(!gen)) __PYX_ERR(0, 1638, __pyx_L1_error)
+    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_10hummingbot_8strategy_18pure_market_making_18pure_market_making_24PureMarketMakingStrategy_39c_cancel_active_orders_on_max_age_limit_2generator1, NULL, (PyObject *) __pyx_cur_scope, __pyx_n_s_genexpr, __pyx_n_s_PureMarketMakingStrategy_c_cance, __pyx_n_s_hummingbot_strategy_pure_market); if (unlikely(!gen)) __PYX_ERR(0, 1643, __pyx_L1_error)
     __Pyx_DECREF(__pyx_cur_scope);
     __Pyx_RefNannyFinishContext();
     return (PyObject *) gen;
@@ -38836,29 +38940,29 @@ static PyObject *__pyx_gb_10hummingbot_8strategy_18pure_market_making_18pure_mar
     return NULL;
   }
   __pyx_L3_first_run:;
-  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 1638, __pyx_L1_error)
-  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_active_orders)) { __Pyx_RaiseClosureNameError("active_orders"); __PYX_ERR(0, 1638, __pyx_L1_error) }
+  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 1643, __pyx_L1_error)
+  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_active_orders)) { __Pyx_RaiseClosureNameError("active_orders"); __PYX_ERR(0, 1643, __pyx_L1_error) }
   if (unlikely(__pyx_cur_scope->__pyx_outer_scope->__pyx_v_active_orders == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 1638, __pyx_L1_error)
+    __PYX_ERR(0, 1643, __pyx_L1_error)
   }
   __pyx_t_1 = __pyx_cur_scope->__pyx_outer_scope->__pyx_v_active_orders; __Pyx_INCREF(__pyx_t_1); __pyx_t_2 = 0;
   for (;;) {
     if (__pyx_t_2 >= PyList_GET_SIZE(__pyx_t_1)) break;
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely((0 < 0))) __PYX_ERR(0, 1638, __pyx_L1_error)
+    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely((0 < 0))) __PYX_ERR(0, 1643, __pyx_L1_error)
     #else
-    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1638, __pyx_L1_error)
+    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1643, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     #endif
     __Pyx_XGOTREF(__pyx_cur_scope->__pyx_v_o);
     __Pyx_XDECREF_SET(__pyx_cur_scope->__pyx_v_o, __pyx_t_3);
     __Pyx_GIVEREF(__pyx_t_3);
     __pyx_t_3 = 0;
-    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_order_age); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1638, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_order_age); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1643, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); __PYX_ERR(0, 1638, __pyx_L1_error) }
-    __pyx_t_5 = PyFloat_FromDouble(__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self->__pyx_base.__pyx_base._current_timestamp); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1638, __pyx_L1_error)
+    if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); __PYX_ERR(0, 1643, __pyx_L1_error) }
+    __pyx_t_5 = PyFloat_FromDouble(__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self->__pyx_base.__pyx_base._current_timestamp); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1643, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __pyx_t_6 = NULL;
     __pyx_t_7 = 0;
@@ -38877,17 +38981,17 @@ static PyObject *__pyx_gb_10hummingbot_8strategy_18pure_market_making_18pure_mar
       __pyx_t_3 = __Pyx_PyObject_FastCall(__pyx_t_4, __pyx_callargs+1-__pyx_t_7, 2+__pyx_t_7);
       __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1638, __pyx_L1_error)
+      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1643, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     }
-    if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); __PYX_ERR(0, 1638, __pyx_L1_error) }
-    __pyx_t_4 = PyFloat_FromDouble(__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self->_max_order_age); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1638, __pyx_L1_error)
+    if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); __PYX_ERR(0, 1643, __pyx_L1_error) }
+    __pyx_t_4 = PyFloat_FromDouble(__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self->_max_order_age); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1643, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = PyObject_RichCompare(__pyx_t_3, __pyx_t_4, Py_GT); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1638, __pyx_L1_error)
+    __pyx_t_5 = PyObject_RichCompare(__pyx_t_3, __pyx_t_4, Py_GT); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1643, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely((__pyx_t_8 < 0))) __PYX_ERR(0, 1638, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely((__pyx_t_8 < 0))) __PYX_ERR(0, 1643, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     if (__pyx_t_8) {
       __Pyx_XDECREF(__pyx_r);
@@ -38928,7 +39032,7 @@ static PyObject *__pyx_gb_10hummingbot_8strategy_18pure_market_making_18pure_mar
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1631
+/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1636
  *         return True
  * 
  *     cdef c_cancel_active_orders_on_max_age_limit(self):             # <<<<<<<<<<<<<<
@@ -38957,7 +39061,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   if (unlikely(!__pyx_cur_scope)) {
     __pyx_cur_scope = ((struct __pyx_obj_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_2_c_cancel_active_orders_on_max_age_limit *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(0, 1631, __pyx_L1_error)
+    __PYX_ERR(0, 1636, __pyx_L1_error)
   } else {
     __Pyx_GOTREF((PyObject *)__pyx_cur_scope);
   }
@@ -38965,21 +39069,21 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   __Pyx_INCREF((PyObject *)__pyx_cur_scope->__pyx_v_self);
   __Pyx_GIVEREF((PyObject *)__pyx_cur_scope->__pyx_v_self);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1636
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1641
  *         """
  *         cdef:
  *             list active_orders = self.active_non_hanging_orders             # <<<<<<<<<<<<<<
  * 
  *         if active_orders and any(order_age(o, self._current_timestamp) > self._max_order_age for o in active_orders):
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_cur_scope->__pyx_v_self), __pyx_n_s_active_non_hanging_orders); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1636, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_cur_scope->__pyx_v_self), __pyx_n_s_active_non_hanging_orders); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1641, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(PyList_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("list", __pyx_t_1))) __PYX_ERR(0, 1636, __pyx_L1_error)
+  if (!(likely(PyList_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("list", __pyx_t_1))) __PYX_ERR(0, 1641, __pyx_L1_error)
   __Pyx_GIVEREF(__pyx_t_1);
   __pyx_cur_scope->__pyx_v_active_orders = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1638
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1643
  *             list active_orders = self.active_non_hanging_orders
  * 
  *         if active_orders and any(order_age(o, self._current_timestamp) > self._max_order_age for o in active_orders):             # <<<<<<<<<<<<<<
@@ -38992,18 +39096,18 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     __pyx_t_2 = __pyx_t_3;
     goto __pyx_L4_bool_binop_done;
   }
-  __pyx_t_1 = __pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_market_making_24PureMarketMakingStrategy_39c_cancel_active_orders_on_max_age_limit_genexpr(((PyObject*)__pyx_cur_scope)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1638, __pyx_L1_error)
+  __pyx_t_1 = __pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_market_making_24PureMarketMakingStrategy_39c_cancel_active_orders_on_max_age_limit_genexpr(((PyObject*)__pyx_cur_scope)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1643, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __Pyx_Generator_Next(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1638, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_Generator_Next(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1643, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely((__pyx_t_3 < 0))) __PYX_ERR(0, 1638, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely((__pyx_t_3 < 0))) __PYX_ERR(0, 1643, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_2 = __pyx_t_3;
   __pyx_L4_bool_binop_done:;
   if (__pyx_t_2) {
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1639
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1644
  * 
  *         if active_orders and any(order_age(o, self._current_timestamp) > self._max_order_age for o in active_orders):
  *             for order in active_orders:             # <<<<<<<<<<<<<<
@@ -39012,21 +39116,21 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
     if (unlikely(__pyx_cur_scope->__pyx_v_active_orders == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-      __PYX_ERR(0, 1639, __pyx_L1_error)
+      __PYX_ERR(0, 1644, __pyx_L1_error)
     }
     __pyx_t_4 = __pyx_cur_scope->__pyx_v_active_orders; __Pyx_INCREF(__pyx_t_4); __pyx_t_5 = 0;
     for (;;) {
       if (__pyx_t_5 >= PyList_GET_SIZE(__pyx_t_4)) break;
       #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-      __pyx_t_1 = PyList_GET_ITEM(__pyx_t_4, __pyx_t_5); __Pyx_INCREF(__pyx_t_1); __pyx_t_5++; if (unlikely((0 < 0))) __PYX_ERR(0, 1639, __pyx_L1_error)
+      __pyx_t_1 = PyList_GET_ITEM(__pyx_t_4, __pyx_t_5); __Pyx_INCREF(__pyx_t_1); __pyx_t_5++; if (unlikely((0 < 0))) __PYX_ERR(0, 1644, __pyx_L1_error)
       #else
-      __pyx_t_1 = PySequence_ITEM(__pyx_t_4, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1639, __pyx_L1_error)
+      __pyx_t_1 = PySequence_ITEM(__pyx_t_4, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1644, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       #endif
       __Pyx_XDECREF_SET(__pyx_v_order, __pyx_t_1);
       __pyx_t_1 = 0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1640
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1645
  *         if active_orders and any(order_age(o, self._current_timestamp) > self._max_order_age for o in active_orders):
  *             for order in active_orders:
  *                 self.c_cancel_order(self._market_info, order.client_order_id)             # <<<<<<<<<<<<<<
@@ -39035,16 +39139,16 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
       __pyx_t_1 = __pyx_cur_scope->__pyx_v_self->_market_info;
       __Pyx_INCREF(__pyx_t_1);
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_order, __pyx_n_s_client_order_id); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1640, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_order, __pyx_n_s_client_order_id); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1645, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
-      if (!(likely(PyUnicode_CheckExact(__pyx_t_6))||((__pyx_t_6) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_6))) __PYX_ERR(0, 1640, __pyx_L1_error)
-      __pyx_t_7 = ((struct __pyx_vtabstruct_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy *)__pyx_cur_scope->__pyx_v_self->__pyx_base.__pyx_base.__pyx_base.__pyx_vtab)->__pyx_base.c_cancel_order(((struct __pyx_obj_10hummingbot_8strategy_13strategy_base_StrategyBase *)__pyx_cur_scope->__pyx_v_self), __pyx_t_1, ((PyObject*)__pyx_t_6)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1640, __pyx_L1_error)
+      if (!(likely(PyUnicode_CheckExact(__pyx_t_6))||((__pyx_t_6) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_6))) __PYX_ERR(0, 1645, __pyx_L1_error)
+      __pyx_t_7 = ((struct __pyx_vtabstruct_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy *)__pyx_cur_scope->__pyx_v_self->__pyx_base.__pyx_base.__pyx_base.__pyx_vtab)->__pyx_base.c_cancel_order(((struct __pyx_obj_10hummingbot_8strategy_13strategy_base_StrategyBase *)__pyx_cur_scope->__pyx_v_self), __pyx_t_1, ((PyObject*)__pyx_t_6)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1645, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1639
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1644
  * 
  *         if active_orders and any(order_age(o, self._current_timestamp) > self._max_order_age for o in active_orders):
  *             for order in active_orders:             # <<<<<<<<<<<<<<
@@ -39054,7 +39158,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     }
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1638
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1643
  *             list active_orders = self.active_non_hanging_orders
  * 
  *         if active_orders and any(order_age(o, self._current_timestamp) > self._max_order_age for o in active_orders):             # <<<<<<<<<<<<<<
@@ -39063,7 +39167,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
   }
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1631
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1636
  *         return True
  * 
  *     cdef c_cancel_active_orders_on_max_age_limit(self):             # <<<<<<<<<<<<<<
@@ -39090,7 +39194,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1642
+/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1647
  *                 self.c_cancel_order(self._market_info, order.client_order_id)
  * 
  *     cdef c_cancel_active_orders(self, object proposal):             # <<<<<<<<<<<<<<
@@ -39130,7 +39234,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("c_cancel_active_orders", 0);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1646
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1651
  *         Cancels active non hanging orders, checks if the order prices are within tolerance threshold
  *         """
  *         if self._cancel_timestamp > self._current_timestamp:             # <<<<<<<<<<<<<<
@@ -39140,7 +39244,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   __pyx_t_1 = ((__pyx_v_self->_cancel_timestamp > __pyx_v_self->__pyx_base.__pyx_base._current_timestamp) != 0);
   if (__pyx_t_1) {
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1647
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1652
  *         """
  *         if self._cancel_timestamp > self._current_timestamp:
  *             return             # <<<<<<<<<<<<<<
@@ -39151,7 +39255,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1646
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1651
  *         Cancels active non hanging orders, checks if the order prices are within tolerance threshold
  *         """
  *         if self._cancel_timestamp > self._current_timestamp:             # <<<<<<<<<<<<<<
@@ -39160,44 +39264,44 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
   }
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1650
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1655
  * 
  *         cdef:
  *             list active_orders = self.active_non_hanging_orders             # <<<<<<<<<<<<<<
  *             list active_buy_prices = []
  *             list active_sells = []
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_active_non_hanging_orders); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1650, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_active_non_hanging_orders); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1655, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (!(likely(PyList_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None) || __Pyx_RaiseUnexpectedTypeError("list", __pyx_t_2))) __PYX_ERR(0, 1650, __pyx_L1_error)
+  if (!(likely(PyList_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None) || __Pyx_RaiseUnexpectedTypeError("list", __pyx_t_2))) __PYX_ERR(0, 1655, __pyx_L1_error)
   __pyx_v_active_orders = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1651
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1656
  *         cdef:
  *             list active_orders = self.active_non_hanging_orders
  *             list active_buy_prices = []             # <<<<<<<<<<<<<<
  *             list active_sells = []
  *             bint to_defer_canceling = False
  */
-  __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1651, __pyx_L1_error)
+  __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1656, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_v_active_buy_prices = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1652
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1657
  *             list active_orders = self.active_non_hanging_orders
  *             list active_buy_prices = []
  *             list active_sells = []             # <<<<<<<<<<<<<<
  *             bint to_defer_canceling = False
  *         if len(active_orders) == 0:
  */
-  __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1652, __pyx_L1_error)
+  __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1657, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_v_active_sells = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1653
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1658
  *             list active_buy_prices = []
  *             list active_sells = []
  *             bint to_defer_canceling = False             # <<<<<<<<<<<<<<
@@ -39206,7 +39310,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
   __pyx_v_to_defer_canceling = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1654
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1659
  *             list active_sells = []
  *             bint to_defer_canceling = False
  *         if len(active_orders) == 0:             # <<<<<<<<<<<<<<
@@ -39215,13 +39319,13 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
   if (unlikely(__pyx_v_active_orders == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 1654, __pyx_L1_error)
+    __PYX_ERR(0, 1659, __pyx_L1_error)
   }
-  __pyx_t_3 = PyList_GET_SIZE(__pyx_v_active_orders); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 1654, __pyx_L1_error)
+  __pyx_t_3 = PyList_GET_SIZE(__pyx_v_active_orders); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 1659, __pyx_L1_error)
   __pyx_t_1 = ((__pyx_t_3 == 0) != 0);
   if (__pyx_t_1) {
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1655
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1660
  *             bint to_defer_canceling = False
  *         if len(active_orders) == 0:
  *             return             # <<<<<<<<<<<<<<
@@ -39232,7 +39336,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1654
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1659
  *             list active_sells = []
  *             bint to_defer_canceling = False
  *         if len(active_orders) == 0:             # <<<<<<<<<<<<<<
@@ -39241,7 +39345,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
   }
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1656
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1661
  *         if len(active_orders) == 0:
  *             return
  *         if proposal is not None and \             # <<<<<<<<<<<<<<
@@ -39256,20 +39360,20 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     goto __pyx_L6_bool_binop_done;
   }
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1657
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1662
  *             return
  *         if proposal is not None and \
  *                 self._order_refresh_tolerance_pct >= 0:             # <<<<<<<<<<<<<<
  * 
  *             active_buy_prices = [Decimal(str(o.price)) for o in active_orders if o.is_buy]
  */
-  __pyx_t_2 = PyObject_RichCompare(__pyx_v_self->_order_refresh_tolerance_pct, __pyx_int_0, Py_GE); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1657, __pyx_L1_error)
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 1657, __pyx_L1_error)
+  __pyx_t_2 = PyObject_RichCompare(__pyx_v_self->_order_refresh_tolerance_pct, __pyx_int_0, Py_GE); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1662, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 1662, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_1 = __pyx_t_5;
   __pyx_L6_bool_binop_done:;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1656
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1661
  *         if len(active_orders) == 0:
  *             return
  *         if proposal is not None and \             # <<<<<<<<<<<<<<
@@ -39278,7 +39382,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
   if (__pyx_t_1) {
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1659
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1664
  *                 self._order_refresh_tolerance_pct >= 0:
  * 
  *             active_buy_prices = [Decimal(str(o.price)) for o in active_orders if o.is_buy]             # <<<<<<<<<<<<<<
@@ -39286,33 +39390,33 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  *             proposal_buys = [buy.price for buy in proposal.buys]
  */
     { /* enter inner scope */
-      __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1659, __pyx_L10_error)
+      __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1664, __pyx_L10_error)
       __Pyx_GOTREF(__pyx_t_2);
       if (unlikely(__pyx_v_active_orders == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-        __PYX_ERR(0, 1659, __pyx_L10_error)
+        __PYX_ERR(0, 1664, __pyx_L10_error)
       }
       __pyx_t_6 = __pyx_v_active_orders; __Pyx_INCREF(__pyx_t_6); __pyx_t_3 = 0;
       for (;;) {
         if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_6)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_7 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_3); __Pyx_INCREF(__pyx_t_7); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1659, __pyx_L10_error)
+        __pyx_t_7 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_3); __Pyx_INCREF(__pyx_t_7); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1664, __pyx_L10_error)
         #else
-        __pyx_t_7 = PySequence_ITEM(__pyx_t_6, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1659, __pyx_L10_error)
+        __pyx_t_7 = PySequence_ITEM(__pyx_t_6, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1664, __pyx_L10_error)
         __Pyx_GOTREF(__pyx_t_7);
         #endif
         __Pyx_XDECREF_SET(__pyx_9genexpr21__pyx_v_o, __pyx_t_7);
         __pyx_t_7 = 0;
-        __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr21__pyx_v_o, __pyx_n_s_is_buy); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1659, __pyx_L10_error)
+        __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr21__pyx_v_o, __pyx_n_s_is_buy); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1664, __pyx_L10_error)
         __Pyx_GOTREF(__pyx_t_7);
-        __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_7); if (unlikely((__pyx_t_1 < 0))) __PYX_ERR(0, 1659, __pyx_L10_error)
+        __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_7); if (unlikely((__pyx_t_1 < 0))) __PYX_ERR(0, 1664, __pyx_L10_error)
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
         if (__pyx_t_1) {
-          __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_Decimal); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1659, __pyx_L10_error)
+          __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_Decimal); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1664, __pyx_L10_error)
           __Pyx_GOTREF(__pyx_t_8);
-          __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr21__pyx_v_o, __pyx_n_s_price); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1659, __pyx_L10_error)
+          __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr21__pyx_v_o, __pyx_n_s_price); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1664, __pyx_L10_error)
           __Pyx_GOTREF(__pyx_t_9);
-          __pyx_t_10 = __Pyx_PyObject_Str(__pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1659, __pyx_L10_error)
+          __pyx_t_10 = __Pyx_PyObject_Str(__pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1664, __pyx_L10_error)
           __Pyx_GOTREF(__pyx_t_10);
           __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
           __pyx_t_9 = NULL;
@@ -39332,11 +39436,11 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
             __pyx_t_7 = __Pyx_PyObject_FastCall(__pyx_t_8, __pyx_callargs+1-__pyx_t_11, 1+__pyx_t_11);
             __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
             __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-            if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1659, __pyx_L10_error)
+            if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1664, __pyx_L10_error)
             __Pyx_GOTREF(__pyx_t_7);
             __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
           }
-          if (unlikely(__Pyx_ListComp_Append(__pyx_t_2, (PyObject*)__pyx_t_7))) __PYX_ERR(0, 1659, __pyx_L10_error)
+          if (unlikely(__Pyx_ListComp_Append(__pyx_t_2, (PyObject*)__pyx_t_7))) __PYX_ERR(0, 1664, __pyx_L10_error)
           __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
         }
       }
@@ -39351,7 +39455,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     __Pyx_DECREF_SET(__pyx_v_active_buy_prices, ((PyObject*)__pyx_t_2));
     __pyx_t_2 = 0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1660
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1665
  * 
  *             active_buy_prices = [Decimal(str(o.price)) for o in active_orders if o.is_buy]
  *             active_sell_prices = [Decimal(str(o.price)) for o in active_orders if not o.is_buy]             # <<<<<<<<<<<<<<
@@ -39359,34 +39463,34 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  *             proposal_sells = [sell.price for sell in proposal.sells]
  */
     { /* enter inner scope */
-      __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1660, __pyx_L17_error)
+      __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1665, __pyx_L17_error)
       __Pyx_GOTREF(__pyx_t_2);
       if (unlikely(__pyx_v_active_orders == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-        __PYX_ERR(0, 1660, __pyx_L17_error)
+        __PYX_ERR(0, 1665, __pyx_L17_error)
       }
       __pyx_t_6 = __pyx_v_active_orders; __Pyx_INCREF(__pyx_t_6); __pyx_t_3 = 0;
       for (;;) {
         if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_6)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_7 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_3); __Pyx_INCREF(__pyx_t_7); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1660, __pyx_L17_error)
+        __pyx_t_7 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_3); __Pyx_INCREF(__pyx_t_7); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1665, __pyx_L17_error)
         #else
-        __pyx_t_7 = PySequence_ITEM(__pyx_t_6, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1660, __pyx_L17_error)
+        __pyx_t_7 = PySequence_ITEM(__pyx_t_6, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1665, __pyx_L17_error)
         __Pyx_GOTREF(__pyx_t_7);
         #endif
         __Pyx_XDECREF_SET(__pyx_9genexpr22__pyx_v_o, __pyx_t_7);
         __pyx_t_7 = 0;
-        __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr22__pyx_v_o, __pyx_n_s_is_buy); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1660, __pyx_L17_error)
+        __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr22__pyx_v_o, __pyx_n_s_is_buy); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1665, __pyx_L17_error)
         __Pyx_GOTREF(__pyx_t_7);
-        __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_7); if (unlikely((__pyx_t_1 < 0))) __PYX_ERR(0, 1660, __pyx_L17_error)
+        __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_7); if (unlikely((__pyx_t_1 < 0))) __PYX_ERR(0, 1665, __pyx_L17_error)
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
         __pyx_t_5 = ((!__pyx_t_1) != 0);
         if (__pyx_t_5) {
-          __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_Decimal); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1660, __pyx_L17_error)
+          __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_Decimal); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1665, __pyx_L17_error)
           __Pyx_GOTREF(__pyx_t_8);
-          __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr22__pyx_v_o, __pyx_n_s_price); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1660, __pyx_L17_error)
+          __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr22__pyx_v_o, __pyx_n_s_price); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1665, __pyx_L17_error)
           __Pyx_GOTREF(__pyx_t_10);
-          __pyx_t_9 = __Pyx_PyObject_Str(__pyx_t_10); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1660, __pyx_L17_error)
+          __pyx_t_9 = __Pyx_PyObject_Str(__pyx_t_10); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1665, __pyx_L17_error)
           __Pyx_GOTREF(__pyx_t_9);
           __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
           __pyx_t_10 = NULL;
@@ -39406,11 +39510,11 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
             __pyx_t_7 = __Pyx_PyObject_FastCall(__pyx_t_8, __pyx_callargs+1-__pyx_t_11, 1+__pyx_t_11);
             __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
             __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-            if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1660, __pyx_L17_error)
+            if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1665, __pyx_L17_error)
             __Pyx_GOTREF(__pyx_t_7);
             __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
           }
-          if (unlikely(__Pyx_ListComp_Append(__pyx_t_2, (PyObject*)__pyx_t_7))) __PYX_ERR(0, 1660, __pyx_L17_error)
+          if (unlikely(__Pyx_ListComp_Append(__pyx_t_2, (PyObject*)__pyx_t_7))) __PYX_ERR(0, 1665, __pyx_L17_error)
           __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
         }
       }
@@ -39425,7 +39529,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     __pyx_v_active_sell_prices = ((PyObject*)__pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1661
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1666
  *             active_buy_prices = [Decimal(str(o.price)) for o in active_orders if o.is_buy]
  *             active_sell_prices = [Decimal(str(o.price)) for o in active_orders if not o.is_buy]
  *             proposal_buys = [buy.price for buy in proposal.buys]             # <<<<<<<<<<<<<<
@@ -39433,17 +39537,17 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  * 
  */
     { /* enter inner scope */
-      __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1661, __pyx_L24_error)
+      __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1666, __pyx_L24_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_proposal, __pyx_n_s_buys); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1661, __pyx_L24_error)
+      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_proposal, __pyx_n_s_buys); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1666, __pyx_L24_error)
       __Pyx_GOTREF(__pyx_t_6);
       if (likely(PyList_CheckExact(__pyx_t_6)) || PyTuple_CheckExact(__pyx_t_6)) {
         __pyx_t_7 = __pyx_t_6; __Pyx_INCREF(__pyx_t_7); __pyx_t_3 = 0;
         __pyx_t_12 = NULL;
       } else {
-        __pyx_t_3 = -1; __pyx_t_7 = PyObject_GetIter(__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1661, __pyx_L24_error)
+        __pyx_t_3 = -1; __pyx_t_7 = PyObject_GetIter(__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1666, __pyx_L24_error)
         __Pyx_GOTREF(__pyx_t_7);
-        __pyx_t_12 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_7); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1661, __pyx_L24_error)
+        __pyx_t_12 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_7); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1666, __pyx_L24_error)
       }
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       for (;;) {
@@ -39451,17 +39555,17 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
           if (likely(PyList_CheckExact(__pyx_t_7))) {
             if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_7)) break;
             #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-            __pyx_t_6 = PyList_GET_ITEM(__pyx_t_7, __pyx_t_3); __Pyx_INCREF(__pyx_t_6); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1661, __pyx_L24_error)
+            __pyx_t_6 = PyList_GET_ITEM(__pyx_t_7, __pyx_t_3); __Pyx_INCREF(__pyx_t_6); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1666, __pyx_L24_error)
             #else
-            __pyx_t_6 = PySequence_ITEM(__pyx_t_7, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1661, __pyx_L24_error)
+            __pyx_t_6 = PySequence_ITEM(__pyx_t_7, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1666, __pyx_L24_error)
             __Pyx_GOTREF(__pyx_t_6);
             #endif
           } else {
             if (__pyx_t_3 >= PyTuple_GET_SIZE(__pyx_t_7)) break;
             #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-            __pyx_t_6 = PyTuple_GET_ITEM(__pyx_t_7, __pyx_t_3); __Pyx_INCREF(__pyx_t_6); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1661, __pyx_L24_error)
+            __pyx_t_6 = PyTuple_GET_ITEM(__pyx_t_7, __pyx_t_3); __Pyx_INCREF(__pyx_t_6); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1666, __pyx_L24_error)
             #else
-            __pyx_t_6 = PySequence_ITEM(__pyx_t_7, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1661, __pyx_L24_error)
+            __pyx_t_6 = PySequence_ITEM(__pyx_t_7, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1666, __pyx_L24_error)
             __Pyx_GOTREF(__pyx_t_6);
             #endif
           }
@@ -39471,7 +39575,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
             PyObject* exc_type = PyErr_Occurred();
             if (exc_type) {
               if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-              else __PYX_ERR(0, 1661, __pyx_L24_error)
+              else __PYX_ERR(0, 1666, __pyx_L24_error)
             }
             break;
           }
@@ -39479,9 +39583,9 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
         }
         __Pyx_XDECREF_SET(__pyx_9genexpr23__pyx_v_buy, __pyx_t_6);
         __pyx_t_6 = 0;
-        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr23__pyx_v_buy, __pyx_n_s_price); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1661, __pyx_L24_error)
+        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr23__pyx_v_buy, __pyx_n_s_price); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1666, __pyx_L24_error)
         __Pyx_GOTREF(__pyx_t_6);
-        if (unlikely(__Pyx_ListComp_Append(__pyx_t_2, (PyObject*)__pyx_t_6))) __PYX_ERR(0, 1661, __pyx_L24_error)
+        if (unlikely(__Pyx_ListComp_Append(__pyx_t_2, (PyObject*)__pyx_t_6))) __PYX_ERR(0, 1666, __pyx_L24_error)
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       }
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
@@ -39495,7 +39599,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     __pyx_v_proposal_buys = ((PyObject*)__pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1662
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1667
  *             active_sell_prices = [Decimal(str(o.price)) for o in active_orders if not o.is_buy]
  *             proposal_buys = [buy.price for buy in proposal.buys]
  *             proposal_sells = [sell.price for sell in proposal.sells]             # <<<<<<<<<<<<<<
@@ -39503,17 +39607,17 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  *             if self.c_is_within_tolerance(active_buy_prices, proposal_buys) and \
  */
     { /* enter inner scope */
-      __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1662, __pyx_L30_error)
+      __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1667, __pyx_L30_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_proposal, __pyx_n_s_sells); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1662, __pyx_L30_error)
+      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_proposal, __pyx_n_s_sells); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1667, __pyx_L30_error)
       __Pyx_GOTREF(__pyx_t_7);
       if (likely(PyList_CheckExact(__pyx_t_7)) || PyTuple_CheckExact(__pyx_t_7)) {
         __pyx_t_6 = __pyx_t_7; __Pyx_INCREF(__pyx_t_6); __pyx_t_3 = 0;
         __pyx_t_12 = NULL;
       } else {
-        __pyx_t_3 = -1; __pyx_t_6 = PyObject_GetIter(__pyx_t_7); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1662, __pyx_L30_error)
+        __pyx_t_3 = -1; __pyx_t_6 = PyObject_GetIter(__pyx_t_7); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1667, __pyx_L30_error)
         __Pyx_GOTREF(__pyx_t_6);
-        __pyx_t_12 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_6); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1662, __pyx_L30_error)
+        __pyx_t_12 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_6); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1667, __pyx_L30_error)
       }
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       for (;;) {
@@ -39521,17 +39625,17 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
           if (likely(PyList_CheckExact(__pyx_t_6))) {
             if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_6)) break;
             #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-            __pyx_t_7 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_3); __Pyx_INCREF(__pyx_t_7); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1662, __pyx_L30_error)
+            __pyx_t_7 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_3); __Pyx_INCREF(__pyx_t_7); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1667, __pyx_L30_error)
             #else
-            __pyx_t_7 = PySequence_ITEM(__pyx_t_6, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1662, __pyx_L30_error)
+            __pyx_t_7 = PySequence_ITEM(__pyx_t_6, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1667, __pyx_L30_error)
             __Pyx_GOTREF(__pyx_t_7);
             #endif
           } else {
             if (__pyx_t_3 >= PyTuple_GET_SIZE(__pyx_t_6)) break;
             #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-            __pyx_t_7 = PyTuple_GET_ITEM(__pyx_t_6, __pyx_t_3); __Pyx_INCREF(__pyx_t_7); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1662, __pyx_L30_error)
+            __pyx_t_7 = PyTuple_GET_ITEM(__pyx_t_6, __pyx_t_3); __Pyx_INCREF(__pyx_t_7); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1667, __pyx_L30_error)
             #else
-            __pyx_t_7 = PySequence_ITEM(__pyx_t_6, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1662, __pyx_L30_error)
+            __pyx_t_7 = PySequence_ITEM(__pyx_t_6, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1667, __pyx_L30_error)
             __Pyx_GOTREF(__pyx_t_7);
             #endif
           }
@@ -39541,7 +39645,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
             PyObject* exc_type = PyErr_Occurred();
             if (exc_type) {
               if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-              else __PYX_ERR(0, 1662, __pyx_L30_error)
+              else __PYX_ERR(0, 1667, __pyx_L30_error)
             }
             break;
           }
@@ -39549,9 +39653,9 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
         }
         __Pyx_XDECREF_SET(__pyx_9genexpr24__pyx_v_sell, __pyx_t_7);
         __pyx_t_7 = 0;
-        __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr24__pyx_v_sell, __pyx_n_s_price); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1662, __pyx_L30_error)
+        __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr24__pyx_v_sell, __pyx_n_s_price); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1667, __pyx_L30_error)
         __Pyx_GOTREF(__pyx_t_7);
-        if (unlikely(__Pyx_ListComp_Append(__pyx_t_2, (PyObject*)__pyx_t_7))) __PYX_ERR(0, 1662, __pyx_L30_error)
+        if (unlikely(__Pyx_ListComp_Append(__pyx_t_2, (PyObject*)__pyx_t_7))) __PYX_ERR(0, 1667, __pyx_L30_error)
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       }
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -39565,7 +39669,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     __pyx_v_proposal_sells = ((PyObject*)__pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1664
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1669
  *             proposal_sells = [sell.price for sell in proposal.sells]
  * 
  *             if self.c_is_within_tolerance(active_buy_prices, proposal_buys) and \             # <<<<<<<<<<<<<<
@@ -39579,7 +39683,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       goto __pyx_L35_bool_binop_done;
     }
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1665
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1670
  * 
  *             if self.c_is_within_tolerance(active_buy_prices, proposal_buys) and \
  *                     self.c_is_within_tolerance(active_sell_prices, proposal_sells):             # <<<<<<<<<<<<<<
@@ -39590,7 +39694,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     __pyx_t_5 = __pyx_t_1;
     __pyx_L35_bool_binop_done:;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1664
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1669
  *             proposal_sells = [sell.price for sell in proposal.sells]
  * 
  *             if self.c_is_within_tolerance(active_buy_prices, proposal_buys) and \             # <<<<<<<<<<<<<<
@@ -39599,7 +39703,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
     if (__pyx_t_5) {
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1666
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1671
  *             if self.c_is_within_tolerance(active_buy_prices, proposal_buys) and \
  *                     self.c_is_within_tolerance(active_sell_prices, proposal_sells):
  *                 to_defer_canceling = True             # <<<<<<<<<<<<<<
@@ -39608,7 +39712,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
       __pyx_v_to_defer_canceling = 1;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1664
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1669
  *             proposal_sells = [sell.price for sell in proposal.sells]
  * 
  *             if self.c_is_within_tolerance(active_buy_prices, proposal_buys) and \             # <<<<<<<<<<<<<<
@@ -39617,7 +39721,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
     }
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1656
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1661
  *         if len(active_orders) == 0:
  *             return
  *         if proposal is not None and \             # <<<<<<<<<<<<<<
@@ -39626,7 +39730,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
   }
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1668
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1673
  *                 to_defer_canceling = True
  * 
  *         if not to_defer_canceling:             # <<<<<<<<<<<<<<
@@ -39636,14 +39740,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   __pyx_t_5 = ((!(__pyx_v_to_defer_canceling != 0)) != 0);
   if (__pyx_t_5) {
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1669
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1674
  * 
  *         if not to_defer_canceling:
  *             self._hanging_orders_tracker.update_strategy_orders_with_equivalent_orders()             # <<<<<<<<<<<<<<
  *             for order in self.active_non_hanging_orders:
  *                 # If is about to be added to hanging_orders then don't cancel
  */
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_hanging_orders_tracker, __pyx_n_s_update_strategy_orders_with_equi); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1669, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_hanging_orders_tracker, __pyx_n_s_update_strategy_orders_with_equi); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1674, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __pyx_t_7 = NULL;
     __pyx_t_11 = 0;
@@ -39661,28 +39765,28 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       PyObject *__pyx_callargs[1] = {__pyx_t_7, };
       __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_6, __pyx_callargs+1-__pyx_t_11, 0+__pyx_t_11);
       __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1669, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1674, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     }
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1670
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1675
  *         if not to_defer_canceling:
  *             self._hanging_orders_tracker.update_strategy_orders_with_equivalent_orders()
  *             for order in self.active_non_hanging_orders:             # <<<<<<<<<<<<<<
  *                 # If is about to be added to hanging_orders then don't cancel
  *                 if not self._hanging_orders_tracker.is_potential_hanging_order(order):
  */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_active_non_hanging_orders); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1670, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_active_non_hanging_orders); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1675, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     if (likely(PyList_CheckExact(__pyx_t_2)) || PyTuple_CheckExact(__pyx_t_2)) {
       __pyx_t_6 = __pyx_t_2; __Pyx_INCREF(__pyx_t_6); __pyx_t_3 = 0;
       __pyx_t_12 = NULL;
     } else {
-      __pyx_t_3 = -1; __pyx_t_6 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1670, __pyx_L1_error)
+      __pyx_t_3 = -1; __pyx_t_6 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1675, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_12 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_6); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1670, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_6); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1675, __pyx_L1_error)
     }
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     for (;;) {
@@ -39690,17 +39794,17 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
         if (likely(PyList_CheckExact(__pyx_t_6))) {
           if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_6)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_2 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_3); __Pyx_INCREF(__pyx_t_2); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1670, __pyx_L1_error)
+          __pyx_t_2 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_3); __Pyx_INCREF(__pyx_t_2); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1675, __pyx_L1_error)
           #else
-          __pyx_t_2 = PySequence_ITEM(__pyx_t_6, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1670, __pyx_L1_error)
+          __pyx_t_2 = PySequence_ITEM(__pyx_t_6, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1675, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           #endif
         } else {
           if (__pyx_t_3 >= PyTuple_GET_SIZE(__pyx_t_6)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_6, __pyx_t_3); __Pyx_INCREF(__pyx_t_2); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1670, __pyx_L1_error)
+          __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_6, __pyx_t_3); __Pyx_INCREF(__pyx_t_2); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1675, __pyx_L1_error)
           #else
-          __pyx_t_2 = PySequence_ITEM(__pyx_t_6, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1670, __pyx_L1_error)
+          __pyx_t_2 = PySequence_ITEM(__pyx_t_6, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1675, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           #endif
         }
@@ -39710,7 +39814,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 1670, __pyx_L1_error)
+            else __PYX_ERR(0, 1675, __pyx_L1_error)
           }
           break;
         }
@@ -39719,14 +39823,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __Pyx_XDECREF_SET(__pyx_v_order, __pyx_t_2);
       __pyx_t_2 = 0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1672
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1677
  *             for order in self.active_non_hanging_orders:
  *                 # If is about to be added to hanging_orders then don't cancel
  *                 if not self._hanging_orders_tracker.is_potential_hanging_order(order):             # <<<<<<<<<<<<<<
  *                   if order.client_order_id not in self._hanging_order_list:
  *                     self.c_cancel_order(self._market_info, order.client_order_id)
  */
-      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_hanging_orders_tracker, __pyx_n_s_is_potential_hanging_order); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1672, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_hanging_orders_tracker, __pyx_n_s_is_potential_hanging_order); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1677, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __pyx_t_8 = NULL;
       __pyx_t_11 = 0;
@@ -39744,30 +39848,30 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
         PyObject *__pyx_callargs[2] = {__pyx_t_8, __pyx_v_order};
         __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_7, __pyx_callargs+1-__pyx_t_11, 1+__pyx_t_11);
         __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1672, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1677, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       }
-      __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 1672, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 1677, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_t_1 = ((!__pyx_t_5) != 0);
       if (__pyx_t_1) {
 
-        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1673
+        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1678
  *                 # If is about to be added to hanging_orders then don't cancel
  *                 if not self._hanging_orders_tracker.is_potential_hanging_order(order):
  *                   if order.client_order_id not in self._hanging_order_list:             # <<<<<<<<<<<<<<
  *                     self.c_cancel_order(self._market_info, order.client_order_id)
  * 
  */
-        __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_order, __pyx_n_s_client_order_id); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1673, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_order, __pyx_n_s_client_order_id); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1678, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
-        __pyx_t_1 = (__Pyx_PySequence_ContainsTF(__pyx_t_2, __pyx_v_self->_hanging_order_list, Py_NE)); if (unlikely((__pyx_t_1 < 0))) __PYX_ERR(0, 1673, __pyx_L1_error)
+        __pyx_t_1 = (__Pyx_PySequence_ContainsTF(__pyx_t_2, __pyx_v_self->_hanging_order_list, Py_NE)); if (unlikely((__pyx_t_1 < 0))) __PYX_ERR(0, 1678, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         __pyx_t_5 = (__pyx_t_1 != 0);
         if (__pyx_t_5) {
 
-          /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1674
+          /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1679
  *                 if not self._hanging_orders_tracker.is_potential_hanging_order(order):
  *                   if order.client_order_id not in self._hanging_order_list:
  *                     self.c_cancel_order(self._market_info, order.client_order_id)             # <<<<<<<<<<<<<<
@@ -39776,16 +39880,16 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
           __pyx_t_2 = __pyx_v_self->_market_info;
           __Pyx_INCREF(__pyx_t_2);
-          __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_order, __pyx_n_s_client_order_id); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1674, __pyx_L1_error)
+          __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_order, __pyx_n_s_client_order_id); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1679, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_7);
-          if (!(likely(PyUnicode_CheckExact(__pyx_t_7))||((__pyx_t_7) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_7))) __PYX_ERR(0, 1674, __pyx_L1_error)
-          __pyx_t_8 = ((struct __pyx_vtabstruct_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy *)__pyx_v_self->__pyx_base.__pyx_base.__pyx_base.__pyx_vtab)->__pyx_base.c_cancel_order(((struct __pyx_obj_10hummingbot_8strategy_13strategy_base_StrategyBase *)__pyx_v_self), __pyx_t_2, ((PyObject*)__pyx_t_7)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1674, __pyx_L1_error)
+          if (!(likely(PyUnicode_CheckExact(__pyx_t_7))||((__pyx_t_7) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_7))) __PYX_ERR(0, 1679, __pyx_L1_error)
+          __pyx_t_8 = ((struct __pyx_vtabstruct_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy *)__pyx_v_self->__pyx_base.__pyx_base.__pyx_base.__pyx_vtab)->__pyx_base.c_cancel_order(((struct __pyx_obj_10hummingbot_8strategy_13strategy_base_StrategyBase *)__pyx_v_self), __pyx_t_2, ((PyObject*)__pyx_t_7)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1679, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_8);
           __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
           __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
           __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-          /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1673
+          /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1678
  *                 # If is about to be added to hanging_orders then don't cancel
  *                 if not self._hanging_orders_tracker.is_potential_hanging_order(order):
  *                   if order.client_order_id not in self._hanging_order_list:             # <<<<<<<<<<<<<<
@@ -39794,7 +39898,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
         }
 
-        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1672
+        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1677
  *             for order in self.active_non_hanging_orders:
  *                 # If is about to be added to hanging_orders then don't cancel
  *                 if not self._hanging_orders_tracker.is_potential_hanging_order(order):             # <<<<<<<<<<<<<<
@@ -39803,7 +39907,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
       }
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1670
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1675
  *         if not to_defer_canceling:
  *             self._hanging_orders_tracker.update_strategy_orders_with_equivalent_orders()
  *             for order in self.active_non_hanging_orders:             # <<<<<<<<<<<<<<
@@ -39813,7 +39917,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     }
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1668
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1673
  *                 to_defer_canceling = True
  * 
  *         if not to_defer_canceling:             # <<<<<<<<<<<<<<
@@ -39822,45 +39926,45 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
   }
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1676
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1681
  *                     self.c_cancel_order(self._market_info, order.client_order_id)
  * 
  *         if self._hanging_orders_enabled_other and self._current_timestamp > self._balance_fixer_timestamp: #cancel haning orders             # <<<<<<<<<<<<<<
  *           for order in self.active_non_hanging_orders:
  *             self.c_cancel_order(self._market_info, order.client_order_id)
  */
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_self->_hanging_orders_enabled_other); if (unlikely((__pyx_t_1 < 0))) __PYX_ERR(0, 1676, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_self->_hanging_orders_enabled_other); if (unlikely((__pyx_t_1 < 0))) __PYX_ERR(0, 1681, __pyx_L1_error)
   if (__pyx_t_1) {
   } else {
     __pyx_t_5 = __pyx_t_1;
     goto __pyx_L43_bool_binop_done;
   }
-  __pyx_t_6 = PyFloat_FromDouble(__pyx_v_self->__pyx_base.__pyx_base._current_timestamp); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1676, __pyx_L1_error)
+  __pyx_t_6 = PyFloat_FromDouble(__pyx_v_self->__pyx_base.__pyx_base._current_timestamp); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1681, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_8 = PyObject_RichCompare(__pyx_t_6, __pyx_v_self->_balance_fixer_timestamp, Py_GT); __Pyx_XGOTREF(__pyx_t_8); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1676, __pyx_L1_error)
+  __pyx_t_8 = PyObject_RichCompare(__pyx_t_6, __pyx_v_self->_balance_fixer_timestamp, Py_GT); __Pyx_XGOTREF(__pyx_t_8); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1681, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_8); if (unlikely((__pyx_t_1 < 0))) __PYX_ERR(0, 1676, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_8); if (unlikely((__pyx_t_1 < 0))) __PYX_ERR(0, 1681, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __pyx_t_5 = __pyx_t_1;
   __pyx_L43_bool_binop_done:;
   if (__pyx_t_5) {
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1677
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1682
  * 
  *         if self._hanging_orders_enabled_other and self._current_timestamp > self._balance_fixer_timestamp: #cancel haning orders
  *           for order in self.active_non_hanging_orders:             # <<<<<<<<<<<<<<
  *             self.c_cancel_order(self._market_info, order.client_order_id)
  *         # else:
  */
-    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_active_non_hanging_orders); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1677, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_active_non_hanging_orders); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1682, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     if (likely(PyList_CheckExact(__pyx_t_8)) || PyTuple_CheckExact(__pyx_t_8)) {
       __pyx_t_6 = __pyx_t_8; __Pyx_INCREF(__pyx_t_6); __pyx_t_3 = 0;
       __pyx_t_12 = NULL;
     } else {
-      __pyx_t_3 = -1; __pyx_t_6 = PyObject_GetIter(__pyx_t_8); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1677, __pyx_L1_error)
+      __pyx_t_3 = -1; __pyx_t_6 = PyObject_GetIter(__pyx_t_8); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1682, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_12 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_6); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1677, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_6); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1682, __pyx_L1_error)
     }
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     for (;;) {
@@ -39868,17 +39972,17 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
         if (likely(PyList_CheckExact(__pyx_t_6))) {
           if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_6)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_8 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_3); __Pyx_INCREF(__pyx_t_8); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1677, __pyx_L1_error)
+          __pyx_t_8 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_3); __Pyx_INCREF(__pyx_t_8); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1682, __pyx_L1_error)
           #else
-          __pyx_t_8 = PySequence_ITEM(__pyx_t_6, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1677, __pyx_L1_error)
+          __pyx_t_8 = PySequence_ITEM(__pyx_t_6, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1682, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_8);
           #endif
         } else {
           if (__pyx_t_3 >= PyTuple_GET_SIZE(__pyx_t_6)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_8 = PyTuple_GET_ITEM(__pyx_t_6, __pyx_t_3); __Pyx_INCREF(__pyx_t_8); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1677, __pyx_L1_error)
+          __pyx_t_8 = PyTuple_GET_ITEM(__pyx_t_6, __pyx_t_3); __Pyx_INCREF(__pyx_t_8); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1682, __pyx_L1_error)
           #else
-          __pyx_t_8 = PySequence_ITEM(__pyx_t_6, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1677, __pyx_L1_error)
+          __pyx_t_8 = PySequence_ITEM(__pyx_t_6, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1682, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_8);
           #endif
         }
@@ -39888,7 +39992,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 1677, __pyx_L1_error)
+            else __PYX_ERR(0, 1682, __pyx_L1_error)
           }
           break;
         }
@@ -39897,7 +40001,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __Pyx_XDECREF_SET(__pyx_v_order, __pyx_t_8);
       __pyx_t_8 = 0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1678
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1683
  *         if self._hanging_orders_enabled_other and self._current_timestamp > self._balance_fixer_timestamp: #cancel haning orders
  *           for order in self.active_non_hanging_orders:
  *             self.c_cancel_order(self._market_info, order.client_order_id)             # <<<<<<<<<<<<<<
@@ -39906,16 +40010,16 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
       __pyx_t_8 = __pyx_v_self->_market_info;
       __Pyx_INCREF(__pyx_t_8);
-      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_order, __pyx_n_s_client_order_id); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1678, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_order, __pyx_n_s_client_order_id); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1683, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
-      if (!(likely(PyUnicode_CheckExact(__pyx_t_7))||((__pyx_t_7) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_7))) __PYX_ERR(0, 1678, __pyx_L1_error)
-      __pyx_t_2 = ((struct __pyx_vtabstruct_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy *)__pyx_v_self->__pyx_base.__pyx_base.__pyx_base.__pyx_vtab)->__pyx_base.c_cancel_order(((struct __pyx_obj_10hummingbot_8strategy_13strategy_base_StrategyBase *)__pyx_v_self), __pyx_t_8, ((PyObject*)__pyx_t_7)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1678, __pyx_L1_error)
+      if (!(likely(PyUnicode_CheckExact(__pyx_t_7))||((__pyx_t_7) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_7))) __PYX_ERR(0, 1683, __pyx_L1_error)
+      __pyx_t_2 = ((struct __pyx_vtabstruct_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy *)__pyx_v_self->__pyx_base.__pyx_base.__pyx_base.__pyx_vtab)->__pyx_base.c_cancel_order(((struct __pyx_obj_10hummingbot_8strategy_13strategy_base_StrategyBase *)__pyx_v_self), __pyx_t_8, ((PyObject*)__pyx_t_7)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1683, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1677
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1682
  * 
  *         if self._hanging_orders_enabled_other and self._current_timestamp > self._balance_fixer_timestamp: #cancel haning orders
  *           for order in self.active_non_hanging_orders:             # <<<<<<<<<<<<<<
@@ -39925,7 +40029,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     }
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1676
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1681
  *                     self.c_cancel_order(self._market_info, order.client_order_id)
  * 
  *         if self._hanging_orders_enabled_other and self._current_timestamp > self._balance_fixer_timestamp: #cancel haning orders             # <<<<<<<<<<<<<<
@@ -39934,7 +40038,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
   }
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1642
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1647
  *                 self.c_cancel_order(self._market_info, order.client_order_id)
  * 
  *     cdef c_cancel_active_orders(self, object proposal):             # <<<<<<<<<<<<<<
@@ -39971,7 +40075,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1683
+/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1688
  * 
  *     # Cancel Non-Hanging, Active Orders if Spreads are below minimum_spread
  *     cdef c_cancel_orders_below_min_spread(self):             # <<<<<<<<<<<<<<
@@ -40004,19 +40108,19 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("c_cancel_orders_below_min_spread", 0);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1685
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1690
  *     cdef c_cancel_orders_below_min_spread(self):
  *         cdef:
  *             list active_orders = self.market_info_to_active_orders.get(self._market_info, [])             # <<<<<<<<<<<<<<
  *             object price = self.get_price()
  *         active_orders = [order for order in active_orders
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_market_info_to_active_orders); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1685, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_market_info_to_active_orders); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1690, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1685, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1690, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1685, __pyx_L1_error)
+  __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1690, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_4 = NULL;
   __pyx_t_5 = 0;
@@ -40035,22 +40139,22 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 2+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1685, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1690, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
-  if (!(likely(PyList_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("list", __pyx_t_1))) __PYX_ERR(0, 1685, __pyx_L1_error)
+  if (!(likely(PyList_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("list", __pyx_t_1))) __PYX_ERR(0, 1690, __pyx_L1_error)
   __pyx_v_active_orders = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1686
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1691
  *         cdef:
  *             list active_orders = self.market_info_to_active_orders.get(self._market_info, [])
  *             object price = self.get_price()             # <<<<<<<<<<<<<<
  *         active_orders = [order for order in active_orders
  *                          if order.client_order_id not in self.hanging_order_ids]
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_price); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1686, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_price); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1691, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_2 = NULL;
   __pyx_t_5 = 0;
@@ -40068,14 +40172,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     PyObject *__pyx_callargs[1] = {__pyx_t_2, };
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 0+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1686, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1691, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
   __pyx_v_price = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1687
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1692
  *             list active_orders = self.market_info_to_active_orders.get(self._market_info, [])
  *             object price = self.get_price()
  *         active_orders = [order for order in active_orders             # <<<<<<<<<<<<<<
@@ -40083,51 +40187,51 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  *         for order in active_orders:
  */
   { /* enter inner scope */
-    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1687, __pyx_L5_error)
+    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1692, __pyx_L5_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (unlikely(__pyx_v_active_orders == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-      __PYX_ERR(0, 1687, __pyx_L5_error)
+      __PYX_ERR(0, 1692, __pyx_L5_error)
     }
     __pyx_t_3 = __pyx_v_active_orders; __Pyx_INCREF(__pyx_t_3); __pyx_t_6 = 0;
     for (;;) {
       if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_3)) break;
       #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-      __pyx_t_2 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_6); __Pyx_INCREF(__pyx_t_2); __pyx_t_6++; if (unlikely((0 < 0))) __PYX_ERR(0, 1687, __pyx_L5_error)
+      __pyx_t_2 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_6); __Pyx_INCREF(__pyx_t_2); __pyx_t_6++; if (unlikely((0 < 0))) __PYX_ERR(0, 1692, __pyx_L5_error)
       #else
-      __pyx_t_2 = PySequence_ITEM(__pyx_t_3, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1687, __pyx_L5_error)
+      __pyx_t_2 = PySequence_ITEM(__pyx_t_3, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1692, __pyx_L5_error)
       __Pyx_GOTREF(__pyx_t_2);
       #endif
       __Pyx_XDECREF_SET(__pyx_9genexpr25__pyx_v_order, __pyx_t_2);
       __pyx_t_2 = 0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1688
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1693
  *             object price = self.get_price()
  *         active_orders = [order for order in active_orders
  *                          if order.client_order_id not in self.hanging_order_ids]             # <<<<<<<<<<<<<<
  *         for order in active_orders:
  *             negation = -1 if order.is_buy else 1
  */
-      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr25__pyx_v_order, __pyx_n_s_client_order_id); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1688, __pyx_L5_error)
+      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr25__pyx_v_order, __pyx_n_s_client_order_id); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1693, __pyx_L5_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_hanging_order_ids); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1688, __pyx_L5_error)
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_hanging_order_ids); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1693, __pyx_L5_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_7 = (__Pyx_PySequence_ContainsTF(__pyx_t_2, __pyx_t_4, Py_NE)); if (unlikely((__pyx_t_7 < 0))) __PYX_ERR(0, 1688, __pyx_L5_error)
+      __pyx_t_7 = (__Pyx_PySequence_ContainsTF(__pyx_t_2, __pyx_t_4, Py_NE)); if (unlikely((__pyx_t_7 < 0))) __PYX_ERR(0, 1693, __pyx_L5_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __pyx_t_8 = (__pyx_t_7 != 0);
       if (__pyx_t_8) {
 
-        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1687
+        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1692
  *             list active_orders = self.market_info_to_active_orders.get(self._market_info, [])
  *             object price = self.get_price()
  *         active_orders = [order for order in active_orders             # <<<<<<<<<<<<<<
  *                          if order.client_order_id not in self.hanging_order_ids]
  *         for order in active_orders:
  */
-        if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_9genexpr25__pyx_v_order))) __PYX_ERR(0, 1687, __pyx_L5_error)
+        if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_9genexpr25__pyx_v_order))) __PYX_ERR(0, 1692, __pyx_L5_error)
 
-        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1688
+        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1693
  *             object price = self.get_price()
  *         active_orders = [order for order in active_orders
  *                          if order.client_order_id not in self.hanging_order_ids]             # <<<<<<<<<<<<<<
@@ -40136,7 +40240,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
       }
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1687
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1692
  *             list active_orders = self.market_info_to_active_orders.get(self._market_info, [])
  *             object price = self.get_price()
  *         active_orders = [order for order in active_orders             # <<<<<<<<<<<<<<
@@ -40155,7 +40259,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   __Pyx_DECREF_SET(__pyx_v_active_orders, ((PyObject*)__pyx_t_1));
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1689
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1694
  *         active_orders = [order for order in active_orders
  *                          if order.client_order_id not in self.hanging_order_ids]
  *         for order in active_orders:             # <<<<<<<<<<<<<<
@@ -40166,24 +40270,24 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   for (;;) {
     if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_1)) break;
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_3); __pyx_t_6++; if (unlikely((0 < 0))) __PYX_ERR(0, 1689, __pyx_L1_error)
+    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_3); __pyx_t_6++; if (unlikely((0 < 0))) __PYX_ERR(0, 1694, __pyx_L1_error)
     #else
-    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1689, __pyx_L1_error)
+    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1694, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_order, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1690
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1695
  *                          if order.client_order_id not in self.hanging_order_ids]
  *         for order in active_orders:
  *             negation = -1 if order.is_buy else 1             # <<<<<<<<<<<<<<
  *             if (negation * (order.price - price) / price) < self._minimum_spread:
  *                 self.logger().info(f"Order is below minimum spread ({self._minimum_spread})."
  */
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_order, __pyx_n_s_is_buy); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1690, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_order, __pyx_n_s_is_buy); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1695, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely((__pyx_t_8 < 0))) __PYX_ERR(0, 1690, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely((__pyx_t_8 < 0))) __PYX_ERR(0, 1695, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     if (__pyx_t_8) {
       __Pyx_INCREF(__pyx_int_neg_1);
@@ -40195,38 +40299,38 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     __Pyx_XDECREF_SET(__pyx_v_negation, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1691
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1696
  *         for order in active_orders:
  *             negation = -1 if order.is_buy else 1
  *             if (negation * (order.price - price) / price) < self._minimum_spread:             # <<<<<<<<<<<<<<
  *                 self.logger().info(f"Order is below minimum spread ({self._minimum_spread})."
  *                                    f" Cancelling Order: ({'Buy' if order.is_buy else 'Sell'}) "
  */
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_order, __pyx_n_s_price); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1691, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_order, __pyx_n_s_price); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1696, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = PyNumber_Subtract(__pyx_t_3, __pyx_v_price); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1691, __pyx_L1_error)
+    __pyx_t_4 = PyNumber_Subtract(__pyx_t_3, __pyx_v_price); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1696, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = PyNumber_Multiply(__pyx_v_negation, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1691, __pyx_L1_error)
+    __pyx_t_3 = PyNumber_Multiply(__pyx_v_negation, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1696, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyNumber_Divide(__pyx_t_3, __pyx_v_price); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1691, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyNumber_Divide(__pyx_t_3, __pyx_v_price); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1696, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = PyObject_RichCompare(__pyx_t_4, __pyx_v_self->_minimum_spread, Py_LT); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1691, __pyx_L1_error)
+    __pyx_t_3 = PyObject_RichCompare(__pyx_t_4, __pyx_v_self->_minimum_spread, Py_LT); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1696, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely((__pyx_t_8 < 0))) __PYX_ERR(0, 1691, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely((__pyx_t_8 < 0))) __PYX_ERR(0, 1696, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     if (__pyx_t_8) {
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1692
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1697
  *             negation = -1 if order.is_buy else 1
  *             if (negation * (order.price - price) / price) < self._minimum_spread:
  *                 self.logger().info(f"Order is below minimum spread ({self._minimum_spread})."             # <<<<<<<<<<<<<<
  *                                    f" Cancelling Order: ({'Buy' if order.is_buy else 'Sell'}) "
  *                                    f"ID - {order.client_order_id}")
  */
-      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_logger); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1692, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_logger); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1697, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __pyx_t_9 = NULL;
       __pyx_t_5 = 0;
@@ -40244,14 +40348,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
         PyObject *__pyx_callargs[1] = {__pyx_t_9, };
         __pyx_t_4 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_5, 0+__pyx_t_5);
         __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
-        if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1692, __pyx_L1_error)
+        if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1697, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       }
-      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_info); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1692, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_info); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1697, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = PyTuple_New(6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1692, __pyx_L1_error)
+      __pyx_t_4 = PyTuple_New(6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1697, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __pyx_t_10 = 0;
       __pyx_t_11 = 127;
@@ -40259,7 +40363,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __pyx_t_10 += 31;
       __Pyx_GIVEREF(__pyx_kp_u_Order_is_below_minimum_spread);
       PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_kp_u_Order_is_below_minimum_spread);
-      __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_v_self->_minimum_spread, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1692, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_v_self->_minimum_spread, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1697, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __pyx_t_11 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_11) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_11;
       __pyx_t_10 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_9);
@@ -40271,16 +40375,16 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __Pyx_GIVEREF(__pyx_kp_u_Cancelling_Order);
       PyTuple_SET_ITEM(__pyx_t_4, 2, __pyx_kp_u_Cancelling_Order);
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1693
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1698
  *             if (negation * (order.price - price) / price) < self._minimum_spread:
  *                 self.logger().info(f"Order is below minimum spread ({self._minimum_spread})."
  *                                    f" Cancelling Order: ({'Buy' if order.is_buy else 'Sell'}) "             # <<<<<<<<<<<<<<
  *                                    f"ID - {order.client_order_id}")
  *                 self.c_cancel_order(self._market_info, order.client_order_id)
  */
-      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_order, __pyx_n_s_is_buy); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1693, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_order, __pyx_n_s_is_buy); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1698, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
-      __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_t_12); if (unlikely((__pyx_t_8 < 0))) __PYX_ERR(0, 1693, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_t_12); if (unlikely((__pyx_t_8 < 0))) __PYX_ERR(0, 1698, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
       if (__pyx_t_8) {
         __Pyx_INCREF(__pyx_n_u_Buy);
@@ -40289,7 +40393,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
         __Pyx_INCREF(__pyx_n_u_Sell);
         __pyx_t_9 = __pyx_n_u_Sell;
       }
-      __pyx_t_12 = __Pyx_PyUnicode_Unicode(__pyx_t_9); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1693, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyUnicode_Unicode(__pyx_t_9); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1698, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       __pyx_t_11 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) > __pyx_t_11) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) : __pyx_t_11;
@@ -40302,16 +40406,16 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __Pyx_GIVEREF(__pyx_kp_u_ID);
       PyTuple_SET_ITEM(__pyx_t_4, 4, __pyx_kp_u_ID);
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1694
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1699
  *                 self.logger().info(f"Order is below minimum spread ({self._minimum_spread})."
  *                                    f" Cancelling Order: ({'Buy' if order.is_buy else 'Sell'}) "
  *                                    f"ID - {order.client_order_id}")             # <<<<<<<<<<<<<<
  *                 self.c_cancel_order(self._market_info, order.client_order_id)
  * 
  */
-      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_order, __pyx_n_s_client_order_id); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1694, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_order, __pyx_n_s_client_order_id); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1699, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
-      __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_t_12, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1694, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_t_12, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1699, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
       __pyx_t_11 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_11) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_11;
@@ -40320,14 +40424,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       PyTuple_SET_ITEM(__pyx_t_4, 5, __pyx_t_9);
       __pyx_t_9 = 0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1692
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1697
  *             negation = -1 if order.is_buy else 1
  *             if (negation * (order.price - price) / price) < self._minimum_spread:
  *                 self.logger().info(f"Order is below minimum spread ({self._minimum_spread})."             # <<<<<<<<<<<<<<
  *                                    f" Cancelling Order: ({'Buy' if order.is_buy else 'Sell'}) "
  *                                    f"ID - {order.client_order_id}")
  */
-      __pyx_t_9 = __Pyx_PyUnicode_Join(__pyx_t_4, 6, __pyx_t_10, __pyx_t_11); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1692, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyUnicode_Join(__pyx_t_4, 6, __pyx_t_10, __pyx_t_11); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1697, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __pyx_t_4 = NULL;
@@ -40347,13 +40451,13 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
         __pyx_t_3 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-        if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1692, __pyx_L1_error)
+        if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1697, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       }
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1695
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1700
  *                                    f" Cancelling Order: ({'Buy' if order.is_buy else 'Sell'}) "
  *                                    f"ID - {order.client_order_id}")
  *                 self.c_cancel_order(self._market_info, order.client_order_id)             # <<<<<<<<<<<<<<
@@ -40362,16 +40466,16 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
       __pyx_t_3 = __pyx_v_self->_market_info;
       __Pyx_INCREF(__pyx_t_3);
-      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_order, __pyx_n_s_client_order_id); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1695, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_order, __pyx_n_s_client_order_id); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1700, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      if (!(likely(PyUnicode_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_2))) __PYX_ERR(0, 1695, __pyx_L1_error)
-      __pyx_t_9 = ((struct __pyx_vtabstruct_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy *)__pyx_v_self->__pyx_base.__pyx_base.__pyx_base.__pyx_vtab)->__pyx_base.c_cancel_order(((struct __pyx_obj_10hummingbot_8strategy_13strategy_base_StrategyBase *)__pyx_v_self), __pyx_t_3, ((PyObject*)__pyx_t_2)); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1695, __pyx_L1_error)
+      if (!(likely(PyUnicode_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_2))) __PYX_ERR(0, 1700, __pyx_L1_error)
+      __pyx_t_9 = ((struct __pyx_vtabstruct_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy *)__pyx_v_self->__pyx_base.__pyx_base.__pyx_base.__pyx_vtab)->__pyx_base.c_cancel_order(((struct __pyx_obj_10hummingbot_8strategy_13strategy_base_StrategyBase *)__pyx_v_self), __pyx_t_3, ((PyObject*)__pyx_t_2)); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1700, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1691
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1696
  *         for order in active_orders:
  *             negation = -1 if order.is_buy else 1
  *             if (negation * (order.price - price) / price) < self._minimum_spread:             # <<<<<<<<<<<<<<
@@ -40380,7 +40484,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
     }
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1689
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1694
  *         active_orders = [order for order in active_orders
  *                          if order.client_order_id not in self.hanging_order_ids]
  *         for order in active_orders:             # <<<<<<<<<<<<<<
@@ -40390,7 +40494,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1683
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1688
  * 
  *     # Cancel Non-Hanging, Active Orders if Spreads are below minimum_spread
  *     cdef c_cancel_orders_below_min_spread(self):             # <<<<<<<<<<<<<<
@@ -40421,7 +40525,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1697
+/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1702
  *                 self.c_cancel_order(self._market_info, order.client_order_id)
  * 
  *     cdef c_cancel_all_orders(self): #only the non haning ones             # <<<<<<<<<<<<<<
@@ -40449,19 +40553,19 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("c_cancel_all_orders", 0);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1699
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1704
  *     cdef c_cancel_all_orders(self): #only the non haning ones
  *           cdef:
  *               list active_orders = self.market_info_to_active_orders.get(self._market_info, [])             # <<<<<<<<<<<<<<
  *               object price = self.get_price()
  *           active_orders = [order for order in active_orders
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_market_info_to_active_orders); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1699, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_market_info_to_active_orders); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1704, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1699, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1704, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1699, __pyx_L1_error)
+  __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1704, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_4 = NULL;
   __pyx_t_5 = 0;
@@ -40480,22 +40584,22 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 2+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1699, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1704, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
-  if (!(likely(PyList_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("list", __pyx_t_1))) __PYX_ERR(0, 1699, __pyx_L1_error)
+  if (!(likely(PyList_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("list", __pyx_t_1))) __PYX_ERR(0, 1704, __pyx_L1_error)
   __pyx_v_active_orders = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1700
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1705
  *           cdef:
  *               list active_orders = self.market_info_to_active_orders.get(self._market_info, [])
  *               object price = self.get_price()             # <<<<<<<<<<<<<<
  *           active_orders = [order for order in active_orders
  *                            if order.client_order_id not in self.hanging_order_ids]
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_price); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1700, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_price); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1705, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_2 = NULL;
   __pyx_t_5 = 0;
@@ -40513,14 +40617,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     PyObject *__pyx_callargs[1] = {__pyx_t_2, };
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 0+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1700, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1705, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
   __pyx_v_price = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1701
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1706
  *               list active_orders = self.market_info_to_active_orders.get(self._market_info, [])
  *               object price = self.get_price()
  *           active_orders = [order for order in active_orders             # <<<<<<<<<<<<<<
@@ -40528,51 +40632,51 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  *           for order in active_orders:
  */
   { /* enter inner scope */
-    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1701, __pyx_L5_error)
+    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1706, __pyx_L5_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (unlikely(__pyx_v_active_orders == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-      __PYX_ERR(0, 1701, __pyx_L5_error)
+      __PYX_ERR(0, 1706, __pyx_L5_error)
     }
     __pyx_t_3 = __pyx_v_active_orders; __Pyx_INCREF(__pyx_t_3); __pyx_t_6 = 0;
     for (;;) {
       if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_3)) break;
       #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-      __pyx_t_2 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_6); __Pyx_INCREF(__pyx_t_2); __pyx_t_6++; if (unlikely((0 < 0))) __PYX_ERR(0, 1701, __pyx_L5_error)
+      __pyx_t_2 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_6); __Pyx_INCREF(__pyx_t_2); __pyx_t_6++; if (unlikely((0 < 0))) __PYX_ERR(0, 1706, __pyx_L5_error)
       #else
-      __pyx_t_2 = PySequence_ITEM(__pyx_t_3, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1701, __pyx_L5_error)
+      __pyx_t_2 = PySequence_ITEM(__pyx_t_3, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1706, __pyx_L5_error)
       __Pyx_GOTREF(__pyx_t_2);
       #endif
       __Pyx_XDECREF_SET(__pyx_9genexpr26__pyx_v_order, __pyx_t_2);
       __pyx_t_2 = 0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1702
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1707
  *               object price = self.get_price()
  *           active_orders = [order for order in active_orders
  *                            if order.client_order_id not in self.hanging_order_ids]             # <<<<<<<<<<<<<<
  *           for order in active_orders:
  *             if order.client_order_id in self._hanging_order_list:
  */
-      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr26__pyx_v_order, __pyx_n_s_client_order_id); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1702, __pyx_L5_error)
+      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr26__pyx_v_order, __pyx_n_s_client_order_id); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1707, __pyx_L5_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_hanging_order_ids); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1702, __pyx_L5_error)
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_hanging_order_ids); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1707, __pyx_L5_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_7 = (__Pyx_PySequence_ContainsTF(__pyx_t_2, __pyx_t_4, Py_NE)); if (unlikely((__pyx_t_7 < 0))) __PYX_ERR(0, 1702, __pyx_L5_error)
+      __pyx_t_7 = (__Pyx_PySequence_ContainsTF(__pyx_t_2, __pyx_t_4, Py_NE)); if (unlikely((__pyx_t_7 < 0))) __PYX_ERR(0, 1707, __pyx_L5_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __pyx_t_8 = (__pyx_t_7 != 0);
       if (__pyx_t_8) {
 
-        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1701
+        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1706
  *               list active_orders = self.market_info_to_active_orders.get(self._market_info, [])
  *               object price = self.get_price()
  *           active_orders = [order for order in active_orders             # <<<<<<<<<<<<<<
  *                            if order.client_order_id not in self.hanging_order_ids]
  *           for order in active_orders:
  */
-        if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_9genexpr26__pyx_v_order))) __PYX_ERR(0, 1701, __pyx_L5_error)
+        if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_9genexpr26__pyx_v_order))) __PYX_ERR(0, 1706, __pyx_L5_error)
 
-        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1702
+        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1707
  *               object price = self.get_price()
  *           active_orders = [order for order in active_orders
  *                            if order.client_order_id not in self.hanging_order_ids]             # <<<<<<<<<<<<<<
@@ -40581,7 +40685,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
       }
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1701
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1706
  *               list active_orders = self.market_info_to_active_orders.get(self._market_info, [])
  *               object price = self.get_price()
  *           active_orders = [order for order in active_orders             # <<<<<<<<<<<<<<
@@ -40600,7 +40704,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   __Pyx_DECREF_SET(__pyx_v_active_orders, ((PyObject*)__pyx_t_1));
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1703
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1708
  *           active_orders = [order for order in active_orders
  *                            if order.client_order_id not in self.hanging_order_ids]
  *           for order in active_orders:             # <<<<<<<<<<<<<<
@@ -40611,31 +40715,31 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   for (;;) {
     if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_1)) break;
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_3); __pyx_t_6++; if (unlikely((0 < 0))) __PYX_ERR(0, 1703, __pyx_L1_error)
+    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_3); __pyx_t_6++; if (unlikely((0 < 0))) __PYX_ERR(0, 1708, __pyx_L1_error)
     #else
-    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1703, __pyx_L1_error)
+    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1708, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_order, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1704
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1709
  *                            if order.client_order_id not in self.hanging_order_ids]
  *           for order in active_orders:
  *             if order.client_order_id in self._hanging_order_list:             # <<<<<<<<<<<<<<
  *               pass
  *             else:
  */
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_order, __pyx_n_s_client_order_id); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1704, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_order, __pyx_n_s_client_order_id); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1709, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_8 = (__Pyx_PySequence_ContainsTF(__pyx_t_3, __pyx_v_self->_hanging_order_list, Py_EQ)); if (unlikely((__pyx_t_8 < 0))) __PYX_ERR(0, 1704, __pyx_L1_error)
+    __pyx_t_8 = (__Pyx_PySequence_ContainsTF(__pyx_t_3, __pyx_v_self->_hanging_order_list, Py_EQ)); if (unlikely((__pyx_t_8 < 0))) __PYX_ERR(0, 1709, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_7 = (__pyx_t_8 != 0);
     if (__pyx_t_7) {
       goto __pyx_L12;
     }
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1707
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1712
  *               pass
  *             else:
  *                   self.c_cancel_order(self._market_info, order.client_order_id)             # <<<<<<<<<<<<<<
@@ -40645,10 +40749,10 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     /*else*/ {
       __pyx_t_3 = __pyx_v_self->_market_info;
       __Pyx_INCREF(__pyx_t_3);
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_order, __pyx_n_s_client_order_id); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1707, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_order, __pyx_n_s_client_order_id); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1712, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      if (!(likely(PyUnicode_CheckExact(__pyx_t_4))||((__pyx_t_4) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_4))) __PYX_ERR(0, 1707, __pyx_L1_error)
-      __pyx_t_2 = ((struct __pyx_vtabstruct_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy *)__pyx_v_self->__pyx_base.__pyx_base.__pyx_base.__pyx_vtab)->__pyx_base.c_cancel_order(((struct __pyx_obj_10hummingbot_8strategy_13strategy_base_StrategyBase *)__pyx_v_self), __pyx_t_3, ((PyObject*)__pyx_t_4)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1707, __pyx_L1_error)
+      if (!(likely(PyUnicode_CheckExact(__pyx_t_4))||((__pyx_t_4) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_4))) __PYX_ERR(0, 1712, __pyx_L1_error)
+      __pyx_t_2 = ((struct __pyx_vtabstruct_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy *)__pyx_v_self->__pyx_base.__pyx_base.__pyx_base.__pyx_vtab)->__pyx_base.c_cancel_order(((struct __pyx_obj_10hummingbot_8strategy_13strategy_base_StrategyBase *)__pyx_v_self), __pyx_t_3, ((PyObject*)__pyx_t_4)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1712, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -40656,7 +40760,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     }
     __pyx_L12:;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1703
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1708
  *           active_orders = [order for order in active_orders
  *                            if order.client_order_id not in self.hanging_order_ids]
  *           for order in active_orders:             # <<<<<<<<<<<<<<
@@ -40666,7 +40770,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1697
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1702
  *                 self.c_cancel_order(self._market_info, order.client_order_id)
  * 
  *     cdef c_cancel_all_orders(self): #only the non haning ones             # <<<<<<<<<<<<<<
@@ -40694,7 +40798,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1709
+/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1714
  *                   self.c_cancel_order(self._market_info, order.client_order_id)
  * 
  *     cdef bint c_to_create_orders(self, object proposal):             # <<<<<<<<<<<<<<
@@ -40723,7 +40827,7 @@ static int __pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_market_mak
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("c_to_create_orders", 0);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1710
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1715
  * 
  *     cdef bint c_to_create_orders(self, object proposal):
  *         non_hanging_orders_non_cancelled = [o for o in self.active_non_hanging_orders if not             # <<<<<<<<<<<<<<
@@ -40731,17 +40835,17 @@ static int __pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_market_mak
  *         return ((not self._should_wait_order_cancel_confirmation or
  */
   { /* enter inner scope */
-    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1710, __pyx_L5_error)
+    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1715, __pyx_L5_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_active_non_hanging_orders); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1710, __pyx_L5_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_active_non_hanging_orders); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1715, __pyx_L5_error)
     __Pyx_GOTREF(__pyx_t_2);
     if (likely(PyList_CheckExact(__pyx_t_2)) || PyTuple_CheckExact(__pyx_t_2)) {
       __pyx_t_3 = __pyx_t_2; __Pyx_INCREF(__pyx_t_3); __pyx_t_4 = 0;
       __pyx_t_5 = NULL;
     } else {
-      __pyx_t_4 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1710, __pyx_L5_error)
+      __pyx_t_4 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1715, __pyx_L5_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_5 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1710, __pyx_L5_error)
+      __pyx_t_5 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1715, __pyx_L5_error)
     }
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     for (;;) {
@@ -40749,17 +40853,17 @@ static int __pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_market_mak
         if (likely(PyList_CheckExact(__pyx_t_3))) {
           if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_3)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_2 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_2); __pyx_t_4++; if (unlikely((0 < 0))) __PYX_ERR(0, 1710, __pyx_L5_error)
+          __pyx_t_2 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_2); __pyx_t_4++; if (unlikely((0 < 0))) __PYX_ERR(0, 1715, __pyx_L5_error)
           #else
-          __pyx_t_2 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1710, __pyx_L5_error)
+          __pyx_t_2 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1715, __pyx_L5_error)
           __Pyx_GOTREF(__pyx_t_2);
           #endif
         } else {
           if (__pyx_t_4 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_2); __pyx_t_4++; if (unlikely((0 < 0))) __PYX_ERR(0, 1710, __pyx_L5_error)
+          __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_2); __pyx_t_4++; if (unlikely((0 < 0))) __PYX_ERR(0, 1715, __pyx_L5_error)
           #else
-          __pyx_t_2 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1710, __pyx_L5_error)
+          __pyx_t_2 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1715, __pyx_L5_error)
           __Pyx_GOTREF(__pyx_t_2);
           #endif
         }
@@ -40769,7 +40873,7 @@ static int __pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_market_mak
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 1710, __pyx_L5_error)
+            else __PYX_ERR(0, 1715, __pyx_L5_error)
           }
           break;
         }
@@ -40778,14 +40882,14 @@ static int __pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_market_mak
       __Pyx_XDECREF_SET(__pyx_9genexpr27__pyx_v_o, __pyx_t_2);
       __pyx_t_2 = 0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1711
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1716
  *     cdef bint c_to_create_orders(self, object proposal):
  *         non_hanging_orders_non_cancelled = [o for o in self.active_non_hanging_orders if not
  *                                             self._hanging_orders_tracker.is_potential_hanging_order(o)]             # <<<<<<<<<<<<<<
  *         return ((not self._should_wait_order_cancel_confirmation or
  *                      len(self._sb_order_tracker.in_flight_cancels) == 0)
  */
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_hanging_orders_tracker, __pyx_n_s_is_potential_hanging_order); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1711, __pyx_L5_error)
+      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_hanging_orders_tracker, __pyx_n_s_is_potential_hanging_order); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1716, __pyx_L5_error)
       __Pyx_GOTREF(__pyx_t_6);
       __pyx_t_7 = NULL;
       __pyx_t_8 = 0;
@@ -40803,14 +40907,14 @@ static int __pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_market_mak
         PyObject *__pyx_callargs[2] = {__pyx_t_7, __pyx_9genexpr27__pyx_v_o};
         __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_6, __pyx_callargs+1-__pyx_t_8, 1+__pyx_t_8);
         __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1711, __pyx_L5_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1716, __pyx_L5_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       }
-      __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_9 < 0))) __PYX_ERR(0, 1711, __pyx_L5_error)
+      __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_9 < 0))) __PYX_ERR(0, 1716, __pyx_L5_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1710
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1715
  * 
  *     cdef bint c_to_create_orders(self, object proposal):
  *         non_hanging_orders_non_cancelled = [o for o in self.active_non_hanging_orders if not             # <<<<<<<<<<<<<<
@@ -40819,7 +40923,7 @@ static int __pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_market_mak
  */
       __pyx_t_10 = ((!__pyx_t_9) != 0);
       if (__pyx_t_10) {
-        if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_9genexpr27__pyx_v_o))) __PYX_ERR(0, 1710, __pyx_L5_error)
+        if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_9genexpr27__pyx_v_o))) __PYX_ERR(0, 1715, __pyx_L5_error)
       }
     }
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -40833,7 +40937,7 @@ static int __pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_market_mak
   __pyx_v_non_hanging_orders_non_cancelled = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1712
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1717
  *         non_hanging_orders_non_cancelled = [o for o in self.active_non_hanging_orders if not
  *                                             self._hanging_orders_tracker.is_potential_hanging_order(o)]
  *         return ((not self._should_wait_order_cancel_confirmation or             # <<<<<<<<<<<<<<
@@ -40846,16 +40950,16 @@ static int __pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_market_mak
     goto __pyx_L11_next_and;
   }
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1713
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1718
  *                                             self._hanging_orders_tracker.is_potential_hanging_order(o)]
  *         return ((not self._should_wait_order_cancel_confirmation or
  *                      len(self._sb_order_tracker.in_flight_cancels) == 0)             # <<<<<<<<<<<<<<
  *                 and proposal is not None
  *                 and len(non_hanging_orders_non_cancelled) == 0)
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self->__pyx_base._sb_order_tracker), __pyx_n_s_in_flight_cancels); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1713, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self->__pyx_base._sb_order_tracker), __pyx_n_s_in_flight_cancels); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1718, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 1713, __pyx_L1_error)
+  __pyx_t_4 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 1718, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_9 = ((__pyx_t_4 == 0) != 0);
   if (__pyx_t_9) {
@@ -40865,7 +40969,7 @@ static int __pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_market_mak
   }
   __pyx_L11_next_and:;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1714
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1719
  *         return ((not self._should_wait_order_cancel_confirmation or
  *                      len(self._sb_order_tracker.in_flight_cancels) == 0)
  *                 and proposal is not None             # <<<<<<<<<<<<<<
@@ -40880,21 +40984,21 @@ static int __pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_market_mak
     goto __pyx_L10_bool_binop_done;
   }
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1715
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1720
  *                      len(self._sb_order_tracker.in_flight_cancels) == 0)
  *                 and proposal is not None
  *                 and len(non_hanging_orders_non_cancelled) == 0)             # <<<<<<<<<<<<<<
  * 
  *     cdef c_execute_orders_proposal(self, object proposal):
  */
-  __pyx_t_4 = PyList_GET_SIZE(__pyx_v_non_hanging_orders_non_cancelled); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 1715, __pyx_L1_error)
+  __pyx_t_4 = PyList_GET_SIZE(__pyx_v_non_hanging_orders_non_cancelled); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 1720, __pyx_L1_error)
   __pyx_t_11 = ((__pyx_t_4 == 0) != 0);
   __pyx_t_10 = __pyx_t_11;
   __pyx_L10_bool_binop_done:;
   __pyx_r = __pyx_t_10;
   goto __pyx_L0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1709
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1714
  *                   self.c_cancel_order(self._market_info, order.client_order_id)
  * 
  *     cdef bint c_to_create_orders(self, object proposal):             # <<<<<<<<<<<<<<
@@ -40919,7 +41023,7 @@ static int __pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_market_mak
 }
 static PyObject *__pyx_gb_10hummingbot_8strategy_18pure_market_making_18pure_market_making_24PureMarketMakingStrategy_25c_execute_orders_proposal_2generator2(__pyx_CoroutineObject *__pyx_generator, CYTHON_UNUSED PyThreadState *__pyx_tstate, PyObject *__pyx_sent_value); /* proto */
 
-/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1744
+/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1749
  *                 orders_created = True
  *                 if idx < number_of_pairs:
  *                     order = next((o for o in self.active_orders if o.client_order_id == bid_order_id))             # <<<<<<<<<<<<<<
@@ -40939,7 +41043,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
   if (unlikely(!__pyx_cur_scope)) {
     __pyx_cur_scope = ((struct __pyx_obj_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_5_genexpr *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(0, 1744, __pyx_L1_error)
+    __PYX_ERR(0, 1749, __pyx_L1_error)
   } else {
     __Pyx_GOTREF((PyObject *)__pyx_cur_scope);
   }
@@ -40947,7 +41051,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
   __Pyx_INCREF((PyObject *)__pyx_cur_scope->__pyx_outer_scope);
   __Pyx_GIVEREF((PyObject *)__pyx_cur_scope->__pyx_outer_scope);
   {
-    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_10hummingbot_8strategy_18pure_market_making_18pure_market_making_24PureMarketMakingStrategy_25c_execute_orders_proposal_2generator2, NULL, (PyObject *) __pyx_cur_scope, __pyx_n_s_genexpr, __pyx_n_s_PureMarketMakingStrategy_c_execu, __pyx_n_s_hummingbot_strategy_pure_market); if (unlikely(!gen)) __PYX_ERR(0, 1744, __pyx_L1_error)
+    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_10hummingbot_8strategy_18pure_market_making_18pure_market_making_24PureMarketMakingStrategy_25c_execute_orders_proposal_2generator2, NULL, (PyObject *) __pyx_cur_scope, __pyx_n_s_genexpr, __pyx_n_s_PureMarketMakingStrategy_c_execu, __pyx_n_s_hummingbot_strategy_pure_market); if (unlikely(!gen)) __PYX_ERR(0, 1749, __pyx_L1_error)
     __Pyx_DECREF(__pyx_cur_scope);
     __Pyx_RefNannyFinishContext();
     return (PyObject *) gen;
@@ -40985,17 +41089,17 @@ static PyObject *__pyx_gb_10hummingbot_8strategy_18pure_market_making_18pure_mar
     return NULL;
   }
   __pyx_L3_first_run:;
-  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 1744, __pyx_L1_error)
-  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); __PYX_ERR(0, 1744, __pyx_L1_error) }
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self), __pyx_n_s_active_orders); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1744, __pyx_L1_error)
+  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 1749, __pyx_L1_error)
+  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); __PYX_ERR(0, 1749, __pyx_L1_error) }
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self), __pyx_n_s_active_orders); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1749, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
     __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_3 = 0;
     __pyx_t_4 = NULL;
   } else {
-    __pyx_t_3 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1744, __pyx_L1_error)
+    __pyx_t_3 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1749, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_4 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1744, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1749, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   for (;;) {
@@ -41003,17 +41107,17 @@ static PyObject *__pyx_gb_10hummingbot_8strategy_18pure_market_making_18pure_mar
       if (likely(PyList_CheckExact(__pyx_t_2))) {
         if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1744, __pyx_L1_error)
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1749, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1744, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1749, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       } else {
         if (__pyx_t_3 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1744, __pyx_L1_error)
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1749, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1744, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1749, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       }
@@ -41023,7 +41127,7 @@ static PyObject *__pyx_gb_10hummingbot_8strategy_18pure_market_making_18pure_mar
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 1744, __pyx_L1_error)
+          else __PYX_ERR(0, 1749, __pyx_L1_error)
         }
         break;
       }
@@ -41033,10 +41137,10 @@ static PyObject *__pyx_gb_10hummingbot_8strategy_18pure_market_making_18pure_mar
     __Pyx_XDECREF_SET(__pyx_cur_scope->__pyx_v_o, __pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_1);
     __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_o, __pyx_n_s_client_order_id); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1744, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_o, __pyx_n_s_client_order_id); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1749, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_bid_order_id)) { __Pyx_RaiseClosureNameError("bid_order_id"); __PYX_ERR(0, 1744, __pyx_L1_error) }
-    __pyx_t_5 = (__Pyx_PyUnicode_Equals(__pyx_t_1, __pyx_cur_scope->__pyx_outer_scope->__pyx_v_bid_order_id, Py_EQ)); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 1744, __pyx_L1_error)
+    if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_bid_order_id)) { __Pyx_RaiseClosureNameError("bid_order_id"); __PYX_ERR(0, 1749, __pyx_L1_error) }
+    __pyx_t_5 = (__Pyx_PyUnicode_Equals(__pyx_t_1, __pyx_cur_scope->__pyx_outer_scope->__pyx_v_bid_order_id, Py_EQ)); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 1749, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     if (__pyx_t_5) {
       __Pyx_INCREF(__pyx_cur_scope->__pyx_v_o);
@@ -41057,7 +41161,7 @@ static PyObject *__pyx_gb_10hummingbot_8strategy_18pure_market_making_18pure_mar
       __Pyx_XGOTREF(__pyx_t_2);
       __pyx_t_3 = __pyx_cur_scope->__pyx_t_1;
       __pyx_t_4 = __pyx_cur_scope->__pyx_t_2;
-      if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 1744, __pyx_L1_error)
+      if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 1749, __pyx_L1_error)
     }
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -41083,7 +41187,7 @@ static PyObject *__pyx_gb_10hummingbot_8strategy_18pure_market_making_18pure_mar
 }
 static PyObject *__pyx_gb_10hummingbot_8strategy_18pure_market_making_18pure_market_making_24PureMarketMakingStrategy_25c_execute_orders_proposal_5generator3(__pyx_CoroutineObject *__pyx_generator, CYTHON_UNUSED PyThreadState *__pyx_tstate, PyObject *__pyx_sent_value); /* proto */
 
-/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1767
+/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1772
  *                 orders_created = True
  *                 if idx < number_of_pairs:
  *                     order = next((o for o in self.active_orders if o.client_order_id == ask_order_id))             # <<<<<<<<<<<<<<
@@ -41103,7 +41207,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
   if (unlikely(!__pyx_cur_scope)) {
     __pyx_cur_scope = ((struct __pyx_obj_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_6_genexpr *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(0, 1767, __pyx_L1_error)
+    __PYX_ERR(0, 1772, __pyx_L1_error)
   } else {
     __Pyx_GOTREF((PyObject *)__pyx_cur_scope);
   }
@@ -41111,7 +41215,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
   __Pyx_INCREF((PyObject *)__pyx_cur_scope->__pyx_outer_scope);
   __Pyx_GIVEREF((PyObject *)__pyx_cur_scope->__pyx_outer_scope);
   {
-    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_10hummingbot_8strategy_18pure_market_making_18pure_market_making_24PureMarketMakingStrategy_25c_execute_orders_proposal_5generator3, NULL, (PyObject *) __pyx_cur_scope, __pyx_n_s_genexpr, __pyx_n_s_PureMarketMakingStrategy_c_execu, __pyx_n_s_hummingbot_strategy_pure_market); if (unlikely(!gen)) __PYX_ERR(0, 1767, __pyx_L1_error)
+    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_10hummingbot_8strategy_18pure_market_making_18pure_market_making_24PureMarketMakingStrategy_25c_execute_orders_proposal_5generator3, NULL, (PyObject *) __pyx_cur_scope, __pyx_n_s_genexpr, __pyx_n_s_PureMarketMakingStrategy_c_execu, __pyx_n_s_hummingbot_strategy_pure_market); if (unlikely(!gen)) __PYX_ERR(0, 1772, __pyx_L1_error)
     __Pyx_DECREF(__pyx_cur_scope);
     __Pyx_RefNannyFinishContext();
     return (PyObject *) gen;
@@ -41149,17 +41253,17 @@ static PyObject *__pyx_gb_10hummingbot_8strategy_18pure_market_making_18pure_mar
     return NULL;
   }
   __pyx_L3_first_run:;
-  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 1767, __pyx_L1_error)
-  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); __PYX_ERR(0, 1767, __pyx_L1_error) }
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self), __pyx_n_s_active_orders); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1767, __pyx_L1_error)
+  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 1772, __pyx_L1_error)
+  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); __PYX_ERR(0, 1772, __pyx_L1_error) }
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self), __pyx_n_s_active_orders); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1772, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
     __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_3 = 0;
     __pyx_t_4 = NULL;
   } else {
-    __pyx_t_3 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1767, __pyx_L1_error)
+    __pyx_t_3 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1772, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_4 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1767, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1772, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   for (;;) {
@@ -41167,17 +41271,17 @@ static PyObject *__pyx_gb_10hummingbot_8strategy_18pure_market_making_18pure_mar
       if (likely(PyList_CheckExact(__pyx_t_2))) {
         if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1767, __pyx_L1_error)
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1772, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1767, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1772, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       } else {
         if (__pyx_t_3 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1767, __pyx_L1_error)
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1772, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1767, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1772, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       }
@@ -41187,7 +41291,7 @@ static PyObject *__pyx_gb_10hummingbot_8strategy_18pure_market_making_18pure_mar
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 1767, __pyx_L1_error)
+          else __PYX_ERR(0, 1772, __pyx_L1_error)
         }
         break;
       }
@@ -41197,10 +41301,10 @@ static PyObject *__pyx_gb_10hummingbot_8strategy_18pure_market_making_18pure_mar
     __Pyx_XDECREF_SET(__pyx_cur_scope->__pyx_v_o, __pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_1);
     __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_o, __pyx_n_s_client_order_id); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1767, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_o, __pyx_n_s_client_order_id); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1772, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_ask_order_id)) { __Pyx_RaiseClosureNameError("ask_order_id"); __PYX_ERR(0, 1767, __pyx_L1_error) }
-    __pyx_t_5 = (__Pyx_PyUnicode_Equals(__pyx_t_1, __pyx_cur_scope->__pyx_outer_scope->__pyx_v_ask_order_id, Py_EQ)); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 1767, __pyx_L1_error)
+    if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_ask_order_id)) { __Pyx_RaiseClosureNameError("ask_order_id"); __PYX_ERR(0, 1772, __pyx_L1_error) }
+    __pyx_t_5 = (__Pyx_PyUnicode_Equals(__pyx_t_1, __pyx_cur_scope->__pyx_outer_scope->__pyx_v_ask_order_id, Py_EQ)); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 1772, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     if (__pyx_t_5) {
       __Pyx_INCREF(__pyx_cur_scope->__pyx_v_o);
@@ -41221,7 +41325,7 @@ static PyObject *__pyx_gb_10hummingbot_8strategy_18pure_market_making_18pure_mar
       __Pyx_XGOTREF(__pyx_t_2);
       __pyx_t_3 = __pyx_cur_scope->__pyx_t_1;
       __pyx_t_4 = __pyx_cur_scope->__pyx_t_2;
-      if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 1767, __pyx_L1_error)
+      if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 1772, __pyx_L1_error)
     }
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -41246,7 +41350,7 @@ static PyObject *__pyx_gb_10hummingbot_8strategy_18pure_market_making_18pure_mar
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1717
+/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1722
  *                 and len(non_hanging_orders_non_cancelled) == 0)
  * 
  *     cdef c_execute_orders_proposal(self, object proposal):             # <<<<<<<<<<<<<<
@@ -41296,7 +41400,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   if (unlikely(!__pyx_cur_scope)) {
     __pyx_cur_scope = ((struct __pyx_obj_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_4_c_execute_orders_proposal *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(0, 1717, __pyx_L1_error)
+    __PYX_ERR(0, 1722, __pyx_L1_error)
   } else {
     __Pyx_GOTREF((PyObject *)__pyx_cur_scope);
   }
@@ -41304,20 +41408,20 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   __Pyx_INCREF((PyObject *)__pyx_cur_scope->__pyx_v_self);
   __Pyx_GIVEREF((PyObject *)__pyx_cur_scope->__pyx_v_self);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1719
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1724
  *     cdef c_execute_orders_proposal(self, object proposal):
  *         cdef:
  *             double expiration_seconds = NaN             # <<<<<<<<<<<<<<
  *             str bid_order_id, ask_order_id
  *             bint orders_created = False
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_NaN); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1719, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_NaN); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1724, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_PyFloat_AsDouble(__pyx_t_1); if (unlikely((__pyx_t_2 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 1719, __pyx_L1_error)
+  __pyx_t_2 = __pyx_PyFloat_AsDouble(__pyx_t_1); if (unlikely((__pyx_t_2 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 1724, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_expiration_seconds = __pyx_t_2;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1721
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1726
  *             double expiration_seconds = NaN
  *             str bid_order_id, ask_order_id
  *             bint orders_created = False             # <<<<<<<<<<<<<<
@@ -41326,7 +41430,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
   __pyx_v_orders_created = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1723
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1728
  *             bint orders_created = False
  *         # Number of pair of orders to track for hanging orders
  *         number_of_pairs = min((len(proposal.buys), len(proposal.sells))) if self._hanging_orders_enabled else 0             # <<<<<<<<<<<<<<
@@ -41334,13 +41438,13 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  *         if len(proposal.buys) > 0:
  */
   if ((__pyx_cur_scope->__pyx_v_self->_hanging_orders_enabled != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_proposal, __pyx_n_s_sells); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1723, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_proposal, __pyx_n_s_sells); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1728, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 1723, __pyx_L1_error)
+    __pyx_t_4 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 1728, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_proposal, __pyx_n_s_buys); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1723, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_proposal, __pyx_n_s_buys); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1728, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_5 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 1723, __pyx_L1_error)
+    __pyx_t_5 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 1728, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     if (((__pyx_t_4 < __pyx_t_5) != 0)) {
       __pyx_t_6 = __pyx_t_4;
@@ -41353,40 +41457,40 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   }
   __pyx_v_number_of_pairs = __pyx_t_3;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1725
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1730
  *         number_of_pairs = min((len(proposal.buys), len(proposal.sells))) if self._hanging_orders_enabled else 0
  * 
  *         if len(proposal.buys) > 0:             # <<<<<<<<<<<<<<
  *             if self._logging_options & self.OPTION_LOG_CREATE_ORDER:
  *                 price_quote_str = [f"{buy.size.normalize()} {self.base_asset}, "
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_proposal, __pyx_n_s_buys); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1725, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_proposal, __pyx_n_s_buys); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1730, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 1725, __pyx_L1_error)
+  __pyx_t_3 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 1730, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_7 = ((__pyx_t_3 > 0) != 0);
   if (__pyx_t_7) {
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1726
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1731
  * 
  *         if len(proposal.buys) > 0:
  *             if self._logging_options & self.OPTION_LOG_CREATE_ORDER:             # <<<<<<<<<<<<<<
  *                 price_quote_str = [f"{buy.size.normalize()} {self.base_asset}, "
  *                                    f"{buy.price.normalize()} {self.quote_asset}"
  */
-    __pyx_t_1 = __Pyx_PyInt_From_int64_t(__pyx_cur_scope->__pyx_v_self->_logging_options); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1726, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyInt_From_int64_t(__pyx_cur_scope->__pyx_v_self->_logging_options); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1731, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_cur_scope->__pyx_v_self), __pyx_n_s_OPTION_LOG_CREATE_ORDER); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1726, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_cur_scope->__pyx_v_self), __pyx_n_s_OPTION_LOG_CREATE_ORDER); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1731, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_9 = PyNumber_And(__pyx_t_1, __pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1726, __pyx_L1_error)
+    __pyx_t_9 = PyNumber_And(__pyx_t_1, __pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1731, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_t_9); if (unlikely((__pyx_t_7 < 0))) __PYX_ERR(0, 1726, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_t_9); if (unlikely((__pyx_t_7 < 0))) __PYX_ERR(0, 1731, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     if (__pyx_t_7) {
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1727
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1732
  *         if len(proposal.buys) > 0:
  *             if self._logging_options & self.OPTION_LOG_CREATE_ORDER:
  *                 price_quote_str = [f"{buy.size.normalize()} {self.base_asset}, "             # <<<<<<<<<<<<<<
@@ -41394,25 +41498,25 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  *                                    for buy in proposal.buys]
  */
       { /* enter inner scope */
-        __pyx_t_9 = PyList_New(0); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1727, __pyx_L7_error)
+        __pyx_t_9 = PyList_New(0); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1732, __pyx_L7_error)
         __Pyx_GOTREF(__pyx_t_9);
 
-        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1729
+        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1734
  *                 price_quote_str = [f"{buy.size.normalize()} {self.base_asset}, "
  *                                    f"{buy.price.normalize()} {self.quote_asset}"
  *                                    for buy in proposal.buys]             # <<<<<<<<<<<<<<
  *                 self.logger().info(
  *                     f"({self.trading_pair}) Creating {len(proposal.buys)} bid orders "
  */
-        __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_proposal, __pyx_n_s_buys); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1729, __pyx_L7_error)
+        __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_proposal, __pyx_n_s_buys); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1734, __pyx_L7_error)
         __Pyx_GOTREF(__pyx_t_8);
         if (likely(PyList_CheckExact(__pyx_t_8)) || PyTuple_CheckExact(__pyx_t_8)) {
           __pyx_t_1 = __pyx_t_8; __Pyx_INCREF(__pyx_t_1); __pyx_t_3 = 0;
           __pyx_t_10 = NULL;
         } else {
-          __pyx_t_3 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1729, __pyx_L7_error)
+          __pyx_t_3 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1734, __pyx_L7_error)
           __Pyx_GOTREF(__pyx_t_1);
-          __pyx_t_10 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1729, __pyx_L7_error)
+          __pyx_t_10 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1734, __pyx_L7_error)
         }
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
         for (;;) {
@@ -41420,17 +41524,17 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
             if (likely(PyList_CheckExact(__pyx_t_1))) {
               if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_1)) break;
               #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-              __pyx_t_8 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_8); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1729, __pyx_L7_error)
+              __pyx_t_8 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_8); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1734, __pyx_L7_error)
               #else
-              __pyx_t_8 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1729, __pyx_L7_error)
+              __pyx_t_8 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1734, __pyx_L7_error)
               __Pyx_GOTREF(__pyx_t_8);
               #endif
             } else {
               if (__pyx_t_3 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
               #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-              __pyx_t_8 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_8); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1729, __pyx_L7_error)
+              __pyx_t_8 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_8); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1734, __pyx_L7_error)
               #else
-              __pyx_t_8 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1729, __pyx_L7_error)
+              __pyx_t_8 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1734, __pyx_L7_error)
               __Pyx_GOTREF(__pyx_t_8);
               #endif
             }
@@ -41440,7 +41544,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
               PyObject* exc_type = PyErr_Occurred();
               if (exc_type) {
                 if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-                else __PYX_ERR(0, 1729, __pyx_L7_error)
+                else __PYX_ERR(0, 1734, __pyx_L7_error)
               }
               break;
             }
@@ -41449,20 +41553,20 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
           __Pyx_XDECREF_SET(__pyx_9genexpr28__pyx_v_buy, __pyx_t_8);
           __pyx_t_8 = 0;
 
-          /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1727
+          /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1732
  *         if len(proposal.buys) > 0:
  *             if self._logging_options & self.OPTION_LOG_CREATE_ORDER:
  *                 price_quote_str = [f"{buy.size.normalize()} {self.base_asset}, "             # <<<<<<<<<<<<<<
  *                                    f"{buy.price.normalize()} {self.quote_asset}"
  *                                    for buy in proposal.buys]
  */
-          __pyx_t_8 = PyTuple_New(7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1727, __pyx_L7_error)
+          __pyx_t_8 = PyTuple_New(7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1732, __pyx_L7_error)
           __Pyx_GOTREF(__pyx_t_8);
           __pyx_t_6 = 0;
           __pyx_t_11 = 127;
-          __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr28__pyx_v_buy, __pyx_n_s_size); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1727, __pyx_L7_error)
+          __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr28__pyx_v_buy, __pyx_n_s_size); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1732, __pyx_L7_error)
           __Pyx_GOTREF(__pyx_t_13);
-          __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_13, __pyx_n_s_normalize); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1727, __pyx_L7_error)
+          __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_13, __pyx_n_s_normalize); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1732, __pyx_L7_error)
           __Pyx_GOTREF(__pyx_t_14);
           __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
           __pyx_t_13 = NULL;
@@ -41481,11 +41585,11 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
             PyObject *__pyx_callargs[1] = {__pyx_t_13, };
             __pyx_t_12 = __Pyx_PyObject_FastCall(__pyx_t_14, __pyx_callargs+1-__pyx_t_15, 0+__pyx_t_15);
             __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
-            if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1727, __pyx_L7_error)
+            if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1732, __pyx_L7_error)
             __Pyx_GOTREF(__pyx_t_12);
             __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
           }
-          __pyx_t_14 = __Pyx_PyObject_FormatSimple(__pyx_t_12, __pyx_empty_unicode); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1727, __pyx_L7_error)
+          __pyx_t_14 = __Pyx_PyObject_FormatSimple(__pyx_t_12, __pyx_empty_unicode); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1732, __pyx_L7_error)
           __Pyx_GOTREF(__pyx_t_14);
           __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
           __pyx_t_11 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_14) > __pyx_t_11) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_14) : __pyx_t_11;
@@ -41497,9 +41601,9 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
           __pyx_t_6 += 1;
           __Pyx_GIVEREF(__pyx_kp_u__35);
           PyTuple_SET_ITEM(__pyx_t_8, 1, __pyx_kp_u__35);
-          __pyx_t_14 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_cur_scope->__pyx_v_self), __pyx_n_s_base_asset); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1727, __pyx_L7_error)
+          __pyx_t_14 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_cur_scope->__pyx_v_self), __pyx_n_s_base_asset); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1732, __pyx_L7_error)
           __Pyx_GOTREF(__pyx_t_14);
-          __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_t_14, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1727, __pyx_L7_error)
+          __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_t_14, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1732, __pyx_L7_error)
           __Pyx_GOTREF(__pyx_t_12);
           __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
           __pyx_t_11 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) > __pyx_t_11) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) : __pyx_t_11;
@@ -41512,16 +41616,16 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
           __Pyx_GIVEREF(__pyx_kp_u__38);
           PyTuple_SET_ITEM(__pyx_t_8, 3, __pyx_kp_u__38);
 
-          /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1728
+          /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1733
  *             if self._logging_options & self.OPTION_LOG_CREATE_ORDER:
  *                 price_quote_str = [f"{buy.size.normalize()} {self.base_asset}, "
  *                                    f"{buy.price.normalize()} {self.quote_asset}"             # <<<<<<<<<<<<<<
  *                                    for buy in proposal.buys]
  *                 self.logger().info(
  */
-          __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr28__pyx_v_buy, __pyx_n_s_price); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1728, __pyx_L7_error)
+          __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr28__pyx_v_buy, __pyx_n_s_price); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1733, __pyx_L7_error)
           __Pyx_GOTREF(__pyx_t_14);
-          __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_14, __pyx_n_s_normalize); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1728, __pyx_L7_error)
+          __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_14, __pyx_n_s_normalize); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1733, __pyx_L7_error)
           __Pyx_GOTREF(__pyx_t_13);
           __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
           __pyx_t_14 = NULL;
@@ -41540,11 +41644,11 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
             PyObject *__pyx_callargs[1] = {__pyx_t_14, };
             __pyx_t_12 = __Pyx_PyObject_FastCall(__pyx_t_13, __pyx_callargs+1-__pyx_t_15, 0+__pyx_t_15);
             __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
-            if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1728, __pyx_L7_error)
+            if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1733, __pyx_L7_error)
             __Pyx_GOTREF(__pyx_t_12);
             __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
           }
-          __pyx_t_13 = __Pyx_PyObject_FormatSimple(__pyx_t_12, __pyx_empty_unicode); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1728, __pyx_L7_error)
+          __pyx_t_13 = __Pyx_PyObject_FormatSimple(__pyx_t_12, __pyx_empty_unicode); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1733, __pyx_L7_error)
           __Pyx_GOTREF(__pyx_t_13);
           __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
           __pyx_t_11 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_13) > __pyx_t_11) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_13) : __pyx_t_11;
@@ -41556,9 +41660,9 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
           __pyx_t_6 += 1;
           __Pyx_GIVEREF(__pyx_kp_u__35);
           PyTuple_SET_ITEM(__pyx_t_8, 5, __pyx_kp_u__35);
-          __pyx_t_13 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_cur_scope->__pyx_v_self), __pyx_n_s_quote_asset); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1728, __pyx_L7_error)
+          __pyx_t_13 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_cur_scope->__pyx_v_self), __pyx_n_s_quote_asset); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1733, __pyx_L7_error)
           __Pyx_GOTREF(__pyx_t_13);
-          __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_t_13, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1728, __pyx_L7_error)
+          __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_t_13, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1733, __pyx_L7_error)
           __Pyx_GOTREF(__pyx_t_12);
           __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
           __pyx_t_11 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) > __pyx_t_11) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) : __pyx_t_11;
@@ -41567,20 +41671,20 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
           PyTuple_SET_ITEM(__pyx_t_8, 6, __pyx_t_12);
           __pyx_t_12 = 0;
 
-          /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1727
+          /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1732
  *         if len(proposal.buys) > 0:
  *             if self._logging_options & self.OPTION_LOG_CREATE_ORDER:
  *                 price_quote_str = [f"{buy.size.normalize()} {self.base_asset}, "             # <<<<<<<<<<<<<<
  *                                    f"{buy.price.normalize()} {self.quote_asset}"
  *                                    for buy in proposal.buys]
  */
-          __pyx_t_12 = __Pyx_PyUnicode_Join(__pyx_t_8, 7, __pyx_t_6, __pyx_t_11); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1727, __pyx_L7_error)
+          __pyx_t_12 = __Pyx_PyUnicode_Join(__pyx_t_8, 7, __pyx_t_6, __pyx_t_11); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1732, __pyx_L7_error)
           __Pyx_GOTREF(__pyx_t_12);
           __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-          if (unlikely(__Pyx_ListComp_Append(__pyx_t_9, (PyObject*)__pyx_t_12))) __PYX_ERR(0, 1727, __pyx_L7_error)
+          if (unlikely(__Pyx_ListComp_Append(__pyx_t_9, (PyObject*)__pyx_t_12))) __PYX_ERR(0, 1732, __pyx_L7_error)
           __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
 
-          /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1729
+          /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1734
  *                 price_quote_str = [f"{buy.size.normalize()} {self.base_asset}, "
  *                                    f"{buy.price.normalize()} {self.quote_asset}"
  *                                    for buy in proposal.buys]             # <<<<<<<<<<<<<<
@@ -41599,14 +41703,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __pyx_v_price_quote_str = ((PyObject*)__pyx_t_9);
       __pyx_t_9 = 0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1730
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1735
  *                                    f"{buy.price.normalize()} {self.quote_asset}"
  *                                    for buy in proposal.buys]
  *                 self.logger().info(             # <<<<<<<<<<<<<<
  *                     f"({self.trading_pair}) Creating {len(proposal.buys)} bid orders "
  *                     f"at (Size, Price): {price_quote_str}"
  */
-      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_cur_scope->__pyx_v_self), __pyx_n_s_logger); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1730, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_cur_scope->__pyx_v_self), __pyx_n_s_logger); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1735, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       __pyx_t_8 = NULL;
       __pyx_t_15 = 0;
@@ -41624,22 +41728,22 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
         PyObject *__pyx_callargs[1] = {__pyx_t_8, };
         __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_12, __pyx_callargs+1-__pyx_t_15, 0+__pyx_t_15);
         __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-        if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1730, __pyx_L1_error)
+        if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1735, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
       }
-      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_info); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1730, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_info); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1735, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1731
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1736
  *                                    for buy in proposal.buys]
  *                 self.logger().info(
  *                     f"({self.trading_pair}) Creating {len(proposal.buys)} bid orders "             # <<<<<<<<<<<<<<
  *                     f"at (Size, Price): {price_quote_str}"
  *                 )
  */
-      __pyx_t_1 = PyTuple_New(6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1731, __pyx_L1_error)
+      __pyx_t_1 = PyTuple_New(6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1736, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __pyx_t_3 = 0;
       __pyx_t_11 = 127;
@@ -41647,9 +41751,9 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __pyx_t_3 += 1;
       __Pyx_GIVEREF(__pyx_kp_u__34);
       PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_kp_u__34);
-      __pyx_t_8 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_cur_scope->__pyx_v_self), __pyx_n_s_trading_pair); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1731, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_cur_scope->__pyx_v_self), __pyx_n_s_trading_pair); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1736, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
-      __pyx_t_13 = __Pyx_PyObject_FormatSimple(__pyx_t_8, __pyx_empty_unicode); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1731, __pyx_L1_error)
+      __pyx_t_13 = __Pyx_PyObject_FormatSimple(__pyx_t_8, __pyx_empty_unicode); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1736, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_13);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       __pyx_t_11 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_13) > __pyx_t_11) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_13) : __pyx_t_11;
@@ -41661,11 +41765,11 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __pyx_t_3 += 11;
       __Pyx_GIVEREF(__pyx_kp_u_Creating);
       PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_kp_u_Creating);
-      __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_v_proposal, __pyx_n_s_buys); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1731, __pyx_L1_error)
+      __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_v_proposal, __pyx_n_s_buys); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1736, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_13);
-      __pyx_t_6 = PyObject_Length(__pyx_t_13); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 1731, __pyx_L1_error)
+      __pyx_t_6 = PyObject_Length(__pyx_t_13); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 1736, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-      __pyx_t_13 = __Pyx_PyUnicode_From_Py_ssize_t(__pyx_t_6, 0, ' ', 'd'); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1731, __pyx_L1_error)
+      __pyx_t_13 = __Pyx_PyUnicode_From_Py_ssize_t(__pyx_t_6, 0, ' ', 'd'); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1736, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_13);
       __pyx_t_3 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_13);
       __Pyx_GIVEREF(__pyx_t_13);
@@ -41676,14 +41780,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __Pyx_GIVEREF(__pyx_kp_u_bid_orders_at_Size_Price);
       PyTuple_SET_ITEM(__pyx_t_1, 4, __pyx_kp_u_bid_orders_at_Size_Price);
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1732
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1737
  *                 self.logger().info(
  *                     f"({self.trading_pair}) Creating {len(proposal.buys)} bid orders "
  *                     f"at (Size, Price): {price_quote_str}"             # <<<<<<<<<<<<<<
  *                 )
  *             for idx, buy in enumerate(proposal.buys):
  */
-      __pyx_t_13 = __Pyx_PyObject_FormatSimple(__pyx_v_price_quote_str, __pyx_empty_unicode); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1732, __pyx_L1_error)
+      __pyx_t_13 = __Pyx_PyObject_FormatSimple(__pyx_v_price_quote_str, __pyx_empty_unicode); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1737, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_13);
       __pyx_t_11 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_13) > __pyx_t_11) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_13) : __pyx_t_11;
       __pyx_t_3 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_13);
@@ -41691,14 +41795,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       PyTuple_SET_ITEM(__pyx_t_1, 5, __pyx_t_13);
       __pyx_t_13 = 0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1731
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1736
  *                                    for buy in proposal.buys]
  *                 self.logger().info(
  *                     f"({self.trading_pair}) Creating {len(proposal.buys)} bid orders "             # <<<<<<<<<<<<<<
  *                     f"at (Size, Price): {price_quote_str}"
  *                 )
  */
-      __pyx_t_13 = __Pyx_PyUnicode_Join(__pyx_t_1, 6, __pyx_t_3, __pyx_t_11); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1731, __pyx_L1_error)
+      __pyx_t_13 = __Pyx_PyUnicode_Join(__pyx_t_1, 6, __pyx_t_3, __pyx_t_11); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1736, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_13);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_t_1 = NULL;
@@ -41718,13 +41822,13 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
         __pyx_t_9 = __Pyx_PyObject_FastCall(__pyx_t_12, __pyx_callargs+1-__pyx_t_15, 1+__pyx_t_15);
         __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
         __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-        if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1730, __pyx_L1_error)
+        if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1735, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_9);
         __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
       }
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1726
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1731
  * 
  *         if len(proposal.buys) > 0:
  *             if self._logging_options & self.OPTION_LOG_CREATE_ORDER:             # <<<<<<<<<<<<<<
@@ -41733,7 +41837,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
     }
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1734
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1739
  *                     f"at (Size, Price): {price_quote_str}"
  *                 )
  *             for idx, buy in enumerate(proposal.buys):             # <<<<<<<<<<<<<<
@@ -41742,15 +41846,15 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
     __Pyx_INCREF(__pyx_int_0);
     __pyx_t_9 = __pyx_int_0;
-    __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_proposal, __pyx_n_s_buys); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1734, __pyx_L1_error)
+    __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_proposal, __pyx_n_s_buys); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1739, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_12);
     if (likely(PyList_CheckExact(__pyx_t_12)) || PyTuple_CheckExact(__pyx_t_12)) {
       __pyx_t_13 = __pyx_t_12; __Pyx_INCREF(__pyx_t_13); __pyx_t_3 = 0;
       __pyx_t_10 = NULL;
     } else {
-      __pyx_t_3 = -1; __pyx_t_13 = PyObject_GetIter(__pyx_t_12); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1734, __pyx_L1_error)
+      __pyx_t_3 = -1; __pyx_t_13 = PyObject_GetIter(__pyx_t_12); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1739, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_13);
-      __pyx_t_10 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_13); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1734, __pyx_L1_error)
+      __pyx_t_10 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_13); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1739, __pyx_L1_error)
     }
     __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
     for (;;) {
@@ -41758,17 +41862,17 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
         if (likely(PyList_CheckExact(__pyx_t_13))) {
           if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_13)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_12 = PyList_GET_ITEM(__pyx_t_13, __pyx_t_3); __Pyx_INCREF(__pyx_t_12); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1734, __pyx_L1_error)
+          __pyx_t_12 = PyList_GET_ITEM(__pyx_t_13, __pyx_t_3); __Pyx_INCREF(__pyx_t_12); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1739, __pyx_L1_error)
           #else
-          __pyx_t_12 = PySequence_ITEM(__pyx_t_13, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1734, __pyx_L1_error)
+          __pyx_t_12 = PySequence_ITEM(__pyx_t_13, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1739, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_12);
           #endif
         } else {
           if (__pyx_t_3 >= PyTuple_GET_SIZE(__pyx_t_13)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_12 = PyTuple_GET_ITEM(__pyx_t_13, __pyx_t_3); __Pyx_INCREF(__pyx_t_12); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1734, __pyx_L1_error)
+          __pyx_t_12 = PyTuple_GET_ITEM(__pyx_t_13, __pyx_t_3); __Pyx_INCREF(__pyx_t_12); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1739, __pyx_L1_error)
           #else
-          __pyx_t_12 = PySequence_ITEM(__pyx_t_13, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1734, __pyx_L1_error)
+          __pyx_t_12 = PySequence_ITEM(__pyx_t_13, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1739, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_12);
           #endif
         }
@@ -41778,7 +41882,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 1734, __pyx_L1_error)
+            else __PYX_ERR(0, 1739, __pyx_L1_error)
           }
           break;
         }
@@ -41788,13 +41892,13 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __pyx_t_12 = 0;
       __Pyx_INCREF(__pyx_t_9);
       __Pyx_XDECREF_SET(__pyx_v_idx, __pyx_t_9);
-      __pyx_t_12 = __Pyx_PyInt_AddObjC(__pyx_t_9, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1734, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyInt_AddObjC(__pyx_t_9, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1739, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       __Pyx_DECREF(__pyx_t_9);
       __pyx_t_9 = __pyx_t_12;
       __pyx_t_12 = 0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1736
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1741
  *             for idx, buy in enumerate(proposal.buys):
  *                 bid_order_id = self.c_buy_with_specific_market(
  *                     self._market_info,             # <<<<<<<<<<<<<<
@@ -41804,17 +41908,17 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __pyx_t_12 = __pyx_cur_scope->__pyx_v_self->_market_info;
       __Pyx_INCREF(__pyx_t_12);
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1737
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1742
  *                 bid_order_id = self.c_buy_with_specific_market(
  *                     self._market_info,
  *                     buy.size,             # <<<<<<<<<<<<<<
  *                     order_type=self._limit_order_type,
  *                     price=buy.price,
  */
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_buy, __pyx_n_s_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1737, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_buy, __pyx_n_s_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1742, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1738
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1743
  *                     self._market_info,
  *                     buy.size,
  *                     order_type=self._limit_order_type,             # <<<<<<<<<<<<<<
@@ -41824,17 +41928,17 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __pyx_t_8 = __pyx_cur_scope->__pyx_v_self->_limit_order_type;
       __Pyx_INCREF(__pyx_t_8);
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1739
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1744
  *                     buy.size,
  *                     order_type=self._limit_order_type,
  *                     price=buy.price,             # <<<<<<<<<<<<<<
  *                     expiration_seconds=expiration_seconds
  *                 )
  */
-      __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_buy, __pyx_n_s_price); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1739, __pyx_L1_error)
+      __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_buy, __pyx_n_s_price); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1744, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_14);
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1735
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1740
  *                 )
  *             for idx, buy in enumerate(proposal.buys):
  *                 bid_order_id = self.c_buy_with_specific_market(             # <<<<<<<<<<<<<<
@@ -41845,7 +41949,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __pyx_t_17.order_type = __pyx_t_8;
       __pyx_t_17.price = __pyx_t_14;
       __pyx_t_17.expiration_seconds = __pyx_v_expiration_seconds;
-      __pyx_t_16 = ((struct __pyx_vtabstruct_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy *)__pyx_cur_scope->__pyx_v_self->__pyx_base.__pyx_base.__pyx_base.__pyx_vtab)->__pyx_base.c_buy_with_specific_market(((struct __pyx_obj_10hummingbot_8strategy_13strategy_base_StrategyBase *)__pyx_cur_scope->__pyx_v_self), __pyx_t_12, __pyx_t_1, &__pyx_t_17); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 1735, __pyx_L1_error)
+      __pyx_t_16 = ((struct __pyx_vtabstruct_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy *)__pyx_cur_scope->__pyx_v_self->__pyx_base.__pyx_base.__pyx_base.__pyx_vtab)->__pyx_base.c_buy_with_specific_market(((struct __pyx_obj_10hummingbot_8strategy_13strategy_base_StrategyBase *)__pyx_cur_scope->__pyx_v_self), __pyx_t_12, __pyx_t_1, &__pyx_t_17); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 1740, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_16);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -41856,7 +41960,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __Pyx_GIVEREF(__pyx_t_16);
       __pyx_t_16 = 0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1742
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1747
  *                     expiration_seconds=expiration_seconds
  *                 )
  *                 orders_created = True             # <<<<<<<<<<<<<<
@@ -41865,64 +41969,64 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
       __pyx_v_orders_created = 1;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1743
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1748
  *                 )
  *                 orders_created = True
  *                 if idx < number_of_pairs:             # <<<<<<<<<<<<<<
  *                     order = next((o for o in self.active_orders if o.client_order_id == bid_order_id))
  *                     if order:
  */
-      __pyx_t_16 = PyInt_FromSsize_t(__pyx_v_number_of_pairs); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 1743, __pyx_L1_error)
+      __pyx_t_16 = PyInt_FromSsize_t(__pyx_v_number_of_pairs); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 1748, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_16);
-      __pyx_t_14 = PyObject_RichCompare(__pyx_v_idx, __pyx_t_16, Py_LT); __Pyx_XGOTREF(__pyx_t_14); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1743, __pyx_L1_error)
+      __pyx_t_14 = PyObject_RichCompare(__pyx_v_idx, __pyx_t_16, Py_LT); __Pyx_XGOTREF(__pyx_t_14); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1748, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-      __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_t_14); if (unlikely((__pyx_t_7 < 0))) __PYX_ERR(0, 1743, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_t_14); if (unlikely((__pyx_t_7 < 0))) __PYX_ERR(0, 1748, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
       if (__pyx_t_7) {
 
-        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1744
+        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1749
  *                 orders_created = True
  *                 if idx < number_of_pairs:
  *                     order = next((o for o in self.active_orders if o.client_order_id == bid_order_id))             # <<<<<<<<<<<<<<
  *                     if order:
  *                         self._hanging_orders_tracker.add_current_pairs_of_proposal_orders_executed_by_strategy(
  */
-        __pyx_t_14 = __pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_market_making_24PureMarketMakingStrategy_25c_execute_orders_proposal_genexpr(((PyObject*)__pyx_cur_scope)); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1744, __pyx_L1_error)
+        __pyx_t_14 = __pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_market_making_24PureMarketMakingStrategy_25c_execute_orders_proposal_genexpr(((PyObject*)__pyx_cur_scope)); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1749, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_14);
-        __pyx_t_16 = __Pyx_PyIter_Next(__pyx_t_14); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 1744, __pyx_L1_error)
+        __pyx_t_16 = __Pyx_PyIter_Next(__pyx_t_14); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 1749, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_16);
         __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
         __Pyx_XDECREF_SET(__pyx_v_order, __pyx_t_16);
         __pyx_t_16 = 0;
 
-        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1745
+        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1750
  *                 if idx < number_of_pairs:
  *                     order = next((o for o in self.active_orders if o.client_order_id == bid_order_id))
  *                     if order:             # <<<<<<<<<<<<<<
  *                         self._hanging_orders_tracker.add_current_pairs_of_proposal_orders_executed_by_strategy(
  *                             CreatedPairOfOrders(order, None))
  */
-        __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_v_order); if (unlikely((__pyx_t_7 < 0))) __PYX_ERR(0, 1745, __pyx_L1_error)
+        __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_v_order); if (unlikely((__pyx_t_7 < 0))) __PYX_ERR(0, 1750, __pyx_L1_error)
         if (__pyx_t_7) {
 
-          /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1746
+          /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1751
  *                     order = next((o for o in self.active_orders if o.client_order_id == bid_order_id))
  *                     if order:
  *                         self._hanging_orders_tracker.add_current_pairs_of_proposal_orders_executed_by_strategy(             # <<<<<<<<<<<<<<
  *                             CreatedPairOfOrders(order, None))
  *         if len(proposal.sells) > 0:
  */
-          __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->_hanging_orders_tracker, __pyx_n_s_add_current_pairs_of_proposal_or); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1746, __pyx_L1_error)
+          __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->_hanging_orders_tracker, __pyx_n_s_add_current_pairs_of_proposal_or); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1751, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_14);
 
-          /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1747
+          /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1752
  *                     if order:
  *                         self._hanging_orders_tracker.add_current_pairs_of_proposal_orders_executed_by_strategy(
  *                             CreatedPairOfOrders(order, None))             # <<<<<<<<<<<<<<
  *         if len(proposal.sells) > 0:
  *             if self._logging_options & self.OPTION_LOG_CREATE_ORDER:
  */
-          __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_CreatedPairOfOrders); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1747, __pyx_L1_error)
+          __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_CreatedPairOfOrders); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1752, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_1);
           __pyx_t_12 = NULL;
           __pyx_t_15 = 0;
@@ -41940,7 +42044,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
             PyObject *__pyx_callargs[3] = {__pyx_t_12, __pyx_v_order, Py_None};
             __pyx_t_8 = __Pyx_PyObject_FastCall(__pyx_t_1, __pyx_callargs+1-__pyx_t_15, 2+__pyx_t_15);
             __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-            if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1747, __pyx_L1_error)
+            if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1752, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_8);
             __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
           }
@@ -41961,13 +42065,13 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
             __pyx_t_16 = __Pyx_PyObject_FastCall(__pyx_t_14, __pyx_callargs+1-__pyx_t_15, 1+__pyx_t_15);
             __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
             __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-            if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 1746, __pyx_L1_error)
+            if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 1751, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_16);
             __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
           }
           __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
 
-          /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1745
+          /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1750
  *                 if idx < number_of_pairs:
  *                     order = next((o for o in self.active_orders if o.client_order_id == bid_order_id))
  *                     if order:             # <<<<<<<<<<<<<<
@@ -41976,7 +42080,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
         }
 
-        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1743
+        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1748
  *                 )
  *                 orders_created = True
  *                 if idx < number_of_pairs:             # <<<<<<<<<<<<<<
@@ -41985,7 +42089,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
       }
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1734
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1739
  *                     f"at (Size, Price): {price_quote_str}"
  *                 )
  *             for idx, buy in enumerate(proposal.buys):             # <<<<<<<<<<<<<<
@@ -41996,7 +42100,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1725
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1730
  *         number_of_pairs = min((len(proposal.buys), len(proposal.sells))) if self._hanging_orders_enabled else 0
  * 
  *         if len(proposal.buys) > 0:             # <<<<<<<<<<<<<<
@@ -42005,40 +42109,40 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
   }
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1748
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1753
  *                         self._hanging_orders_tracker.add_current_pairs_of_proposal_orders_executed_by_strategy(
  *                             CreatedPairOfOrders(order, None))
  *         if len(proposal.sells) > 0:             # <<<<<<<<<<<<<<
  *             if self._logging_options & self.OPTION_LOG_CREATE_ORDER:
  *                 price_quote_str = [f"{sell.size.normalize()} {self.base_asset}, "
  */
-  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_v_proposal, __pyx_n_s_sells); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1748, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_v_proposal, __pyx_n_s_sells); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1753, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_3 = PyObject_Length(__pyx_t_9); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 1748, __pyx_L1_error)
+  __pyx_t_3 = PyObject_Length(__pyx_t_9); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 1753, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   __pyx_t_7 = ((__pyx_t_3 > 0) != 0);
   if (__pyx_t_7) {
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1749
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1754
  *                             CreatedPairOfOrders(order, None))
  *         if len(proposal.sells) > 0:
  *             if self._logging_options & self.OPTION_LOG_CREATE_ORDER:             # <<<<<<<<<<<<<<
  *                 price_quote_str = [f"{sell.size.normalize()} {self.base_asset}, "
  *                                    f"{sell.price.normalize()} {self.quote_asset}"
  */
-    __pyx_t_9 = __Pyx_PyInt_From_int64_t(__pyx_cur_scope->__pyx_v_self->_logging_options); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1749, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyInt_From_int64_t(__pyx_cur_scope->__pyx_v_self->_logging_options); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1754, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_13 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_cur_scope->__pyx_v_self), __pyx_n_s_OPTION_LOG_CREATE_ORDER); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1749, __pyx_L1_error)
+    __pyx_t_13 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_cur_scope->__pyx_v_self), __pyx_n_s_OPTION_LOG_CREATE_ORDER); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1754, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_13);
-    __pyx_t_16 = PyNumber_And(__pyx_t_9, __pyx_t_13); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 1749, __pyx_L1_error)
+    __pyx_t_16 = PyNumber_And(__pyx_t_9, __pyx_t_13); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 1754, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_16);
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-    __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_t_16); if (unlikely((__pyx_t_7 < 0))) __PYX_ERR(0, 1749, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_t_16); if (unlikely((__pyx_t_7 < 0))) __PYX_ERR(0, 1754, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
     if (__pyx_t_7) {
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1750
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1755
  *         if len(proposal.sells) > 0:
  *             if self._logging_options & self.OPTION_LOG_CREATE_ORDER:
  *                 price_quote_str = [f"{sell.size.normalize()} {self.base_asset}, "             # <<<<<<<<<<<<<<
@@ -42046,25 +42150,25 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  *                                    for sell in proposal.sells]
  */
       { /* enter inner scope */
-        __pyx_t_16 = PyList_New(0); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 1750, __pyx_L19_error)
+        __pyx_t_16 = PyList_New(0); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 1755, __pyx_L19_error)
         __Pyx_GOTREF(__pyx_t_16);
 
-        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1752
+        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1757
  *                 price_quote_str = [f"{sell.size.normalize()} {self.base_asset}, "
  *                                    f"{sell.price.normalize()} {self.quote_asset}"
  *                                    for sell in proposal.sells]             # <<<<<<<<<<<<<<
  *                 self.logger().info(
  *                     f"({self.trading_pair}) Creating {len(proposal.sells)} ask "
  */
-        __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_v_proposal, __pyx_n_s_sells); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1752, __pyx_L19_error)
+        __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_v_proposal, __pyx_n_s_sells); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1757, __pyx_L19_error)
         __Pyx_GOTREF(__pyx_t_13);
         if (likely(PyList_CheckExact(__pyx_t_13)) || PyTuple_CheckExact(__pyx_t_13)) {
           __pyx_t_9 = __pyx_t_13; __Pyx_INCREF(__pyx_t_9); __pyx_t_3 = 0;
           __pyx_t_10 = NULL;
         } else {
-          __pyx_t_3 = -1; __pyx_t_9 = PyObject_GetIter(__pyx_t_13); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1752, __pyx_L19_error)
+          __pyx_t_3 = -1; __pyx_t_9 = PyObject_GetIter(__pyx_t_13); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1757, __pyx_L19_error)
           __Pyx_GOTREF(__pyx_t_9);
-          __pyx_t_10 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1752, __pyx_L19_error)
+          __pyx_t_10 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1757, __pyx_L19_error)
         }
         __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
         for (;;) {
@@ -42072,17 +42176,17 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
             if (likely(PyList_CheckExact(__pyx_t_9))) {
               if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_9)) break;
               #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-              __pyx_t_13 = PyList_GET_ITEM(__pyx_t_9, __pyx_t_3); __Pyx_INCREF(__pyx_t_13); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1752, __pyx_L19_error)
+              __pyx_t_13 = PyList_GET_ITEM(__pyx_t_9, __pyx_t_3); __Pyx_INCREF(__pyx_t_13); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1757, __pyx_L19_error)
               #else
-              __pyx_t_13 = PySequence_ITEM(__pyx_t_9, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1752, __pyx_L19_error)
+              __pyx_t_13 = PySequence_ITEM(__pyx_t_9, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1757, __pyx_L19_error)
               __Pyx_GOTREF(__pyx_t_13);
               #endif
             } else {
               if (__pyx_t_3 >= PyTuple_GET_SIZE(__pyx_t_9)) break;
               #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-              __pyx_t_13 = PyTuple_GET_ITEM(__pyx_t_9, __pyx_t_3); __Pyx_INCREF(__pyx_t_13); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1752, __pyx_L19_error)
+              __pyx_t_13 = PyTuple_GET_ITEM(__pyx_t_9, __pyx_t_3); __Pyx_INCREF(__pyx_t_13); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1757, __pyx_L19_error)
               #else
-              __pyx_t_13 = PySequence_ITEM(__pyx_t_9, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1752, __pyx_L19_error)
+              __pyx_t_13 = PySequence_ITEM(__pyx_t_9, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1757, __pyx_L19_error)
               __Pyx_GOTREF(__pyx_t_13);
               #endif
             }
@@ -42092,7 +42196,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
               PyObject* exc_type = PyErr_Occurred();
               if (exc_type) {
                 if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-                else __PYX_ERR(0, 1752, __pyx_L19_error)
+                else __PYX_ERR(0, 1757, __pyx_L19_error)
               }
               break;
             }
@@ -42101,20 +42205,20 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
           __Pyx_XDECREF_SET(__pyx_9genexpr30__pyx_v_sell, __pyx_t_13);
           __pyx_t_13 = 0;
 
-          /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1750
+          /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1755
  *         if len(proposal.sells) > 0:
  *             if self._logging_options & self.OPTION_LOG_CREATE_ORDER:
  *                 price_quote_str = [f"{sell.size.normalize()} {self.base_asset}, "             # <<<<<<<<<<<<<<
  *                                    f"{sell.price.normalize()} {self.quote_asset}"
  *                                    for sell in proposal.sells]
  */
-          __pyx_t_13 = PyTuple_New(7); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1750, __pyx_L19_error)
+          __pyx_t_13 = PyTuple_New(7); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1755, __pyx_L19_error)
           __Pyx_GOTREF(__pyx_t_13);
           __pyx_t_6 = 0;
           __pyx_t_11 = 127;
-          __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr30__pyx_v_sell, __pyx_n_s_size); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1750, __pyx_L19_error)
+          __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr30__pyx_v_sell, __pyx_n_s_size); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1755, __pyx_L19_error)
           __Pyx_GOTREF(__pyx_t_8);
-          __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_normalize); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1750, __pyx_L19_error)
+          __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_normalize); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1755, __pyx_L19_error)
           __Pyx_GOTREF(__pyx_t_1);
           __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
           __pyx_t_8 = NULL;
@@ -42133,11 +42237,11 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
             PyObject *__pyx_callargs[1] = {__pyx_t_8, };
             __pyx_t_14 = __Pyx_PyObject_FastCall(__pyx_t_1, __pyx_callargs+1-__pyx_t_15, 0+__pyx_t_15);
             __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-            if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1750, __pyx_L19_error)
+            if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1755, __pyx_L19_error)
             __Pyx_GOTREF(__pyx_t_14);
             __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
           }
-          __pyx_t_1 = __Pyx_PyObject_FormatSimple(__pyx_t_14, __pyx_empty_unicode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1750, __pyx_L19_error)
+          __pyx_t_1 = __Pyx_PyObject_FormatSimple(__pyx_t_14, __pyx_empty_unicode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1755, __pyx_L19_error)
           __Pyx_GOTREF(__pyx_t_1);
           __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
           __pyx_t_11 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_1) > __pyx_t_11) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_1) : __pyx_t_11;
@@ -42149,9 +42253,9 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
           __pyx_t_6 += 1;
           __Pyx_GIVEREF(__pyx_kp_u__35);
           PyTuple_SET_ITEM(__pyx_t_13, 1, __pyx_kp_u__35);
-          __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_cur_scope->__pyx_v_self), __pyx_n_s_base_asset); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1750, __pyx_L19_error)
+          __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_cur_scope->__pyx_v_self), __pyx_n_s_base_asset); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1755, __pyx_L19_error)
           __Pyx_GOTREF(__pyx_t_1);
-          __pyx_t_14 = __Pyx_PyObject_FormatSimple(__pyx_t_1, __pyx_empty_unicode); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1750, __pyx_L19_error)
+          __pyx_t_14 = __Pyx_PyObject_FormatSimple(__pyx_t_1, __pyx_empty_unicode); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1755, __pyx_L19_error)
           __Pyx_GOTREF(__pyx_t_14);
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
           __pyx_t_11 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_14) > __pyx_t_11) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_14) : __pyx_t_11;
@@ -42164,16 +42268,16 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
           __Pyx_GIVEREF(__pyx_kp_u__38);
           PyTuple_SET_ITEM(__pyx_t_13, 3, __pyx_kp_u__38);
 
-          /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1751
+          /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1756
  *             if self._logging_options & self.OPTION_LOG_CREATE_ORDER:
  *                 price_quote_str = [f"{sell.size.normalize()} {self.base_asset}, "
  *                                    f"{sell.price.normalize()} {self.quote_asset}"             # <<<<<<<<<<<<<<
  *                                    for sell in proposal.sells]
  *                 self.logger().info(
  */
-          __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr30__pyx_v_sell, __pyx_n_s_price); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1751, __pyx_L19_error)
+          __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_9genexpr30__pyx_v_sell, __pyx_n_s_price); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1756, __pyx_L19_error)
           __Pyx_GOTREF(__pyx_t_1);
-          __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_normalize); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1751, __pyx_L19_error)
+          __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_normalize); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1756, __pyx_L19_error)
           __Pyx_GOTREF(__pyx_t_8);
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
           __pyx_t_1 = NULL;
@@ -42192,11 +42296,11 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
             PyObject *__pyx_callargs[1] = {__pyx_t_1, };
             __pyx_t_14 = __Pyx_PyObject_FastCall(__pyx_t_8, __pyx_callargs+1-__pyx_t_15, 0+__pyx_t_15);
             __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-            if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1751, __pyx_L19_error)
+            if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1756, __pyx_L19_error)
             __Pyx_GOTREF(__pyx_t_14);
             __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
           }
-          __pyx_t_8 = __Pyx_PyObject_FormatSimple(__pyx_t_14, __pyx_empty_unicode); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1751, __pyx_L19_error)
+          __pyx_t_8 = __Pyx_PyObject_FormatSimple(__pyx_t_14, __pyx_empty_unicode); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1756, __pyx_L19_error)
           __Pyx_GOTREF(__pyx_t_8);
           __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
           __pyx_t_11 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_8) > __pyx_t_11) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_8) : __pyx_t_11;
@@ -42208,9 +42312,9 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
           __pyx_t_6 += 1;
           __Pyx_GIVEREF(__pyx_kp_u__35);
           PyTuple_SET_ITEM(__pyx_t_13, 5, __pyx_kp_u__35);
-          __pyx_t_8 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_cur_scope->__pyx_v_self), __pyx_n_s_quote_asset); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1751, __pyx_L19_error)
+          __pyx_t_8 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_cur_scope->__pyx_v_self), __pyx_n_s_quote_asset); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1756, __pyx_L19_error)
           __Pyx_GOTREF(__pyx_t_8);
-          __pyx_t_14 = __Pyx_PyObject_FormatSimple(__pyx_t_8, __pyx_empty_unicode); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1751, __pyx_L19_error)
+          __pyx_t_14 = __Pyx_PyObject_FormatSimple(__pyx_t_8, __pyx_empty_unicode); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1756, __pyx_L19_error)
           __Pyx_GOTREF(__pyx_t_14);
           __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
           __pyx_t_11 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_14) > __pyx_t_11) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_14) : __pyx_t_11;
@@ -42219,20 +42323,20 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
           PyTuple_SET_ITEM(__pyx_t_13, 6, __pyx_t_14);
           __pyx_t_14 = 0;
 
-          /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1750
+          /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1755
  *         if len(proposal.sells) > 0:
  *             if self._logging_options & self.OPTION_LOG_CREATE_ORDER:
  *                 price_quote_str = [f"{sell.size.normalize()} {self.base_asset}, "             # <<<<<<<<<<<<<<
  *                                    f"{sell.price.normalize()} {self.quote_asset}"
  *                                    for sell in proposal.sells]
  */
-          __pyx_t_14 = __Pyx_PyUnicode_Join(__pyx_t_13, 7, __pyx_t_6, __pyx_t_11); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1750, __pyx_L19_error)
+          __pyx_t_14 = __Pyx_PyUnicode_Join(__pyx_t_13, 7, __pyx_t_6, __pyx_t_11); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1755, __pyx_L19_error)
           __Pyx_GOTREF(__pyx_t_14);
           __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-          if (unlikely(__Pyx_ListComp_Append(__pyx_t_16, (PyObject*)__pyx_t_14))) __PYX_ERR(0, 1750, __pyx_L19_error)
+          if (unlikely(__Pyx_ListComp_Append(__pyx_t_16, (PyObject*)__pyx_t_14))) __PYX_ERR(0, 1755, __pyx_L19_error)
           __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
 
-          /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1752
+          /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1757
  *                 price_quote_str = [f"{sell.size.normalize()} {self.base_asset}, "
  *                                    f"{sell.price.normalize()} {self.quote_asset}"
  *                                    for sell in proposal.sells]             # <<<<<<<<<<<<<<
@@ -42251,14 +42355,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __Pyx_XDECREF_SET(__pyx_v_price_quote_str, ((PyObject*)__pyx_t_16));
       __pyx_t_16 = 0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1753
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1758
  *                                    f"{sell.price.normalize()} {self.quote_asset}"
  *                                    for sell in proposal.sells]
  *                 self.logger().info(             # <<<<<<<<<<<<<<
  *                     f"({self.trading_pair}) Creating {len(proposal.sells)} ask "
  *                     f"orders at (Size, Price): {price_quote_str}"
  */
-      __pyx_t_14 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_cur_scope->__pyx_v_self), __pyx_n_s_logger); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1753, __pyx_L1_error)
+      __pyx_t_14 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_cur_scope->__pyx_v_self), __pyx_n_s_logger); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1758, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_14);
       __pyx_t_13 = NULL;
       __pyx_t_15 = 0;
@@ -42276,22 +42380,22 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
         PyObject *__pyx_callargs[1] = {__pyx_t_13, };
         __pyx_t_9 = __Pyx_PyObject_FastCall(__pyx_t_14, __pyx_callargs+1-__pyx_t_15, 0+__pyx_t_15);
         __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
-        if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1753, __pyx_L1_error)
+        if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1758, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_9);
         __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
       }
-      __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_info); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1753, __pyx_L1_error)
+      __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_info); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1758, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_14);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1754
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1759
  *                                    for sell in proposal.sells]
  *                 self.logger().info(
  *                     f"({self.trading_pair}) Creating {len(proposal.sells)} ask "             # <<<<<<<<<<<<<<
  *                     f"orders at (Size, Price): {price_quote_str}"
  *                 )
  */
-      __pyx_t_9 = PyTuple_New(6); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1754, __pyx_L1_error)
+      __pyx_t_9 = PyTuple_New(6); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1759, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __pyx_t_3 = 0;
       __pyx_t_11 = 127;
@@ -42299,9 +42403,9 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __pyx_t_3 += 1;
       __Pyx_GIVEREF(__pyx_kp_u__34);
       PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_kp_u__34);
-      __pyx_t_13 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_cur_scope->__pyx_v_self), __pyx_n_s_trading_pair); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1754, __pyx_L1_error)
+      __pyx_t_13 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_cur_scope->__pyx_v_self), __pyx_n_s_trading_pair); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1759, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_13);
-      __pyx_t_8 = __Pyx_PyObject_FormatSimple(__pyx_t_13, __pyx_empty_unicode); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1754, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyObject_FormatSimple(__pyx_t_13, __pyx_empty_unicode); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1759, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
       __pyx_t_11 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_8) > __pyx_t_11) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_8) : __pyx_t_11;
@@ -42313,11 +42417,11 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __pyx_t_3 += 11;
       __Pyx_GIVEREF(__pyx_kp_u_Creating);
       PyTuple_SET_ITEM(__pyx_t_9, 2, __pyx_kp_u_Creating);
-      __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_proposal, __pyx_n_s_sells); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1754, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_proposal, __pyx_n_s_sells); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1759, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
-      __pyx_t_6 = PyObject_Length(__pyx_t_8); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 1754, __pyx_L1_error)
+      __pyx_t_6 = PyObject_Length(__pyx_t_8); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 1759, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-      __pyx_t_8 = __Pyx_PyUnicode_From_Py_ssize_t(__pyx_t_6, 0, ' ', 'd'); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1754, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyUnicode_From_Py_ssize_t(__pyx_t_6, 0, ' ', 'd'); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1759, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __pyx_t_3 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_8);
       __Pyx_GIVEREF(__pyx_t_8);
@@ -42328,14 +42432,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __Pyx_GIVEREF(__pyx_kp_u_ask_orders_at_Size_Price);
       PyTuple_SET_ITEM(__pyx_t_9, 4, __pyx_kp_u_ask_orders_at_Size_Price);
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1755
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1760
  *                 self.logger().info(
  *                     f"({self.trading_pair}) Creating {len(proposal.sells)} ask "
  *                     f"orders at (Size, Price): {price_quote_str}"             # <<<<<<<<<<<<<<
  *                 )
  *             for idx, sell in enumerate(proposal.sells):
  */
-      __pyx_t_8 = __Pyx_PyObject_FormatSimple(__pyx_v_price_quote_str, __pyx_empty_unicode); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1755, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyObject_FormatSimple(__pyx_v_price_quote_str, __pyx_empty_unicode); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1760, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __pyx_t_11 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_8) > __pyx_t_11) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_8) : __pyx_t_11;
       __pyx_t_3 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_8);
@@ -42343,14 +42447,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       PyTuple_SET_ITEM(__pyx_t_9, 5, __pyx_t_8);
       __pyx_t_8 = 0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1754
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1759
  *                                    for sell in proposal.sells]
  *                 self.logger().info(
  *                     f"({self.trading_pair}) Creating {len(proposal.sells)} ask "             # <<<<<<<<<<<<<<
  *                     f"orders at (Size, Price): {price_quote_str}"
  *                 )
  */
-      __pyx_t_8 = __Pyx_PyUnicode_Join(__pyx_t_9, 6, __pyx_t_3, __pyx_t_11); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1754, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyUnicode_Join(__pyx_t_9, 6, __pyx_t_3, __pyx_t_11); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1759, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       __pyx_t_9 = NULL;
@@ -42370,13 +42474,13 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
         __pyx_t_16 = __Pyx_PyObject_FastCall(__pyx_t_14, __pyx_callargs+1-__pyx_t_15, 1+__pyx_t_15);
         __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-        if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 1753, __pyx_L1_error)
+        if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 1758, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_16);
         __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
       }
       __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1749
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1754
  *                             CreatedPairOfOrders(order, None))
  *         if len(proposal.sells) > 0:
  *             if self._logging_options & self.OPTION_LOG_CREATE_ORDER:             # <<<<<<<<<<<<<<
@@ -42385,7 +42489,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
     }
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1757
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1762
  *                     f"orders at (Size, Price): {price_quote_str}"
  *                 )
  *             for idx, sell in enumerate(proposal.sells):             # <<<<<<<<<<<<<<
@@ -42394,15 +42498,15 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
     __Pyx_INCREF(__pyx_int_0);
     __pyx_t_16 = __pyx_int_0;
-    __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_proposal, __pyx_n_s_sells); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1757, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_proposal, __pyx_n_s_sells); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1762, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_14);
     if (likely(PyList_CheckExact(__pyx_t_14)) || PyTuple_CheckExact(__pyx_t_14)) {
       __pyx_t_8 = __pyx_t_14; __Pyx_INCREF(__pyx_t_8); __pyx_t_3 = 0;
       __pyx_t_10 = NULL;
     } else {
-      __pyx_t_3 = -1; __pyx_t_8 = PyObject_GetIter(__pyx_t_14); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1757, __pyx_L1_error)
+      __pyx_t_3 = -1; __pyx_t_8 = PyObject_GetIter(__pyx_t_14); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1762, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
-      __pyx_t_10 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_8); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1757, __pyx_L1_error)
+      __pyx_t_10 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_8); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1762, __pyx_L1_error)
     }
     __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
     for (;;) {
@@ -42410,17 +42514,17 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
         if (likely(PyList_CheckExact(__pyx_t_8))) {
           if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_8)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_14 = PyList_GET_ITEM(__pyx_t_8, __pyx_t_3); __Pyx_INCREF(__pyx_t_14); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1757, __pyx_L1_error)
+          __pyx_t_14 = PyList_GET_ITEM(__pyx_t_8, __pyx_t_3); __Pyx_INCREF(__pyx_t_14); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1762, __pyx_L1_error)
           #else
-          __pyx_t_14 = PySequence_ITEM(__pyx_t_8, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1757, __pyx_L1_error)
+          __pyx_t_14 = PySequence_ITEM(__pyx_t_8, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1762, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_14);
           #endif
         } else {
           if (__pyx_t_3 >= PyTuple_GET_SIZE(__pyx_t_8)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_14 = PyTuple_GET_ITEM(__pyx_t_8, __pyx_t_3); __Pyx_INCREF(__pyx_t_14); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1757, __pyx_L1_error)
+          __pyx_t_14 = PyTuple_GET_ITEM(__pyx_t_8, __pyx_t_3); __Pyx_INCREF(__pyx_t_14); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 1762, __pyx_L1_error)
           #else
-          __pyx_t_14 = PySequence_ITEM(__pyx_t_8, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1757, __pyx_L1_error)
+          __pyx_t_14 = PySequence_ITEM(__pyx_t_8, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1762, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_14);
           #endif
         }
@@ -42430,7 +42534,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 1757, __pyx_L1_error)
+            else __PYX_ERR(0, 1762, __pyx_L1_error)
           }
           break;
         }
@@ -42440,13 +42544,13 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __pyx_t_14 = 0;
       __Pyx_INCREF(__pyx_t_16);
       __Pyx_XDECREF_SET(__pyx_v_idx, __pyx_t_16);
-      __pyx_t_14 = __Pyx_PyInt_AddObjC(__pyx_t_16, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1757, __pyx_L1_error)
+      __pyx_t_14 = __Pyx_PyInt_AddObjC(__pyx_t_16, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1762, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_14);
       __Pyx_DECREF(__pyx_t_16);
       __pyx_t_16 = __pyx_t_14;
       __pyx_t_14 = 0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1759
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1764
  *             for idx, sell in enumerate(proposal.sells):
  *                 ask_order_id = self.c_sell_with_specific_market(
  *                     self._market_info,             # <<<<<<<<<<<<<<
@@ -42456,17 +42560,17 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __pyx_t_14 = __pyx_cur_scope->__pyx_v_self->_market_info;
       __Pyx_INCREF(__pyx_t_14);
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1760
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1765
  *                 ask_order_id = self.c_sell_with_specific_market(
  *                     self._market_info,
  *                     sell.size,             # <<<<<<<<<<<<<<
  *                     order_type=self._limit_order_type,
  *                     price=sell.price,
  */
-      __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_v_sell, __pyx_n_s_size); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1760, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_v_sell, __pyx_n_s_size); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 1765, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1761
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1766
  *                     self._market_info,
  *                     sell.size,
  *                     order_type=self._limit_order_type,             # <<<<<<<<<<<<<<
@@ -42476,17 +42580,17 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __pyx_t_13 = __pyx_cur_scope->__pyx_v_self->_limit_order_type;
       __Pyx_INCREF(__pyx_t_13);
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1762
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1767
  *                     sell.size,
  *                     order_type=self._limit_order_type,
  *                     price=sell.price,             # <<<<<<<<<<<<<<
  *                     expiration_seconds=expiration_seconds
  *                 )
  */
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_sell, __pyx_n_s_price); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1762, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_sell, __pyx_n_s_price); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1767, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1758
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1763
  *                 )
  *             for idx, sell in enumerate(proposal.sells):
  *                 ask_order_id = self.c_sell_with_specific_market(             # <<<<<<<<<<<<<<
@@ -42497,7 +42601,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __pyx_t_18.order_type = __pyx_t_13;
       __pyx_t_18.price = __pyx_t_1;
       __pyx_t_18.expiration_seconds = __pyx_v_expiration_seconds;
-      __pyx_t_12 = ((struct __pyx_vtabstruct_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy *)__pyx_cur_scope->__pyx_v_self->__pyx_base.__pyx_base.__pyx_base.__pyx_vtab)->__pyx_base.c_sell_with_specific_market(((struct __pyx_obj_10hummingbot_8strategy_13strategy_base_StrategyBase *)__pyx_cur_scope->__pyx_v_self), __pyx_t_14, __pyx_t_9, &__pyx_t_18); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1758, __pyx_L1_error)
+      __pyx_t_12 = ((struct __pyx_vtabstruct_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy *)__pyx_cur_scope->__pyx_v_self->__pyx_base.__pyx_base.__pyx_base.__pyx_vtab)->__pyx_base.c_sell_with_specific_market(((struct __pyx_obj_10hummingbot_8strategy_13strategy_base_StrategyBase *)__pyx_cur_scope->__pyx_v_self), __pyx_t_14, __pyx_t_9, &__pyx_t_18); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1763, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
@@ -42508,7 +42612,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __Pyx_GIVEREF(__pyx_t_12);
       __pyx_t_12 = 0;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1765
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1770
  *                     expiration_seconds=expiration_seconds
  *                 )
  *                 orders_created = True             # <<<<<<<<<<<<<<
@@ -42517,62 +42621,62 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
       __pyx_v_orders_created = 1;
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1766
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1771
  *                 )
  *                 orders_created = True
  *                 if idx < number_of_pairs:             # <<<<<<<<<<<<<<
  *                     order = next((o for o in self.active_orders if o.client_order_id == ask_order_id))
  *                     if order:
  */
-      __pyx_t_12 = PyInt_FromSsize_t(__pyx_v_number_of_pairs); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1766, __pyx_L1_error)
+      __pyx_t_12 = PyInt_FromSsize_t(__pyx_v_number_of_pairs); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1771, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
-      __pyx_t_1 = PyObject_RichCompare(__pyx_v_idx, __pyx_t_12, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1766, __pyx_L1_error)
+      __pyx_t_1 = PyObject_RichCompare(__pyx_v_idx, __pyx_t_12, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1771, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_7 < 0))) __PYX_ERR(0, 1766, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_7 < 0))) __PYX_ERR(0, 1771, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       if (__pyx_t_7) {
 
-        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1767
+        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1772
  *                 orders_created = True
  *                 if idx < number_of_pairs:
  *                     order = next((o for o in self.active_orders if o.client_order_id == ask_order_id))             # <<<<<<<<<<<<<<
  *                     if order:
  *                         self._hanging_orders_tracker.current_created_pairs_of_orders[idx].sell_order = order
  */
-        __pyx_t_1 = __pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_market_making_24PureMarketMakingStrategy_25c_execute_orders_proposal_3genexpr(((PyObject*)__pyx_cur_scope)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1767, __pyx_L1_error)
+        __pyx_t_1 = __pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_market_making_24PureMarketMakingStrategy_25c_execute_orders_proposal_3genexpr(((PyObject*)__pyx_cur_scope)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1772, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_12 = __Pyx_PyIter_Next(__pyx_t_1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1767, __pyx_L1_error)
+        __pyx_t_12 = __Pyx_PyIter_Next(__pyx_t_1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1772, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_12);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         __Pyx_XDECREF_SET(__pyx_v_order, __pyx_t_12);
         __pyx_t_12 = 0;
 
-        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1768
+        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1773
  *                 if idx < number_of_pairs:
  *                     order = next((o for o in self.active_orders if o.client_order_id == ask_order_id))
  *                     if order:             # <<<<<<<<<<<<<<
  *                         self._hanging_orders_tracker.current_created_pairs_of_orders[idx].sell_order = order
  *         if orders_created:
  */
-        __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_v_order); if (unlikely((__pyx_t_7 < 0))) __PYX_ERR(0, 1768, __pyx_L1_error)
+        __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_v_order); if (unlikely((__pyx_t_7 < 0))) __PYX_ERR(0, 1773, __pyx_L1_error)
         if (__pyx_t_7) {
 
-          /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1769
+          /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1774
  *                     order = next((o for o in self.active_orders if o.client_order_id == ask_order_id))
  *                     if order:
  *                         self._hanging_orders_tracker.current_created_pairs_of_orders[idx].sell_order = order             # <<<<<<<<<<<<<<
  *         if orders_created:
  *             self.set_timers()
  */
-          __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->_hanging_orders_tracker, __pyx_n_s_current_created_pairs_of_orders); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1769, __pyx_L1_error)
+          __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->_hanging_orders_tracker, __pyx_n_s_current_created_pairs_of_orders); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1774, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_12);
-          __pyx_t_1 = __Pyx_PyObject_GetItem(__pyx_t_12, __pyx_v_idx); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1769, __pyx_L1_error)
+          __pyx_t_1 = __Pyx_PyObject_GetItem(__pyx_t_12, __pyx_v_idx); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1774, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_1);
           __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-          if (__Pyx_PyObject_SetAttrStr(__pyx_t_1, __pyx_n_s_sell_order, __pyx_v_order) < 0) __PYX_ERR(0, 1769, __pyx_L1_error)
+          if (__Pyx_PyObject_SetAttrStr(__pyx_t_1, __pyx_n_s_sell_order, __pyx_v_order) < 0) __PYX_ERR(0, 1774, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-          /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1768
+          /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1773
  *                 if idx < number_of_pairs:
  *                     order = next((o for o in self.active_orders if o.client_order_id == ask_order_id))
  *                     if order:             # <<<<<<<<<<<<<<
@@ -42581,7 +42685,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
         }
 
-        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1766
+        /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1771
  *                 )
  *                 orders_created = True
  *                 if idx < number_of_pairs:             # <<<<<<<<<<<<<<
@@ -42590,7 +42694,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
       }
 
-      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1757
+      /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1762
  *                     f"orders at (Size, Price): {price_quote_str}"
  *                 )
  *             for idx, sell in enumerate(proposal.sells):             # <<<<<<<<<<<<<<
@@ -42601,7 +42705,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1748
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1753
  *                         self._hanging_orders_tracker.add_current_pairs_of_proposal_orders_executed_by_strategy(
  *                             CreatedPairOfOrders(order, None))
  *         if len(proposal.sells) > 0:             # <<<<<<<<<<<<<<
@@ -42610,7 +42714,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
   }
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1770
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1775
  *                     if order:
  *                         self._hanging_orders_tracker.current_created_pairs_of_orders[idx].sell_order = order
  *         if orders_created:             # <<<<<<<<<<<<<<
@@ -42620,18 +42724,18 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   __pyx_t_7 = (__pyx_v_orders_created != 0);
   if (__pyx_t_7) {
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1771
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1776
  *                         self._hanging_orders_tracker.current_created_pairs_of_orders[idx].sell_order = order
  *         if orders_created:
  *             self.set_timers()             # <<<<<<<<<<<<<<
  * 
  *     cdef set_timers(self):
  */
-    __pyx_t_16 = ((struct __pyx_vtabstruct_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy *)__pyx_cur_scope->__pyx_v_self->__pyx_base.__pyx_base.__pyx_base.__pyx_vtab)->set_timers(__pyx_cur_scope->__pyx_v_self); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 1771, __pyx_L1_error)
+    __pyx_t_16 = ((struct __pyx_vtabstruct_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy *)__pyx_cur_scope->__pyx_v_self->__pyx_base.__pyx_base.__pyx_base.__pyx_vtab)->set_timers(__pyx_cur_scope->__pyx_v_self); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 1776, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_16);
     __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1770
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1775
  *                     if order:
  *                         self._hanging_orders_tracker.current_created_pairs_of_orders[idx].sell_order = order
  *         if orders_created:             # <<<<<<<<<<<<<<
@@ -42640,7 +42744,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
   }
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1717
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1722
  *                 and len(non_hanging_orders_non_cancelled) == 0)
  * 
  *     cdef c_execute_orders_proposal(self, object proposal):             # <<<<<<<<<<<<<<
@@ -42677,7 +42781,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1773
+/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1778
  *             self.set_timers()
  * 
  *     cdef set_timers(self):             # <<<<<<<<<<<<<<
@@ -42695,7 +42799,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   double __pyx_t_4;
   __Pyx_RefNannySetupContext("set_timers", 0);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1774
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1779
  * 
  *     cdef set_timers(self):
  *         cdef double next_cycle = self._current_timestamp + self._order_refresh_time             # <<<<<<<<<<<<<<
@@ -42704,7 +42808,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
   __pyx_v_next_cycle = (__pyx_v_self->__pyx_base.__pyx_base._current_timestamp + __pyx_v_self->_order_refresh_time);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1775
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1780
  *     cdef set_timers(self):
  *         cdef double next_cycle = self._current_timestamp + self._order_refresh_time
  *         if self._create_timestamp <= self._current_timestamp:             # <<<<<<<<<<<<<<
@@ -42714,7 +42818,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   __pyx_t_1 = ((__pyx_v_self->_create_timestamp <= __pyx_v_self->__pyx_base.__pyx_base._current_timestamp) != 0);
   if (__pyx_t_1) {
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1776
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1781
  *         cdef double next_cycle = self._current_timestamp + self._order_refresh_time
  *         if self._create_timestamp <= self._current_timestamp:
  *             self._create_timestamp = next_cycle             # <<<<<<<<<<<<<<
@@ -42723,7 +42827,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
     __pyx_v_self->_create_timestamp = __pyx_v_next_cycle;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1775
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1780
  *     cdef set_timers(self):
  *         cdef double next_cycle = self._current_timestamp + self._order_refresh_time
  *         if self._create_timestamp <= self._current_timestamp:             # <<<<<<<<<<<<<<
@@ -42732,7 +42836,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
   }
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1777
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1782
  *         if self._create_timestamp <= self._current_timestamp:
  *             self._create_timestamp = next_cycle
  *         if self._cancel_timestamp <= self._current_timestamp:             # <<<<<<<<<<<<<<
@@ -42742,7 +42846,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   __pyx_t_1 = ((__pyx_v_self->_cancel_timestamp <= __pyx_v_self->__pyx_base.__pyx_base._current_timestamp) != 0);
   if (__pyx_t_1) {
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1778
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1783
  *             self._create_timestamp = next_cycle
  *         if self._cancel_timestamp <= self._current_timestamp:
  *             self._cancel_timestamp = min(self._create_timestamp, next_cycle)             # <<<<<<<<<<<<<<
@@ -42758,7 +42862,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     }
     __pyx_v_self->_cancel_timestamp = __pyx_t_4;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1777
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1782
  *         if self._create_timestamp <= self._current_timestamp:
  *             self._create_timestamp = next_cycle
  *         if self._cancel_timestamp <= self._current_timestamp:             # <<<<<<<<<<<<<<
@@ -42767,7 +42871,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
   }
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1773
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1778
  *             self.set_timers()
  * 
  *     cdef set_timers(self):             # <<<<<<<<<<<<<<
@@ -42782,7 +42886,7 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1780
+/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1785
  *             self._cancel_timestamp = min(self._create_timestamp, next_cycle)
  * 
  *     def notify_hb_app(self, msg: str):             # <<<<<<<<<<<<<<
@@ -42836,12 +42940,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       switch (__pyx_nargs) {
         case  0:
         if (likely((values[0] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_msg)) != 0)) kw_args--;
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1780, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1785, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "notify_hb_app") < 0)) __PYX_ERR(0, 1780, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "notify_hb_app") < 0)) __PYX_ERR(0, 1785, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -42852,13 +42956,13 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("notify_hb_app", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 1780, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("notify_hb_app", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 1785, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("hummingbot.strategy.pure_market_making.pure_market_making.PureMarketMakingStrategy.notify_hb_app", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_msg), (&PyUnicode_Type), 1, "msg", 1))) __PYX_ERR(0, 1780, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_msg), (&PyUnicode_Type), 1, "msg", 1))) __PYX_ERR(0, 1785, __pyx_L1_error)
   __pyx_r = __pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_market_making_24PureMarketMakingStrategy_34notify_hb_app(((struct __pyx_obj_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy *)__pyx_v_self), __pyx_v_msg);
 
   /* function exit code */
@@ -42883,7 +42987,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("notify_hb_app", 0);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1781
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1786
  * 
  *     def notify_hb_app(self, msg: str):
  *         if self._hb_app_notification:             # <<<<<<<<<<<<<<
@@ -42893,14 +42997,14 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
   __pyx_t_1 = (__pyx_v_self->_hb_app_notification != 0);
   if (__pyx_t_1) {
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1782
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1787
  *     def notify_hb_app(self, msg: str):
  *         if self._hb_app_notification:
  *             super().notify_hb_app(msg)             # <<<<<<<<<<<<<<
  * 
  *     def get_price_type(self, price_type_str: str) -> PriceType:
  */
-    __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1782, __pyx_L1_error)
+    __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1787, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_INCREF((PyObject *)__pyx_ptype_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy);
     __Pyx_GIVEREF((PyObject *)__pyx_ptype_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy);
@@ -42908,10 +43012,10 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
     __Pyx_INCREF((PyObject *)__pyx_v_self);
     __Pyx_GIVEREF((PyObject *)__pyx_v_self);
     PyTuple_SET_ITEM(__pyx_t_3, 1, ((PyObject *)__pyx_v_self));
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_super, __pyx_t_3, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1782, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_super, __pyx_t_3, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1787, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_notify_hb_app); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1782, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_notify_hb_app); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1787, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_t_4 = NULL;
@@ -42930,13 +43034,13 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
       PyObject *__pyx_callargs[2] = {__pyx_t_4, __pyx_v_msg};
       __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1782, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1787, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     }
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1781
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1786
  * 
  *     def notify_hb_app(self, msg: str):
  *         if self._hb_app_notification:             # <<<<<<<<<<<<<<
@@ -42945,7 +43049,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
  */
   }
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1780
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1785
  *             self._cancel_timestamp = min(self._create_timestamp, next_cycle)
  * 
  *     def notify_hb_app(self, msg: str):             # <<<<<<<<<<<<<<
@@ -42968,7 +43072,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1784
+/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1789
  *             super().notify_hb_app(msg)
  * 
  *     def get_price_type(self, price_type_str: str) -> PriceType:             # <<<<<<<<<<<<<<
@@ -43022,12 +43126,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       switch (__pyx_nargs) {
         case  0:
         if (likely((values[0] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_price_type_str)) != 0)) kw_args--;
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1784, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1789, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "get_price_type") < 0)) __PYX_ERR(0, 1784, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "get_price_type") < 0)) __PYX_ERR(0, 1789, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -43038,13 +43142,13 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("get_price_type", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 1784, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("get_price_type", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 1789, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("hummingbot.strategy.pure_market_making.pure_market_making.PureMarketMakingStrategy.get_price_type", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_price_type_str), (&PyUnicode_Type), 1, "price_type_str", 1))) __PYX_ERR(0, 1784, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_price_type_str), (&PyUnicode_Type), 1, "price_type_str", 1))) __PYX_ERR(0, 1789, __pyx_L1_error)
   __pyx_r = __pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_market_making_24PureMarketMakingStrategy_36get_price_type(((struct __pyx_obj_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy *)__pyx_v_self), __pyx_v_price_type_str);
 
   /* function exit code */
@@ -43070,18 +43174,18 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_price_type", 0);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1785
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1790
  * 
  *     def get_price_type(self, price_type_str: str) -> PriceType:
  *         if price_type_str == "mid_price":             # <<<<<<<<<<<<<<
  *             return PriceType.MidPrice
  *         elif price_type_str == "best_bid":
  */
-  __pyx_t_1 = (__Pyx_PyUnicode_Equals(__pyx_v_price_type_str, __pyx_n_u_mid_price, Py_EQ)); if (unlikely((__pyx_t_1 < 0))) __PYX_ERR(0, 1785, __pyx_L1_error)
+  __pyx_t_1 = (__Pyx_PyUnicode_Equals(__pyx_v_price_type_str, __pyx_n_u_mid_price, Py_EQ)); if (unlikely((__pyx_t_1 < 0))) __PYX_ERR(0, 1790, __pyx_L1_error)
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1786
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1791
  *     def get_price_type(self, price_type_str: str) -> PriceType:
  *         if price_type_str == "mid_price":
  *             return PriceType.MidPrice             # <<<<<<<<<<<<<<
@@ -43089,16 +43193,16 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
  *             return PriceType.BestBid
  */
     __Pyx_XDECREF(__pyx_r);
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_PriceType); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1786, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_PriceType); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1791, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_MidPrice); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1786, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_MidPrice); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1791, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_r = __pyx_t_4;
     __pyx_t_4 = 0;
     goto __pyx_L0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1785
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1790
  * 
  *     def get_price_type(self, price_type_str: str) -> PriceType:
  *         if price_type_str == "mid_price":             # <<<<<<<<<<<<<<
@@ -43107,18 +43211,18 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
  */
   }
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1787
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1792
  *         if price_type_str == "mid_price":
  *             return PriceType.MidPrice
  *         elif price_type_str == "best_bid":             # <<<<<<<<<<<<<<
  *             return PriceType.BestBid
  *         elif price_type_str == "best_ask":
  */
-  __pyx_t_2 = (__Pyx_PyUnicode_Equals(__pyx_v_price_type_str, __pyx_n_u_best_bid, Py_EQ)); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(0, 1787, __pyx_L1_error)
+  __pyx_t_2 = (__Pyx_PyUnicode_Equals(__pyx_v_price_type_str, __pyx_n_u_best_bid, Py_EQ)); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(0, 1792, __pyx_L1_error)
   __pyx_t_1 = (__pyx_t_2 != 0);
   if (__pyx_t_1) {
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1788
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1793
  *             return PriceType.MidPrice
  *         elif price_type_str == "best_bid":
  *             return PriceType.BestBid             # <<<<<<<<<<<<<<
@@ -43126,16 +43230,16 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
  *             return PriceType.BestAsk
  */
     __Pyx_XDECREF(__pyx_r);
-    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_PriceType); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1788, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_PriceType); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1793, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_BestBid); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1788, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_BestBid); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1793, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_r = __pyx_t_3;
     __pyx_t_3 = 0;
     goto __pyx_L0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1787
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1792
  *         if price_type_str == "mid_price":
  *             return PriceType.MidPrice
  *         elif price_type_str == "best_bid":             # <<<<<<<<<<<<<<
@@ -43144,18 +43248,18 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
  */
   }
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1789
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1794
  *         elif price_type_str == "best_bid":
  *             return PriceType.BestBid
  *         elif price_type_str == "best_ask":             # <<<<<<<<<<<<<<
  *             return PriceType.BestAsk
  *         elif price_type_str == "last_price":
  */
-  __pyx_t_1 = (__Pyx_PyUnicode_Equals(__pyx_v_price_type_str, __pyx_n_u_best_ask, Py_EQ)); if (unlikely((__pyx_t_1 < 0))) __PYX_ERR(0, 1789, __pyx_L1_error)
+  __pyx_t_1 = (__Pyx_PyUnicode_Equals(__pyx_v_price_type_str, __pyx_n_u_best_ask, Py_EQ)); if (unlikely((__pyx_t_1 < 0))) __PYX_ERR(0, 1794, __pyx_L1_error)
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1790
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1795
  *             return PriceType.BestBid
  *         elif price_type_str == "best_ask":
  *             return PriceType.BestAsk             # <<<<<<<<<<<<<<
@@ -43163,16 +43267,16 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
  *             return PriceType.LastTrade
  */
     __Pyx_XDECREF(__pyx_r);
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_PriceType); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1790, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_PriceType); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1795, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_BestAsk); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1790, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_BestAsk); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1795, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_r = __pyx_t_4;
     __pyx_t_4 = 0;
     goto __pyx_L0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1789
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1794
  *         elif price_type_str == "best_bid":
  *             return PriceType.BestBid
  *         elif price_type_str == "best_ask":             # <<<<<<<<<<<<<<
@@ -43181,18 +43285,18 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
  */
   }
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1791
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1796
  *         elif price_type_str == "best_ask":
  *             return PriceType.BestAsk
  *         elif price_type_str == "last_price":             # <<<<<<<<<<<<<<
  *             return PriceType.LastTrade
  *         elif price_type_str == 'last_own_trade_price':
  */
-  __pyx_t_2 = (__Pyx_PyUnicode_Equals(__pyx_v_price_type_str, __pyx_n_u_last_price, Py_EQ)); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(0, 1791, __pyx_L1_error)
+  __pyx_t_2 = (__Pyx_PyUnicode_Equals(__pyx_v_price_type_str, __pyx_n_u_last_price, Py_EQ)); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(0, 1796, __pyx_L1_error)
   __pyx_t_1 = (__pyx_t_2 != 0);
   if (__pyx_t_1) {
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1792
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1797
  *             return PriceType.BestAsk
  *         elif price_type_str == "last_price":
  *             return PriceType.LastTrade             # <<<<<<<<<<<<<<
@@ -43200,16 +43304,16 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
  *             return PriceType.LastOwnTrade
  */
     __Pyx_XDECREF(__pyx_r);
-    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_PriceType); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1792, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_PriceType); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1797, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_LastTrade); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1792, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_LastTrade); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1797, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_r = __pyx_t_3;
     __pyx_t_3 = 0;
     goto __pyx_L0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1791
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1796
  *         elif price_type_str == "best_ask":
  *             return PriceType.BestAsk
  *         elif price_type_str == "last_price":             # <<<<<<<<<<<<<<
@@ -43218,18 +43322,18 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
  */
   }
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1793
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1798
  *         elif price_type_str == "last_price":
  *             return PriceType.LastTrade
  *         elif price_type_str == 'last_own_trade_price':             # <<<<<<<<<<<<<<
  *             return PriceType.LastOwnTrade
  *         elif price_type_str == 'inventory_cost':
  */
-  __pyx_t_1 = (__Pyx_PyUnicode_Equals(__pyx_v_price_type_str, __pyx_n_u_last_own_trade_price, Py_EQ)); if (unlikely((__pyx_t_1 < 0))) __PYX_ERR(0, 1793, __pyx_L1_error)
+  __pyx_t_1 = (__Pyx_PyUnicode_Equals(__pyx_v_price_type_str, __pyx_n_u_last_own_trade_price, Py_EQ)); if (unlikely((__pyx_t_1 < 0))) __PYX_ERR(0, 1798, __pyx_L1_error)
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1794
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1799
  *             return PriceType.LastTrade
  *         elif price_type_str == 'last_own_trade_price':
  *             return PriceType.LastOwnTrade             # <<<<<<<<<<<<<<
@@ -43237,16 +43341,16 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
  *             return PriceType.InventoryCost
  */
     __Pyx_XDECREF(__pyx_r);
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_PriceType); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1794, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_PriceType); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1799, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_LastOwnTrade); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1794, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_LastOwnTrade); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1799, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_r = __pyx_t_4;
     __pyx_t_4 = 0;
     goto __pyx_L0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1793
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1798
  *         elif price_type_str == "last_price":
  *             return PriceType.LastTrade
  *         elif price_type_str == 'last_own_trade_price':             # <<<<<<<<<<<<<<
@@ -43255,18 +43359,18 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
  */
   }
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1795
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1800
  *         elif price_type_str == 'last_own_trade_price':
  *             return PriceType.LastOwnTrade
  *         elif price_type_str == 'inventory_cost':             # <<<<<<<<<<<<<<
  *             return PriceType.InventoryCost
  *         elif price_type_str == "custom":
  */
-  __pyx_t_2 = (__Pyx_PyUnicode_Equals(__pyx_v_price_type_str, __pyx_n_u_inventory_cost, Py_EQ)); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(0, 1795, __pyx_L1_error)
+  __pyx_t_2 = (__Pyx_PyUnicode_Equals(__pyx_v_price_type_str, __pyx_n_u_inventory_cost, Py_EQ)); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(0, 1800, __pyx_L1_error)
   __pyx_t_1 = (__pyx_t_2 != 0);
   if (__pyx_t_1) {
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1796
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1801
  *             return PriceType.LastOwnTrade
  *         elif price_type_str == 'inventory_cost':
  *             return PriceType.InventoryCost             # <<<<<<<<<<<<<<
@@ -43274,16 +43378,16 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
  *             return PriceType.Custom
  */
     __Pyx_XDECREF(__pyx_r);
-    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_PriceType); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1796, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_PriceType); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1801, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_InventoryCost); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1796, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_InventoryCost); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1801, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_r = __pyx_t_3;
     __pyx_t_3 = 0;
     goto __pyx_L0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1795
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1800
  *         elif price_type_str == 'last_own_trade_price':
  *             return PriceType.LastOwnTrade
  *         elif price_type_str == 'inventory_cost':             # <<<<<<<<<<<<<<
@@ -43292,18 +43396,18 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
  */
   }
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1797
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1802
  *         elif price_type_str == 'inventory_cost':
  *             return PriceType.InventoryCost
  *         elif price_type_str == "custom":             # <<<<<<<<<<<<<<
  *             return PriceType.Custom
  *         else:
  */
-  __pyx_t_1 = (__Pyx_PyUnicode_Equals(__pyx_v_price_type_str, __pyx_n_u_custom, Py_EQ)); if (unlikely((__pyx_t_1 < 0))) __PYX_ERR(0, 1797, __pyx_L1_error)
+  __pyx_t_1 = (__Pyx_PyUnicode_Equals(__pyx_v_price_type_str, __pyx_n_u_custom, Py_EQ)); if (unlikely((__pyx_t_1 < 0))) __PYX_ERR(0, 1802, __pyx_L1_error)
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (likely(__pyx_t_2)) {
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1798
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1803
  *             return PriceType.InventoryCost
  *         elif price_type_str == "custom":
  *             return PriceType.Custom             # <<<<<<<<<<<<<<
@@ -43311,16 +43415,16 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
  *             raise ValueError(f"Unrecognized price type string {price_type_str}.")
  */
     __Pyx_XDECREF(__pyx_r);
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_PriceType); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1798, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_PriceType); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1803, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_Custom); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1798, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_Custom); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1803, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_r = __pyx_t_4;
     __pyx_t_4 = 0;
     goto __pyx_L0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1797
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1802
  *         elif price_type_str == 'inventory_cost':
  *             return PriceType.InventoryCost
  *         elif price_type_str == "custom":             # <<<<<<<<<<<<<<
@@ -43329,7 +43433,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
  */
   }
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1800
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1805
  *             return PriceType.Custom
  *         else:
  *             raise ValueError(f"Unrecognized price type string {price_type_str}.")             # <<<<<<<<<<<<<<
@@ -43337,7 +43441,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
  * 
  */
   /*else*/ {
-    __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1800, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1805, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_5 = 0;
     __pyx_t_6 = 127;
@@ -43345,7 +43449,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
     __pyx_t_5 += 31;
     __Pyx_GIVEREF(__pyx_kp_u_Unrecognized_price_type_string);
     PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_kp_u_Unrecognized_price_type_string);
-    __pyx_t_3 = __Pyx_PyUnicode_Unicode(__pyx_v_price_type_str); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1800, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyUnicode_Unicode(__pyx_v_price_type_str); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1805, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_6 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_3) > __pyx_t_6) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_3) : __pyx_t_6;
     __pyx_t_5 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_3);
@@ -43356,18 +43460,18 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
     __pyx_t_5 += 1;
     __Pyx_GIVEREF(__pyx_kp_u__39);
     PyTuple_SET_ITEM(__pyx_t_4, 2, __pyx_kp_u__39);
-    __pyx_t_3 = __Pyx_PyUnicode_Join(__pyx_t_4, 3, __pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1800, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyUnicode_Join(__pyx_t_4, 3, __pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1805, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_builtin_ValueError, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1800, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_builtin_ValueError, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1805, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_Raise(__pyx_t_4, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __PYX_ERR(0, 1800, __pyx_L1_error)
+    __PYX_ERR(0, 1805, __pyx_L1_error)
   }
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1784
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1789
  *             super().notify_hb_app(msg)
  * 
  *     def get_price_type(self, price_type_str: str) -> PriceType:             # <<<<<<<<<<<<<<
@@ -43387,7 +43491,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
   return __pyx_r;
 }
 
-/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1803
+/* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1808
  * 
  * 
  *     cdef c_dump_debug_variables(self):             # <<<<<<<<<<<<<<
@@ -43421,33 +43525,33 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("c_dump_debug_variables", 0);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1805
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1810
  *     cdef c_dump_debug_variables(self):
  *         cdef:
  *           ExchangeBase market = self._market_info.market             # <<<<<<<<<<<<<<
  *           str trading_pair = self._market_info.trading_pair
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_market_info, __pyx_n_s_market); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1805, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_market_info, __pyx_n_s_market); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1810, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_10hummingbot_9connector_13exchange_base_ExchangeBase))))) __PYX_ERR(0, 1805, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_10hummingbot_9connector_13exchange_base_ExchangeBase))))) __PYX_ERR(0, 1810, __pyx_L1_error)
   __pyx_v_market = ((struct __pyx_obj_10hummingbot_9connector_13exchange_base_ExchangeBase *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1806
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1811
  *         cdef:
  *           ExchangeBase market = self._market_info.market
  *           str trading_pair = self._market_info.trading_pair             # <<<<<<<<<<<<<<
  * 
  *         timestamp = self._current_timestamp
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_market_info, __pyx_n_s_trading_pair); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1806, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_market_info, __pyx_n_s_trading_pair); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1811, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_1))) __PYX_ERR(0, 1806, __pyx_L1_error)
+  if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None) || __Pyx_RaiseUnexpectedTypeError("unicode", __pyx_t_1))) __PYX_ERR(0, 1811, __pyx_L1_error)
   __pyx_v_trading_pair = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1808
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1813
  *           str trading_pair = self._market_info.trading_pair
  * 
  *         timestamp = self._current_timestamp             # <<<<<<<<<<<<<<
@@ -43457,14 +43561,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   __pyx_t_2 = __pyx_v_self->__pyx_base.__pyx_base._current_timestamp;
   __pyx_v_timestamp = __pyx_t_2;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1809
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1814
  * 
  *         timestamp = self._current_timestamp
  *         price = self.get_price()             # <<<<<<<<<<<<<<
  *         pair = self._market_info.trading_pair
  *         exchange = self._market_info.market
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_price); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1809, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_price); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1814, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = NULL;
   __pyx_t_5 = 0;
@@ -43482,45 +43586,45 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     PyObject *__pyx_callargs[1] = {__pyx_t_4, };
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 0+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1809, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1814, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
   __pyx_v_price = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1810
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1815
  *         timestamp = self._current_timestamp
  *         price = self.get_price()
  *         pair = self._market_info.trading_pair             # <<<<<<<<<<<<<<
  *         exchange = self._market_info.market
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_market_info, __pyx_n_s_trading_pair); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1810, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_market_info, __pyx_n_s_trading_pair); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1815, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_pair = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1811
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1816
  *         price = self.get_price()
  *         pair = self._market_info.trading_pair
  *         exchange = self._market_info.market             # <<<<<<<<<<<<<<
  * 
  *         volatility = self.get_volatility()
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_market_info, __pyx_n_s_market); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1811, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_market_info, __pyx_n_s_market); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1816, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_exchange = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1813
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1818
  *         exchange = self._market_info.market
  * 
  *         volatility = self.get_volatility()             # <<<<<<<<<<<<<<
  *         vol_percentage = volatility/price
  * 
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_volatility); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1813, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_volatility); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1818, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = NULL;
   __pyx_t_5 = 0;
@@ -43538,38 +43642,38 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     PyObject *__pyx_callargs[1] = {__pyx_t_4, };
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 0+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1813, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1818, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
   __pyx_v_volatility = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1814
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1819
  * 
  *         volatility = self.get_volatility()
  *         vol_percentage = volatility/price             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_t_1 = __Pyx_PyNumber_Divide(__pyx_v_volatility, __pyx_v_price); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1814, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyNumber_Divide(__pyx_v_volatility, __pyx_v_price); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1819, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_vol_percentage = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1817
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1822
  * 
  * 
  *         if not os.path.exists('/Users/jellebuth/Documents/test3.csv'):             # <<<<<<<<<<<<<<
  *             df_header = pd.DataFrame([(
  *             'timestamp',
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_os); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1817, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_os); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1822, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_path); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1817, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_path); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1822, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_exists); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1817, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_exists); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1822, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_4 = NULL;
@@ -43588,36 +43692,36 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     PyObject *__pyx_callargs[2] = {__pyx_t_4, __pyx_kp_u_Users_jellebuth_Documents_test3};
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1817, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1822, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
-  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 1817, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 1822, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_7 = ((!__pyx_t_6) != 0);
   if (__pyx_t_7) {
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1818
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1823
  * 
  *         if not os.path.exists('/Users/jellebuth/Documents/test3.csv'):
  *             df_header = pd.DataFrame([(             # <<<<<<<<<<<<<<
  *             'timestamp',
  *             'price',
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_pd); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1818, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_pd); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1823, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_DataFrame); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1818, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_DataFrame); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1823, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1819
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1824
  *         if not os.path.exists('/Users/jellebuth/Documents/test3.csv'):
  *             df_header = pd.DataFrame([(
  *             'timestamp',             # <<<<<<<<<<<<<<
  *             'price',
  *             'volatility'
  */
-    __pyx_t_3 = PyList_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1818, __pyx_L1_error)
+    __pyx_t_3 = PyList_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1823, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_INCREF(__pyx_tuple__40);
     __Pyx_GIVEREF(__pyx_tuple__40);
@@ -43639,34 +43743,34 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
       __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_4, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
       __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1818, __pyx_L1_error)
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1823, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     }
     __pyx_v_df_header = __pyx_t_1;
     __pyx_t_1 = 0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1823
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1828
  *             'volatility'
  *                 )])
  *             df_header.to_csv('/Users/jellebuth/Documents/test3.csv', mode='a', header=False, index=False)             # <<<<<<<<<<<<<<
  * 
  *         df = pd.DataFrame([(timestamp,
  */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_df_header, __pyx_n_s_to_csv); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1823, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_df_header, __pyx_n_s_to_csv); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1828, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = __Pyx_PyDict_NewPresized(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1823, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyDict_NewPresized(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1828, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_mode, __pyx_n_u_a) < 0) __PYX_ERR(0, 1823, __pyx_L1_error)
-    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_header, Py_False) < 0) __PYX_ERR(0, 1823, __pyx_L1_error)
-    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_index, Py_False) < 0) __PYX_ERR(0, 1823, __pyx_L1_error)
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__41, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1823, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_mode, __pyx_n_u_a) < 0) __PYX_ERR(0, 1828, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_header, Py_False) < 0) __PYX_ERR(0, 1828, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_index, Py_False) < 0) __PYX_ERR(0, 1828, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__41, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1828, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1817
+    /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1822
  * 
  * 
  *         if not os.path.exists('/Users/jellebuth/Documents/test3.csv'):             # <<<<<<<<<<<<<<
@@ -43675,29 +43779,29 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
  */
   }
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1825
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1830
  *             df_header.to_csv('/Users/jellebuth/Documents/test3.csv', mode='a', header=False, index=False)
  * 
  *         df = pd.DataFrame([(timestamp,             # <<<<<<<<<<<<<<
  *         price,
  *         volatility,
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_pd); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1825, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_pd); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1830, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_DataFrame); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1825, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_DataFrame); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1830, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = PyFloat_FromDouble(__pyx_v_timestamp); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1825, __pyx_L1_error)
+  __pyx_t_4 = PyFloat_FromDouble(__pyx_v_timestamp); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1830, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1828
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1833
  *         price,
  *         volatility,
  *         vol_percentage             # <<<<<<<<<<<<<<
  *         )])
  *         df.to_csv('/Users/jellebuth/Documents/test3.csv', mode='a', header=False, index=False)
  */
-  __pyx_t_8 = PyTuple_New(4); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1825, __pyx_L1_error)
+  __pyx_t_8 = PyTuple_New(4); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1830, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_GIVEREF(__pyx_t_4);
   PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_4);
@@ -43712,14 +43816,14 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
   PyTuple_SET_ITEM(__pyx_t_8, 3, __pyx_v_vol_percentage);
   __pyx_t_4 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1825
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1830
  *             df_header.to_csv('/Users/jellebuth/Documents/test3.csv', mode='a', header=False, index=False)
  * 
  *         df = pd.DataFrame([(timestamp,             # <<<<<<<<<<<<<<
  *         price,
  *         volatility,
  */
-  __pyx_t_4 = PyList_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1825, __pyx_L1_error)
+  __pyx_t_4 = PyList_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1830, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_8);
   PyList_SET_ITEM(__pyx_t_4, 0, __pyx_t_8);
@@ -43741,32 +43845,32 @@ static PyObject *__pyx_f_10hummingbot_8strategy_18pure_market_making_18pure_mark
     __pyx_t_3 = __Pyx_PyObject_FastCall(__pyx_t_1, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1825, __pyx_L1_error)
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1830, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
   __pyx_v_df = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1830
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1835
  *         vol_percentage
  *         )])
  *         df.to_csv('/Users/jellebuth/Documents/test3.csv', mode='a', header=False, index=False)             # <<<<<<<<<<<<<<
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_df, __pyx_n_s_to_csv); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1830, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_df, __pyx_n_s_to_csv); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1835, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1830, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1835, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_mode, __pyx_n_u_a) < 0) __PYX_ERR(0, 1830, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_header, Py_False) < 0) __PYX_ERR(0, 1830, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_index, Py_False) < 0) __PYX_ERR(0, 1830, __pyx_L1_error)
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_tuple__41, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1830, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_mode, __pyx_n_u_a) < 0) __PYX_ERR(0, 1835, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_header, Py_False) < 0) __PYX_ERR(0, 1835, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_index, Py_False) < 0) __PYX_ERR(0, 1835, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_tuple__41, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1835, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1803
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1808
  * 
  * 
  *     cdef c_dump_debug_variables(self):             # <<<<<<<<<<<<<<
@@ -48480,8 +48584,8 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) __PYX_ERR(0, 1010, __pyx_L1_error)
   __pyx_builtin_sorted = __Pyx_GetBuiltinName(__pyx_n_s_sorted); if (!__pyx_builtin_sorted) __PYX_ERR(0, 1242, __pyx_L1_error)
   __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(0, 1416, __pyx_L1_error)
-  __pyx_builtin_zip = __Pyx_GetBuiltinName(__pyx_n_s_zip); if (!__pyx_builtin_zip) __PYX_ERR(0, 1625, __pyx_L1_error)
-  __pyx_builtin_super = __Pyx_GetBuiltinName(__pyx_n_s_super); if (!__pyx_builtin_super) __PYX_ERR(0, 1782, __pyx_L1_error)
+  __pyx_builtin_zip = __Pyx_GetBuiltinName(__pyx_n_s_zip); if (!__pyx_builtin_zip) __PYX_ERR(0, 1630, __pyx_L1_error)
+  __pyx_builtin_super = __Pyx_GetBuiltinName(__pyx_n_s_super); if (!__pyx_builtin_super) __PYX_ERR(0, 1787, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
   __pyx_builtin_ImportError = __Pyx_GetBuiltinName(__pyx_n_s_ImportError); if (!__pyx_builtin_ImportError) __PYX_ERR(2, 989, __pyx_L1_error)
   return 0;
@@ -48516,25 +48620,25 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__32);
   __Pyx_GIVEREF(__pyx_tuple__32);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1819
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1824
  *         if not os.path.exists('/Users/jellebuth/Documents/test3.csv'):
  *             df_header = pd.DataFrame([(
  *             'timestamp',             # <<<<<<<<<<<<<<
  *             'price',
  *             'volatility'
  */
-  __pyx_tuple__40 = PyTuple_Pack(3, __pyx_n_u_timestamp, __pyx_n_u_price, __pyx_n_u_volatility); if (unlikely(!__pyx_tuple__40)) __PYX_ERR(0, 1819, __pyx_L1_error)
+  __pyx_tuple__40 = PyTuple_Pack(3, __pyx_n_u_timestamp, __pyx_n_u_price, __pyx_n_u_volatility); if (unlikely(!__pyx_tuple__40)) __PYX_ERR(0, 1824, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__40);
   __Pyx_GIVEREF(__pyx_tuple__40);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1823
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1828
  *             'volatility'
  *                 )])
  *             df_header.to_csv('/Users/jellebuth/Documents/test3.csv', mode='a', header=False, index=False)             # <<<<<<<<<<<<<<
  * 
  *         df = pd.DataFrame([(timestamp,
  */
-  __pyx_tuple__41 = PyTuple_Pack(1, __pyx_kp_u_Users_jellebuth_Documents_test3); if (unlikely(!__pyx_tuple__41)) __PYX_ERR(0, 1823, __pyx_L1_error)
+  __pyx_tuple__41 = PyTuple_Pack(1, __pyx_kp_u_Users_jellebuth_Documents_test3); if (unlikely(!__pyx_tuple__41)) __PYX_ERR(0, 1828, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__41);
   __Pyx_GIVEREF(__pyx_tuple__41);
 
@@ -48852,29 +48956,29 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__85);
   __pyx_codeobj__86 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 6, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__85, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hummingbot_strategy_pure_market_2, __pyx_n_s_adjusted_available_balance_for_o, 1324, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__86)) __PYX_ERR(0, 1324, __pyx_L1_error)
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1780
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1785
  *             self._cancel_timestamp = min(self._create_timestamp, next_cycle)
  * 
  *     def notify_hb_app(self, msg: str):             # <<<<<<<<<<<<<<
  *         if self._hb_app_notification:
  *             super().notify_hb_app(msg)
  */
-  __pyx_tuple__87 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_msg); if (unlikely(!__pyx_tuple__87)) __PYX_ERR(0, 1780, __pyx_L1_error)
+  __pyx_tuple__87 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_msg); if (unlikely(!__pyx_tuple__87)) __PYX_ERR(0, 1785, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__87);
   __Pyx_GIVEREF(__pyx_tuple__87);
-  __pyx_codeobj__88 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__87, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hummingbot_strategy_pure_market_2, __pyx_n_s_notify_hb_app, 1780, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__88)) __PYX_ERR(0, 1780, __pyx_L1_error)
+  __pyx_codeobj__88 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__87, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hummingbot_strategy_pure_market_2, __pyx_n_s_notify_hb_app, 1785, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__88)) __PYX_ERR(0, 1785, __pyx_L1_error)
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1784
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1789
  *             super().notify_hb_app(msg)
  * 
  *     def get_price_type(self, price_type_str: str) -> PriceType:             # <<<<<<<<<<<<<<
  *         if price_type_str == "mid_price":
  *             return PriceType.MidPrice
  */
-  __pyx_tuple__89 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_price_type_str); if (unlikely(!__pyx_tuple__89)) __PYX_ERR(0, 1784, __pyx_L1_error)
+  __pyx_tuple__89 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_price_type_str); if (unlikely(!__pyx_tuple__89)) __PYX_ERR(0, 1789, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__89);
   __Pyx_GIVEREF(__pyx_tuple__89);
-  __pyx_codeobj__90 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__89, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hummingbot_strategy_pure_market_2, __pyx_n_s_get_price_type, 1784, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__90)) __PYX_ERR(0, 1784, __pyx_L1_error)
+  __pyx_codeobj__90 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__89, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hummingbot_strategy_pure_market_2, __pyx_n_s_get_price_type, 1789, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__90)) __PYX_ERR(0, 1789, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
@@ -49615,9 +49719,9 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_ptype_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_1_genexpr = &__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_1_genexpr;
   #endif
   #if CYTHON_COMPILING_IN_LIMITED_API
-  __pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_2_c_cancel_active_orders_on_max_age_limit = PyType_FromSpec(&__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_2_c_cancel_active_orders_on_max_age_limit_spec); if (unlikely(!__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_2_c_cancel_active_orders_on_max_age_limit)) __PYX_ERR(0, 1631, __pyx_L1_error)
+  __pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_2_c_cancel_active_orders_on_max_age_limit = PyType_FromSpec(&__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_2_c_cancel_active_orders_on_max_age_limit_spec); if (unlikely(!__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_2_c_cancel_active_orders_on_max_age_limit)) __PYX_ERR(0, 1636, __pyx_L1_error)
   #else
-  if (__Pyx_PyType_Ready(&__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_2_c_cancel_active_orders_on_max_age_limit) < 0) __PYX_ERR(0, 1631, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(&__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_2_c_cancel_active_orders_on_max_age_limit) < 0) __PYX_ERR(0, 1636, __pyx_L1_error)
   #if PY_MAJOR_VERSION < 3
   __pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_2_c_cancel_active_orders_on_max_age_limit.tp_print = 0;
   #endif
@@ -49631,9 +49735,9 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_ptype_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_2_c_cancel_active_orders_on_max_age_limit = &__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_2_c_cancel_active_orders_on_max_age_limit;
   #endif
   #if CYTHON_COMPILING_IN_LIMITED_API
-  __pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_3_genexpr = PyType_FromSpec(&__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_3_genexpr_spec); if (unlikely(!__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_3_genexpr)) __PYX_ERR(0, 1638, __pyx_L1_error)
+  __pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_3_genexpr = PyType_FromSpec(&__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_3_genexpr_spec); if (unlikely(!__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_3_genexpr)) __PYX_ERR(0, 1643, __pyx_L1_error)
   #else
-  if (__Pyx_PyType_Ready(&__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_3_genexpr) < 0) __PYX_ERR(0, 1638, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(&__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_3_genexpr) < 0) __PYX_ERR(0, 1643, __pyx_L1_error)
   #if PY_MAJOR_VERSION < 3
   __pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_3_genexpr.tp_print = 0;
   #endif
@@ -49647,9 +49751,9 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_ptype_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_3_genexpr = &__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_3_genexpr;
   #endif
   #if CYTHON_COMPILING_IN_LIMITED_API
-  __pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_4_c_execute_orders_proposal = PyType_FromSpec(&__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_4_c_execute_orders_proposal_spec); if (unlikely(!__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_4_c_execute_orders_proposal)) __PYX_ERR(0, 1717, __pyx_L1_error)
+  __pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_4_c_execute_orders_proposal = PyType_FromSpec(&__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_4_c_execute_orders_proposal_spec); if (unlikely(!__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_4_c_execute_orders_proposal)) __PYX_ERR(0, 1722, __pyx_L1_error)
   #else
-  if (__Pyx_PyType_Ready(&__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_4_c_execute_orders_proposal) < 0) __PYX_ERR(0, 1717, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(&__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_4_c_execute_orders_proposal) < 0) __PYX_ERR(0, 1722, __pyx_L1_error)
   #if PY_MAJOR_VERSION < 3
   __pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_4_c_execute_orders_proposal.tp_print = 0;
   #endif
@@ -49663,9 +49767,9 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_ptype_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_4_c_execute_orders_proposal = &__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_4_c_execute_orders_proposal;
   #endif
   #if CYTHON_COMPILING_IN_LIMITED_API
-  __pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_5_genexpr = PyType_FromSpec(&__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_5_genexpr_spec); if (unlikely(!__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_5_genexpr)) __PYX_ERR(0, 1744, __pyx_L1_error)
+  __pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_5_genexpr = PyType_FromSpec(&__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_5_genexpr_spec); if (unlikely(!__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_5_genexpr)) __PYX_ERR(0, 1749, __pyx_L1_error)
   #else
-  if (__Pyx_PyType_Ready(&__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_5_genexpr) < 0) __PYX_ERR(0, 1744, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(&__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_5_genexpr) < 0) __PYX_ERR(0, 1749, __pyx_L1_error)
   #if PY_MAJOR_VERSION < 3
   __pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_5_genexpr.tp_print = 0;
   #endif
@@ -49679,9 +49783,9 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_ptype_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_5_genexpr = &__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_5_genexpr;
   #endif
   #if CYTHON_COMPILING_IN_LIMITED_API
-  __pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_6_genexpr = PyType_FromSpec(&__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_6_genexpr_spec); if (unlikely(!__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_6_genexpr)) __PYX_ERR(0, 1767, __pyx_L1_error)
+  __pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_6_genexpr = PyType_FromSpec(&__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_6_genexpr_spec); if (unlikely(!__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_6_genexpr)) __PYX_ERR(0, 1772, __pyx_L1_error)
   #else
-  if (__Pyx_PyType_Ready(&__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_6_genexpr) < 0) __PYX_ERR(0, 1767, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(&__pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_6_genexpr) < 0) __PYX_ERR(0, 1772, __pyx_L1_error)
   #if PY_MAJOR_VERSION < 3
   __pyx_type_10hummingbot_8strategy_18pure_market_making_18pure_market_making___pyx_scope_struct_6_genexpr.tp_print = 0;
   #endif
@@ -52089,40 +52193,40 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_24); __pyx_t_24 = 0;
   PyType_Modified(__pyx_ptype_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1780
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1785
  *             self._cancel_timestamp = min(self._create_timestamp, next_cycle)
  * 
  *     def notify_hb_app(self, msg: str):             # <<<<<<<<<<<<<<
  *         if self._hb_app_notification:
  *             super().notify_hb_app(msg)
  */
-  __pyx_t_24 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 1780, __pyx_L1_error)
+  __pyx_t_24 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 1785, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_24);
-  if (PyDict_SetItem(__pyx_t_24, __pyx_n_s_msg, __pyx_n_s_str) < 0) __PYX_ERR(0, 1780, __pyx_L1_error)
-  __pyx_t_25 = __Pyx_CyFunction_New(&__pyx_mdef_10hummingbot_8strategy_18pure_market_making_18pure_market_making_24PureMarketMakingStrategy_35notify_hb_app, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PureMarketMakingStrategy_notify, NULL, __pyx_n_s_hummingbot_strategy_pure_market, __pyx_d, ((PyObject *)__pyx_codeobj__88)); if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 1780, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_24, __pyx_n_s_msg, __pyx_n_s_str) < 0) __PYX_ERR(0, 1785, __pyx_L1_error)
+  __pyx_t_25 = __Pyx_CyFunction_New(&__pyx_mdef_10hummingbot_8strategy_18pure_market_making_18pure_market_making_24PureMarketMakingStrategy_35notify_hb_app, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PureMarketMakingStrategy_notify, NULL, __pyx_n_s_hummingbot_strategy_pure_market, __pyx_d, ((PyObject *)__pyx_codeobj__88)); if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 1785, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_25);
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_25, __pyx_t_24);
   __Pyx_DECREF(__pyx_t_24); __pyx_t_24 = 0;
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy->tp_dict, __pyx_n_s_notify_hb_app, __pyx_t_25) < 0) __PYX_ERR(0, 1780, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy->tp_dict, __pyx_n_s_notify_hb_app, __pyx_t_25) < 0) __PYX_ERR(0, 1785, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_25); __pyx_t_25 = 0;
   PyType_Modified(__pyx_ptype_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy);
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1784
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":1789
  *             super().notify_hb_app(msg)
  * 
  *     def get_price_type(self, price_type_str: str) -> PriceType:             # <<<<<<<<<<<<<<
  *         if price_type_str == "mid_price":
  *             return PriceType.MidPrice
  */
-  __pyx_t_25 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 1784, __pyx_L1_error)
+  __pyx_t_25 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 1789, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_25);
-  if (PyDict_SetItem(__pyx_t_25, __pyx_n_s_price_type_str, __pyx_n_s_str) < 0) __PYX_ERR(0, 1784, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_25, __pyx_n_s_return, __pyx_n_s_PriceType) < 0) __PYX_ERR(0, 1784, __pyx_L1_error)
-  __pyx_t_24 = __Pyx_CyFunction_New(&__pyx_mdef_10hummingbot_8strategy_18pure_market_making_18pure_market_making_24PureMarketMakingStrategy_37get_price_type, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PureMarketMakingStrategy_get_pri_2, NULL, __pyx_n_s_hummingbot_strategy_pure_market, __pyx_d, ((PyObject *)__pyx_codeobj__90)); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 1784, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_25, __pyx_n_s_price_type_str, __pyx_n_s_str) < 0) __PYX_ERR(0, 1789, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_25, __pyx_n_s_return, __pyx_n_s_PriceType) < 0) __PYX_ERR(0, 1789, __pyx_L1_error)
+  __pyx_t_24 = __Pyx_CyFunction_New(&__pyx_mdef_10hummingbot_8strategy_18pure_market_making_18pure_market_making_24PureMarketMakingStrategy_37get_price_type, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PureMarketMakingStrategy_get_pri_2, NULL, __pyx_n_s_hummingbot_strategy_pure_market, __pyx_d, ((PyObject *)__pyx_codeobj__90)); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 1789, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_24);
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_24, __pyx_t_25);
   __Pyx_DECREF(__pyx_t_25); __pyx_t_25 = 0;
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy->tp_dict, __pyx_n_s_get_price_type, __pyx_t_24) < 0) __PYX_ERR(0, 1784, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy->tp_dict, __pyx_n_s_get_price_type, __pyx_t_24) < 0) __PYX_ERR(0, 1789, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_24); __pyx_t_24 = 0;
   PyType_Modified(__pyx_ptype_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy);
 

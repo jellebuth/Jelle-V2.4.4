@@ -1491,6 +1491,7 @@ cdef class PureMarketMakingStrategy(StrategyBase):
             str order_id = order_completed_event.order_id
             limit_order_record = self._sb_order_tracker.c_get_limit_order(self._market_info, order_id)
             double expiration_seconds = NaN
+            ExchangeBase market = self._market_info.market
         if limit_order_record is None:
             return
         active_sell_ids = [x.client_order_id for x in self.active_orders if not x.is_buy]
@@ -1516,14 +1517,16 @@ cdef class PureMarketMakingStrategy(StrategyBase):
           else:
             self._buy_order_fill = True
             if self.get_inventory_management() >= Decimal(-0.075): #positive = you need to sell
+              top_ask = market.c_get_price(self.trading_pair, True)
               order_id = self.c_sell_with_specific_market(
                   self._market_info,
                   limit_order_record.quantity,
                   order_type=self._limit_order_type,
-                  price=(limit_order_record.price * (Decimal(1) + self._bid_spread)),
+                  price=max((limit_order_record.price * (Decimal(1) + self._bid_spread)),top_ask),
                   expiration_seconds=expiration_seconds)
               self._hanging_order_list.append(order_id)
               self.c_cancel_all_orders()
+
 
 
 
@@ -1558,6 +1561,7 @@ cdef class PureMarketMakingStrategy(StrategyBase):
             str order_id = order_completed_event.order_id
             LimitOrder limit_order_record = self._sb_order_tracker.c_get_limit_order(self._market_info, order_id)
             double expiration_seconds = NaN
+            ExchangeBase market = self._market_info.market
         if limit_order_record is None:
             return
         active_buy_ids = [x.client_order_id for x in self.active_orders if x.is_buy]
@@ -1582,11 +1586,12 @@ cdef class PureMarketMakingStrategy(StrategyBase):
             else:
               self._sell_order_fill = True
               if self.get_inventory_management() <= Decimal(0.075):  # add that it should only be done when balance is skewed a specific way
+                top_bid = market.c_get_price(self.trading_pair, False)
                 order_id = self.c_buy_with_specific_market(
                     self._market_info,
                     limit_order_record.quantity,
                     order_type=self._limit_order_type,
-                    price=(limit_order_record.price / (Decimal(1) + self._ask_spread)),
+                    price=min((limit_order_record.price / (Decimal(1) + self._ask_spread)), top_bid),
                     expiration_seconds=expiration_seconds)
                 self._hanging_order_list.append(order_id)
                 self.c_cancel_all_orders()

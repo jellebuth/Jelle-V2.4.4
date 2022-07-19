@@ -5,6 +5,7 @@ If the first bid and ask spreads exceeds the max_volatility_spread limit. All or
 If not, each order is adjusted for the max(slow_volatility, quick_volatility)
 IMPORTANT: the spread IS A MULTIPLIER of the current spread
 """
+
 cdef:
   ExchangeBase market = self._market_info.market
   volatility = self.get_volatility()
