@@ -174,5 +174,7 @@ conversion_data_source: null
 conversion_exchange: null
 conversion_trading_pair: null
 
+dump_variables: null
+
 # For more detailed information, see:
 # https://docs.hummingbot.io/strategies/pure-market-making/#configuration-parameters

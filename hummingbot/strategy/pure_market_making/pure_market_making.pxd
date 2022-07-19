@@ -116,6 +116,6 @@ cdef class PureMarketMakingStrategy(StrategyBase):
     cdef set_timers(self)
     cdef c_apply_moving_price_band(self, object proposal)
     cdef c_collect_market_variables(self, double timestamp)
-    cdef c_apply_vol_adjustment_multiplier(self, object proposal)
     cdef c_apply_inventory_spread_management(self, object proposal)
     cdef c_dump_debug_variables(self)
+    cdef c_apply_vol_adjustment(self, object proposal)

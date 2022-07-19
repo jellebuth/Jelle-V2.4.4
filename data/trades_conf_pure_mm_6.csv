@@ -1,0 +1,2 @@
+exchange_trade_id,config_file_path,strategy,market,symbol,base_asset,quote_asset,timestamp,order_id,trade_type,order_type,price,amount,leverage,trade_fee,position,age
+62d5837a2e113d2b91abf4f2,conf_pure_mm_6.yml,pure_market_making,kucoin,ETH-USDT,ETH,USDT,1658159994000,BEHUT18212098ce7346d7c9ae285539312f85850,BUY,LIMIT_MAKER,1520.72,0.03,1,"{'fee_type': 'AddedToCost', 'percent': '0.001', 'percent_token': None, 'flat_fees': []}",NIL,00:00:03

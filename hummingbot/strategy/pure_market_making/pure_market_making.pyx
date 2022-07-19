@@ -870,24 +870,6 @@ cdef class PureMarketMakingStrategy(StrategyBase):
               self._buy_order_fill = False
               self._sell_order_fill = False
 
-            #if (self._buy_order_fill or self._sell_order_fill) and not self.c_check_imbalance():
-            #  proposal = self.c_create_base_proposal()
-            #  self.c_apply_order_levels_modifiers(proposal)
-              # 3. Apply functions that modify orders price
-            #  self.c_apply_order_price_modifiers(proposal)
-            #  # 4. Apply functions that modify orders size
-            #  self.c_apply_order_size_modifiers(proposal)
-              # 5. Apply budget constraint, i.e. can't buy/sell more than what you have.
-            #  self.c_apply_budget_constraint(proposal)
-            #  non_hanging_orders_non_cancelled = [o for o in self.active_non_hanging_orders if not
-            #                                    self._hanging_orders_tracker.is_potential_hanging_order(o)]
-            #  if len(non_hanging_orders_non_cancelled) == 0:
-            #    self.log_with_clock(
-            #        logging.INFO,
-            #        f"Planning on executing one haning order other"
-            #      )
-            #    self.c_execute_orders_proposal(proposal)
-
             if self._create_timestamp <= self._current_timestamp and (self.c_check_imbalance() or not self._keep_target_balance):
                 # 1. Create base order proposals
                 proposal = self.c_create_base_proposal()
@@ -1182,7 +1164,7 @@ cdef class PureMarketMakingStrategy(StrategyBase):
             self.c_apply_add_transaction_costs(proposal)
 
         if self._volatility_adjustment:
-          self.c_apply_vol_adjustment_multiplier(proposal)
+          self.c_apply_vol_adjustment(proposal)
 
         if self._inventory_management:
           self.c_apply_inventory_spread_management(proposal)
@@ -1239,7 +1221,7 @@ cdef class PureMarketMakingStrategy(StrategyBase):
           price = buy.price
           current_spread = (mid_price - price) / mid_price
           new_spread = current_spread * spread_adjustment_bid
-          inventory_adjusted_price = mid_price / (Decimal(1) + new_spread)
+          inventory_adjusted_price = mid_price * (Decimal(1) - new_spread)
           buy.price = market.c_quantize_order_price(self.trading_pair, inventory_adjusted_price)
 
       for sell in proposal.sells:
@@ -1266,54 +1248,47 @@ cdef class PureMarketMakingStrategy(StrategyBase):
       return first_bid_order_spread, first_ask_order_spread
 
 
-    cdef c_apply_vol_adjustment_multiplier(self, object proposal):
-      """
-      Adjust the price of the bid and asks based on the volatility
-      If the first bid and ask spreads exceeds the max_volatility_spread limit. All order are adjusted to the max spread adjustment market_info_to_active_orders
-      If not, each order is adjusted for the max(slow_volatility, quick_volatility)
-      IMPORTANT: the spread IS A MULTIPLIER of the current spread
-      """
+
+    cdef c_apply_vol_adjustment(self, object proposal):
       cdef:
           ExchangeBase market = self._market_info.market
           volatility = self.get_volatility()
           mid_price = self.get_mid_price()
 
       volatility_percentage = volatility/mid_price
+      volatility_adjustment = volatility_percentage * self._volatility_adjustment_multiplier
 
-      volatility_adjusted = (Decimal(1) + (volatility_percentage * self._volatility_adjustment_multiplier))
-
-      first_bid_order_spread_adjusted = (self.get_first_order_proposal_spread(proposal)[0] * volatility_adjusted)
-      first_ask_order_spread_adjusted = (self.get_first_order_proposal_spread(proposal)[1] * volatility_adjusted)
+      first_bid_order_spread_adjusted = (self.get_first_order_proposal_spread(proposal)[0] - volatility_adjustment)
+      first_ask_order_spread_adjusted = (self.get_first_order_proposal_spread(proposal)[1] + volatility_adjustment)
 
       if first_bid_order_spread_adjusted < self._max_volatility_spread:
-        volatility_adjusted_bid = volatility_adjusted
+        volatility_adjustment_bid = volatility_adjustment
       else: #calculate the max percentage increase in spread
-        volatility_adjusted_bid = Decimal(1) + ((self._max_volatility_spread - self.get_first_order_proposal_spread(proposal)[0]) / self.get_first_order_proposal_spread(proposal)[0])
+        volatility_adjustment_bid = self._max_volatility_spread - self.get_first_order_proposal_spread(proposal)[0]
 
       if first_ask_order_spread_adjusted < self._max_volatility_spread:
-        volatility_adjusted_ask = volatility_adjusted
+        volatility_adjustment_ask = volatility_adjustment
       else:
-        volatility_adjusted_ask = Decimal(1) + ((self._max_volatility_spread - self.get_first_order_proposal_spread(proposal)[1]) / self.get_first_order_proposal_spread(proposal)[1])
+        volatility_adjustment_ask = self._max_volatility_spread - self.get_first_order_proposal_spread(proposal)[1]
 
       self.log_with_clock(
           logging.INFO,
-          f"Vol_adjustment: vol_percentage {volatility_percentage} - volatility_adjusted_bid {volatility_adjusted_bid} - volatility_adjusted_ask {volatility_adjusted_ask}  "
+          f"Vol_adjustment: vol_percentage {volatility_percentage} - volatility_adjusted_bid {volatility_adjustment_bid} - volatility_adjusted_ask {volatility_adjustment_ask}  "
       )
 
       for buy in proposal.buys:
         price = buy.price
         current_spread = (mid_price - price) / mid_price
-        new_spread = current_spread * volatility_adjusted_bid
-        volatility_adjusted_price = mid_price / (Decimal(1) + new_spread)
-
+        new_spread = current_spread + volatility_adjustment_bid
+        volatility_adjusted_price = mid_price * (Decimal(1) - new_spread)
         buy.price = market.c_quantize_order_price(self.trading_pair, volatility_adjusted_price)
 
       for sell in proposal.sells:
         price = sell.price
         current_spread = (price - mid_price) / mid_price
-        new_spread = current_spread / volatility_adjusted_ask
-        inventory_adjusted_price = mid_price * (Decimal(1) + new_spread)
-        sell.price = market.c_quantize_order_price(self.trading_pair, inventory_adjusted_price)
+        new_spread = current_spread + volatility_adjustment_ask
+        volatility_adjusted_price = mid_price * (Decimal(1) + new_spread)
+        sell.price = market.c_quantize_order_price(self.trading_pair, volatility_adjusted_price)
 
 
     cdef c_apply_inventory_skew(self, object proposal):
@@ -1695,7 +1670,12 @@ cdef class PureMarketMakingStrategy(StrategyBase):
             for order in self.active_non_hanging_orders:
                 # If is about to be added to hanging_orders then don't cancel
                 if not self._hanging_orders_tracker.is_potential_hanging_order(order):
+                  if order.client_order_id not in self._hanging_order_list:
                     self.c_cancel_order(self._market_info, order.client_order_id)
+
+        if self._hanging_orders_enabled_other and self._current_timestamp > self._balance_fixer_timestamp: #cancel haning orders
+          for order in self.active_non_hanging_orders:
+            self.c_cancel_order(self._market_info, order.client_order_id)
         # else:
         #     self.set_timers()
 
@@ -1714,7 +1694,7 @@ cdef class PureMarketMakingStrategy(StrategyBase):
                                    f"ID - {order.client_order_id}")
                 self.c_cancel_order(self._market_info, order.client_order_id)
 
-    cdef c_cancel_all_orders(self):
+    cdef c_cancel_all_orders(self): #only the non haning ones
           cdef:
               list active_orders = self.market_info_to_active_orders.get(self._market_info, [])
               object price = self.get_price()
