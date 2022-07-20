@@ -899,6 +899,8 @@ cdef class CrossExchangeMarketMakingStrategy(StrategyBase):
             limit_order_record = self._sb_order_tracker.c_get_shadow_limit_order(order_id)
             order_fill_record = (limit_order_record, order_filled_event)
 
+
+
             # Store the limit order fill event in a map, s.t. it can be processed in c_check_and_hedge_orders()
             # later.
             if order_filled_event.trade_type is TradeType.BUY:
@@ -906,6 +908,11 @@ cdef class CrossExchangeMarketMakingStrategy(StrategyBase):
                     self._order_fill_buy_events[market_pair] = [order_fill_record]
                 else:
                     self._order_fill_buy_events[market_pair].append(order_fill_record)
+                # Call c_check_and_hedge_orders() to emit the orders on the taker side.
+                try:
+                    self.c_check_and_hedge_orders(market_pair)
+                except Exception:
+                    self.log_with_clock(logging.ERROR, "Unexpected error.", exc_info=True)
 
                 if self._logging_options & self.OPTION_LOG_MAKER_ORDER_FILLED:
                     self.log_with_clock(
@@ -923,6 +930,11 @@ cdef class CrossExchangeMarketMakingStrategy(StrategyBase):
                 else:
                     self._order_fill_sell_events[market_pair].append(order_fill_record)
 
+                # Call c_check_and_hedge_orders() to emit the orders on the taker side.
+                try:
+                    self.c_check_and_hedge_orders(market_pair)
+                except Exception:
+                    self.log_with_clock(logging.ERROR, "Unexpected error.", exc_info=True)
                 if self._logging_options & self.OPTION_LOG_MAKER_ORDER_FILLED:
                     self.log_with_clock(
                         logging.INFO,
@@ -933,11 +945,7 @@ cdef class CrossExchangeMarketMakingStrategy(StrategyBase):
                   self._filled_order_delay_timer = self._current_timestamp + self._filled_order_delay_seconds
                   self.logger().info(f"Just canceled all maker order and will not place any new orders for {self._cancel_order_timer_seconds} seconds")
 
-            # Call c_check_and_hedge_orders() to emit the orders on the taker side.
-            try:
-                self.c_check_and_hedge_orders(market_pair)
-            except Exception:
-                self.log_with_clock(logging.ERROR, "Unexpected error.", exc_info=True)
+
         #add logic here that also adds the order_id to a variable so the avg_filled_price of the taker order can be calculated
 
     cdef c_did_complete_buy_order(self, object order_completed_event):
