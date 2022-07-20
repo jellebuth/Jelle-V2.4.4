@@ -36,6 +36,7 @@ def start(self):
         minimum_spread = c_map.get("minimum_spread").value / Decimal('100')
         price_ceiling = c_map.get("price_ceiling").value
         price_floor = c_map.get("price_floor").value
+        price_band_refresh_time = c_map.get("price_band_refresh_time").value
         keep_target_balance = c_map.get("keep_target_balance").value
         target_base_balance = c_map.get("target_base_balance").value
         max_deviation = c_map.get("max_deviation").value
@@ -107,7 +108,14 @@ def start(self):
         conversion_exchange = c_map.get("conversion_exchange").value
         conversion_trading_pair = c_map.get("conversion_trading_pair").value
         dump_variables = c_map.get("dump_variables").value
+        price_band_below_adjustment = c_map.get(
+            "price_band_below_adjustment").value / Decimal('100')
+        price_band_above_adjustment = c_map.get(
+            "price_band_above_adjustment").value / Decimal('100')
 
+        ema_timeframe = c_map.get("ema_timeframe").value
+        ema_limit = c_map.get("ema_limit").value
+        ema_length = c_map.get("ema_length").value
         moving_price_band = MovingPriceBand(
             enabled=c_map.get("moving_price_band_enabled").value,
             price_floor_pct=c_map.get("price_floor_pct").value,
@@ -136,7 +144,7 @@ def start(self):
         maker_assets: Tuple[str, str] = self._initialize_market_assets(exchange, [
                                                                        trading_pair])[0]
 
-        if conversion_data_source:
+        if (conversion_data_source or micro_price_price_source):
             conversion_assets: Tuple[str, str] = self._initialize_market_assets(
                 conversion_exchange, [conversion_trading_pair])[0]
 
@@ -203,6 +211,8 @@ def start(self):
         self.strategy.init_params(
             market_info=MarketTradingPairTuple(*maker_data),
             conversion_market=conversion_market_trading_pair_tuple,
+            exchange=exchange,
+            raw_trading_pair=raw_trading_pair,
             bid_spread=bid_spread,
             ask_spread=ask_spread,
             order_levels=order_levels,
@@ -235,6 +245,8 @@ def start(self):
             target_balance_spread_reducer=target_balance_spread_reducer,
             price_ceiling=price_ceiling,
             price_floor=price_floor,
+            price_band_below_adjustment=price_band_below_adjustment,
+            price_band_above_adjustment=price_band_above_adjustment,
             ping_pong_enabled=ping_pong_enabled,
             hanging_orders_cancel_pct=hanging_orders_cancel_pct,
             order_refresh_tolerance_pct=order_refresh_tolerance_pct,
@@ -249,7 +261,9 @@ def start(self):
             hanging_orders_enabled_other=hanging_orders_enabled_other,
             target_balance_spread_reducer_temp=target_balance_spread_reducer_temp,
             moving_price_band=moving_price_band,
-
+            ema_timeframe=ema_timeframe,
+            ema_limit=ema_limit,
+            ema_length=ema_length,
             volatility_adjustment=volatility_adjustment,
             volatility_buffer_size=volatility_buffer_size,
             volatility_processing_length=volatility_processing_length,
@@ -259,7 +273,8 @@ def start(self):
             inventory_management=inventory_management,
             inventory_management_multiplier=inventory_management_multiplier,
             conversion_data_source=conversion_data_source,
-            dump_variables=dump_variables
+            dump_variables=dump_variables,
+            price_band_refresh_time=price_band_refresh_time
         )
     except Exception as e:
         self.notify(str(e))

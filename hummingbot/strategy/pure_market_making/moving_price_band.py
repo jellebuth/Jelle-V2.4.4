@@ -1,6 +1,7 @@
 import logging
 from dataclasses import dataclass
 from decimal import Decimal
+from hummingbot.strategy.pure_market_making.get_candlestick import get_candlestick
 
 mpb_logger = None
 
@@ -47,11 +48,13 @@ class MovingPriceBand:
         :param timestamp: current timestamp of the strategy/connector
         :param price: reference price to set price band
         """
-        self._price_floor = (Decimal("100") + self.price_floor_pct) / Decimal("100") * price
-        self._price_ceiling = (Decimal("100") + self.price_ceiling_pct) / Decimal("100") * price
+        self._price_floor = (
+                Decimal("100") + self.price_floor_pct) / Decimal("100") * price
+        self._price_ceiling = (
+                Decimal("100") + self.price_ceiling_pct) / Decimal("100") * price
         self._set_time = timestamp
         self.logger().info(
-            'moving price band updated: price_floor: %s price_ceiling: %s', self._price_floor, self._price_ceiling)
+            'moving price band updated: price_floor: %s price_ceiling: %s price %s', self._price_floor, self._price_ceiling, price)
 
     def check_and_update_price_band(self, timestamp: float, price: Decimal) -> None:
         '''

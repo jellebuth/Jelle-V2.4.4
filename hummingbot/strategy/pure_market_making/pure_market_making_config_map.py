@@ -228,10 +228,53 @@ pure_market_making_config_map = {
         ConfigVar(key="price_band_refresh_time",
                   prompt="After this amount of time (in seconds), the price bands are reset based on the current price >>> ",
                   type_str="float",
-                  default=120,
+                  default=900,
                   required_if=lambda: pure_market_making_config_map.get(
                       "moving_price_band_enabled").value,
                   validator=validate_decimal),
+
+    "price_band_above_adjustment":
+        ConfigVar(key="price_band_above_adjustment",
+                  prompt="If price exceeds the upper price band, by what percentage do you want to increase the spread (e.g. 20 for adding 20% to the current spread) >>> ",
+                  type_str="decimal",
+                  default=Decimal("20"),
+                  required_if=lambda: pure_market_making_config_map.get(
+                      "moving_price_band_enabled").value,
+                  validator=validate_decimal),
+
+    "price_band_below_adjustment":
+        ConfigVar(key="price_band_below_adjustment",
+                  prompt="If price exceeds the lower price band, by what percentage do you want to increase the spread (e.g. 20 for adding 20% to the current spread) >>> ",
+                  type_str="decimal",
+                  default=Decimal("20"),
+                  required_if=lambda: pure_market_making_config_map.get(
+                      "moving_price_band_enabled").value,
+                  validator=validate_decimal),
+
+    "ema_timeframe":
+        ConfigVar(key="ema_timeframe",
+                  prompt="What timeframe do you want to use to compute the ema value for the price ceiling and floor? >>> ",
+                  type_str="str",
+                  default="30m",
+                  required_if=lambda: pure_market_making_config_map.get(
+                      "moving_price_band_enabled").value),
+
+    "ema_length":
+        ConfigVar(key="ema_length",
+                  prompt="What is the length to compute the ema value for the price ceiling and floor? >>> ",
+                  type_str="int",
+                  default=int(25),
+                  required_if=lambda: pure_market_making_config_map.get(
+                      "moving_price_band_enabled").value),
+
+    "ema_limit":
+        ConfigVar(key="ema_limit",
+                  prompt="How much data do you want to fetch to compute the ema value for the price ceiling and floor? >>> ",
+                  type_str="int",
+                  default=int(30),
+                  required_if=lambda: pure_market_making_config_map.get(
+                      "moving_price_band_enabled").value),
+
     "ping_pong_enabled":
         ConfigVar(key="ping_pong_enabled",
                   prompt="Would you like to use the ping pong feature and alternate between buy and sell orders after fills? (Yes/No) >>> ",

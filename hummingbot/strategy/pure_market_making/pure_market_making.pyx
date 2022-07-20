@@ -28,8 +28,7 @@ from .inventory_skew_calculator cimport c_calculate_bid_ask_ratios_from_base_ass
 from .inventory_skew_calculator import calculate_total_order_size
 from .pure_market_making_order_tracker import PureMarketMakingOrderTracker
 from .moving_price_band import MovingPriceBand
-
-
+from hummingbot.strategy.pure_market_making.get_candlestick import get_candlestick
 from hummingbot.strategy.__utils__.trailing_indicators.average_volatility import AverageVolatilityIndicator
 
 
@@ -54,6 +53,8 @@ cdef class PureMarketMakingStrategy(StrategyBase):
 
     def init_params(self,
                     market_info: MarketTradingPairTuple,
+                    exchange,
+                    raw_trading_pair,
                     bid_spread: Decimal,
                     ask_spread: Decimal,
                     order_amount: Decimal,
@@ -81,6 +82,11 @@ cdef class PureMarketMakingStrategy(StrategyBase):
                     target_balance_spread_reducer : Decimal = Decimal(0.99),
                     price_ceiling: Decimal = s_decimal_neg_one,
                     price_floor: Decimal = s_decimal_neg_one,
+                    ema_timeframe: str = str('30m'),
+                    ema_limit: int = int(30),
+                    ema_length: int = int(30),
+                    price_band_above_adjustment: Decimal = Decimal(0.1),
+                    price_band_below_adjustment: Decimal = Decimal(0.1),
                     ping_pong_enabled: bool = False,
                     logging_options: int = OPTION_LOG_ALL,
                     status_report_interval: float = 900,
@@ -113,6 +119,7 @@ cdef class PureMarketMakingStrategy(StrategyBase):
                     conversion_market: [MarketTradingPairTuple] = Decimal(1),
                     conversion_data_source: bool = False,
                     dump_variables: bool = False,
+                    price_band_refresh_time: float = float(1)
 
 
                     ):
@@ -152,6 +159,13 @@ cdef class PureMarketMakingStrategy(StrategyBase):
         self._take_if_crossed = take_if_crossed
         self._price_ceiling = price_ceiling
         self._price_floor = price_floor
+        self._price_band_below_adjustment = price_band_below_adjustment
+        self._price_band_above_adjustment = price_band_above_adjustment
+        self._price_band_refresh_time = price_band_refresh_time
+        self._moving_price_band_update_timestamp = 0
+        self._ema_timeframe = ema_timeframe
+        self._ema_limit = ema_limit
+        self._ema_length = ema_length
         self._ping_pong_enabled = ping_pong_enabled
         self._ping_pong_warning_lines = []
         self._hb_app_notification = hb_app_notification
@@ -202,6 +216,8 @@ cdef class PureMarketMakingStrategy(StrategyBase):
         self._conversion_data_source = conversion_data_source
         self._hanging_order_list = []
         self._dump_variables = dump_variables
+        self._exchange = exchange
+        self._raw_trading_pair = raw_trading_pair.replace("-", "/")
 
 
         self.c_add_markets([market_info.market])
@@ -455,7 +471,7 @@ cdef class PureMarketMakingStrategy(StrategyBase):
     @price_ceiling_pct.setter
     def price_ceiling_pct(self, value: Decimal):
         self._moving_price_band.price_ceiling_pct = value
-        self._moving_price_band.update(self._current_timestamp, self.get_price())
+        self._moving_price_band.update(self._current_timestamp, get_candlestick(self._exchange, self._raw_trading_pair, self._ema_timeframe, self._ema_limit, self._ema_length)[1])
 
     @property
     def price_floor_pct(self) -> Decimal:
@@ -464,7 +480,7 @@ cdef class PureMarketMakingStrategy(StrategyBase):
     @price_floor_pct.setter
     def price_floor_pct(self, value: Decimal):
         self._moving_price_band.price_floor_pct = value
-        self._moving_price_band.update(self._current_timestamp, self.get_price())
+        self._moving_price_band.update(self._current_timestamp, get_candlestick(self._exchange, self._raw_trading_pair, self._ema_timeframe, self._ema_limit, self._ema_length)[1])
 
     @property
     def price_band_refresh_time(self) -> float:
@@ -473,7 +489,7 @@ cdef class PureMarketMakingStrategy(StrategyBase):
     @price_band_refresh_time.setter
     def price_band_refresh_time(self, value: Decimal):
         self._moving_price_band.price_band_refresh_time = value
-        self._moving_price_band.update(self._current_timestamp, self.get_price())
+        self._moving_price_band.update(self._current_timestamp, get_candlestick(self._exchange, self._raw_trading_pair, self._ema_timeframe, self._ema_limit, self._ema_length)[1])
 
     @property
     def moving_price_band(self) -> MovingPriceBand:
@@ -847,16 +863,14 @@ cdef class PureMarketMakingStrategy(StrategyBase):
 
             proposal = None
             if not self.c_check_imbalance() and self._balance_fixer_timestamp <= self._current_timestamp and self._keep_target_balance:
-              self.log_with_clock(
-                      logging.INFO,
-                     f"Test 2"
-                )
+
               # 1. Create base order proposals
               proposal = self.c_create_base_proposal()
-              # 2. Apply functions that limit numbers of buys and sells proposal
-              self.c_apply_order_levels_modifiers(proposal)
-              # 3. Apply functions that modify orders price
+
+              # 2. Apply functions that modify orders price
               self.c_apply_order_price_modifiers(proposal)
+              # 3. Apply functions that limit numbers of buys and sells proposal
+              self.c_apply_order_levels_modifiers(proposal)
               # 4. Apply functions that modify orders size
               self.c_apply_order_size_modifiers(proposal)
               # 5. Apply budget constraint, i.e. can't buy/sell more than what you have.
@@ -873,13 +887,13 @@ cdef class PureMarketMakingStrategy(StrategyBase):
             if self._create_timestamp <= self._current_timestamp and (self.c_check_imbalance() or not self._keep_target_balance):
                 # 1. Create base order proposals
                 proposal = self.c_create_base_proposal()
-                # 2. Apply functions that limit numbers of buys and sells proposal
-                self.c_apply_order_levels_modifiers(proposal)
-                # 3. Apply functions that modify orders price
+                # 2. Apply functions that modify orders price
                 non_hanging_orders_non_cancelled = [o for o in self.active_non_hanging_orders if not #otherwise it would be displaying some anoying output
                                                     self._hanging_orders_tracker.is_potential_hanging_order(o)]
                 if len(non_hanging_orders_non_cancelled) == 0:
                   self.c_apply_order_price_modifiers(proposal)
+                # 3. Apply functions that limit numbers of buys and sells proposal
+                self.c_apply_order_levels_modifiers(proposal)
                 # 4. Apply functions that modify orders size
                 self.c_apply_order_size_modifiers(proposal)
                 # 5. Apply budget constraint, i.e. can't buy/sell more than what you have.
@@ -912,8 +926,12 @@ cdef class PureMarketMakingStrategy(StrategyBase):
 
     cdef c_weighted_mid_price(self):
           cdef:
-              ExchangeBase market = self._market_info.market
               str trading_pair = self._market_info.trading_pair
+
+          if self._micro_price_price_source:
+            market: ExchangeBase = self._conversion_market.market
+          else:
+            market: ExchangeBase = self._market_info.market
 
           top_ask = market.c_get_price(self.trading_pair, True)
           top_bid = market.c_get_price(self.trading_pair, False)
@@ -1072,32 +1090,6 @@ cdef class PureMarketMakingStrategy(StrategyBase):
                             sells.append(PriceSize(price, size))
                             buys=[]
 
-            """
-            if (self._buy_order_fill or self._sell_order_fill) and self._keep_target_balance: #place the hanging order
-              base_balance = float(market.get_balance(self._market_info.base_asset))
-              deviation = base_balance - float(self._target_base_balance)
-              mid_price = self._market_info.get_mid_price()
-              if deviation < 0:
-                  for level in range(0, 1): #only 1 order, place a buy
-                      price = (self._last_sell_order_price / (Decimal(1) + (self._bid_spread)) - (level * self._order_level_spread))
-                      price = market.c_quantize_order_price(self.trading_pair, price)
-                      size = Decimal(abs(deviation))
-                      size = market.c_quantize_order_amount(self.trading_pair, size)
-
-                      if size > 0:
-                          buys.append(PriceSize(price, size))
-                          sells = []
-              if deviation > 0:
-                  for level in range(0, 1): #only 1 order in that case, place a sell
-                      price = (self._last_buy_order_price * (Decimal(1) + (self._ask_spread)) + (level * self._order_level_spread))
-                      price = market.c_quantize_order_price(self.trading_pair, price)
-                      size = Decimal(abs(deviation))
-                      size = market.c_quantize_order_amount(self.trading_pair, size)
-                      if size > 0:
-                            sells.append(PriceSize(price, size))
-                            buys=[]
-            """
-
 
           return Proposal(buys, sells)
 
@@ -1121,21 +1113,51 @@ cdef class PureMarketMakingStrategy(StrategyBase):
 
     cdef c_apply_order_levels_modifiers(self, proposal):
         self.c_apply_price_band(proposal)
-        if self.moving_price_band_enabled:
-            self.c_apply_moving_price_band(proposal)
         if self._ping_pong_enabled:
             self.c_apply_ping_pong(proposal)
 
-    cdef c_apply_price_band(self, proposal):
-        if self._price_ceiling > 0 and self.get_price() >= self._price_ceiling:
-            proposal.buys = []
-        if self._price_floor > 0 and self.get_price() <= self._price_floor:
-            proposal.sells = []
-
     cdef c_apply_moving_price_band(self, proposal):
+      cdef:
+        ExchangeBase market = self._market_info.market
+        mid_price = self.get_price()
+
+      if self._price_ceiling > 0 and self.get_price() >= self._price_ceiling:
+        for buy in proposal.buys:
+            price = buy.price
+            current_spread = (mid_price - price) / mid_price
+            new_spread = current_spread * (Decimal(1) + self._price_band_above_adjustment)
+            price_ceiling_adjusted_price = mid_price * (Decimal(1) - new_spread)
+            buy.price = market.c_quantize_order_price(self.trading_pair, price_ceiling_adjusted_price)
+
+        for sell in proposal.sells:
+            price = sell.price
+            current_spread = (price - mid_price) / mid_price
+            new_spread = current_spread * (Decimal(1) + self._price_band_above_adjustment)
+            price_ceiling_adjusted_price = mid_price * (Decimal(1) + new_spread)
+            sell.price = market.c_quantize_order_price(self.trading_pair, price_ceiling_adjusted_price)
+
+      if self._price_floor > 0 and self.get_price() <= self._price_floor:
+        for buy in proposal.buys:
+            price = buy.price
+            current_spread = (mid_price - price) / mid_price
+            new_spread = current_spread * (Decimal(1) + self._price_band_below_adjustment)
+            price_floor_adjusted_price = mid_price * (Decimal(1) - new_spread)
+            buy.price = market.c_quantize_order_price(self.trading_pair, price_floor_adjusted_price)
+
+        for sell in proposal.sells:
+            price = sell.price
+            current_spread = (price - mid_price) / mid_price
+            new_spread = current_spread * (Decimal(1) + self._price_band_below_adjustment)
+            price_floor_adjusted_price = mid_price * (Decimal(1) + new_spread)
+            sell.price = market.c_quantize_order_price(self.trading_pair, price_floor_adjusted_price)
+
+
+    cdef c_apply_price_band(self, proposal):
         price = self.get_price()
-        self._moving_price_band.check_and_update_price_band(
-            self.current_timestamp, price)
+        if self._current_timestamp > self._moving_price_band_update_timestamp:
+          self._moving_price_band.update(
+            self.current_timestamp, Decimal(get_candlestick(self._exchange, self._raw_trading_pair, self._ema_timeframe, self._ema_limit, self._ema_length)[1]))
+          self._moving_price_band_update_timestamp = self._price_band_refresh_time + self._current_timestamp
         if self._moving_price_band.check_price_ceiling_exceeded(price):
             proposal.buys = []
         if self._moving_price_band.check_price_floor_exceeded(price):
@@ -1168,6 +1190,9 @@ cdef class PureMarketMakingStrategy(StrategyBase):
 
         if self._inventory_management:
           self.c_apply_inventory_spread_management(proposal)
+
+        if self.moving_price_band_enabled:
+          self.c_apply_moving_price_band(proposal)
 
     cdef c_apply_order_size_modifiers(self, object proposal):
         if self._inventory_skew_enabled:

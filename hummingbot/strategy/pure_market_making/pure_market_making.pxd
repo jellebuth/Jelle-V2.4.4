@@ -54,6 +54,13 @@ cdef class PureMarketMakingStrategy(StrategyBase):
         bint _take_if_crossed
         object _price_ceiling
         object _price_floor
+        object _price_band_above_adjustment
+        object _price_band_below_adjustment
+        object _ema_timeframe
+        object _ema_limit
+        object _ema_length 
+        object _price_band_refresh_time
+        object _moving_price_band_update_timestamp
         bint _ping_pong_enabled
         list _ping_pong_warning_lines
         bint _hb_app_notification
@@ -86,6 +93,8 @@ cdef class PureMarketMakingStrategy(StrategyBase):
         object _max_inventory_management_spread
         object _hanging_order_list
         object _dump_variables
+        object _exchange
+        object _raw_trading_pair
 
 
         object _moving_price_band

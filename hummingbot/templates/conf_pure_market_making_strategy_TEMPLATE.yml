@@ -56,6 +56,14 @@ price_ceiling_pct: null
 # Price band floor pct.
 price_floor_pct: null
 
+price_band_above_adjustment: null
+
+price_band_below_adjustment: null
+
+ema_timeframe: null
+ema_limit: null
+ema_length: null
+
 # price_band_refresh_time.
 price_band_refresh_time: null
 
