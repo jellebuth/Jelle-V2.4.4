@@ -437,6 +437,22 @@ pure_market_making_config_map = {
                   validator=validate_bool,
                   prompt_on_new=True),
 
+    "min_profitability":
+        ConfigVar(key="min_profitability",
+                  prompt="What is the min_profitability on your hanging order_other? (e.g. 0.5 for 0.50%) >>> ",
+                  type_str="decimal",
+                  default=Decimal(0.5),
+                  prompt_on_new=True
+                  ),
+
+    "hanging_inventory_management_range":
+        ConfigVar(key="hanging_inventory_management_range",
+                  prompt="If inventoy management and hanging orders enabled, at what inventory management skew would you not place a hanging order (e.g. 0.3) >>> ",
+                  type_str="decimal",
+                  default=Decimal(0.375),
+                  prompt_on_new=True
+                  ),
+
     "target_balance_spread_reducer_temp":
     ConfigVar(key="target_balance_spread_reducer_temp",
               prompt="target_balance_spread_reducer_temp(e.g. 0.99 = 99%) >>> ",

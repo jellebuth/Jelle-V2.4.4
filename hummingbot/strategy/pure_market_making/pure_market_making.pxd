@@ -58,7 +58,7 @@ cdef class PureMarketMakingStrategy(StrategyBase):
         object _price_band_below_adjustment
         object _ema_timeframe
         object _ema_limit
-        object _ema_length 
+        object _ema_length
         object _price_band_refresh_time
         object _moving_price_band_update_timestamp
         bint _ping_pong_enabled
@@ -95,6 +95,8 @@ cdef class PureMarketMakingStrategy(StrategyBase):
         object _dump_variables
         object _exchange
         object _raw_trading_pair
+        object _min_profitability
+        object _hanging_inventory_management_range
 
 
         object _moving_price_band
@@ -103,7 +105,6 @@ cdef class PureMarketMakingStrategy(StrategyBase):
     cdef object c_create_base_proposal(self)
     cdef tuple c_get_adjusted_available_balance(self, list orders)
     cdef c_apply_order_levels_modifiers(self, object proposal)
-    cdef c_apply_price_band(self, object proposal)
     cdef c_apply_ping_pong(self, object proposal)
     cdef c_apply_order_price_modifiers(self, object proposal)
     cdef c_apply_order_size_modifiers(self, object proposal)

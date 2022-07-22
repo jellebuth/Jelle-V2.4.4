@@ -45,7 +45,7 @@ def start(self):
         micro_price_percentage_depth = c_map.get(
             "micro_price_percentage_depth").value
         micro_price_effect = c_map.get("micro_price_effect").value
-        micro_price_price_source = c_map.get("micro_price_effect").value
+        micro_price_price_source = c_map.get("micro_price_price_source").value
         ping_pong_enabled = c_map.get("ping_pong_enabled").value
         order_levels = c_map.get("order_levels").value
         order_level_amount = c_map.get("order_level_amount").value
@@ -88,9 +88,12 @@ def start(self):
             "split_order_levels_enabled").value
         hanging_orders_enabled_other = c_map.get(
             "hanging_orders_enabled_other").value
+        min_profitability = c_map.get(
+            "min_profitability").value / Decimal('100')
+        hanging_inventory_management_range = c_map.get(
+            "hanging_inventory_management_range").value
         target_balance_spread_reducer_temp = c_map.get(
             "target_balance_spread_reducer_temp").value
-
         volatility_adjustment = c_map.get("volatility_adjustment").value
         volatility_buffer_size = c_map.get("volatility_buffer_size").value
         volatility_processing_length = c_map.get(
@@ -145,6 +148,7 @@ def start(self):
                                                                        trading_pair])[0]
 
         if (conversion_data_source or micro_price_price_source):
+            self.logger().error("Initializing a second market", exc_info=True)
             conversion_assets: Tuple[str, str] = self._initialize_market_assets(
                 conversion_exchange, [conversion_trading_pair])[0]
 
@@ -259,6 +263,8 @@ def start(self):
             should_wait_order_cancel_confirmation=should_wait_order_cancel_confirmation,
             filled_order_delay_target_balance=filled_order_delay_target_balance,
             hanging_orders_enabled_other=hanging_orders_enabled_other,
+            min_profitability=min_profitability,
+            hanging_inventory_management_range=hanging_inventory_management_range,
             target_balance_spread_reducer_temp=target_balance_spread_reducer_temp,
             moving_price_band=moving_price_band,
             ema_timeframe=ema_timeframe,

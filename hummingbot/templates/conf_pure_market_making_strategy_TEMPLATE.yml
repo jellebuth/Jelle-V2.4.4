@@ -165,6 +165,9 @@ filled_order_delay_target_balance: null
 should_wait_order_cancel_confirmation: True
 target_balance_spread_reducer_temp: null
 hanging_orders_enabled_other : null
+min_profitability: null
+hanging_inventory_management_range: null
+
 
 
 # Settings for volatility  adjustment
