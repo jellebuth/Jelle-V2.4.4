@@ -168,15 +168,12 @@ hanging_orders_enabled_other : null
 min_profitability: null
 hanging_inventory_management_range: null
 
-
-
 # Settings for volatility  adjustment
 volatility_adjustment: null
 max_volatility_spread: null
 volatility_adjustment_multiplier: null
 volatility_buffer_size: null
 volatility_processing_length: null
-
 
 inventory_management: null
 inventory_management_multiplier: null

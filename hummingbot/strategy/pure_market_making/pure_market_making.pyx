@@ -964,8 +964,8 @@ cdef class PureMarketMakingStrategy(StrategyBase):
     def get_inventory_management(self):
         market: ExchangeBase = self._market_info.market
         current_base_balance = market.get_balance(self._market_info.base_asset)
-        inventory = current_base_balance * Decimal(2)
         target_inventory = self._target_base_balance
+        inventory = target_inventory * Decimal(2)
         q = (current_base_balance - target_inventory) / (inventory)
         return q
 
