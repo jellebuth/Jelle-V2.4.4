@@ -13,7 +13,7 @@ RUN groupadd -g 8211 hummingbot && \
     useradd -m -s /bin/bash -u 8211 -g 8211 hummingbot
 
 # Switch to hummingbot user
-USER hummingbot:hummingbot
+USER jellebuth:hummingbot
 WORKDIR /home/hummingbot
 
 # Install miniconda
@@ -38,7 +38,7 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | b
     rm -rf /home/hummingbot/.cache
 
 # Copy environment only to optimize build caching, so changes in sources will not cause conda env invalidation
-COPY --chown=hummingbot:hummingbot setup/environment-linux.yml setup/
+COPY --chown=jellebuth:hummingbot setup/environment-linux.yml setup/
 
 # ./install | create hummingbot environment
 RUN ~/miniconda3/bin/conda env create -f setup/environment-linux.yml && \
@@ -47,14 +47,14 @@ RUN ~/miniconda3/bin/conda env create -f setup/environment-linux.yml && \
     rm -rf /home/hummingbot/.cache
 
 # Copy remaining files
-COPY --chown=hummingbot:hummingbot bin/ bin/
-COPY --chown=hummingbot:hummingbot hummingbot/ hummingbot/
-COPY --chown=hummingbot:hummingbot gateway/setup/ gateway/setup/
-COPY --chown=hummingbot:hummingbot gateway/src/templates gateway/src/templates
-COPY --chown=hummingbot:hummingbot setup.py .
-COPY --chown=hummingbot:hummingbot LICENSE .
-COPY --chown=hummingbot:hummingbot README.md .
-COPY --chown=hummingbot:hummingbot DATA_COLLECTION.md .
+COPY --chown=jellebuth:hummingbot bin/ bin/
+COPY --chown=jellebuth:hummingbot hummingbot/ hummingbot/
+COPY --chown=jellebuth:hummingbot gateway/setup/ gateway/setup/
+COPY --chown=jellebuth:hummingbot gateway/src/templates gateway/src/templates
+COPY --chown=jellebuth:hummingbot setup.py .
+COPY --chown=jellebuth:hummingbot LICENSE .
+COPY --chown=jellebuth:hummingbot README.md .
+COPY --chown=jellebuth:hummingbot DATA_COLLECTION.md .
 
 # activate hummingbot env when entering the CT
 RUN echo "source /home/hummingbot/miniconda3/etc/profile.d/conda.sh && conda activate $(head -1 setup/environment-linux.yml | cut -d' ' -f2)" >> ~/.bashrc
@@ -66,7 +66,7 @@ RUN /home/hummingbot/miniconda3/envs/$(head -1 setup/environment-linux.yml | cut
 
 # Build final image using artifacts from builer
 FROM ubuntu:20.04 AS release
-# Dockerfile author / maintainer 
+# Dockerfile author / maintainer
 LABEL maintainer="CoinAlpha, Inc. <dev@coinalpha.com>"
 
 # Build arguments
@@ -104,16 +104,16 @@ RUN ln -s /conf /home/hummingbot/conf && \
 RUN mkdir -p /conf /logs /data /pmm_scripts /scripts \
     /home/hummingbot/.hummingbot-gateway/conf \
     /home/hummingbot/.hummingbot-gateway/certs && \
-  chown -R hummingbot:hummingbot /conf /logs /data /pmm_scripts /scripts \
+  chown -R jellebuth:hummingbot /conf /logs /data /pmm_scripts /scripts \
     /home/hummingbot/.hummingbot-gateway
 VOLUME /conf /logs /data /pmm_scripts /scripts \
   /home/hummingbot/.hummingbot-gateway/conf \
   /home/hummingbot/.hummingbot-gateway/certs
 
 # Pre-populate pmm_scripts/ volume with default pmm_scripts
-COPY --chown=hummingbot:hummingbot pmm_scripts/ pmm_scripts/
+COPY --chown=jellebuth:hummingbot pmm_scripts/ pmm_scripts/
 # Pre-populate scripts/ volume with default scripts
-COPY --chown=hummingbot:hummingbot scripts/ scripts/
+COPY --chown=jellebuth:hummingbot scripts/ scripts/
 
 # Install packages required in runtime
 RUN apt-get update && \
@@ -123,7 +123,7 @@ RUN apt-get update && \
 WORKDIR /home/hummingbot
 
 # Copy all build artifacts from builder image
-COPY --from=builder --chown=hummingbot:hummingbot /home/ /home/
+COPY --from=builder --chown=jellebuth:hummingbot /home/ /home/
 
 # additional configs (sudo)
 COPY docker/etc /etc
