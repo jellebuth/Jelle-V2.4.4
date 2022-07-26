@@ -9,11 +9,11 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Add hummingbot user and group
-RUN groupadd -g 8211 hummingbot && \
-    useradd -m -s /bin/bash -u 8211 -g 8211 hummingbot
+RUN groupadd -g 8211 Jelle Buth && \
+    useradd -m -s /bin/bash -u 8211 -g 8211 Jelle Buth
 
 # Switch to hummingbot user
-USER jellebuth:hummingbot
+USER Jelle Buth:hummingbot
 WORKDIR /home/hummingbot
 
 # Install miniconda
@@ -38,26 +38,26 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | b
     rm -rf /home/hummingbot/.cache
 
 # Copy environment only to optimize build caching, so changes in sources will not cause conda env invalidation
-COPY --chown=jellebuth:hummingbot setup/environment-linux.yml setup/
+COPY --chown=Jelle Buth:hummingbot setup/environment-linux.yml setup/
 
 # ./install | create hummingbot environment
 RUN ~/miniconda3/bin/conda env create -f setup/environment-linux.yml && \
     ~/miniconda3/bin/conda clean -tipsy && \
     # clear pip cache
-    rm -rf /home/hummingbot/.cache
+    rm -rf /home/Users/jellebuth/Jelle-V2/.cache
 
 # Copy remaining files
-COPY --chown=jellebuth:hummingbot bin/ bin/
-COPY --chown=jellebuth:hummingbot hummingbot/ hummingbot/
-COPY --chown=jellebuth:hummingbot gateway/setup/ gateway/setup/
-COPY --chown=jellebuth:hummingbot gateway/src/templates gateway/src/templates
-COPY --chown=jellebuth:hummingbot setup.py .
-COPY --chown=jellebuth:hummingbot LICENSE .
-COPY --chown=jellebuth:hummingbot README.md .
-COPY --chown=jellebuth:hummingbot DATA_COLLECTION.md .
+COPY --chown=Jelle Buth:hummingbot bin/ bin/
+COPY --chown=Jelle Buth:hummingbot hummingbot/ hummingbot/
+COPY --chown=Jelle Buth:hummingbot gateway/setup/ gateway/setup/
+COPY --chown=Jelle Buth:hummingbot gateway/src/templates gateway/src/templates
+COPY --chown=Jelle Buth:hummingbot setup.py .
+COPY --chown=Jelle Buth:hummingbot LICENSE .
+COPY --chown=Jelle Buth:hummingbot README.md .
+COPY --chown=Jelle Buth:hummingbot DATA_COLLECTION.md .
 
 # activate hummingbot env when entering the CT
-RUN echo "source /home/hummingbot/miniconda3/etc/profile.d/conda.sh && conda activate $(head -1 setup/environment-linux.yml | cut -d' ' -f2)" >> ~/.bashrc
+RUN echo "source /home/Users/jellebuth/Jelle-V2/miniconda3/etc/profile.d/conda.sh && conda activate $(head -1 setup/environment-linux.yml | cut -d' ' -f2)" >> ~/.bashrc
 
 # ./compile + cleanup build folder
 RUN /home/hummingbot/miniconda3/envs/$(head -1 setup/environment-linux.yml | cut -d' ' -f2)/bin/python3 setup.py build_ext --inplace -j 8 && \
@@ -104,16 +104,16 @@ RUN ln -s /conf /home/hummingbot/conf && \
 RUN mkdir -p /conf /logs /data /pmm_scripts /scripts \
     /home/hummingbot/.hummingbot-gateway/conf \
     /home/hummingbot/.hummingbot-gateway/certs && \
-  chown -R jellebuth:hummingbot /conf /logs /data /pmm_scripts /scripts \
+  chown -R Jelle Buth:hummingbot /conf /logs /data /pmm_scripts /scripts \
     /home/hummingbot/.hummingbot-gateway
 VOLUME /conf /logs /data /pmm_scripts /scripts \
   /home/hummingbot/.hummingbot-gateway/conf \
   /home/hummingbot/.hummingbot-gateway/certs
 
 # Pre-populate pmm_scripts/ volume with default pmm_scripts
-COPY --chown=jellebuth:hummingbot pmm_scripts/ pmm_scripts/
+COPY --chown=Jelle Buth:hummingbot pmm_scripts/ pmm_scripts/
 # Pre-populate scripts/ volume with default scripts
-COPY --chown=jellebuth:hummingbot scripts/ scripts/
+COPY --chown=Jelle Buth:hummingbot scripts/ scripts/
 
 # Install packages required in runtime
 RUN apt-get update && \
@@ -123,7 +123,7 @@ RUN apt-get update && \
 WORKDIR /home/hummingbot
 
 # Copy all build artifacts from builder image
-COPY --from=builder --chown=jellebuth:hummingbot /home/ /home/
+COPY --from=builder --chown=Jelle Buth:hummingbot /home/ /home/
 
 # additional configs (sudo)
 COPY docker/etc /etc

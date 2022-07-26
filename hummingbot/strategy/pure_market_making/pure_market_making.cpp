@@ -25181,8 +25181,8 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
 static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_market_making_24PureMarketMakingStrategy_28get_inventory_management(struct __pyx_obj_10hummingbot_8strategy_18pure_market_making_18pure_market_making_PureMarketMakingStrategy *__pyx_v_self) {
   struct __pyx_obj_10hummingbot_9connector_13exchange_base_ExchangeBase *__pyx_v_market = 0;
   PyObject *__pyx_v_current_base_balance = NULL;
-  PyObject *__pyx_v_inventory = NULL;
   PyObject *__pyx_v_target_inventory = NULL;
+  PyObject *__pyx_v_inventory = NULL;
   PyObject *__pyx_v_q = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -25201,7 +25201,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
  *     def get_inventory_management(self):
  *         market: ExchangeBase = self._market_info.market             # <<<<<<<<<<<<<<
  *         current_base_balance = market.get_balance(self._market_info.base_asset)
- *         inventory = current_base_balance * Decimal(2)
+ *         target_inventory = self._target_base_balance
  */
   __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_market_info, __pyx_n_s_market); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 965, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -25213,8 +25213,8 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
  *     def get_inventory_management(self):
  *         market: ExchangeBase = self._market_info.market
  *         current_base_balance = market.get_balance(self._market_info.base_asset)             # <<<<<<<<<<<<<<
- *         inventory = current_base_balance * Decimal(2)
  *         target_inventory = self._target_base_balance
+ *         inventory = target_inventory * Decimal(2)
  */
   __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_market), __pyx_n_s_get_balance); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 966, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -25247,11 +25247,23 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
   /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":967
  *         market: ExchangeBase = self._market_info.market
  *         current_base_balance = market.get_balance(self._market_info.base_asset)
- *         inventory = current_base_balance * Decimal(2)             # <<<<<<<<<<<<<<
- *         target_inventory = self._target_base_balance
+ *         target_inventory = self._target_base_balance             # <<<<<<<<<<<<<<
+ *         inventory = target_inventory * Decimal(2)
  *         q = (current_base_balance - target_inventory) / (inventory)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Decimal); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 967, __pyx_L1_error)
+  __pyx_t_1 = __pyx_v_self->_target_base_balance;
+  __Pyx_INCREF(__pyx_t_1);
+  __pyx_v_target_inventory = __pyx_t_1;
+  __pyx_t_1 = 0;
+
+  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":968
+ *         current_base_balance = market.get_balance(self._market_info.base_asset)
+ *         target_inventory = self._target_base_balance
+ *         inventory = target_inventory * Decimal(2)             # <<<<<<<<<<<<<<
+ *         q = (current_base_balance - target_inventory) / (inventory)
+ *         return q
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Decimal); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 968, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   __pyx_t_5 = 0;
@@ -25269,31 +25281,19 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
     PyObject *__pyx_callargs[2] = {__pyx_t_3, __pyx_int_2};
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 967, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 968, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
-  __pyx_t_2 = PyNumber_Multiply(__pyx_v_current_base_balance, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 967, __pyx_L1_error)
+  __pyx_t_2 = PyNumber_Multiply(__pyx_v_target_inventory, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 968, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_inventory = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":968
- *         current_base_balance = market.get_balance(self._market_info.base_asset)
- *         inventory = current_base_balance * Decimal(2)
- *         target_inventory = self._target_base_balance             # <<<<<<<<<<<<<<
- *         q = (current_base_balance - target_inventory) / (inventory)
- *         return q
- */
-  __pyx_t_2 = __pyx_v_self->_target_base_balance;
-  __Pyx_INCREF(__pyx_t_2);
-  __pyx_v_target_inventory = __pyx_t_2;
-  __pyx_t_2 = 0;
-
   /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":969
- *         inventory = current_base_balance * Decimal(2)
  *         target_inventory = self._target_base_balance
+ *         inventory = target_inventory * Decimal(2)
  *         q = (current_base_balance - target_inventory) / (inventory)             # <<<<<<<<<<<<<<
  *         return q
  * 
@@ -25307,7 +25307,7 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
   __pyx_t_1 = 0;
 
   /* "hummingbot/strategy/pure_market_making/pure_market_making.pyx":970
- *         target_inventory = self._target_base_balance
+ *         inventory = target_inventory * Decimal(2)
  *         q = (current_base_balance - target_inventory) / (inventory)
  *         return q             # <<<<<<<<<<<<<<
  * 
@@ -25337,8 +25337,8 @@ static PyObject *__pyx_pf_10hummingbot_8strategy_18pure_market_making_18pure_mar
   __pyx_L0:;
   __Pyx_XDECREF((PyObject *)__pyx_v_market);
   __Pyx_XDECREF(__pyx_v_current_base_balance);
-  __Pyx_XDECREF(__pyx_v_inventory);
   __Pyx_XDECREF(__pyx_v_target_inventory);
+  __Pyx_XDECREF(__pyx_v_inventory);
   __Pyx_XDECREF(__pyx_v_q);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
@@ -51282,7 +51282,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  *         market: ExchangeBase = self._market_info.market
  *         current_base_balance = market.get_balance(self._market_info.base_asset)
  */
-  __pyx_tuple__93 = PyTuple_Pack(6, __pyx_n_s_self, __pyx_n_s_market, __pyx_n_s_current_base_balance, __pyx_n_s_inventory, __pyx_n_s_target_inventory, __pyx_n_s_q); if (unlikely(!__pyx_tuple__93)) __PYX_ERR(0, 964, __pyx_L1_error)
+  __pyx_tuple__93 = PyTuple_Pack(6, __pyx_n_s_self, __pyx_n_s_market, __pyx_n_s_current_base_balance, __pyx_n_s_target_inventory, __pyx_n_s_inventory, __pyx_n_s_q); if (unlikely(!__pyx_tuple__93)) __PYX_ERR(0, 964, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__93);
   __Pyx_GIVEREF(__pyx_tuple__93);
   __pyx_codeobj__94 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 6, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__93, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hummingbot_strategy_pure_market_3, __pyx_n_s_get_inventory_management, 964, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__94)) __PYX_ERR(0, 964, __pyx_L1_error)
