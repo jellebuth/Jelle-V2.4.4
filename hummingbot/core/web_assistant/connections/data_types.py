@@ -36,7 +36,6 @@ class RESTRequest:
 @dataclass
 class EndpointRESTRequest(RESTRequest, ABC):
     """This request class enable the user to provide either a complete URL or simply an endpoint.
-
     The endpoint is concatenated with the return value of `base_url`. It can handle endpoints supplied both as
     `"endpoint"` and `"/endpoint"`. It also provides the necessary checks to ensure a valid URL can be constructed.
     """
@@ -55,7 +54,8 @@ class EndpointRESTRequest(RESTRequest, ABC):
 
     def _ensure_url(self):
         if self.url is None and self.endpoint is None:
-            raise ValueError("Either the full url or the endpoint must be specified.")
+            raise ValueError(
+                "Either the full url or the endpoint must be specified.")
         if self.url is None:
             if self.endpoint.startswith("/"):
                 self.url = f"{self.base_url}{self.endpoint}"
@@ -65,7 +65,8 @@ class EndpointRESTRequest(RESTRequest, ABC):
     def _ensure_params(self):
         if self.method == RESTMethod.POST:
             if self.params is not None:
-                raise ValueError("POST requests should not use `params`. Use `data` instead.")
+                raise ValueError(
+                    "POST requests should not use `params`. Use `data` instead.")
 
     def _ensure_data(self):
         if self.method == RESTMethod.POST:

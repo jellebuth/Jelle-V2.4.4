@@ -18,6 +18,7 @@ from hummingbot.core.data_type.limit_order import LimitOrder
 from hummingbot.core.network_iterator import NetworkStatus
 from hummingbot.core.utils import map_df_to_str
 from hummingbot.strategy.__utils__.trailing_indicators.instant_volatility import InstantVolatilityIndicator
+from hummingbot.strategy.order_book_asset_price_delegate import OrderBookAssetPriceDelegate
 from hummingbot.strategy.__utils__.trailing_indicators.trading_intensity import TradingIntensityIndicator
 from hummingbot.strategy.conditional_execution_state import ConditionalExecutionState, RunAlwaysExecutionState
 from hummingbot.strategy.data_types import (
@@ -78,12 +79,12 @@ cdef class AvellanedaMarketMakingStrategy(StrategyBase):
                     start_time: datetime.datetime = None,
                     end_time: datetime.datetime = None,
                     min_spread: Decimal = Decimal("0"),
-                    debug_csv_path: str = '/Users/jellebuth/Documents/dump_debug.csv',
+                    debug_csv_path: str = '',
                     volatility_buffer_size: int = 200,
                     trading_intensity_buffer_size: int = 200,
                     trading_intensity_price_levels: Tuple[float] = tuple(np.geomspace(1, 2, 10) - 1),
                     should_wait_order_cancel_confirmation = True,
-                    is_debug: bool = True,
+                    is_debug: bool = False,
                     ):
         self._sb_order_tracker = OrderTracker()
         self._market_info = market_info
@@ -113,11 +114,11 @@ cdef class AvellanedaMarketMakingStrategy(StrategyBase):
         self._last_timestamp = 0
         self._status_report_interval = status_report_interval
         self._last_own_trade_price = Decimal('nan')
-
+        self._trading_intensity_buffer_size = trading_intensity_buffer_size
+        self._price_delegate = OrderBookAssetPriceDelegate(market_info.market, market_info.trading_pair)
         self.c_add_markets([market_info.market])
         self._ticks_to_be_ready = max(volatility_buffer_size, trading_intensity_buffer_size)
         self._avg_vol = InstantVolatilityIndicator(sampling_length=volatility_buffer_size)
-        self._trading_intensity = TradingIntensityIndicator(trading_intensity_buffer_size)
         self._last_sampling_timestamp = 0
         self._alpha = None
         self._kappa = None
@@ -135,7 +136,11 @@ cdef class AvellanedaMarketMakingStrategy(StrategyBase):
         self._should_wait_order_cancel_confirmation = should_wait_order_cancel_confirmation
         self._debug_csv_path = debug_csv_path
         self._is_debug = is_debug
-
+        try:
+            if self._is_debug:
+                os.unlink(self._debug_csv_path)
+        except FileNotFoundError:
+            pass
 
     def all_markets_ready(self):
         return all([market.ready for market in self._sb_markets])
@@ -577,6 +582,13 @@ cdef class AvellanedaMarketMakingStrategy(StrategyBase):
                         self.logger().warning(f"Markets are not ready. No market making trades are permitted.")
                     return
 
+            if self._trading_intensity is None and self.market_info.market.ready:
+              self._trading_intensity = TradingIntensityIndicator(
+                  order_book=self.market_info.order_book,
+                  price_delegate=self._price_delegate,
+                  sampling_length=self._trading_intensity_buffer_size,
+              )
+
             if should_report_warnings:
                 if not all([mkt.network_status is NetworkStatus.CONNECTED for mkt in self._sb_markets]):
                     self.logger().warning(f"WARNING: Some markets are not connected or are down at the moment. Market "
@@ -637,9 +649,8 @@ cdef class AvellanedaMarketMakingStrategy(StrategyBase):
         self._last_sampling_timestamp = timestamp
 
         price = self.get_price()
-        snapshot = self.get_order_book_snapshot()
         self._avg_vol.add_sample(price)
-        self._trading_intensity.add_sample(snapshot)
+        self._trading_intensity.calculate(timestamp)
         # Calculate adjustment factor to have 0.01% of inventory resolution
         base_balance = market.get_balance(base_asset)
         quote_balance = market.get_balance(quote_asset)
@@ -1423,7 +1434,9 @@ cdef class AvellanedaMarketMakingStrategy(StrategyBase):
         ask_1 = self.c_weighted_mid_price_1_0()[1]
         ask_1_5 = self.c_weighted_mid_price_1_5()[1]
 
-        if not os.path.exists(self._debug_csv_path):
+        if os.path.exists('/Users/jellebuth/Documents/dump_debug1.csv'):
+          pass
+        else:
             df_header = pd.DataFrame([('timestamp',
                                         'pair',
                                         'mid_price',
@@ -1458,7 +1471,7 @@ cdef class AvellanedaMarketMakingStrategy(StrategyBase):
                                        'ask_1.0%_depth',
                                        'ask_1.5%_depth',
                                        'q')])
-            df_header.to_csv('/Users/jellebuth/Documents/dump_debug.csv', mode='a', header=False, index=False)
+            df_header.to_csv('/Users/jellebuth/Documents/dump_debug1.csv', mode='a', header=False, index=False)
 
         if self._execution_state.time_left is not None and self._execution_state.closing_time is not None:
             time_left_fraction = self._execution_state.time_left / self._execution_state.closing_time
@@ -1498,4 +1511,4 @@ cdef class AvellanedaMarketMakingStrategy(StrategyBase):
                             ask_1,
                             ask_1_5,
                             q)])
-        df.to_csv('/Users/jellebuth/Documents/dump_debug.csv', mode='a', header=False, index=False)
+        df.to_csv('/Users/jellebuth/Documents/dump_debug1.csv', mode='a', header=False, index=False)

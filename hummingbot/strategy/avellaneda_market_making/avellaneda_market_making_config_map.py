@@ -1,17 +1,20 @@
 from decimal import Decimal
-from typing import Optional
 
+from hummingbot.client.config.config_var import ConfigVar
 from hummingbot.client.config.config_validators import (
-    validate_bool,
-    validate_datetime_iso_string,
-    validate_decimal,
     validate_exchange,
-    validate_int,
     validate_market_trading_pair,
+    validate_int,
+    validate_bool,
+    validate_decimal,
+    validate_datetime_iso_string,
     validate_time_iso_string,
 )
-from hummingbot.client.config.config_var import ConfigVar
-from hummingbot.client.settings import AllConnectorSettings, required_exchanges
+from hummingbot.client.settings import (
+    required_exchanges,
+    AllConnectorSettings,
+)
+from typing import Optional
 
 
 def maker_trading_pair_prompt():
@@ -104,20 +107,23 @@ avellaneda_market_making_config_map = {
                   prompt=execution_time_start_prompt,
                   type_str="str",
                   validator=validate_execution_time,
-                  required_if=lambda: avellaneda_market_making_config_map.get("execution_timeframe").value != "infinite",
+                  required_if=lambda: avellaneda_market_making_config_map.get(
+                      "execution_timeframe").value != "infinite",
                   prompt_on_new=True),
     "end_time":
         ConfigVar(key="end_time",
                   prompt=execution_time_end_prompt,
                   type_str="str",
                   validator=validate_execution_time,
-                  required_if=lambda: avellaneda_market_making_config_map.get("execution_timeframe").value != "infinite",
+                  required_if=lambda: avellaneda_market_making_config_map.get(
+                      "execution_timeframe").value != "infinite",
                   prompt_on_new=True),
     "order_amount":
         ConfigVar(key="order_amount",
                   prompt=order_amount_prompt,
                   type_str="decimal",
-                  validator=lambda v: validate_decimal(v, min_value=Decimal("0"), inclusive=False),
+                  validator=lambda v: validate_decimal(
+                      v, min_value=Decimal("0"), inclusive=False),
                   prompt_on_new=True),
     "order_optimization_enabled":
         ConfigVar(key="order_optimization_enabled",
@@ -172,7 +178,8 @@ avellaneda_market_making_config_map = {
                   prompt="How long do you want to wait before placing the next order "
                          "if your order gets filled (in seconds)? >>> ",
                   type_str="float",
-                  validator=lambda v: validate_decimal(v, min_value=0, inclusive=False),
+                  validator=lambda v: validate_decimal(
+                      v, min_value=0, inclusive=False),
                   default=60),
     "inventory_target_base_pct":
         ConfigVar(key="inventory_target_base_pct",
@@ -203,13 +210,15 @@ avellaneda_market_making_config_map = {
         ConfigVar(key="order_levels",
                   prompt="How many orders do you want to place on both sides? >>> ",
                   type_str="int",
-                  validator=lambda v: validate_int(v, min_value=-1, inclusive=False),
+                  validator=lambda v: validate_int(
+                      v, min_value=-1, inclusive=False),
                   default=1),
     "level_distances":
         ConfigVar(key="level_distances",
                   prompt="How far apart in % of optimal spread should orders on one side be? >>> ",
                   type_str="decimal",
-                  validator=lambda v: validate_decimal(v, min_value=0, inclusive=True),
+                  validator=lambda v: validate_decimal(
+                      v, min_value=0, inclusive=True),
                   default=0),
     "order_override":
         ConfigVar(key="order_override",
@@ -227,7 +236,8 @@ avellaneda_market_making_config_map = {
         ConfigVar(key="hanging_orders_cancel_pct",
                   prompt="At what spread percentage (from mid price) will hanging orders be canceled? "
                          "(Enter 1 to indicate 1%) >>> ",
-                  required_if=lambda: avellaneda_market_making_config_map.get("hanging_orders_enabled").value,
+                  required_if=lambda: avellaneda_market_making_config_map.get(
+                      "hanging_orders_enabled").value,
                   type_str="decimal",
                   default=Decimal("10"),
                   validator=lambda v: validate_decimal(v, 0, 100, inclusive=False)),
