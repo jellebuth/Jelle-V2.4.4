@@ -1,0 +1,3 @@
+exchange_trade_id,config_file_path,strategy,market,symbol,base_asset,quote_asset,timestamp,order_id,trade_type,order_type,price,amount,leverage,trade_fee,position,age
+62e11eae4f42a87422ae1043,conf_avellaneda_market_making_3.yml,avellaneda_market_making,kucoin,AVAX-USDT,AVAX,USDT,1658920622000,SAXUT1823f5fd41ab1480e7129e333a5267a6ddf,SELL,LIMIT_MAKER,20.879,1,1,"{'fee_type': 'AddedToCost', 'percent': '0.001', 'percent_token': None, 'flat_fees': []}",NIL,00:00:01
+62e11eae4f42a87422ae1044,conf_avellaneda_market_making_3.yml,avellaneda_market_making,kucoin,AVAX-USDT,AVAX,USDT,1658920622000,SAXUT1823f5fd41bb1480e7129e333a5267a6ddf,SELL,LIMIT_MAKER,20.879,1,1,"{'fee_type': 'AddedToCost', 'percent': '0.001', 'percent_token': None, 'flat_fees': []}",NIL,00:00:01

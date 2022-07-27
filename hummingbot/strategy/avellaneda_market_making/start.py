@@ -1,23 +1,18 @@
 import datetime
-import pandas as pd
+import os.path
 from decimal import Decimal
-from typing import (
-    List,
-    Tuple,
-)
+from typing import List, Tuple
+
+import pandas as pd
 
 from hummingbot import data_path
-import os.path
 from hummingbot.client.hummingbot_application import HummingbotApplication
-from hummingbot.strategy.conditional_execution_state import (
-    RunAlwaysExecutionState,
-    RunInTimeConditionalExecutionState
+from hummingbot.strategy.avellaneda_market_making import AvellanedaMarketMakingStrategy
+from hummingbot.strategy.avellaneda_market_making.avellaneda_market_making_config_map import (
+    avellaneda_market_making_config_map as c_map,
 )
+from hummingbot.strategy.conditional_execution_state import RunAlwaysExecutionState, RunInTimeConditionalExecutionState
 from hummingbot.strategy.market_trading_pair_tuple import MarketTradingPairTuple
-from hummingbot.strategy.avellaneda_market_making import (
-    AvellanedaMarketMakingStrategy,
-)
-from hummingbot.strategy.avellaneda_market_making.avellaneda_market_making_config_map import avellaneda_market_making_config_map as c_map
 
 
 def start(self):
@@ -34,21 +29,10 @@ def start(self):
         filled_order_delay = c_map.get("filled_order_delay").value
         order_refresh_tolerance_pct = c_map.get(
             "order_refresh_tolerance_pct").value / Decimal('100')
-        use_micro_price = c_map.get("use_micro_price").value
-        micro_price_percentage_depth = c_map.get(
-            "micro_price_percentage_depth").value
-        micro_price_effect = c_map.get("micro_price_effect").value
         order_levels = c_map.get("order_levels").value
         level_distances = c_map.get("level_distances").value
         order_override = c_map.get("order_override").value
         hanging_orders_enabled = c_map.get("hanging_orders_enabled").value
-        normal_target_calculation = c_map.get(
-            "normal_target_calculation").value
-        max_deviation = c_map.get(
-            "max_deviation").value
-        target_balance_spread_reducer = c_map.get(
-            "target_balance_spread_reducer").value
-        target_base_balance = c_map.get("target_base_balance").value
 
         hanging_orders_cancel_pct = c_map.get(
             "hanging_orders_cancel_pct").value / Decimal('100')
@@ -128,15 +112,8 @@ def start(self):
             debug_csv_path=debug_csv_path,
             volatility_buffer_size=volatility_buffer_size,
             trading_intensity_buffer_size=trading_intensity_buffer_size,
-            normal_target_calculation=normal_target_calculation,
-            target_base_balance=target_base_balance,
             should_wait_order_cancel_confirmation=should_wait_order_cancel_confirmation,
-            use_micro_price=use_micro_price,
-            micro_price_percentage_depth=micro_price_percentage_depth,
-            micro_price_effect=micro_price_effect,
-            max_deviation=max_deviation,
-            target_balance_spread_reducer=target_balance_spread_reducer,
-            is_debug=False
+            is_debug=True
         )
     except Exception as e:
         self.notify(str(e))
