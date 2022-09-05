@@ -49,5 +49,7 @@ conda develop .
 pip install objgraph
 pip install ta
 pip install ccxt
+pip install psychopg2-binary
+pip install sqlalchemy
 
 pre-commit install

@@ -29,6 +29,8 @@ def start(self):
 
     try:
         order_amount = c_map.get("order_amount").value
+        strategy = c_map.get("strategy").value
+        strategy_identifier = c_map.get("strategy_identifier").value
         order_refresh_time = c_map.get("order_refresh_time").value
         max_order_age = c_map.get("max_order_age").value
         bid_spread = c_map.get("bid_spread").value / Decimal('100')
@@ -214,7 +216,9 @@ def start(self):
         self.strategy = PureMarketMakingStrategy()
         self.strategy.init_params(
             market_info=MarketTradingPairTuple(*maker_data),
+            strategy=strategy,
             conversion_market=conversion_market_trading_pair_tuple,
+            strategy_identifier=strategy_identifier,
             exchange=exchange,
             raw_trading_pair=raw_trading_pair,
             bid_spread=bid_spread,

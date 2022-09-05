@@ -30,6 +30,12 @@ from .pure_market_making_order_tracker import PureMarketMakingOrderTracker
 from .moving_price_band import MovingPriceBand
 from hummingbot.strategy.pure_market_making.get_candlestick import get_candlestick
 from hummingbot.strategy.__utils__.trailing_indicators.average_volatility import AverageVolatilityIndicator
+from hummingbot.strategy.pure_market_making.database import *
+from sqlalchemy import create_engine
+import sqlalchemy as db
+
+
+
 
 
 NaN = float("nan")
@@ -53,7 +59,9 @@ cdef class PureMarketMakingStrategy(StrategyBase):
 
     def init_params(self,
                     market_info: MarketTradingPairTuple,
+                    strategy,
                     exchange,
+                    strategy_identifier,
                     raw_trading_pair,
                     bid_spread: Decimal,
                     ask_spread: Decimal,
@@ -133,6 +141,8 @@ cdef class PureMarketMakingStrategy(StrategyBase):
             raise ValueError("Parameter price_ceiling cannot be lower than price_floor.")
         self._sb_order_tracker = PureMarketMakingOrderTracker()
         self._market_info = market_info
+        self._strategy_identifier = strategy_identifier
+        self._strategy = strategy
         self._bid_spread = bid_spread
         self._ask_spread = ask_spread
         self._minimum_spread = minimum_spread
@@ -199,6 +209,7 @@ cdef class PureMarketMakingStrategy(StrategyBase):
         self._target_balance_spread_reducer = target_balance_spread_reducer
         self._filled_order_delay_target_balance = filled_order_delay_target_balance
         self._balance_fixer_timestamp = 0
+        self._min_spread_order_id = []
 
         self._target_balance_spread_reducer_temp = target_balance_spread_reducer_temp
         self._hanging_orders_enabled_other = hanging_orders_enabled_other
@@ -222,6 +233,9 @@ cdef class PureMarketMakingStrategy(StrategyBase):
         self._dump_variables = dump_variables
         self._exchange = exchange
         self._raw_trading_pair = raw_trading_pair.replace("-", "/")
+
+        self._engine = " "
+        self._connection = " "
 
 
         self.c_add_markets([market_info.market])
@@ -511,13 +525,13 @@ cdef class PureMarketMakingStrategy(StrategyBase):
 
         else:
           if self._conversion_data_source:
-            price = price_provider.get_price_by_type(self._price_type) / self._conversion_market.get_mid_price()
+            price = price_provider.get_price_by_type(self._price_type) / self._conversion_market.c_get_mid_price()
           else:
             price = price_provider.get_price_by_type(self._price_type)
 
         if price.is_nan():
           if self._conversion_data_source:
-            price = price_provider.get_price_by_type(PriceType.MidPrice) / self._conversion_market.get_mid_price()
+            price = price_provider.get_price_by_type(PriceType.MidPrice) / self._conversion_market.c_get_mid_price()
           else:
             price = price_provider.get_price_by_type(PriceType.MidPrice)
         return price
@@ -531,12 +545,12 @@ cdef class PureMarketMakingStrategy(StrategyBase):
             object mid_price
         if self._asset_price_delegate is not None:
           if self._conversion_data_source:
-            mid_price = delegate.c_get_mid_price() / self._conversion_market.get_mid_price()
+            mid_price = delegate.c_get_mid_price() / self._conversion_market.c_get_mid_price()
           else:
             mid_price = delegate.c_get_mid_price()
         else:
           if self._conversion_data_source:
-            mid_price = self._market_info.get_mid_price() / self._conversion_market.get_mid_price()
+            mid_price = self._market_info.get_mid_price() / self._conversion_market.c_get_mid_price()
           else:
             mid_price = self._market_info.get_mid_price()
         return mid_price
@@ -814,6 +828,16 @@ cdef class PureMarketMakingStrategy(StrategyBase):
         self._last_timestamp = timestamp
 
         self._hanging_orders_tracker.register_events(self.active_markets)
+
+        self._engine = create_engine('mysql+pymysql://hb:Jelle123@hb.ceh1qcgkh4yh.ap-northeast-1.rds.amazonaws.com/Hummingbot')
+        self._connection = self._engine.connect()
+
+        self._engine.execute('''DROP TABLE IF EXISTS TRADES_DF''')
+
+        self.log_with_clock(
+            logging.INFO,
+            f"Connected to database, engine = {self._engine}, connection = {self._connection}"
+        )
 
         if self._hanging_orders_enabled:
             # start tracking any restored limit order
@@ -1215,8 +1239,11 @@ cdef class PureMarketMakingStrategy(StrategyBase):
         if (self.get_first_order_proposal_spread(proposal)[0] * spread_adjustment_bid) < self._max_inventory_management_spread:
           if spread_adjustment_bid < 0:
             spread_adjustment_bid = Decimal(0.01)
-          else:
-            spread_adjustment_bid = spread_adjustment_bid
+            self.log_with_clock(
+                  logging.INFO,
+                  f"Inventory_spread_Adjustment: bid spread exceeds limit"
+              )
+
         else:
           spread_adjustment_bid = (Decimal(1) - ((self._max_inventory_management_spread - self.get_first_order_proposal_spread(proposal)[0]) / self.get_first_order_proposal_spread(proposal)[0]))
 
@@ -1224,8 +1251,10 @@ cdef class PureMarketMakingStrategy(StrategyBase):
         if (self.get_first_order_proposal_spread(proposal)[1] * spread_adjustment_ask) < self._max_inventory_management_spread:
           if spread_adjustment_ask < 0:
             spread_adjustment_ask = Decimal(0.01)
-          else:
-            spread_adjustment_ask = spread_adjustment_ask
+            self.log_with_clock(
+                  logging.INFO,
+                  f"Inventory_spread_Adjustment: ask spread exceeds limit"
+              )
         else:
           spread_adjustment_ask = (Decimal(1) + ((self._max_inventory_management_spread - self.get_first_order_proposal_spread(proposal)[1]) / self.get_first_order_proposal_spread(proposal)[1]))
 
@@ -1275,24 +1304,8 @@ cdef class PureMarketMakingStrategy(StrategyBase):
       volatility_percentage = volatility/mid_price
       volatility_adjustment = volatility_percentage * self._volatility_adjustment_multiplier
 
-      volatility_adjustment_bid = Decimal(0)
-      volatility_adjustment_ask = Decimal(0)
-
-      if len(proposal.buys) != 0:
-        first_bid_order_spread_adjusted = (self.get_first_order_proposal_spread(proposal)[0] - volatility_adjustment)
-
-        if first_bid_order_spread_adjusted < self._max_volatility_spread:
-          volatility_adjustment_bid = volatility_adjustment
-        else: #calculate the max percentage increase in spread
-          volatility_adjustment_bid = self._max_volatility_spread - self.get_first_order_proposal_spread(proposal)[0]
-
-      if len(proposal.sells) != 0:
-        first_ask_order_spread_adjusted = (self.get_first_order_proposal_spread(proposal)[1] + volatility_adjustment)
-
-        if first_ask_order_spread_adjusted < self._max_volatility_spread:
-          volatility_adjustment_ask = volatility_adjustment
-        else:
-          volatility_adjustment_ask = self._max_volatility_spread - self.get_first_order_proposal_spread(proposal)[1]
+      volatility_adjustment_bid = volatility_adjustment
+      volatility_adjustment_ask = volatility_adjustment
 
       for buy in proposal.buys:
         price = buy.price
@@ -1484,21 +1497,99 @@ cdef class PureMarketMakingStrategy(StrategyBase):
         cdef:
             str order_id = order_filled_event.order_id
             object market_info = self._sb_order_tracker.c_get_shadow_market_pair_from_order_id(order_id)
+            double expiration_seconds = NaN
             tuple order_fill_record
+            ExchangeBase market = self._market_info.market
+            mid_price = market_info.get_mid_price()
 
         if market_info is not None:
             limit_order_record = self._sb_order_tracker.c_get_shadow_limit_order(order_id)
             order_fill_record = (limit_order_record, order_filled_event)
 
             if order_filled_event.trade_type is TradeType.BUY:
-                if self._logging_options & self.OPTION_LOG_MAKER_ORDER_FILLED:
+              ''' hanging order section - should be recreated as a function'''
+              if not self._hanging_orders_enabled and self._hanging_orders_enabled_other:
+                if self._buy_order_fill and self.current_timestamp >= self._balance_fixer_timestamp:
+                  self._buy_order_fill = False
+                else:
+                  self._buy_order_fill = True
+                  if (order_id not in self._hanging_order_list): #positive = you need to sell
+                    if (self._inventory_management and (self.get_inventory_management() > (Decimal(self._hanging_inventory_management_range)*Decimal(-1)))) or not self._inventory_management:
+                      top_ask = market.c_get_price(self.trading_pair, True)
+                      ask_order_id = self.c_sell_with_specific_market(
+                          self._market_info,
+                          amount = market.c_quantize_order_amount(self.trading_pair, order_filled_event.amount),
+                          order_type=self._limit_order_type,
+                          price= market.c_quantize_order_price(self.trading_pair, max((order_filled_event.price * (Decimal(1) + self._min_profitability)),top_ask)),
+                          expiration_seconds=expiration_seconds)
+                      self._hanging_order_list.append(ask_order_id)
+                      self.log_with_clock(
+                          logging.INFO,
+                          f"Created Sell Hanging Order({ask_order_id}) of {order_filled_event.amount}")
+                    else:
+                      self.log_with_clock(
+                          logging.INFO,
+                          f"Did not create hanging sell order as inventory management is already too skewed. Max: {Decimal(self._hanging_inventory_management_range)*Decimal(-1)}, Current: {self.get_inventory_management()}")
+
+                    self.c_cancel_all_orders()
+
+                self._last_buy_order_price = order_filled_event.price
+                self.log_with_clock(
+                    logging.INFO,
+                    f"self._buy_order_fill: order_id {order_id} - {self._sell_order_fill}) self._buy_order_fill: {self._buy_order_fill} self._last_buy_order_price : {self._last_buy_order_price} inventory_management {self.get_inventory_management()} "
+                )
+
+              # delay order creation by filled_order_dalay (in seconds)
+              self._create_timestamp = self._current_timestamp + self._filled_order_delay
+              self._cancel_timestamp = min(self._cancel_timestamp, self._create_timestamp)
+              self._balance_fixer_timestamp = self._filled_order_delay_target_balance + self._current_timestamp
+
+            if self._logging_options & self.OPTION_LOG_MAKER_ORDER_FILLED:
                     self.log_with_clock(
                         logging.INFO,
                         f"({market_info.trading_pair}) Maker buy order of "
                         f"{order_filled_event.amount} {market_info.base_asset} filled."
                     )
             else:
-                if self._logging_options & self.OPTION_LOG_MAKER_ORDER_FILLED:
+              ''' hanging order section - should be recreated as a function '''
+              if not self._hanging_orders_enabled and self._hanging_orders_enabled_other:
+                  if self._sell_order_fill and self.current_timestamp >= self._balance_fixer_timestamp: #if it is already true, set it to false. second argument for if two orders are filled at the same time, if this happens, the timer is just reset
+                    self._sell_order_fill = False
+                  else:
+                    self._sell_order_fill = True
+                    if (order_id not in self._hanging_order_list):
+                    #if inventory is too much skewed, you do not want to do hanging orders. If inventory_management and skew smaller than x then do not place the order. Inventory_management < 1 = too few base asset -> you need to sell
+                      if (self._inventory_management and (self.get_inventory_management() < Decimal(self._hanging_inventory_management_range))) or not self._inventory_management:
+                        top_bid = market.c_get_price(self.trading_pair, False)
+                        bid_order_id = self.c_buy_with_specific_market(
+                            self._market_info,
+                            amount = market.c_quantize_order_amount(self.trading_pair, order_filled_event.amount),
+                            order_type=self._limit_order_type,
+                            price= market.c_quantize_order_price(self.trading_pair, min((order_filled_event.price / (Decimal(1) + self._min_profitability)), top_bid)),
+                            expiration_seconds=expiration_seconds)
+                        self._hanging_order_list.append(bid_order_id)
+                        self.log_with_clock(
+                          logging.INFO,
+                          f"Created Buy Hanging Order({bid_order_id}) of {order_filled_event.amount}")
+                      else:
+                        self.log_with_clock(
+                            logging.INFO,
+                            f"Did not create hanging buy order as inventory management is already too skewed. Max: {Decimal(self._hanging_inventory_management_range)}, Current: {self.get_inventory_management()}")
+                      self.c_cancel_all_orders()
+
+
+                  self._last_sell_order_price = order_filled_event.price
+                  self.log_with_clock(
+                      logging.INFO,
+                      f"self._buy_order_fill: order_id {order_id} - {self._sell_order_fill}) self._buy_order_fill: {self._buy_order_fill} self._last_buy_order_price : {self._last_buy_order_price} inventory_management {self.get_inventory_management()} "
+                  )
+
+              # delay order creation by filled_order_dalay (in seconds)
+              self._create_timestamp = self._current_timestamp + self._filled_order_delay
+              self._cancel_timestamp = min(self._cancel_timestamp, self._create_timestamp)
+              self._balance_fixer_timestamp = self._filled_order_delay_target_balance + self._current_timestamp
+
+            if self._logging_options & self.OPTION_LOG_MAKER_ORDER_FILLED:
                     self.log_with_clock(
                         logging.INFO,
                         f"({market_info.trading_pair}) Maker sell order of "
@@ -1508,11 +1599,56 @@ cdef class PureMarketMakingStrategy(StrategyBase):
             if self._inventory_cost_price_delegate is not None:
                 self._inventory_cost_price_delegate.process_order_fill_event(order_filled_event)
 
+        order_id = order_id
+        exchange_trade_id = order_filled_event.exchange_trade_id
+        timestamp = order_filled_event.timestamp
+        trading_pair = market_info.trading_pair
+        exchange = self._exchange
+        strategy = self._strategy
+        strategy_identifier = self._strategy_identifier
+        base_asset, quote_asset = trading_pair.split('-')
+        buy =  (order_filled_event.trade_type == TradeType.BUY)
+        type = order_filled_event.order_type
+        amount = order_filled_event.amount
+        price = order_filled_event.price
+        fee_percent = order_filled_event.trade_fee.percent
+        fee_percent_token = order_filled_event.trade_fee.percent_token
+        flat_fee_token = order_filled_event.trade_fee.flat_fees[0]['token'] if order_filled_event.trade_fee.flat_fees != [] else None
+        flat_fee_amount = order_filled_event.trade_fee.flat_fees[0]['amount'] if order_filled_event.trade_fee.flat_fees != [] else None
+        mid_price = mid_price
+
+        trade_fill_df = pd.DataFrame({
+              "timestamp":[timestamp],
+              "order_id":[order_id],
+              "exchange_trade_id":[exchange_trade_id],
+              "trading_pair":[trading_pair],
+              "exchange":[exchange],
+              "strategy": [self._strategy],
+              "strategy_identifier": [strategy_identifier],
+              "base_asset":[base_asset],
+              "quote_asset": [quote_asset],
+              "buy": [buy],
+              "type": [type],
+              "amount": [amount],
+              "price": [price],
+              "fee_percent": [fee_percent],
+              "fee_percent_token": [fee_percent_token],
+              "flat_fee_amount": [flat_fee_amount],
+              "flat_fee_token": [flat_fee_token],
+              "mid_price": [mid_price]
+              })
+
+        trade_fill_df.to_sql('TRADES_DF', con=self._connection, if_exists='append', index=False)
+
+        self.log_with_clock(
+             logging.INFO,
+             f"Trade Fill Event succesfully stored in Database"
+         )
+
     cdef c_did_complete_buy_order(self, object order_completed_event):
         cdef:
             str order_id = order_completed_event.order_id
             limit_order_record = self._sb_order_tracker.c_get_limit_order(self._market_info, order_id)
-            double expiration_seconds = NaN
             ExchangeBase market = self._market_info.market
         if limit_order_record is None:
             return
@@ -1532,41 +1668,7 @@ cdef class PureMarketMakingStrategy(StrategyBase):
                     f"{limit_order_record.price} {limit_order_record.quote_currency} is filled."
                 )
                 return
-        if not self._hanging_orders_enabled and self._hanging_orders_enabled_other:
-          if self._buy_order_fill and self.current_timestamp >= self._balance_fixer_timestamp:
-            self._buy_order_fill = False
-          else:
-            self._buy_order_fill = True
-            if (order_id not in self._hanging_order_list): #positive = you need to sell
-              if (self._inventory_management and (self.get_inventory_management() > (Decimal(self._hanging_inventory_management_range)*Decimal(-1)))) or not self._inventory_management:
-                top_ask = market.c_get_price(self.trading_pair, True)
-                ask_order_id = self.c_sell_with_specific_market(
-                    self._market_info,
-                    amount = market.c_quantize_order_amount(self.trading_pair, limit_order_record.quantity),
-                    order_type=self._limit_order_type,
-                    price= market.c_quantize_order_price(self.trading_pair, max((limit_order_record.price * (Decimal(1) + self._min_profitability)),top_ask)),
-                    expiration_seconds=expiration_seconds)
-                self._hanging_order_list.append(ask_order_id)
-                self.log_with_clock(
-                    logging.INFO,
-                    f"Created Sell Hanging Order({ask_order_id}) of {limit_order_record.quantity}")
-              else:
-                self.log_with_clock(
-                    logging.INFO,
-                    f"Did not create hanging sell order as inventory management is already too skewed. Max: {Decimal(self._hanging_inventory_management_range)*Decimal(-1)}, Current: {self.get_inventory_management()}")
 
-              self.c_cancel_all_orders()
-
-          self._last_buy_order_price = limit_order_record.price
-          self.log_with_clock(
-              logging.INFO,
-              f"self._buy_order_fill: order_id {order_id} - {self._sell_order_fill}) self._buy_order_fill: {self._buy_order_fill} self._last_buy_order_price : {self._last_buy_order_price} inventory_management {self.get_inventory_management()} "
-          )
-
-        # delay order creation by filled_order_dalay (in seconds)
-        self._create_timestamp = self._current_timestamp + self._filled_order_delay
-        self._cancel_timestamp = min(self._cancel_timestamp, self._create_timestamp)
-        self._balance_fixer_timestamp = self._filled_order_delay_target_balance + self._current_timestamp
 
         self._filled_buys_balance += 1
         self._last_own_trade_price = limit_order_record.price
@@ -1586,7 +1688,6 @@ cdef class PureMarketMakingStrategy(StrategyBase):
         cdef:
             str order_id = order_completed_event.order_id
             LimitOrder limit_order_record = self._sb_order_tracker.c_get_limit_order(self._market_info, order_id)
-            double expiration_seconds = NaN
             ExchangeBase market = self._market_info.market
         if limit_order_record is None:
             return
@@ -1606,42 +1707,6 @@ cdef class PureMarketMakingStrategy(StrategyBase):
                     f"{limit_order_record.price} {limit_order_record.quote_currency} is filled."
                 )
                 return
-        if not self._hanging_orders_enabled and self._hanging_orders_enabled_other:
-            if self._sell_order_fill and self.current_timestamp >= self._balance_fixer_timestamp: #if it is already true, set it to false. second argument for if two orders are filled at the same time, if this happens, the timer is just reset
-              self._sell_order_fill = False
-            else:
-              self._sell_order_fill = True
-              if (order_id not in self._hanging_order_list):
-              #if inventory is too much skewed, you do not want to do hanging orders. If inventory_management and skew smaller than x then do not place the order. Inventory_management < 1 = too few base asset -> you need to sell
-                if (self._inventory_management and (self.get_inventory_management() < Decimal(self._hanging_inventory_management_range))) or not self._inventory_management:
-                  top_bid = market.c_get_price(self.trading_pair, False)
-                  bid_order_id = self.c_buy_with_specific_market(
-                      self._market_info,
-                      amount = market.c_quantize_order_amount(self.trading_pair, limit_order_record.quantity),
-                      order_type=self._limit_order_type,
-                      price= market.c_quantize_order_price(self.trading_pair, min((limit_order_record.price / (Decimal(1) + self._min_profitability)), top_bid)),
-                      expiration_seconds=expiration_seconds)
-                  self._hanging_order_list.append(bid_order_id)
-                  self.log_with_clock(
-                    logging.INFO,
-                    f"Created Buy Hanging Order({bid_order_id}) of {limit_order_record.quantity}")
-                else:
-                  self.log_with_clock(
-                      logging.INFO,
-                      f"Did not create hanging buy order as inventory management is already too skewed. Max: {Decimal(self._hanging_inventory_management_range)}, Current: {self.get_inventory_management()}")
-                self.c_cancel_all_orders()
-
-
-            self._last_sell_order_price = limit_order_record.price
-            self.log_with_clock(
-                logging.INFO,
-                f"self._buy_order_fill: order_id {order_id} - {self._sell_order_fill}) self._buy_order_fill: {self._buy_order_fill} self._last_buy_order_price : {self._last_buy_order_price} inventory_management {self.get_inventory_management()} "
-            )
-
-        # delay order creation by filled_order_dalay (in seconds)
-        self._create_timestamp = self._current_timestamp + self._filled_order_delay
-        self._cancel_timestamp = min(self._cancel_timestamp, self._create_timestamp)
-        self._balance_fixer_timestamp = self._filled_order_delay_target_balance + self._current_timestamp
 
         self._filled_sells_balance += 1
         self._last_own_trade_price = limit_order_record.price
@@ -1737,12 +1802,13 @@ cdef class PureMarketMakingStrategy(StrategyBase):
                          if order.client_order_id not in self.hanging_order_ids]
         for order in active_orders:
             negation = -1 if order.is_buy else 1
-            if (negation * (order.price - price) / price) < self._minimum_spread:
-              if order.client_order_id not in self._hanging_order_list:
-                self.logger().info(f"Order is below minimum spread ({self._minimum_spread})."
-                                   f" Cancelling Order: ({'Buy' if order.is_buy else 'Sell'}) "
-                                   f"ID - {order.client_order_id}")
-                self.c_cancel_order(self._market_info, order.client_order_id)
+            if order.client_order_id not in self._min_spread_order_id:
+              if (negation * (order.price - price) / price) < self._minimum_spread:
+                if order.client_order_id not in self._hanging_order_list:
+                  self.logger().info(f"Order is below minimum spread ({self._minimum_spread})."
+                                     f" Cancelling Order: ({'Buy' if order.is_buy else 'Sell'}) "
+                                     f"ID - {order.client_order_id}")
+                  self.c_cancel_order(self._market_info, order.client_order_id)
 
     cdef c_cancel_all_orders(self): #only the non haning ones
           cdef:
@@ -1797,6 +1863,8 @@ cdef class PureMarketMakingStrategy(StrategyBase):
                     expiration_seconds=expiration_seconds
                 )
                 orders_created = True
+                if abs((self.get_mid_price() - buy.price) / self.get_mid_price()) <= self._minimum_spread:
+                  self._min_spread_order_id.append(bid_order_id)
                 if idx < number_of_pairs:
                     order = next((o for o in self.active_orders if o.client_order_id == bid_order_id))
                     if order:
@@ -1820,6 +1888,8 @@ cdef class PureMarketMakingStrategy(StrategyBase):
                     expiration_seconds=expiration_seconds
                 )
                 orders_created = True
+                if abs((self.get_mid_price() - buy.price) / self.get_mid_price()) <= self._minimum_spread:
+                  self._min_spread_order_id.append(ask_order_id)
                 if idx < number_of_pairs:
                     order = next((o for o in self.active_orders if o.client_order_id == ask_order_id))
                     if order:

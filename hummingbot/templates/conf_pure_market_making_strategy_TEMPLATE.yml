@@ -184,5 +184,9 @@ conversion_trading_pair: null
 
 dump_variables: null
 
+strategy_identifier: null
+
+
+
 # For more detailed information, see:
 # https://docs.hummingbot.io/strategies/pure-market-making/#configuration-parameters

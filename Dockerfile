@@ -9,11 +9,11 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Add hummingbot user and group
-RUN groupadd -g 8211 Jelle Buth && \
-    useradd -m -s /bin/bash -u 8211 -g 8211 Jelle Buth
+RUN groupadd -g 8211 hummingbot && \
+    useradd -m -s /bin/bash -u 8211 -g 8211 hummingbot
 
 # Switch to hummingbot user
-USER Jelle Buth:hummingbot
+USER hummingbot:hummingbot
 WORKDIR /home/hummingbot
 
 # Install miniconda
@@ -21,7 +21,7 @@ RUN curl https://repo.anaconda.com/miniconda/Miniconda3-py38_4.10.3-Linux-x86_64
     /bin/bash ~/miniconda.sh -b && \
     rm ~/miniconda.sh && \
     ~/miniconda3/bin/conda update -n base conda -y && \
-    ~/miniconda3/bin/conda clean -tipsy
+    ~/miniconda3/bin/conda clean -tipy
 
 # Dropping default ~/.bashrc because it will return if not running as interactive shell, thus not invoking PATH settings
 RUN :> ~/.bashrc
@@ -38,31 +38,33 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | b
     rm -rf /home/hummingbot/.cache
 
 # Copy environment only to optimize build caching, so changes in sources will not cause conda env invalidation
-COPY --chown=Jelle Buth:hummingbot setup/environment-linux.yml setup/
+COPY --chown=hummingbot:hummingbot setup/environment-linux.yml setup/
 
 # ./install | create hummingbot environment
 RUN ~/miniconda3/bin/conda env create -f setup/environment-linux.yml && \
-    ~/miniconda3/bin/conda clean -tipsy && \
+    ~/miniconda3/bin/conda clean -tipy && \
     # clear pip cache
-    rm -rf /home/Users/jellebuth/Jelle-V2/.cache
+    rm -rf /home/hummingbot/.cache
 
 # Copy remaining files
-COPY --chown=Jelle Buth:hummingbot bin/ bin/
-COPY --chown=Jelle Buth:hummingbot hummingbot/ hummingbot/
-COPY --chown=Jelle Buth:hummingbot gateway/setup/ gateway/setup/
-COPY --chown=Jelle Buth:hummingbot gateway/src/templates gateway/src/templates
-COPY --chown=Jelle Buth:hummingbot setup.py .
-COPY --chown=Jelle Buth:hummingbot LICENSE .
-COPY --chown=Jelle Buth:hummingbot README.md .
-COPY --chown=Jelle Buth:hummingbot DATA_COLLECTION.md .
+COPY --chown=hummingbot:hummingbot bin/ bin/
+COPY --chown=hummingbot:hummingbot hummingbot/ hummingbot/
+COPY --chown=hummingbot:hummingbot gateway/setup/ gateway/setup/
+COPY --chown=hummingbot:hummingbot gateway/src/templates gateway/src/templates
+COPY --chown=hummingbot:hummingbot setup.py .
+COPY --chown=hummingbot:hummingbot LICENSE .
+COPY --chown=hummingbot:hummingbot README.md .
+COPY --chown=hummingbot:hummingbot DATA_COLLECTION.md .
 
 # activate hummingbot env when entering the CT
-RUN echo "source /home/Users/jellebuth/Jelle-V2/miniconda3/etc/profile.d/conda.sh && conda activate $(head -1 setup/environment-linux.yml | cut -d' ' -f2)" >> ~/.bashrc
+RUN echo "source /home/hummingbot/miniconda3/etc/profile.d/conda.sh && conda activate $(head -1 setup/environment-linux.yml | cut -d' ' -f2)" >> ~/.bashrc
 
 # ./compile + cleanup build folder
 RUN /home/hummingbot/miniconda3/envs/$(head -1 setup/environment-linux.yml | cut -d' ' -f2)/bin/python3 setup.py build_ext --inplace -j 8 && \
     rm -rf build/ && \
     find . -type f -name "*.cpp" -delete
+
+
 
 # Build final image using artifacts from builer
 FROM ubuntu:20.04 AS release
@@ -104,26 +106,27 @@ RUN ln -s /conf /home/hummingbot/conf && \
 RUN mkdir -p /conf /logs /data /pmm_scripts /scripts \
     /home/hummingbot/.hummingbot-gateway/conf \
     /home/hummingbot/.hummingbot-gateway/certs && \
-  chown -R Jelle Buth:hummingbot /conf /logs /data /pmm_scripts /scripts \
+  chown -R hummingbot:hummingbot /conf /logs /data /pmm_scripts /scripts \
     /home/hummingbot/.hummingbot-gateway
 VOLUME /conf /logs /data /pmm_scripts /scripts \
   /home/hummingbot/.hummingbot-gateway/conf \
   /home/hummingbot/.hummingbot-gateway/certs
 
 # Pre-populate pmm_scripts/ volume with default pmm_scripts
-COPY --chown=Jelle Buth:hummingbot pmm_scripts/ pmm_scripts/
+COPY --chown=hummingbot:hummingbot pmm_scripts/ pmm_scripts/
 # Pre-populate scripts/ volume with default scripts
-COPY --chown=Jelle Buth:hummingbot scripts/ scripts/
+COPY --chown=hummingbot:hummingbot scripts/ scripts/
 
 # Install packages required in runtime
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y sudo libusb-1.0 && \
     rm -rf /var/lib/apt/lists/*
 
+
 WORKDIR /home/hummingbot
 
 # Copy all build artifacts from builder image
-COPY --from=builder --chown=Jelle Buth:hummingbot /home/ /home/
+COPY --from=builder --chown=hummingbot:hummingbot /home/ /home/
 
 # additional configs (sudo)
 COPY docker/etc /etc

@@ -132,6 +132,12 @@ pure_market_making_config_map = {
                   validator=validate_exchange,
                   on_validated=exchange_on_validated,
                   prompt_on_new=True),
+
+    "strategy_identifier":
+        ConfigVar(key="strategy_identifier",
+                  prompt="how do you want to identify this strategy? Format: strategy_exchange_base-quote_type e.g. PMM_kucoin_AVAX-USDT_S2 or XEMM_kucoin-binance_AVAX-USDT-general >>> ",
+                  type_str="str",
+                  prompt_on_new=True),
     "market":
         ConfigVar(key="market",
                   prompt=maker_trading_pair_prompt,
@@ -684,7 +690,7 @@ pure_market_making_config_map = {
 
     "filled_order_delay_target_balance":
     ConfigVar(key="filled_order_delay_target_balance",
-              prompt="what is the amount of seconds you want to wait before placing the fixing order >>> ",
+              prompt="Hanging order other cancel time >>> ",
               type_str="float",
               validator=lambda v: validate_decimal(v),
               prompt_on_new=True,

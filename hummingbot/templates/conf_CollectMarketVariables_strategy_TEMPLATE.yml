@@ -1,0 +1,13 @@
+########################################################
+###       Execution4 strategy config               ###
+########################################################
+
+template_version: 6
+strategy: null
+# The following configuations are only required for the
+# twap strategy
+
+# Connector and token parameters
+connector: null
+trading_pair: null
+location: null

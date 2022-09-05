@@ -8,6 +8,8 @@ from hummingbot.strategy.strategy_base cimport StrategyBase
 cdef class PureMarketMakingStrategy(StrategyBase):
     cdef:
         object _market_info
+        object _strategy_identifier
+        object _strategy
         object _second_market
         object _bid_spread
         object _ask_spread
@@ -81,6 +83,7 @@ cdef class PureMarketMakingStrategy(StrategyBase):
         object _last_sell_order_price
         bint _should_wait_order_cancel_confirmation
         object _volatility_adjustment
+        object _min_spread_order_id
 
         object _volatility_buffer_size
         object _volatility_processing_length
@@ -98,6 +101,8 @@ cdef class PureMarketMakingStrategy(StrategyBase):
         object _min_profitability
         object _hanging_inventory_management_range
 
+        object _engine
+        object _connection
 
         object _moving_price_band
 
