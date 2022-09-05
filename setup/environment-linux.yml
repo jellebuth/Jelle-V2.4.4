@@ -16,6 +16,7 @@ dependencies:
   - pandas=1.2.1
   - pip=21.1.2
   - prompt_toolkit=3.0.20
+  - pydantic=1.9
   - pytables=3.6.1
   - python=3.8.2
   - python-dateutil=2.8.1
@@ -30,13 +31,13 @@ dependencies:
   - psycopg2-binary
   - sqlalchemy=1.4
   - ta=0.9
+  - ccxt=1.93.3
   - pip:
-    - ccxt
     - 0x-contract-addresses==3.0.0
     - 0x-contract-wrappers==2.0.0
     - 0x-order-utils==4.0.0
-    - aiohttp
-    - aiokafka
+    - aiohttp==3.7.4.post0
+    - aiokafka==0.7.
     - aioprocessing==2.0.0
     - aioresponses==0.7.2
     - appdirs==1.4.3
@@ -71,12 +72,12 @@ dependencies:
     - requests==2.22.0
     - rsa==4.7
     - ruamel-yaml==0.16.10
-    - setuptools==60.9.0
+    - setuptools==50.3.2
     - signalr-client-aio==0.0.1.6.2
     - simplejson==3.17.2
     - virtualenv==20.4.7
     - web3==5.23.0
     - websockets==9.1
-    - yarl==1.7.2
+    - yarl==1.4.2
     - git+https://github.com/CoinAlpha/python-signalr-client.git
 prefix: /home/paul/anaconda3/envs/hummingbot
