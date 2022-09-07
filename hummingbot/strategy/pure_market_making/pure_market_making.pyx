@@ -832,7 +832,7 @@ cdef class PureMarketMakingStrategy(StrategyBase):
         self._engine = create_engine('mysql+pymysql://hb:Jelle123@hb.ceh1qcgkh4yh.ap-northeast-1.rds.amazonaws.com/Hummingbot')
         self._connection = self._engine.connect()
 
-        self._engine.execute('''DROP TABLE IF EXISTS TRADES_DF''')
+        self._engine.execute('''CREATE TABLE IF NOT EXISTS TRADES_DF''')
 
         self.log_with_clock(
             logging.INFO,
